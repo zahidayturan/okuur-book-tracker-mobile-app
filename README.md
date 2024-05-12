@@ -1,5 +1,5 @@
 <h1 align="center">OKUUR</h1>
-<p align="center"><img src="assets/banner.png"  width=70% height=70%/></p>
+<p align="center"><img src="assets/banner.png"  width=90% height=90%/></p>
 
 Okuur / Book Tracker App
 

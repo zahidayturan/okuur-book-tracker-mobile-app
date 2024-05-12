@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/app/init.dart';
+import 'package:okuur/core/theme/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Okuur',
-      theme: ThemeData(
-        useMaterial3: false,
-      ),
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       home: const MyHomePage(),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomColors{
+class AppColors{
   Color greenDark =  const Color(0xFF10403B);
   Color green =  const Color(0xFF127369);
   Color blue = const Color(0xFF038C8C);

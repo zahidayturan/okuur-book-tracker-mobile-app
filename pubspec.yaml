@@ -1,4 +1,4 @@
-name: okuur
+name: Okuur
 description: Read Tracker
 version: 1.0.0+1
 
@@ -23,18 +23,18 @@ flutter:
     - assets/logo/
 
   fonts:
-    - family: FontR
+    - family: FontRegular
       fonts:
         - asset: assets/fonts/Montserrat-Regular.ttf
-    - family: FontB
+    - family: FontBold
       fonts:
         - asset: assets/fonts/Montserrat-Bold.ttf
-    - family: FontM
+    - family: FontMedium
       fonts:
         - asset: assets/fonts/Montserrat-Medium.ttf
-    - family: FontMI
+    - family: FontMediumItalic
       fonts:
         - asset: assets/fonts/Montserrat-MediumItalic.ttf
-    - family: FontL
+    - family: FontLight
       fonts:
         - asset: assets/fonts/Montserrat-Light.ttf

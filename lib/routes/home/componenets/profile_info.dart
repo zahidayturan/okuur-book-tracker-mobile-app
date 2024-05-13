@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 
+import '../../../ui/components/rich_text.dart';
+
 class HomeProfileInfo extends StatefulWidget {
   const HomeProfileInfo({super.key});
 
@@ -21,8 +23,18 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Merhaba user_name"),
-              Text("Bu ay 345 sayfa okudun")
+              RichTextWidget(
+                texts: ['Merhaba ', 'user_name'],
+                colors: [colors.greenDark, colors.greenDark],
+                fontSize: 16,
+                fontFamilies: ['FontRegular', 'FontBold'],
+              ),
+              RichTextWidget(
+                texts: ['Bu ay ', '345 sayfa ','okudun'],
+                colors: [colors.green, colors.green,colors.green],
+                fontSize: 14,
+                fontFamilies: ['FontRegular', 'FontBold','FontRegular'],
+              ),
             ],
           ),
           Container(

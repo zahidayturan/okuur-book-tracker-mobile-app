@@ -26,7 +26,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           height: 54,
           margin: EdgeInsets.symmetric(horizontal: 12,vertical: 15),
           decoration: BoxDecoration(
-            color: colors.green,
+            color: colors.blue,
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),

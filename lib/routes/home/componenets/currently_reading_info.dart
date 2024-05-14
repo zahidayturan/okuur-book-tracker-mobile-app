@@ -72,7 +72,9 @@ class _CurrentlyReadingInfoState extends State<CurrentlyReadingInfo> {
                           padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Container(
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 1000),
+                              curve: Curves.easeInOut,
                               height: 2,
                               width: innerContainerWidth,
                               decoration: BoxDecoration(

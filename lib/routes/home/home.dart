@@ -27,22 +27,28 @@ class _HomePageState extends State<HomePage> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomNavBar(),
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Center(
-            child: Column(
-              children: [
-                HomeProfileInfo(userName: "Kullanıcı Adı",pageCount: 345),
-                SizedBox(height: 12,),
-                CurrentlyReadingInfo(bookName: "Kralın Dönüşü",currentPage: 180,bookPage: 360),
-                SizedBox(height: 12,),
-                OperationButtons(),
-                SizedBox(height: 12,),
-                CurrentBookAndDiscover(),
-                SizedBox(height: 12,),
-                WeeklySeries(weeklySeries: [1,0,1,0,0,1,1],currentSeries: 34),
-                SizedBox(height: 12,),
-                MiniPagesInfo(dailyGoal: 40,goalCount: 6,)
-              ],
+          padding: EdgeInsets.only(right: 12,left: 12),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 12,),
+                  HomeProfileInfo(userName: "Kullanıcı Adı",pageCount: 345),
+                  SizedBox(height: 12,),
+                  CurrentlyReadingInfo(bookName: "Kralın Dönüşü",currentPage: 180,bookPage: 360),
+                  SizedBox(height: 12,),
+                  SizedBox(height: 160,),
+                  SizedBox(height: 12,),
+                  OperationButtons(),
+                  SizedBox(height: 12,),
+                  CurrentBookAndDiscover(),
+                  SizedBox(height: 12,),
+                  WeeklySeries(weeklySeries: [1,0,1,0,0,1,1],currentSeries: 34),
+                  SizedBox(height: 12,),
+                  MiniPagesInfo(dailyGoal: 40,goalCount: 6,)
+                ],
+              ),
             ),
           ),
         ),

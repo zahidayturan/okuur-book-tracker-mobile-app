@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-
 import '../../../ui/components/rich_text.dart';
 
 class HomeProfileInfo extends StatefulWidget {
-  const HomeProfileInfo({super.key});
+
+  final String userName;
+  final int pageCount;
+
+
+  const HomeProfileInfo({
+    Key? key,
+    required this.userName,
+    required this.pageCount,
+  }) : super(key: key);
 
   @override
   State<HomeProfileInfo> createState() => _HomeProfileInfoState();
@@ -24,16 +32,16 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RichTextWidget(
-                texts: ['Merhaba ', 'user_name'],
+                texts: ['Merhaba ', '${widget.userName}'],
                 colors: [colors.greenDark, colors.greenDark],
-                fontSize: 16,
-                fontFamilies: ['FontRegular', 'FontBold'],
+                fontSize: 15,
+                fontFamilies: ['FontMedium', 'FontBold'],
               ),
               RichTextWidget(
-                texts: ['Bu ay ', '345 sayfa ','okudun'],
+                texts: ['Bu ay ', '${widget.pageCount} sayfa',' kitap okudun'],
                 colors: [colors.green, colors.green,colors.green],
-                fontSize: 14,
-                fontFamilies: ['FontRegular', 'FontBold','FontRegular'],
+                fontSize: 13,
+                fontFamilies: ['FontMedium', 'FontBold','FontMedium'],
               ),
             ],
           ),
@@ -47,7 +55,6 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset("assets/icons/social.png"),
             ),
-
           )
         ],
       ),

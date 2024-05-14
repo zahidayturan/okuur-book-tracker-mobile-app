@@ -34,73 +34,74 @@ class _CurrentlyReadingInfoState extends State<CurrentlyReadingInfo> {
     }else if(widget.currentPage > widget.bookPage){
       rate = 100;
     }
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichTextWidget(
-            texts: ['Okunan: ', '${widget.bookName}'],
-            colors: [colors.black, colors.black],
-            fontSize: 14,
-            fontFamilies: ['FontBold', 'FontMedium'],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              RichTextWidget(
-                texts: ["${widget.currentPage}/${widget.bookPage}"],
-                colors: [colors.black],
-                fontSize: 13,
-                fontFamilies: ['FontMedium'],
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double outerContainerWidth = constraints.maxWidth;
-                      double innerContainerWidth = outerContainerWidth * (rate/100);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichTextWidget(
+          texts: ['Okunan: ', (widget.bookName)],
+          colors: [colors.black, colors.black],
+          fontSize: 14,
+          fontFamilies: ['FontBold', 'FontMedium'],
+          align: TextAlign.start,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            RichTextWidget(
+              texts: ["${widget.currentPage}/${widget.bookPage}"],
+              colors: [colors.black],
+              fontSize: 13,
+              fontFamilies: ['FontMedium'],
+              align: TextAlign.start,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double outerContainerWidth = constraints.maxWidth;
+                    double innerContainerWidth = outerContainerWidth * (rate/100);
 
-                      return Container(
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: colors.greenDark,
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 1000),
-                              curve: Curves.easeInOut,
-                              height: 2,
-                              width: innerContainerWidth,
-                              decoration: BoxDecoration(
-                                color: colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                              ),
+                    return Container(
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: colors.greenDark,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.easeInOut,
+                            height: 2,
+                            width: innerContainerWidth,
+                            decoration: BoxDecoration(
+                              color: colors.white,
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
+            ),
 
-              RichTextWidget(
-                texts: ["%${rate}"],
-                colors: [colors.black],
-                fontSize: 13,
-                fontFamilies: ['FontBold'],
-              ),
-            ],
-          )
+            RichTextWidget(
+              texts: ["%$rate"],
+              colors: [colors.black],
+              fontSize: 13,
+              fontFamilies: ['FontBold'],
+              align: TextAlign.start,
+            ),
+          ],
+        )
 
-        ],
-      ),
+      ],
     );
   }
 }

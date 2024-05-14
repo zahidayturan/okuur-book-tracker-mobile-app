@@ -63,7 +63,8 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                         fontSize: 12,
                         texts: ["Günlük\n","${widget.dailyGoal} sayfa"],
                         colors: [colors.black,colors.black],
-                        fontFamilies: ["FontMedium","FontBold"]
+                        fontFamilies: ["FontMedium","FontBold"],
+                      align: TextAlign.start,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

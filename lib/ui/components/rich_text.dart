@@ -5,13 +5,15 @@ class RichTextWidget extends StatelessWidget {
   final List<Color> colors;
   final List<String> fontFamilies;
   final double fontSize;
+  final TextAlign align;
 
   const RichTextWidget({
     Key? key,
     required this.texts,
     required this.colors,
     required this.fontFamilies,
-    required this.fontSize
+    required this.fontSize,
+    required this.align
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class RichTextWidget extends StatelessWidget {
     }
 
     return RichText(
+      textAlign: align,
       text: TextSpan(children: textSpans),
     );
   }

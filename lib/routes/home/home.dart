@@ -4,6 +4,7 @@ import 'package:okuur/routes/home/componenets/currently_reading_info.dart';
 import 'package:okuur/routes/home/componenets/home_profile_info.dart';
 import 'package:okuur/routes/home/componenets/mini_pages_info.dart';
 import 'package:okuur/routes/home/componenets/operation_buttons.dart';
+import 'package:okuur/routes/home/componenets/weekly_series.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,6 +35,8 @@ class _HomePageState extends State<HomePage> {
                 CurrentlyReadingInfo(bookName: "Kralın Dönüşü",currentPage: 180,bookPage: 360),
                 SizedBox(height: 12,),
                 OperationButtons(),
+                SizedBox(height: 12,),
+                WeeklySeries(weeklySeries: [1,0,1,0,0,1,1],currentSeries: 34),
                 SizedBox(height: 12,),
                 MiniPagesInfo(dailyGoal: 40,goalCount: 6,)
               ],

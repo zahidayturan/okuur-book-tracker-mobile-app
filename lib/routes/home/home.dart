@@ -3,6 +3,7 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/componenets/currently_reading_info.dart';
 import 'package:okuur/routes/home/componenets/home_profile_info.dart';
 import 'package:okuur/routes/home/componenets/mini_pages_info.dart';
+import 'package:okuur/routes/home/componenets/operation_buttons.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,6 +32,8 @@ class _HomePageState extends State<HomePage> {
                 HomeProfileInfo(userName: "Kullanıcı Adı",pageCount: 345),
                 SizedBox(height: 12,),
                 CurrentlyReadingInfo(bookName: "Kralın Dönüşü",currentPage: 180,bookPage: 360),
+                SizedBox(height: 12,),
+                OperationButtons(),
                 SizedBox(height: 12,),
                 MiniPagesInfo(dailyGoal: 40,goalCount: 6,)
               ],

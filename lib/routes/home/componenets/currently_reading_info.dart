@@ -39,7 +39,7 @@ class _CurrentlyReadingInfoState extends State<CurrentlyReadingInfo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichTextWidget(
-            texts: ['Okunan ', '${widget.bookName}'],
+            texts: ['Okunan: ', '${widget.bookName}'],
             colors: [colors.black, colors.black],
             fontSize: 14,
             fontFamilies: ['FontBold', 'FontMedium'],

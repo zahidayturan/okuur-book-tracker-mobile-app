@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/home/componenets/current_book_and_discover.dart';
 import 'package:okuur/routes/home/componenets/currently_reading_info.dart';
 import 'package:okuur/routes/home/componenets/home_profile_info.dart';
 import 'package:okuur/routes/home/componenets/mini_pages_info.dart';
@@ -35,6 +36,8 @@ class _HomePageState extends State<HomePage> {
                 CurrentlyReadingInfo(bookName: "Kralın Dönüşü",currentPage: 180,bookPage: 360),
                 SizedBox(height: 12,),
                 OperationButtons(),
+                SizedBox(height: 12,),
+                CurrentBookAndDiscover(),
                 SizedBox(height: 12,),
                 WeeklySeries(weeklySeries: [1,0,1,0,0,1,1],currentSeries: 34),
                 SizedBox(height: 12,),

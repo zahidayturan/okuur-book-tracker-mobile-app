@@ -17,7 +17,31 @@ class WeeklyCalendar extends StatefulWidget {
 class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   AppColors colors = AppColors();
+  List<DateTime> weeks = [
+    DateTime.now().subtract(Duration(days: 3)),
+    DateTime.now().subtract(Duration(days: 2)),
+    DateTime.now().subtract(Duration(days: 1)),
+    DateTime.now(),
+    DateTime.now().add(Duration(days: 1)),
+    DateTime.now().add(Duration(days: 2)),
+    DateTime.now().add(Duration(days: 3)),
+  ];
 
+  List<String> months = [
+    "",
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık"
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,53 +55,143 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   Widget weekdays(){
     return Container(
-      height: 54,
+      height: 50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           arrowContainer(0),
-          dayContainer(30,30, DateTime(2024,8,2), colors.greenDark, 13,"FontMedium"),
-          dayContainer(34,34, DateTime(2024,8,3), colors.greenDark, 14,"FontMedium"),
-          dayContainer(38,38, DateTime(2024,8,4), colors.greenDark, 14,"FontMedium"),
-          dayContainer(42,58, DateTime(2024,8,5), colors.green, 15,"FontBold"),
-          dayContainer(38,38, DateTime(2024,8,6), colors.greyDark, 14,"FontMedium"),
-          dayContainer(34,34, DateTime(2024,8,7), colors.greyDark, 14,"FontMedium"),
-          dayContainer(30,30, DateTime(2024,8,8), colors.greyDark, 13,"FontMedium"),
+          dayContainer(28,28, weeks[0], colors.greenDark, 12,"FontMedium"),
+          dayContainer(32,32, weeks[1], colors.greenDark, 13,"FontMedium"),
+          dayContainer(36,36, weeks[2], colors.greenDark, 14,"FontMedium"),
+          dayContainer(46,66, weeks[3], colors.green, 15,"FontBold"),
+          dayContainer(36,36, weeks[4], colors.greyDark, 14,"FontMedium"),
+          dayContainer(32,32, weeks[5], colors.greyDark, 13,"FontMedium"),
+          dayContainer(28,28, weeks[6], colors.greyDark, 12,"FontMedium"),
           arrowContainer(1)
-
         ],
       ),
     );
   }
 
-  Container dayContainer(double height,double width,DateTime date,Color color,double fontSize,String family){
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-        color: color
-      ),
-      child: Center(
-        child: Text(
-          date.day.toString(),
-          style: TextStyle(
-            color: colors.white,
-            fontSize: fontSize,
-            fontFamily: family
-          ),
-        ),
-      ),
+  Widget dayContainer(double height,double width,DateTime date,Color color,double fontSize,String family){
+    String dayInfo = "";
+    bool isSameDay(DateTime date1, DateTime date2) {
+      return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+    }
+    dayInfo = isSameDay(date, DateTime.now()) ? "Bugün" : months[date.month];
 
+    int listIndex = weeks.indexWhere((element) => element == date);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if(listIndex == 0){
+            weeks = weeks.map((date) => date.subtract(Duration(days: listIndex+3))).toList();
+          }else if(listIndex==1){
+            weeks = weeks.map((date) => date.subtract(Duration(days: listIndex+1))).toList();
+          }else if(listIndex==2){
+            weeks = weeks.map((date) => date.subtract(Duration(days: listIndex-1))).toList();
+          }else if(listIndex>=4){
+            weeks = weeks.map((date) => date.add(Duration(days: listIndex-3))).toList();
+          }else{
+
+          }
+
+        });
+      },
+      onLongPress: () {
+        setState(() {
+          if(listIndex == 3){
+            weeks = [
+              DateTime.now().subtract(Duration(days: 3)),
+              DateTime.now().subtract(Duration(days: 2)),
+              DateTime.now().subtract(Duration(days: 1)),
+              DateTime.now(),
+              DateTime.now().add(Duration(days: 1)),
+              DateTime.now().add(Duration(days: 2)),
+              DateTime.now().add(Duration(days: 3)),
+            ].toList();
+          }
+        });
+      },
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          color: color
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                child: Text(
+                  date.day.toString(),
+                  key: ValueKey<int>(date.day),
+                  style: TextStyle(
+                    color: colors.white,
+                    fontSize: fontSize,
+                    fontFamily: family,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: width != height,
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 400),
+                  transitionBuilder: (Widget child, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: Text(
+                    dayInfo,
+                    key: ValueKey<String>(dayInfo),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: colors.white,
+                      fontSize: 10,
+                      fontFamily: "FontMedium",
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ),
     );
   }
 
-  Container arrowContainer(int type){
-    return Container(
-      height: 20,
-      child: RotatedBox(
-        quarterTurns: type == 0 ? 2 : 0,
-          child: Image.asset("assets/icons/arrow.png",color: colors.blueLight)),
+  GestureDetector arrowContainer(int type) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          type == 0 ?
+          weeks = weeks.map((date) => date.subtract(Duration(days: 1))).toList()
+              :
+          weeks = weeks.map((date) => date.add(Duration(days: 1))).toList();
+        });
+      },
+      child: Container(
+        height: 54,
+        width: 18,
+        padding: EdgeInsets.all(4),
+        child: RotatedBox(
+            quarterTurns: type == 0 ? 2 : 0,
+            child: Image.asset("assets/icons/arrow.png", color: colors.blueLight)
+        ),
+      ),
     );
   }
 

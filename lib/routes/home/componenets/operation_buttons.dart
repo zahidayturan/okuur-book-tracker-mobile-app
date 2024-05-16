@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/screens/add_reads.dart';
 import '../../../ui/components/rich_text.dart';
 
 class OperationButtons extends StatefulWidget {
@@ -35,7 +36,21 @@ class _OperationButtonsState extends State<OperationButtons> {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              opaque: false,
+              transitionDuration: const Duration(milliseconds: 100),
+              pageBuilder: (context, animation, nextanim) => const AddReadsPage(),
+              reverseTransitionDuration: const Duration(milliseconds: 1),
+              transitionsBuilder: (context, animation, nexttanim, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          );
         },
         child: Container(
           height: 54,

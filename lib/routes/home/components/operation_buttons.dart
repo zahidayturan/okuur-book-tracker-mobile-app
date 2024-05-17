@@ -34,13 +34,15 @@ class _OperationButtonsState extends State<OperationButtons> {
 
   Widget addForRead(){
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        highlightColor: colors.orange,
         onTap: () {
           Navigator.push(
             context,
             PageRouteBuilder(
               opaque: false,
-              transitionDuration: const Duration(milliseconds: 100),
+              transitionDuration: const Duration(milliseconds: 200),
               pageBuilder: (context, animation, nextanim) => const AddReadsPage(),
               reverseTransitionDuration: const Duration(milliseconds: 1),
               transitionsBuilder: (context, animation, nexttanim, child) {

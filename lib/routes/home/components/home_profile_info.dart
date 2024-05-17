@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/profile/profile.dart';
 import '../../../ui/components/rich_text.dart';
 
 class HomeProfileInfo extends StatefulWidget {
@@ -47,15 +48,35 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
               ),
             ],
           ),
-          Container(
-            width: 36,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: colors.greenDark,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset("assets/icons/social.png"),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 100),
+                  pageBuilder: (context, animation, nextanim) => const ProfilePage(),
+                  reverseTransitionDuration: const Duration(milliseconds: 1),
+                  transitionsBuilder: (context, animation, nexttanim, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            highlightColor: colors.greenDark,
+            borderRadius: BorderRadius.all(Radius.circular(6)),
+            child: Container(
+              width: 36,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: colors.greenDark,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset("assets/icons/social.png"),
+              ),
             ),
           )
         ],

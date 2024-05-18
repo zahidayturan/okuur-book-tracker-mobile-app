@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/login/create_account.dart';
+import 'package:okuur/routes/login/login_account.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
@@ -125,16 +127,16 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
       child: Column(
         children: [
-          button("Yeni Hesap ","Oluştur",colors.blue),
+          button("Yeni Hesap ","Oluştur",colors.blue,CreateAccount()),
           SizedBox(height: 12,),
-          button("Hesabına ","Giriş Yap",colors.greenDark ),
+          button("Hesabına ","Giriş Yap",colors.greenDark,LoginAccount()),
           SizedBox(height: 16,),
           orText(),
           SizedBox(height: 16,),
           googleButton(),
           SizedBox(height: 16,),
           RichTextWidget(
-              texts: ["Okuur ","Fezai Tech ","tarafından geliştirilmiştir."],
+              texts: ["Okuur, ","Fezai Tech ","tarafından geliştirilmiştir."],
               colors: [colors.green,colors.greenDark,colors.green],
               fontFamilies: ["FontMedium","FontBold","FontMedium"],
               fontSize: 9,
@@ -144,11 +146,27 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  InkWell button(String textL,String textB,Color color){
+  InkWell button(String textL,String textB,Color color,Widget pageName){
     return InkWell(
       onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 100),
+            pageBuilder: (context, animation, nextanim) => pageName,
+            reverseTransitionDuration: const Duration(milliseconds: 1),
+            transitionsBuilder: (context, animation, nexttanim, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
 
       },
+        highlightColor: color,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
       child: Container(
         height: 48,
         decoration: BoxDecoration(

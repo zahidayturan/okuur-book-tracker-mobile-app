@@ -6,6 +6,7 @@ import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

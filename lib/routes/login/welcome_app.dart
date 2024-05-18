@@ -47,33 +47,39 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget body(){
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              containerImage(colors.blueLight, "assets/icons/people.png", 20,Alignment.centerRight),
+              containerImage(colors.blue, "assets/icons/people.png", 20,Alignment.centerRight),
               Padding(
-                padding: const EdgeInsets.only(top: 24),
-                child: containerImage(colors.blue, "assets/icons/people_hand.png", -20,Alignment.centerLeft),
+                padding: const EdgeInsets.only(top: 12),
+                child: containerImage(colors.green, "assets/icons/people_hand.png", -20,Alignment.centerLeft),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: containerImage(colors.greenDark, "assets/icons/reads.png", 20,Alignment.centerRight),
               ),
             ],
           ),
-          RichTextWidget(
-              texts: ["Hoş\nGeldiniz"],
-              colors: [colors.greenDark],
-              fontFamilies: ["FontMedium"],
-              fontSize: 28,
-              align: TextAlign.center),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              containerImage(colors.green, "assets/icons/reads.png", 20,Alignment.centerRight),
-              Padding(
-                padding: const EdgeInsets.only(top: 24),
-                child: containerImage(colors.greenDark, "assets/icons/star.png", -20,Alignment.centerLeft),
-              ),
+              RichTextWidget(
+                  texts: ["Okuur'a"],
+                  colors: [colors.blue],
+                  fontFamilies: ["FontLight"],
+                  fontSize: 22,
+                  align: TextAlign.end),
+              RichTextWidget(
+                  texts: ["Hoş\nGeldiniz"],
+                  colors: [colors.green],
+                  fontFamilies: ["FontMedium"],
+                  fontSize: 32,
+                  align: TextAlign.end),
             ],
           ),
         ],
@@ -86,17 +92,17 @@ class _WelcomePageState extends State<WelcomePage> {
       child: RotationTransition(
         turns: new AlwaysStoppedAnimation(degree / 360),
         child: Container(
-          width: 84,
-          height: 64,
+          width: 72,
+          height: 58,
           decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.all(Radius.circular(50)),
             boxShadow: [
               BoxShadow(
-                color: colors.greyDark.withOpacity(0.4),
+                color: colors.greyDark.withOpacity(0.3),
                 blurRadius: 5,
                 spreadRadius: 2,
-                offset: Offset(0, 5),
+                offset: Offset(0, 4),
               ),
             ],
           ),
@@ -123,7 +129,15 @@ class _WelcomePageState extends State<WelcomePage> {
       margin: EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
           color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(36))
+          borderRadius: BorderRadius.all(Radius.circular(36)),
+        boxShadow: [
+          BoxShadow(
+            color: colors.greyDark.withOpacity(0.1),
+            blurRadius: 5,
+            spreadRadius: 2,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [

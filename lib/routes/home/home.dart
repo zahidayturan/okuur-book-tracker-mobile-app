@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BottomNavBar(),
+        bottomNavigationBar: BottomNavBar(pageIndex: 0),
         body: Padding(
           padding: EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(

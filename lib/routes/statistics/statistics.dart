@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/routes/profile/components/user_info.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class StatisticsPage extends StatefulWidget {
+  const StatisticsPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _StatisticsPageState extends State<StatisticsPage> {
 
   AppColors colors = AppColors();
 
@@ -20,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BottomNavBar(pageIndex: 9,),
+        bottomNavigationBar: BottomNavBar(pageIndex: 1,),
         body: Padding(
           padding: EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
@@ -29,7 +28,6 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   SizedBox(height: 12,),
-                  UserInfo(),
                 ],
               ),
             ),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/home/home.dart';
+import 'package:okuur/routes/statistics/statistics.dart';
 
 class BottomNavBar extends StatefulWidget {
 
-
+  final int pageIndex;
   const BottomNavBar({
     Key? key,
+    required this.pageIndex
   }) : super(key: key);
 
   @override
@@ -17,7 +20,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   AppColors colors = AppColors();
 
   int currentMode = 0;
-
+  @override
+  void initState() {
+    currentMode = widget.pageIndex;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -36,11 +43,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0),
-              getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1),
-              getIconAndText(context, "assets/icons/social.png", "Sosyal",2),
-              getIconAndText(context, "assets/icons/library.png", "Kitaplık",3),
-              getIconAndText(context, "assets/icons/other.png", "Diğer",4)
+              getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0,HomePage()),
+              getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1,StatisticsPage()),
+              getIconAndText(context, "assets/icons/social.png", "Sosyal",2,HomePage()),
+              getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,HomePage()),
+              getIconAndText(context, "assets/icons/other.png", "Diğer",4,HomePage())
             ],
           ),
         ),
@@ -48,13 +55,29 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 
-  GestureDetector getIconAndText(BuildContext context,String path,String text,int mode){
-    return GestureDetector(
+  InkWell getIconAndText(BuildContext context,String path,String text,int mode,Widget pageName){
+    return InkWell(
       onTap: () {
         setState(() {
           currentMode = mode;
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 100),
+              pageBuilder: (context, animation, nextanim) => pageName,
+              reverseTransitionDuration: const Duration(milliseconds: 1),
+              transitionsBuilder: (context, animation, nexttanim, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          );
         });
       },
+      borderRadius: BorderRadius.all(Radius.circular(30)),
+      highlightColor: colors.greenDark,
       child: AnimatedContainer(
         height: 60,
         width: 60,

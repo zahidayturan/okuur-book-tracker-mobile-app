@@ -18,6 +18,9 @@ class _CreateAccountState extends State<CreateAccount> {
   PageController pageController = PageController(initialPage: 0);
   String errorTextMail = "";
   String errorTextPassword = "";
+  String errorTextName = "";
+  String errorTextSurname = "";
+  String errorTextUserName = "";
   Timer? _timer;
   final _emailKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -28,6 +31,8 @@ class _CreateAccountState extends State<CreateAccount> {
   final TextEditingController nameController = TextEditingController();
   final _surnameKey = GlobalKey<FormState>();
   final TextEditingController surnameController = TextEditingController();
+  final _userNameKey = GlobalKey<FormState>();
+  final TextEditingController userNameController = TextEditingController();
 
 
   @override
@@ -71,7 +76,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     children: [
                       email(),
                       emailCheck(),
-                      nameAndSurname()
+                      nameAndSurname(),
+                      completed()
                     ],
                   ),
                 ),
@@ -113,10 +119,10 @@ class _CreateAccountState extends State<CreateAccount> {
           Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            formTitleAndStep("E-Posta ",colors.greenDark,"1"),
+            formTitleAndStep("Hesap ",colors.greenDark,"1"),
             const SizedBox(height: 16,),
             getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,),
-            const SizedBox(height: 16,),
+            const SizedBox(height: 12,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -152,48 +158,51 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   Widget emailCheck(){
-    return Column(
-      children: [
-        createForms(
-          Column(
-            mainAxisSize: MainAxisSize.min,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          createForms(
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                formTitleAndStep("E-Posta ",colors.greenDark,"2"),
+                const SizedBox(height: 16,),
+                title("Mail adresinizi kontrol ediniz\n${emailController.text}", colors.black, 13, "FontMedium"),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8,),
+          confirmButtons(
+              checkVerify() == false ? "Doğrulamayı Yapınız" : "Devam Et",
+              checkVerify() == false ? colors.greyDark :colors.greenDark,
+              1
+          ),
+          const SizedBox(height: 8,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              formTitleAndStep("E-Posta ",colors.greenDark,"3"),
-              const SizedBox(height: 16,),
-              title("Mail adresinizi kontrol ediniz\n${emailController.text}", colors.black, 13, "FontMedium"),
+              InkWell(
+                onTap: () async{
+                  await userDelete();
+                  setState(() {
+                    emailController.clear();
+                    passwordController.clear();
+                    pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                  });
+                },
+                child: title("Geri Dön", colors.greenDark, 13, "FontMedium"),
+              ),
+              InkWell(
+                onTap: () {
+                  sendVerification();
+                },
+                child: title(checkVerify() ? "Doğrulandı" :"Yeni Bağlantı Gönder", colors.green, 13, "FontMedium"),
+              ),
             ],
           ),
-        ),
-        const SizedBox(height: 8,),
-        confirmButtons(
-            checkVerify() == false ? "Doğrulamayı Yapınız" : "Devam Et",
-            checkVerify() == false ? colors.greyDark :colors.greenDark,
-            1
-        ),
-        const SizedBox(height: 8,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () async{
-                await userDelete();
-                setState(() {
-                  emailController.clear();
-                  passwordController.clear();
-                  pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-                });
-              },
-              child: title("Geri Dön", colors.greenDark, 13, "FontMedium"),
-            ),
-            InkWell(
-              onTap: () {
-                sendVerification();
-              },
-              child: title(checkVerify() ? "Doğrulandı" :"Yeni Bağlantı Gönder", colors.green, 13, "FontMedium"),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -204,15 +213,41 @@ class _CreateAccountState extends State<CreateAccount> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              formTitleAndStep("Kişisel ",colors.blue,"4"),
+              formTitleAndStep("Kişisel ",colors.blue,"3"),
               const SizedBox(height: 16,),
               Row(
                 children: [
-                  Expanded(child: getTextFormField(nameController, "Adınız", 24, "", _nameKey, "")),
+                  Expanded(child: getTextFormField(nameController, "Adınız", 24, "", _nameKey, errorTextName)),
                   SizedBox(width: 12,),
-                  Expanded(child: getTextFormField(surnameController, "Soyadınız", 24, "", _surnameKey, ""))
+                  Expanded(child: getTextFormField(surnameController, "Soyadınız", 24, "", _surnameKey, errorTextSurname))
                 ],
-              )
+              ),
+              const SizedBox(height: 12,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                  onTap: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                  child: Container(width: 36,height: 36,
+                    decoration: BoxDecoration(
+                        color: colors.grey,
+                        shape: BoxShape.circle
+                    ),
+                    child: Icon(Icons.question_mark_rounded,color: colors.blue,),
+                  ),
+                ),
+                  SizedBox(width: 8,),
+                  title("@", colors.blue, 22, "FontBold"),
+                  SizedBox(width: 8,),
+                  Expanded(child: getTextFormField(userNameController, "Kullanıcı Adınız", 54, "", _userNameKey, errorTextUserName,)),
+                ],
+              ),
+
             ],
           ),
         ),
@@ -223,6 +258,43 @@ class _CreateAccountState extends State<CreateAccount> {
             2
         ),
       ],
+    );
+  }
+
+  Widget completed(){
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          createForms(
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    title("Aramıza Hoş Geldin", colors.orange, 16, "FontBold"),
+                  ],
+                ),
+                const SizedBox(height: 16,),
+                title("@${userNameController.text}\n", colors.black, 15, "FontBold"),
+                RichTextWidget(
+                    texts: ["Okuma hedeflerini ekle, okumaya ve keşfetmeye başla, başarımlar kazan.\n"," Okuur seni bekliyor"],
+                    colors: [colors.black,colors.greenDark],
+                    fontFamilies: ["FontMedium","FontBold"],
+                    fontSize: 15,
+                    align: TextAlign.center)
+              ],
+            ),
+          ),
+          const SizedBox(height: 8,),
+          confirmButtons(
+              "Kullanmaya Başla",
+              colors.orange,
+              3
+          ),
+        ],
+      ),
     );
   }
 
@@ -268,6 +340,15 @@ class _CreateAccountState extends State<CreateAccount> {
                 pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
               }else{
                 print("doğrulanmadı");
+              }
+            });
+          }else if(onTapType == 2){
+            setState(() {
+              if(validateName(nameController.text) && validateSurname(surnameController.text) && validateUsername(userNameController.text)){
+
+                pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
+              }else{
+
               }
             });
 
@@ -428,6 +509,48 @@ class _CreateAccountState extends State<CreateAccount> {
     } else {
       setState(() {
         errorTextPassword = 'Şifre en az 6 haneli olmalı';
+      });
+      return false;
+    }
+  }
+
+  bool validateName(String name) {
+    if (name.length >= 2) {
+      setState(() {
+        errorTextName = "";
+      });
+      return true;
+    } else {
+      setState(() {
+        errorTextName = 'İsim boş bırakılamaz';
+      });
+      return false;
+    }
+  }
+
+  bool validateSurname(String surname) {
+    if (surname.length >= 2) {
+      setState(() {
+        errorTextSurname = "";
+      });
+      return true;
+    } else {
+      setState(() {
+        errorTextSurname = 'Soyad boş bırakılamaz';
+      });
+      return false;
+    }
+  }
+
+  bool validateUsername(String username) {
+    if (username.length >= 2) {
+      setState(() {
+        errorTextUserName = "";
+      });
+      return true;
+    } else {
+      setState(() {
+        errorTextUserName = 'Kullanıcı adı boş bırakılamaz';
       });
       return false;
     }

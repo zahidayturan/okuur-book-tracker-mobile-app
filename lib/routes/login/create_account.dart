@@ -16,14 +16,14 @@ class _CreateAccountState extends State<CreateAccount> {
 
   AppColors colors = AppColors();
   PageController pageController = PageController(initialPage: 0);
-  String errorText = "";
+  String errorTextMail = "";
+  String errorTextPassword = "";
   Timer? _timer;
   final _emailKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final _passwordKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
-  final _passwordCheckedKey = GlobalKey<FormState>();
-  final TextEditingController passwordCheckedController = TextEditingController();
+  bool passwordVisible = true;
   final _nameKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final _surnameKey = GlobalKey<FormState>();
@@ -64,7 +64,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 topBar(),
                 Spacer(),
                 SizedBox(
-                  height: 180,
+                  height: 236,
                   child: PageView(
                     controller: pageController,
                     //physics: NeverScrollableScrollPhysics(),
@@ -106,8 +106,6 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-
-
   Widget email(){
     return Column(
       children: [
@@ -117,7 +115,29 @@ class _CreateAccountState extends State<CreateAccount> {
           children: [
             formTitleAndStep("E-Posta ",colors.greenDark,"1"),
             const SizedBox(height: 16,),
-            getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorText,),
+            getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,),
+            const SizedBox(height: 16,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(child: getTextFormField(passwordController, "Şifre belirleyiniz", 54, "", _passwordKey, errorTextPassword,)),
+                SizedBox(width: 8,),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                  child: Container(width: 48,height: 48,
+                  decoration: BoxDecoration(
+                    color: colors.grey,
+                    shape: BoxShape.circle
+                  ),
+                    child: Icon(passwordVisible == true ? Icons.visibility_rounded : Icons.visibility_off_rounded,color: colors.greenDark,),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
         ),
@@ -138,7 +158,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              formTitleAndStep("E-Posta ",colors.greenDark,"1"),
+              formTitleAndStep("E-Posta ",colors.greenDark,"3"),
               const SizedBox(height: 16,),
               title("Mail adresinizi kontrol ediniz\n${emailController.text}", colors.black, 13, "FontMedium"),
             ],
@@ -159,6 +179,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 await userDelete();
                 setState(() {
                   emailController.clear();
+                  passwordController.clear();
                   pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
                 });
               },
@@ -183,7 +204,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              formTitleAndStep("Kişisel ",colors.blue,"1"),
+              formTitleAndStep("Kişisel ",colors.blue,"4"),
               const SizedBox(height: 16,),
               Row(
                 children: [
@@ -226,11 +247,11 @@ class _CreateAccountState extends State<CreateAccount> {
       onTap: () async{
         setState(() {});
           if(onTapType == 0){
-            if(validateEmail(emailController.text)){
-              String register = await registerWithEmailAndPassword(emailController.text.trim(),"123Aa456");
+            if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
+              String register = await registerWithEmailAndPassword(emailController.text.trim(),passwordController.text);
               setState(() {
                 if(register == "email-already-in-use"){
-                  errorText = "Bu hesap zaten var. Giriş yapmayı deneyin.";
+                  errorTextMail = "Bu hesap zaten var. Giriş yapmayı deneyin.";
                 }
                 if(_auth.currentUser != null){
                   pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
@@ -292,6 +313,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   return 'Boş bırakılamaz';
                 }
               },
+              obscureText: key == _passwordKey && passwordVisible ? true : false,
               style: TextStyle(color: colors.greenDark),
               keyboardType: TextInputType.text,
               textAlign: TextAlign.start,
@@ -312,7 +334,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   counterText: "",
                   contentPadding: EdgeInsets.zero,
-                  border: InputBorder.none
+                  border: InputBorder.none,
               ),
             ),
           ),
@@ -333,6 +355,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 _auth.signOut();
             }
             emailController.clear();
+            passwordController.clear();
             });
           },
           highlightColor: colors.greenDark,
@@ -385,12 +408,26 @@ class _CreateAccountState extends State<CreateAccount> {
   bool validateEmail(String email) {
     if (emailValidate(email)) {
       setState(() {
-        errorText = "";
+        errorTextMail = "";
       });
       return true;
     } else {
       setState(() {
-        errorText = 'Geçerli bir e-posta adresi girin';
+        errorTextMail = 'Geçerli bir e-posta adresi girin';
+      });
+      return false;
+    }
+  }
+
+  bool validatePassword(String password) {
+    if (password.length >= 6) {
+      setState(() {
+        errorTextPassword = "";
+      });
+      return true;
+    } else {
+      setState(() {
+        errorTextPassword = 'Şifre en az 6 haneli olmalı';
       });
       return false;
     }

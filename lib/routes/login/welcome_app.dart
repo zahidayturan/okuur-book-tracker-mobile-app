@@ -15,9 +15,9 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
 
   AppColors colors = AppColors();
-
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -25,7 +25,9 @@ class _WelcomePageState extends State<WelcomePage> {
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: Center(
-            child: Column(
+            child:
+            size.height>400 ?
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
@@ -36,13 +38,29 @@ class _WelcomePageState extends State<WelcomePage> {
                 SizedBox(),
                 buttonContainer()
               ],
-            ),
+            ) :
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    body(),
+                    SizedBox(height: 16,),
+                    SizedBox(
+                        height: 28,
+                        child: Image.asset("assets/logo/logo_text.png")),
+                  ],
+                )),
+                Expanded(child: buttonContainer())],
+            )
           ),
         ),
       ),
     );
   }
-
 
   Widget body(){
     return Container(
@@ -93,7 +111,7 @@ class _WelcomePageState extends State<WelcomePage> {
         turns: new AlwaysStoppedAnimation(degree / 360),
         child: Container(
           width: 72,
-          height: 58,
+          height: 54,
           decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.all(Radius.circular(50)),

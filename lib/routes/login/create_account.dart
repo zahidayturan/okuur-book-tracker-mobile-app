@@ -15,24 +15,34 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
 
   AppColors colors = AppColors();
-  Timer? timer;
   PageController pageController = PageController(initialPage: 0);
   String errorText = "";
+  Timer? _timer;
+  final _emailKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final _passwordKey = GlobalKey<FormState>();
+  final TextEditingController passwordController = TextEditingController();
+  final _passwordCheckedKey = GlobalKey<FormState>();
+  final TextEditingController passwordCheckedController = TextEditingController();
+  final _nameKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final _surnameKey = GlobalKey<FormState>();
+  final TextEditingController surnameController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
-    //startTimer();
   }
 
   @override
   void dispose() {
-    //timer?.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
-  void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 3), (timer) {
+  void _startEmailVerificationCheckTimer() {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
       setState(() {
         print("timer");
       });
@@ -57,15 +67,17 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: 180,
                   child: PageView(
                     controller: pageController,
-                    physics: NeverScrollableScrollPhysics(),
+                    //physics: NeverScrollableScrollPhysics(),
                     children: [
                       email(),
-                      emailCheck()
+                      emailCheck(),
+                      nameAndSurname()
                     ],
                   ),
                 ),
                 Spacer(),
                 Text(_auth.currentUser != null ? _auth.currentUser!.email.toString() : "çıkış yapıldı"),
+                Text(_auth.currentUser != null ? _auth.currentUser!.uid : "çıkış yapıldı"),
                 Text(_auth.currentUser != null ? _auth.currentUser!.emailVerified.toString() : "çıkış yapıldı"),
                 bottomBar()
               ],
@@ -94,8 +106,7 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  final _emailKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
+
 
   Widget email(){
     return Column(
@@ -106,7 +117,7 @@ class _CreateAccountState extends State<CreateAccount> {
           children: [
             formTitleAndStep("E-Posta ",colors.greenDark,"1"),
             const SizedBox(height: 16,),
-            getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorText,)
+            getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorText,),
           ],
         ),
         ),
@@ -121,10 +132,6 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   Widget emailCheck(){
-    bool verified = false;
-    if(_auth.currentUser != null){
-      bool verified = _auth.currentUser!.emailVerified;
-    }
     return Column(
       children: [
         createForms(
@@ -133,20 +140,70 @@ class _CreateAccountState extends State<CreateAccount> {
             children: [
               formTitleAndStep("E-Posta ",colors.greenDark,"1"),
               const SizedBox(height: 16,),
-              title("Şu adresi kontrol ediniz\n${emailController.text}", colors.black, 13, "FontMedium"),
+              title("Mail adresinizi kontrol ediniz\n${emailController.text}", colors.black, 13, "FontMedium"),
             ],
           ),
         ),
         const SizedBox(height: 8,),
         confirmButtons(
-            verified == false ? "Doğrulamayı Yapınız" : "Devam Et",
-            verified == false ? colors.greyDark :colors.greenDark,
+            checkVerify() == false ? "Doğrulamayı Yapınız" : "Devam Et",
+            checkVerify() == false ? colors.greyDark :colors.greenDark,
             1
+        ),
+        const SizedBox(height: 8,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () async{
+                await userDelete();
+                setState(() {
+                  emailController.clear();
+                  pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                });
+              },
+              child: title("Geri Dön", colors.greenDark, 13, "FontMedium"),
+            ),
+            InkWell(
+              onTap: () {
+                sendVerification();
+              },
+              child: title(checkVerify() ? "Doğrulandı" :"Yeni Bağlantı Gönder", colors.green, 13, "FontMedium"),
+            ),
+          ],
         ),
       ],
     );
   }
 
+  Widget nameAndSurname(){
+    return Column(
+      children: [
+        createForms(
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              formTitleAndStep("Kişisel ",colors.blue,"1"),
+              const SizedBox(height: 16,),
+              Row(
+                children: [
+                  Expanded(child: getTextFormField(nameController, "Adınız", 24, "", _nameKey, "")),
+                  SizedBox(width: 12,),
+                  Expanded(child: getTextFormField(surnameController, "Soyadınız", 24, "", _surnameKey, ""))
+                ],
+              )
+            ],
+          ),
+        ),
+        const SizedBox(height: 8,),
+        confirmButtons(
+            "Devam Et",
+            colors.blue,
+            2
+        ),
+      ],
+    );
+  }
 
   Widget formTitleAndStep(String text,Color color,String step){
     return Row(
@@ -167,22 +224,35 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget confirmButtons(String text,Color color,int onTapType){
     return InkWell(
       onTap: () async{
+        setState(() {});
           if(onTapType == 0){
             if(validateEmail(emailController.text)){
-              await registerWithEmailAndPassword(emailController.text,"123456");
-              if(_auth.currentUser != null){
-                pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
-                startTimer();
-              }
+              String register = await registerWithEmailAndPassword(emailController.text.trim(),"123Aa456");
+              setState(() {
+                if(register == "email-already-in-use"){
+                  errorText = "Bu hesap zaten var. Giriş yapmayı deneyin.";
+                }
+                if(_auth.currentUser != null){
+                  pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
+                  _startEmailVerificationCheckTimer();
+                }
+              });
             }else{
-
             }
           }else if(onTapType == 1){
-
+            setState(() {
+              if(checkVerify()){
+                print("doğrulandı");
+                _timer!.cancel();
+                pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
+              }else{
+                print("doğrulanmadı");
+              }
+            });
 
           }
       },
-      highlightColor: colors.greenDark,
+      highlightColor: color,
       borderRadius: const BorderRadius.all(Radius.circular(4)),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -249,7 +319,6 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       );
   }
-
 
   Widget topBar(){
     return Row(
@@ -327,27 +396,57 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
+  bool checkVerify() {
+    if(_auth.currentUser != null){
+      _auth.currentUser?.reload();
+      if(_auth.currentUser!.emailVerified){
+        return true;
+      }else {
+        return false;
+      }
+    }else {
+      return false;
+    }
+  }
+
 }
 
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future<User?> registerWithEmailAndPassword(String email, String password) async {
+Future<String> registerWithEmailAndPassword(String email, String password) async {
   try {
     UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     User? user = result.user;
     await sendVerification();
-    return user;
+    return 'Ok';
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'email-already-in-use') {
+      return 'email-already-in-use';
+    } else {
+      return 'Error: ${e.message}';
+    }
   } catch (e) {
-    print(e.toString());
-    return null;
+    return 'Error: ${e.toString()}';
   }
 }
 
 Future<void> sendVerification() async {
-  if (_auth.currentUser != null && _auth.currentUser!.emailVerified) {
+  if (_auth.currentUser != null && _auth.currentUser!.emailVerified == false) {
     try {
       await _auth.currentUser?.sendEmailVerification();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+}
+
+Future<void> userDelete() async {
+  print("silinecek");
+  if (_auth.currentUser != null) {
+    try {
+      await _auth.currentUser!.delete();
+      print("silindi");
     } catch (e) {
       print(e.toString());
     }

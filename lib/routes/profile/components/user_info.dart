@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/settings/settings.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class UserInfo extends StatefulWidget {
@@ -36,7 +37,28 @@ class _UserInfoState extends State<UserInfo> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              iconContainer(36,36, colors.greenDark, "assets/icons/settings.png"),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      opaque: false,
+                      transitionDuration: const Duration(milliseconds: 200),
+                      pageBuilder: (context, animation, nextanim) => const SettingsPage(),
+                      reverseTransitionDuration: const Duration(milliseconds: 1),
+                      transitionsBuilder: (context, animation, nexttanim, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                highlightColor: colors.greenDark,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                child: iconContainer(36,36, colors.greenDark, "assets/icons/settings.png"),
+              ),
               iconContainer(36,46, colors.blue, "assets/icons/star_filled.png")
 
             ],
@@ -81,22 +103,17 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 
-  InkWell iconContainer(double width,double height,Color color,String path){
-    return InkWell(
-      onTap: () {
-
-      },
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.all(Radius.circular(50))
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(path),
-        ),
+  Container iconContainer(double width,double height,Color color,String path){
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.all(Radius.circular(50))
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Image.asset(path),
       ),
     );
   }

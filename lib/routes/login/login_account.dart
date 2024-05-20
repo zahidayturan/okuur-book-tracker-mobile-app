@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/utils/firebase_auth_helper.dart';
+import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class LoginAccount extends StatefulWidget {
@@ -13,6 +15,7 @@ class LoginAccount extends StatefulWidget {
 }
 
 class _LoginAccountState extends State<LoginAccount> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AppColors colors = AppColors();
 
@@ -144,7 +147,7 @@ class _LoginAccountState extends State<LoginAccount> {
       onTap: () async{
         setState(() {});
           if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
-            String login = await signInWithEmailAndPassword(emailController.text.trim(),passwordController.text);
+            String login = await FirebaseAuthOperation().signInWithEmailAndPassword(emailController.text.trim(),passwordController.text);
             print("hata mesajı $login");
             setState(() {
               if(login == "user-not-found"){
@@ -154,8 +157,24 @@ class _LoginAccountState extends State<LoginAccount> {
                 errorTextPassword = "Şifreyi hatalı girdiniz";
               }
               if(login != "Ok"){
-                errorTextMail = "Hatalı girdiniz";
-                errorTextPassword = "Hatalı girdiniz";
+              }
+              if(login == "Ok"){
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    opaque: false,
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (context, animation, nextanim) => const HomePage(),
+                    reverseTransitionDuration: const Duration(milliseconds: 1),
+                    transitionsBuilder: (context, animation, nexttanim, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+
               }
             });
           }else{
@@ -329,47 +348,4 @@ class _LoginAccountState extends State<LoginAccount> {
     }
   }
 
-}
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
-Future<String> signInWithEmailAndPassword(String email, String password) async {
-  try {
-    UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    User? user = result.user;
-
-    if (user != null && !user.emailVerified) {
-      await user.sendEmailVerification();
-      return 'email-not-verified';
-    }
-    return 'Ok';
-  } on FirebaseAuthException catch (e) {
-    print(e.toString());
-    if (e.code == 'user-not-found') {
-      return 'user-not-found';
-    } else if (e.code == 'wrong-password') {
-      return 'wrong-password';
-    } else {
-      return 'Error: ${e.message}';
-    }
-  } catch (e) {
-    print(e.toString());
-    return 'Error: ${e.toString()}';
-  }
-}
-
-Future<bool> isEmailRegistered(String email,String password) async {
-  try {
-    UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    if (result.user != null) {
-      await result.user!.delete();
-      return true;
-    } else {
-      return false;
-    }
-  } on FirebaseAuthException catch (e) {
-    return false;
-  } catch (e) {
-    return false;
-  }
 }

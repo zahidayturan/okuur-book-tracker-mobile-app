@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'dart:async';
@@ -16,6 +17,8 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AppColors colors = AppColors();
   PageController pageController = PageController(initialPage: 0);
@@ -196,7 +199,7 @@ class _CreateAccountState extends State<CreateAccount> {
             children: [
               InkWell(
                 onTap: () async{
-                  await userDelete();
+                  await FirebaseAuthOperation().userDelete();
                   setState(() {
                     emailController.clear();
                     passwordController.clear();
@@ -207,7 +210,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
               InkWell(
                 onTap: () {
-                  sendVerification();
+                  FirebaseAuthOperation().sendVerification();
                 },
                 child: title(checkVerify() ? "Doğrulandı" :"Yeni Bağlantı Gönder", colors.green, 13, "FontMedium"),
               ),
@@ -334,7 +337,7 @@ class _CreateAccountState extends State<CreateAccount> {
         setState(() {});
           if(onTapType == 0){
             if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
-              String register = await registerWithEmailAndPassword(emailController.text.trim(),passwordController.text);
+              String register = await FirebaseAuthOperation().registerWithEmailAndPassword(emailController.text.trim(),passwordController.text);
               setState(() {
                 if(register == "email-already-in-use"){
                   errorTextMail = "Bu hesap zaten var. Giriş yapmayı deneyin.";
@@ -370,7 +373,7 @@ class _CreateAccountState extends State<CreateAccount> {
               context,
               PageRouteBuilder(
                 opaque: false,
-                transitionDuration: const Duration(milliseconds: 200),
+                transitionDuration: const Duration(milliseconds: 400),
                 pageBuilder: (context, animation, nextanim) => const HomePage(),
                 reverseTransitionDuration: const Duration(milliseconds: 1),
                 transitionsBuilder: (context, animation, nexttanim, child) {
@@ -607,46 +610,4 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
-}
-
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
-Future<String> registerWithEmailAndPassword(String email, String password) async {
-  try {
-    UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    User? user = result.user;
-    await sendVerification();
-    return 'Ok';
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'email-already-in-use') {
-      return 'email-already-in-use';
-    } else {
-      return 'Error: ${e.message}';
-    }
-  } catch (e) {
-    return 'Error: ${e.toString()}';
-  }
-}
-
-Future<void> sendVerification() async {
-  if (_auth.currentUser != null && _auth.currentUser!.emailVerified == false) {
-    try {
-      await _auth.currentUser?.sendEmailVerification();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-}
-
-Future<void> userDelete() async {
-  print("silinecek");
-  if (_auth.currentUser != null) {
-    try {
-      await _auth.currentUser!.delete();
-      print("silindi");
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 }

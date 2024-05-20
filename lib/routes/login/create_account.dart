@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'dart:async';
+
+import 'package:okuur/ui/components/snackbar.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -106,7 +109,15 @@ class _CreateAccountState extends State<CreateAccount> {
               bottomLeft: Radius.circular(4),
               topRight: Radius.circular(26),
               topLeft: Radius.circular(26)
-          )
+          ),
+        boxShadow: [
+          BoxShadow(
+            color: colors.greyDark.withOpacity(0.1),
+            blurRadius: 5,
+            spreadRadius: 2,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: formName
     );
@@ -149,7 +160,7 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
         const SizedBox(height: 8,),
         confirmButtons(
-            "Doğrulama Bağlantısı Gönder",
+            "Devam Et",
             colors.greenDark,
             0
         ),
@@ -168,7 +179,8 @@ class _CreateAccountState extends State<CreateAccount> {
               children: [
                 formTitleAndStep("E-Posta ",colors.greenDark,"2"),
                 const SizedBox(height: 16,),
-                title("Mail adresinizi kontrol ediniz\n${emailController.text}", colors.black, 13, "FontMedium"),
+                title("Mail adresinize doğrulama bağlantısı gönderdik.\nLütfen posta kutunuzu kontrol edin.\n", colors.black, 13, "FontMedium"),
+                title(emailController.text != "" ? emailController.text : "E-posta bilgisi alınamadı", colors.black, 13, "FontBold"),
               ],
             ),
           ),
@@ -227,24 +239,26 @@ class _CreateAccountState extends State<CreateAccount> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  InkWell(
-                  onTap: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
-                  child: Container(width: 36,height: 36,
-                    decoration: BoxDecoration(
-                        color: colors.grey,
-                        shape: BoxShape.circle
-                    ),
-                    child: Icon(Icons.question_mark_rounded,color: colors.blue,),
-                  ),
-                ),
-                  SizedBox(width: 8,),
                   title("@", colors.blue, 22, "FontBold"),
                   SizedBox(width: 8,),
-                  Expanded(child: getTextFormField(userNameController, "Kullanıcı Adınız", 54, "", _userNameKey, errorTextUserName,)),
+                  Expanded(child: getTextFormField(userNameController, "Kullanıcı Adınız", 54, "", _userNameKey, errorTextUserName,),),
+                  SizedBox(width: 8,),
+                  InkWell(
+                    onTap: () {
+                      SnackBarWidget(
+                          context: context,
+                          backColor: colors.blue,
+                          duration: 5,
+                          textWidget: title("Kullanıcı adınız diğer kullanıcılar tarafından görülecektir", colors.grey, 14, "FontMedium")).showQuestionDialog();
+                    },
+                    child: Container(width: 36,height: 36,
+                      decoration: BoxDecoration(
+                          color: colors.grey,
+                          shape: BoxShape.circle
+                      ),
+                      child: Icon(Icons.question_mark_rounded,color: colors.blue,),
+                    ),
+                  ),
                 ],
               ),
 
@@ -326,7 +340,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   errorTextMail = "Bu hesap zaten var. Giriş yapmayı deneyin.";
                 }
                 if(_auth.currentUser != null){
-                  pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
+                  pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
                   _startEmailVerificationCheckTimer();
                 }
               });
@@ -337,7 +351,7 @@ class _CreateAccountState extends State<CreateAccount> {
               if(checkVerify()){
                 print("doğrulandı");
                 _timer!.cancel();
-                pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
+                pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
               }else{
                 print("doğrulanmadı");
               }
@@ -346,11 +360,27 @@ class _CreateAccountState extends State<CreateAccount> {
             setState(() {
               if(validateName(nameController.text) && validateSurname(surnameController.text) && validateUsername(userNameController.text)){
 
-                pageController.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.easeInOut);
+                pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
               }else{
 
               }
             });
+          }else if(onTapType == 3){
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                opaque: false,
+                transitionDuration: const Duration(milliseconds: 200),
+                pageBuilder: (context, animation, nextanim) => const HomePage(),
+                reverseTransitionDuration: const Duration(milliseconds: 1),
+                transitionsBuilder: (context, animation, nexttanim, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+            );
 
           }
       },
@@ -367,7 +397,15 @@ class _CreateAccountState extends State<CreateAccount> {
               bottomLeft: Radius.circular(26),
               topRight: Radius.circular(4),
               topLeft: Radius.circular(4)
-          )
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: colors.greyDark.withOpacity(0.1),
+              blurRadius: 5,
+              spreadRadius: 2,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Center(child: title(text, colors.white, 16, "FontMedium")),
       ),

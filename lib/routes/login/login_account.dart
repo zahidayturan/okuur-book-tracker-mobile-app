@@ -65,7 +65,15 @@ class _LoginAccountState extends State<LoginAccount> {
                 bottomLeft: Radius.circular(4),
                 topRight: Radius.circular(26),
                 topLeft: Radius.circular(26)
-            )
+            ),
+          boxShadow: [
+            BoxShadow(
+              color: colors.greyDark.withOpacity(0.1),
+              blurRadius: 5,
+              spreadRadius: 2,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: formName
     );
@@ -166,7 +174,15 @@ class _LoginAccountState extends State<LoginAccount> {
                 bottomLeft: Radius.circular(26),
                 topRight: Radius.circular(4),
                 topLeft: Radius.circular(4)
-            )
+            ),
+          boxShadow: [
+            BoxShadow(
+              color: colors.greyDark.withOpacity(0.1),
+              blurRadius: 5,
+              spreadRadius: 2,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Center(child: title(text, colors.white, 16, "FontMedium")),
       ),

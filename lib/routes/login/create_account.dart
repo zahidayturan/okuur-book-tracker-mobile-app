@@ -6,7 +6,6 @@ import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'dart:async';
-
 import 'package:okuur/ui/components/snackbar.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -562,6 +561,11 @@ class _CreateAccountState extends State<CreateAccount> {
         errorTextName = "";
       });
       return true;
+    } else if (name.length == 1) {
+      setState(() {
+        errorTextName = "İsim en az iki harf içermeli";
+      });
+      return false;
     } else {
       setState(() {
         errorTextName = 'İsim boş bırakılamaz';
@@ -576,7 +580,12 @@ class _CreateAccountState extends State<CreateAccount> {
         errorTextSurname = "";
       });
       return true;
-    } else {
+    } else if (surname.length == 1) {
+      setState(() {
+        errorTextName = "İsim en az iki harf içermeli";
+      });
+      return false;
+    }else {
       setState(() {
         errorTextSurname = 'Soyad boş bırakılamaz';
       });
@@ -590,7 +599,12 @@ class _CreateAccountState extends State<CreateAccount> {
         errorTextUserName = "";
       });
       return true;
-    } else {
+    } else if (username.length == 1) {
+      setState(() {
+        errorTextName = "İsim en az iki harf içermeli";
+      });
+      return false;
+    }else {
       setState(() {
         errorTextUserName = 'Kullanıcı adı boş bırakılamaz';
       });

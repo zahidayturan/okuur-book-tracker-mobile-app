@@ -105,4 +105,20 @@ class FirebaseAuthOperation{
       return false;
     }
   }
+
+  Future<String> checkSignInMethod() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      for (var provider in user.providerData) {
+        if (provider.providerId == 'google.com') {
+          print('User signed in with Google');
+          return "Google";
+        } else if (provider.providerId == 'password') {
+          print('User signed in with Email/Password');
+          return "Email/Password";
+        }
+      }
+    }
+    return "User Not Found";
+  }
 }

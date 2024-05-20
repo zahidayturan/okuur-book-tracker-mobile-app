@@ -7,6 +7,7 @@ class FirebaseGoogleOperation{
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  /*
   Future<User?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -20,6 +21,32 @@ class FirebaseGoogleOperation{
     final User? user = userCredential.user;
 
     return user;
+  }
+  */
+
+  Future<bool> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final UserCredential userCredential = await _auth.signInWithCredential(credential);
+    final User? user = userCredential.user;
+
+
+    final bool isNewUser = userCredential.additionalUserInfo?.isNewUser ?? true;
+
+    if (isNewUser) {
+      print('User is signing in for the first time.');
+      return true;
+    } else {
+      print('User has signed in before.');
+      return false;
+    }
   }
 
 

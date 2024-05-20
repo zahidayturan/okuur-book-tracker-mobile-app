@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/app/my_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
+import 'package:okuur/core/utils/firebase_google_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 
@@ -15,6 +17,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
 
   AppColors colors = AppColors();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   SizedBox(height: 12,),
                   InkWell(
                     onTap: () async{
-                      await FirebaseAuthOperation().userDelete();
+                      await FirebaseAuthOperation().deleteAccountAndSignOut();
                       Navigator.pushAndRemoveUntil(
                         context,
                         PageRouteBuilder(
@@ -72,6 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   SizedBox(height: 12,),
                   InkWell(
                     onTap: () async{
+                      await FirebaseGoogleOperation().signOutGoogle();
                       await FirebaseAuthOperation().userSignOut();
                       Navigator.pushAndRemoveUntil(
                         context,
@@ -108,6 +112,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 12,),
+                  Text(_auth.currentUser != null ? _auth.currentUser!.email.toString() : "çıkış yapıldı"),
+                  Text(_auth.currentUser != null ? _auth.currentUser!.uid : "çıkış yapıldı"),
+                  Text(_auth.currentUser != null ? _auth.currentUser!.emailVerified.toString() : "Çıkış yapıldı"),
                 ],
               ),
             ),

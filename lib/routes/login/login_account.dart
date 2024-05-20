@@ -157,9 +157,10 @@ class _LoginAccountState extends State<LoginAccount> {
                 errorTextPassword = "Şifreyi hatalı girdiniz";
               }
               if(login != "Ok"){
+                errorTextMail = "Hesap bulunamadı. Bilgileri kontrol ediniz";
               }
               if(login == "Ok"){
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   PageRouteBuilder(
                     opaque: false,
@@ -173,6 +174,7 @@ class _LoginAccountState extends State<LoginAccount> {
                       );
                     },
                   ),
+                (Route<dynamic> route) => false,
                 );
 
               }

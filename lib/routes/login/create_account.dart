@@ -78,7 +78,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: 236,
                   child: PageView(
                     controller: pageController,
-                    //physics: NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     children: [
                       email(),
                       emailCheck(),
@@ -369,7 +369,7 @@ class _CreateAccountState extends State<CreateAccount> {
               }
             });
           }else if(onTapType == 3){
-            Navigator.push(
+            Navigator.pushAndRemoveUntil(
               context,
               PageRouteBuilder(
                 opaque: false,
@@ -383,6 +383,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   );
                 },
               ),
+              (Route<dynamic> route) => false,
             );
 
           }

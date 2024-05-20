@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:okuur/core/utils/firebase_google_helper.dart';
 
 
 class FirebaseAuthOperation{
@@ -43,6 +44,20 @@ class FirebaseAuthOperation{
     }
   }
 
+  Future<void> deleteAccountAndSignOut() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await FirebaseGoogleOperation().signOutGoogle();
+        await user.delete();
+        await userSignOut();
+
+      }
+    } catch (e) {
+      print("Error deleting account: $e");
+    }
+  }
+
   Future<void> userSignOut() async {
     if (_auth.currentUser != null) {
       try {
@@ -53,15 +68,12 @@ class FirebaseAuthOperation{
     }
   }
 
+
   Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-      if (user != null && !user.emailVerified) {
-        await user.sendEmailVerification();
-        return 'email-not-verified';
-      }
       return 'Ok';
     } on FirebaseAuthException catch (e) {
       print(e.toString());

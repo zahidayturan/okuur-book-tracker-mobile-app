@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/utils/firebase_google_helper.dart';
+import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/create_account.dart';
 import 'package:okuur/routes/login/login_account.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
@@ -247,8 +250,30 @@ class _WelcomePageState extends State<WelcomePage> {
 
   InkWell googleButton(){
     return InkWell(
-      onTap: () {
-
+      onTap: () async{
+        User? user = await FirebaseGoogleOperation().signInWithGoogle();
+        if (user != null) {
+          print(user.emailVerified);
+          print('Successfully signed in with Google: ${user.displayName}');
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              opaque: false,
+              transitionDuration: const Duration(milliseconds: 300),
+              pageBuilder: (context, animation, nextanim) => const HomePage(),
+              reverseTransitionDuration: const Duration(milliseconds: 1),
+              transitionsBuilder: (context, animation, nexttanim, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+           (Route<dynamic> route) => false,
+          );
+        } else {
+          print('Failed to sign in with Google');
+        }
       },
       child: Row(
         children: [

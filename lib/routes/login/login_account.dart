@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/routes/home/home.dart';
+import 'package:okuur/routes/login/components/bottom_icon.dart';
+import 'package:okuur/routes/login/components/create_forms.dart';
+import 'package:okuur/routes/login/components/login_text.dart';
+import 'package:okuur/routes/login/components/text_form_field.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class LoginAccount extends StatefulWidget {
@@ -39,44 +43,13 @@ class _LoginAccountState extends State<LoginAccount> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 topBar(),
-                Spacer(),
                 email(),
-                Spacer(),
-                Text(_auth.currentUser != null ? _auth.currentUser!.email.toString() : "çıkış yapıldı"),
-                Text(_auth.currentUser != null ? _auth.currentUser!.uid : "çıkış yapıldı"),
-                Text(_auth.currentUser != null ? _auth.currentUser!.emailVerified.toString() : "çıkış yapıldı"),
                 bottomBar()
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget createForms(Widget formName){
-    return AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.bounceInOut,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            color: colors.white,
-            borderRadius: const BorderRadius.only(
-                bottomRight: Radius.circular(4),
-                bottomLeft: Radius.circular(4),
-                topRight: Radius.circular(26),
-                topLeft: Radius.circular(26)
-            ),
-          boxShadow: [
-            BoxShadow(
-              color: colors.greyDark.withOpacity(0.1),
-              blurRadius: 5,
-              spreadRadius: 2,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: formName
     );
   }
 
@@ -89,12 +62,12 @@ class _LoginAccountState extends State<LoginAccount> {
             children: [
               formTitleAndStep("Hesap ",colors.blue,"1"),
               const SizedBox(height: 16,),
-              getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,),
+              getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,false),
               const SizedBox(height: 12,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: getTextFormField(passwordController, "Şifrenizi giriniz", 54, "", _passwordKey, errorTextPassword,)),
+                  Expanded(child: getTextFormField(passwordController, "Şifrenizi giriniz", 54, "", _passwordKey, errorTextPassword,passwordVisible)),
                   SizedBox(width: 8,),
                   InkWell(
                     onTap: () {
@@ -135,7 +108,7 @@ class _LoginAccountState extends State<LoginAccount> {
             fontFamilies: ["FontBold","FontMedium"],
             fontSize: 16,
             align: TextAlign.start),
-        title("Yardım", colors.greenDark, 12, "FontMedium")
+        loginText("Yardım", colors.greenDark, 12, "FontMedium")
       ],
     );
   }
@@ -219,56 +192,7 @@ class _LoginAccountState extends State<LoginAccount> {
             ),
           ],
         ),
-        child: Center(child: title(text, colors.white, 16, "FontMedium")),
-      ),
-    );
-  }
-
-  Widget getTextFormField(TextEditingController? controller,String hintText,int maxLength,String helperText,Key key,String errorText){
-    return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-          color: colors.grey,
-          borderRadius: const BorderRadius.all(Radius.circular(10))
-      ),
-      child: Center(
-        child: Form(
-          key: key,
-          child: TextFormField(
-            maxLines: 1,
-            maxLength: maxLength,
-            controller: controller,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Boş bırakılamaz';
-              }
-            },
-            obscureText: key == _passwordKey && passwordVisible ? true : false,
-            style: TextStyle(color: colors.greenDark),
-            keyboardType: TextInputType.text,
-            textAlign: TextAlign.start,
-            decoration: InputDecoration(
-              hintText: hintText,
-              errorText: errorText,
-              hintStyle: TextStyle(
-                  color: colors.greenDark,
-                  fontSize: 14,
-                  height: 1,
-                  fontFamily: "FontMedium"
-              ),
-              errorStyle: TextStyle(
-                  color: colors.red,
-                  fontSize: 12,
-                  height: 1,
-                  fontFamily: "FontMedium"
-              ),
-              counterText: "",
-              contentPadding: EdgeInsets.zero,
-              border: InputBorder.none,
-            ),
-          ),
-        ),
+        child: Center(child: loginText(text, colors.white, 16, "FontMedium")),
       ),
     );
   }
@@ -314,23 +238,6 @@ class _LoginAccountState extends State<LoginAccount> {
     );
   }
 
-  Widget bottomBar(){
-    return SizedBox(
-      height: 24,
-      child: Image.asset("assets/logo/logo_text.png"),
-    );
-  }
-
-  Text title(String text,Color color,double size, String family){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),
-    );
-  }
-
   bool emailValidate(String email) {
     RegExp regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return regex.hasMatch(email);
@@ -363,5 +270,4 @@ class _LoginAccountState extends State<LoginAccount> {
       return false;
     }
   }
-
 }

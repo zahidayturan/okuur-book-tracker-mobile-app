@@ -1,8 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/routes/home/home.dart';
+import 'package:okuur/routes/login/components/bottom_icon.dart';
+import 'package:okuur/routes/login/components/create_forms.dart';
+import 'package:okuur/routes/login/components/login_text.dart';
+import 'package:okuur/routes/login/components/text_form_field.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/snackbar.dart';
@@ -15,8 +18,6 @@ class GoogleLogin extends StatefulWidget {
 }
 
 class _GoogleLoginState extends State<GoogleLogin> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   AppColors colors = AppColors();
   PageController pageController = PageController(initialPage: 0);
 
@@ -44,25 +45,14 @@ class _GoogleLoginState extends State<GoogleLogin> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 topBar(),
-                Spacer(),
                 SizedBox(
                   height: 236,
                   child: PageView(
                     controller: pageController,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [nameAndSurname(), completed()],
                   ),
                 ),
-                Spacer(),
-                Text(_auth.currentUser != null
-                    ? _auth.currentUser!.email.toString()
-                    : "çıkış yapıldı"),
-                Text(_auth.currentUser != null
-                    ? _auth.currentUser!.uid
-                    : "çıkış yapıldı"),
-                Text(_auth.currentUser != null
-                    ? _auth.currentUser!.emailVerified.toString()
-                    : "çıkış yapıldı"),
                 bottomBar()
               ],
             ),
@@ -70,30 +60,6 @@ class _GoogleLoginState extends State<GoogleLogin> {
         ),
       ),
     );
-  }
-
-  Widget createForms(Widget formName) {
-    return AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.bounceInOut,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: colors.white,
-          borderRadius: const BorderRadius.only(
-              bottomRight: Radius.circular(4),
-              bottomLeft: Radius.circular(4),
-              topRight: Radius.circular(26),
-              topLeft: Radius.circular(26)),
-          boxShadow: [
-            BoxShadow(
-              color: colors.greyDark.withOpacity(0.1),
-              blurRadius: 5,
-              spreadRadius: 2,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: formName);
   }
 
   Widget nameAndSurname() {
@@ -111,13 +77,13 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 children: [
                   Expanded(
                       child: getTextFormField(nameController, "Adınız", 24, "",
-                          _nameKey, errorTextName)),
-                  SizedBox(
+                          _nameKey, errorTextName,false)),
+                  const SizedBox(
                     width: 12,
                   ),
                   Expanded(
                       child: getTextFormField(surnameController, "Soyadınız",
-                          24, "", _surnameKey, errorTextSurname))
+                          24, "", _surnameKey, errorTextSurname,false))
                 ],
               ),
               const SizedBox(
@@ -127,8 +93,8 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  title("@", colors.blue, 22, "FontBold"),
-                  SizedBox(
+                  loginText("@", colors.blue, 22, "FontBold"),
+                  const SizedBox(
                     width: 8,
                   ),
                   Expanded(
@@ -138,10 +104,10 @@ class _GoogleLoginState extends State<GoogleLogin> {
                       54,
                       "",
                       _userNameKey,
-                      errorTextUserName,
+                      errorTextUserName,false
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   InkWell(
@@ -150,7 +116,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                               context: context,
                               backColor: colors.blue,
                               duration: 5,
-                              textWidget: title(
+                              textWidget: loginText(
                                   "Kullanıcı adınız diğer kullanıcılar tarafından görülecektir",
                                   colors.grey,
                                   14,
@@ -193,13 +159,13 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    title("Aramıza Hoş Geldin", colors.orange, 16, "FontBold"),
+                    loginText("Aramıza Hoş Geldin", colors.orange, 16, "FontBold"),
                   ],
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                title("@${userNameController.text}\n", colors.black, 15,
+                loginText("@${userNameController.text}\n", colors.black, 15,
                     "FontBold"),
                 RichTextWidget(texts: [
                   "Okuma hedeflerini ekle, okumaya ve keşfetmeye başla, başarımlar kazan.\n",
@@ -234,7 +200,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
             fontFamilies: ["FontBold", "FontMedium"],
             fontSize: 16,
             align: TextAlign.start),
-        title("Yardım", colors.greenDark, 12, "FontMedium")
+        loginText("Yardım", colors.greenDark, 12, "FontMedium")
       ],
     );
   }
@@ -249,7 +215,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 validateSurname(surnameController.text) &&
                 validateUsername(userNameController.text)) {
               pageController.nextPage(
-                  duration: Duration(milliseconds: 800),
+                  duration: const Duration(milliseconds: 800),
                   curve: Curves.easeInOut);
             } else {}
           });
@@ -290,57 +256,11 @@ class _GoogleLoginState extends State<GoogleLogin> {
               color: colors.greyDark.withOpacity(0.1),
               blurRadius: 5,
               spreadRadius: 2,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Center(child: title(text, colors.white, 16, "FontMedium")),
-      ),
-    );
-  }
-
-  Widget getTextFormField(TextEditingController? controller, String hintText,
-      int maxLength, String helperText, Key key, String errorText) {
-    return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-          color: colors.grey,
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
-      child: Center(
-        child: Form(
-          key: key,
-          child: TextFormField(
-            maxLines: 1,
-            maxLength: maxLength,
-            controller: controller,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Boş bırakılamaz';
-              }
-            },
-            style: TextStyle(color: colors.greenDark),
-            keyboardType: TextInputType.text,
-            textAlign: TextAlign.start,
-            decoration: InputDecoration(
-              hintText: hintText,
-              errorText: errorText,
-              hintStyle: TextStyle(
-                  color: colors.greenDark,
-                  fontSize: 14,
-                  height: 1,
-                  fontFamily: "FontMedium"),
-              errorStyle: TextStyle(
-                  color: colors.red,
-                  fontSize: 12,
-                  height: 1,
-                  fontFamily: "FontMedium"),
-              counterText: "",
-              contentPadding: EdgeInsets.zero,
-              border: InputBorder.none,
-            ),
-          ),
-        ),
+        child: Center(child: loginText(text, colors.white, 16, "FontMedium")),
       ),
     );
   }
@@ -373,7 +293,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                   PageRouteBuilder(
                     opaque: false,
                     transitionDuration: const Duration(milliseconds: 300),
-                    pageBuilder: (context, animation, nextanim) => WelcomePage(),
+                    pageBuilder: (context, animation, nextanim) => const WelcomePage(),
                     reverseTransitionDuration: const Duration(milliseconds: 1),
                     transitionsBuilder: (context, animation, nexttanim, child) {
                       return FadeTransition(
@@ -404,26 +324,12 @@ class _GoogleLoginState extends State<GoogleLogin> {
         ),
 
         RichTextWidget(
-            texts: ["Hesaba\n", "Giriş\nYap"],
+            texts: ["Google ile\n", "Kayıt\nOl"],
             colors: [colors.blue, colors.blue],
             fontFamilies: ["FontMedium", "FontBold"],
             fontSize: 19,
             align: TextAlign.end)
       ],
-    );
-  }
-
-  Widget bottomBar() {
-    return SizedBox(
-      height: 24,
-      child: Image.asset("assets/logo/logo_text.png"),
-    );
-  }
-
-  Text title(String text, Color color, double size, String family) {
-    return Text(
-      text,
-      style: TextStyle(color: color, fontFamily: family, fontSize: size),
     );
   }
 

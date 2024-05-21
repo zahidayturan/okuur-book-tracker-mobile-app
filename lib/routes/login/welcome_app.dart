@@ -6,7 +6,6 @@ import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/create_account.dart';
 import 'package:okuur/routes/login/google_login.dart';
 import 'package:okuur/routes/login/login_account.dart';
-import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -28,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
         body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Center(
             child:
             size.height>400 ?
@@ -38,9 +37,9 @@ class _WelcomePageState extends State<WelcomePage> {
                 SizedBox(
                     height: 28,
                     child: Image.asset("assets/logo/logo_text.png")),
-                SizedBox(height: 6,),
+                const SizedBox(height: 6,),
                 body(),
-                SizedBox(),
+                const SizedBox(),
                 buttonContainer()
               ],
             ) :
@@ -53,7 +52,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     body(),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     SizedBox(
                         height: 28,
                         child: Image.asset("assets/logo/logo_text.png")),
@@ -69,7 +68,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   Widget body(){
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -119,13 +118,13 @@ class _WelcomePageState extends State<WelcomePage> {
           height: 54,
           decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.all(Radius.circular(50)),
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
             boxShadow: [
               BoxShadow(
                 color: colors.greyDark.withOpacity(0.3),
                 blurRadius: 5,
                 spreadRadius: 2,
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
               ),
             ],
           ),
@@ -148,30 +147,30 @@ class _WelcomePageState extends State<WelcomePage> {
   Container buttonContainer(){
     return Container(
       height: 260,
-      padding: EdgeInsets.all(12),
-      margin: EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
           color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(36)),
+          borderRadius: const BorderRadius.all(Radius.circular(36)),
         boxShadow: [
           BoxShadow(
             color: colors.greyDark.withOpacity(0.1),
             blurRadius: 5,
             spreadRadius: 2,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
         children: [
-          button("Yeni Hesap ","Oluştur",colors.blue,CreateAccount()),
-          SizedBox(height: 12,),
-          button("Hesabına ","Giriş Yap",colors.greenDark,LoginAccount()),
-          SizedBox(height: 16,),
+          button("Yeni Hesap ","Oluştur",colors.blue,const CreateAccount()),
+          const SizedBox(height: 12,),
+          button("Hesabına ","Giriş Yap",colors.greenDark,const LoginAccount()),
+          const SizedBox(height: 16,),
           orText(),
-          SizedBox(height: 16,),
+          const SizedBox(height: 16,),
           googleButton(),
-          SizedBox(height: 16,),
+          const SizedBox(height: 16,),
           RichTextWidget(
               texts: ["Okuur, ","Fezai Tech ","tarafından geliştirilmiştir."],
               colors: [colors.green,colors.greenDark,colors.green],
@@ -203,12 +202,12 @@ class _WelcomePageState extends State<WelcomePage> {
 
       },
         highlightColor: color,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
       child: Container(
         height: 48,
         decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.all(Radius.circular(50))
+            borderRadius: const BorderRadius.all(Radius.circular(50))
         ),
         child: Center(child: RichTextWidget(
             texts: [textL,textB],
@@ -229,7 +228,7 @@ class _WelcomePageState extends State<WelcomePage> {
             height: 1,
             decoration: BoxDecoration(
               color: colors.greenDark,
-              borderRadius: BorderRadius.all(Radius.circular(10))
+              borderRadius: const BorderRadius.all(Radius.circular(10))
             ),
           ),
         ),
@@ -242,7 +241,7 @@ class _WelcomePageState extends State<WelcomePage> {
             height: 1,
             decoration: BoxDecoration(
                 color: colors.greenDark,
-                borderRadius: BorderRadius.all(Radius.circular(10))
+                borderRadius: const BorderRadius.all(Radius.circular(10))
             ),
           ),
         ),
@@ -276,7 +275,7 @@ class _WelcomePageState extends State<WelcomePage> {
               PageRouteBuilder(
                 opaque: false,
                 transitionDuration: const Duration(milliseconds: 300),
-                pageBuilder: (context, animation, nextanim) => newUser == true ? GoogleLogin() : HomePage(),
+                pageBuilder: (context, animation, nextanim) => newUser == true ? const GoogleLogin() : const HomePage(),
                 reverseTransitionDuration: const Duration(milliseconds: 1),
                 transitionsBuilder: (context, animation, nexttanim, child) {
                   return FadeTransition(
@@ -294,13 +293,13 @@ class _WelcomePageState extends State<WelcomePage> {
       },
       child: Row(
         children: [
-          Spacer(),
+          const Spacer(),
           Container(
             height: 44,
-            padding: EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
                 color: colors.grey,
-                borderRadius: BorderRadius.all(Radius.circular(24))
+                borderRadius: const BorderRadius.all(Radius.circular(24))
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,7 +328,7 @@ class _WelcomePageState extends State<WelcomePage> {
               ],
             ),
           ),
-          Spacer()
+          const Spacer()
         ],
       ),
     );

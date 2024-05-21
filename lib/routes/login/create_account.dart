@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
+import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
@@ -351,13 +353,36 @@ class _CreateAccountState extends State<CreateAccount> {
               }
             });
           }else if(onTapType == 2){
-            setState(() {
-              if(validateName(nameController.text) && validateSurname(surnameController.text) && validateUsername(userNameController.text)){
-                pageController.nextPage(duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
-              }else{
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colors.blue,
+                  ),
+                );
+              },
+              barrierDismissible: false,
+            );
+            try {
+              await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(
+                  OkuurUserInfo(
+                      id: _auth.currentUser!.uid,
+                      name: nameController.text,
+                      surname: surnameController.text,
+                      username: userNameController.text,
+                      email: _auth.currentUser!.email!)
+              );
+            } finally {
+              setState(() {
+                if(validateName(nameController.text) && validateSurname(surnameController.text) && validateUsername(userNameController.text)){
+                  pageController.nextPage(duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
+                }else{
 
-              }
-            });
+                }
+              });
+            }
+
           }else if(onTapType == 3){
             Navigator.pushAndRemoveUntil(
               context,

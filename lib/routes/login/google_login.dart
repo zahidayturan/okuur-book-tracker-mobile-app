@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
+import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
@@ -20,6 +23,8 @@ class GoogleLogin extends StatefulWidget {
 class _GoogleLoginState extends State<GoogleLogin> {
   AppColors colors = AppColors();
   PageController pageController = PageController(initialPage: 0);
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String errorTextName = "";
   String errorTextSurname = "";
@@ -210,15 +215,40 @@ class _GoogleLoginState extends State<GoogleLogin> {
       onTap: () async {
         setState(() {});
         if (onTapType == 2) {
-          setState(() {
+
             if (validateName(nameController.text) &&
                 validateSurname(surnameController.text) &&
                 validateUsername(userNameController.text)) {
-              pageController.nextPage(
-                  duration: const Duration(milliseconds: 800),
-                  curve: Curves.easeInOut);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: colors.blue,
+                    ),
+                  );
+                },
+                barrierDismissible: false,
+              );
+              try {
+                await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(
+                    OkuurUserInfo(
+                        id: _auth.currentUser!.uid,
+                        name: nameController.text,
+                        surname: surnameController.text,
+                        username: userNameController.text,
+                        email: _auth.currentUser!.email!)
+                );
+              } finally {
+                Navigator.pop(context);
+                setState(() {
+                  pageController.nextPage(
+                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.easeInOut);
+                });
+              }
             } else {}
-          });
+
         } else if (onTapType == 3) {
           Navigator.pushAndRemoveUntil(
             context,

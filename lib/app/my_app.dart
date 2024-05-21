@@ -7,21 +7,32 @@ import 'package:okuur/routes/login/welcome_app.dart';
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  bool user(){
-    return _auth.currentUser != null ?  true :  false;
-  }
+  User? _currentUser;
 
   @override
+  void initState() {
+    super.initState();
+    _initializeUser();
+  }
+
+  Future<void> _initializeUser() async {
+    await _auth.currentUser?.reload();
+    setState(() {
+      _currentUser = _auth.currentUser;
+    });
+
+    _auth.authStateChanges().listen((User? user) {
+      setState(() {
+        _currentUser = user;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.light,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: user() != true ? WelcomePage() : HomePage()
+      home: _currentUser == null ? WelcomePage() : HomePage(),
     );
   }
 }

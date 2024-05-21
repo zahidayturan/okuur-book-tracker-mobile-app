@@ -35,27 +35,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
             ),
           ),
         ),
-        SizedBox(width: 12,),
-        Container(
-          height: 168,
-          width: 92,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(16)),
-              color: colors.white
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 28,top: 40),
-                child: Image.asset("assets/icons/connection.png",color: colors.grey),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: discoverInfo(),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
@@ -158,31 +137,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     );
   }
 
-  Column discoverInfo(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        textInfo("Keşfet", colors.greenDark, 14, "FontBold",TextAlign.end,1),
-        textInfo("Okuyacak\nyeni\nkitaplar\nbul", colors.green, 13, "FontMedium",TextAlign.end,5),
-        Center(
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(24)),
-              color: colors.greenDark
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Image.asset("assets/icons/line_arrow.png"),
-            ),
-          ),
-        )
-      ],
-
-    );
-  }
-
   Text textInfo(String text,Color color,double size, String family, TextAlign align,int maxLines){
     return Text(
       text,style: TextStyle(
@@ -192,5 +146,4 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     ),textAlign: align,overflow: TextOverflow.ellipsis,maxLines: maxLines,
     );
   }
-
 }

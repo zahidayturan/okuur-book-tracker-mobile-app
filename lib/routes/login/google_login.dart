@@ -402,7 +402,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
       return true;
     } else if (name.length == 1) {
       setState(() {
-        errorTextName = "İsim en az iki harf içermeli";
+        errorTextName = "En az iki harf içermeli";
       });
       return false;
     } else {
@@ -421,7 +421,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
       return true;
     } else if (surname.length == 1) {
       setState(() {
-        errorTextName = "İsim en az iki harf içermeli";
+        errorTextSurname = "En az iki harf içermeli";
       });
       return false;
     } else {
@@ -440,7 +440,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
       return true;
     } else if (username.length == 1) {
       setState(() {
-        errorTextName = "İsim en az iki harf içermeli";
+        errorTextUserName = "Kullanıcı adı en az iki harf içermeli";
       });
       return false;
     } else {

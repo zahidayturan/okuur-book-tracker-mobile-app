@@ -251,30 +251,45 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   InkWell googleButton(){
+    bool newUser = true;
     return InkWell(
       onTap: () async{
-       bool newUser = await FirebaseGoogleOperation().signInWithGoogle();
-        if (_auth.currentUser != null) {
-
-          print('Successfully signed in with Google: ${_auth.currentUser!.displayName}');
-          Navigator.pushAndRemoveUntil(
-            context,
-            PageRouteBuilder(
-              opaque: false,
-              transitionDuration: const Duration(milliseconds: 300),
-              pageBuilder: (context, animation, nextanim) => newUser == true ? GoogleLogin() : HomePage(),
-              reverseTransitionDuration: const Duration(milliseconds: 1),
-              transitionsBuilder: (context, animation, nexttanim, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-            ),
-           (Route<dynamic> route) => false,
-          );
-        } else {
-          print('Failed to sign in with Google');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: colors.blue,
+              ),
+            );
+          },
+          barrierDismissible: false,
+        );
+        try {
+          newUser = await FirebaseGoogleOperation().signInWithGoogle();
+        } finally {
+          Navigator.pop(context);
+          if (_auth.currentUser != null) {
+            print('Successfully signed in with Google: ${_auth.currentUser!.displayName}');
+            Navigator.pushAndRemoveUntil(
+              context,
+              PageRouteBuilder(
+                opaque: false,
+                transitionDuration: const Duration(milliseconds: 300),
+                pageBuilder: (context, animation, nextanim) => newUser == true ? GoogleLogin() : HomePage(),
+                reverseTransitionDuration: const Duration(milliseconds: 1),
+                transitionsBuilder: (context, animation, nexttanim, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+                  (Route<dynamic> route) => false,
+            );
+          } else {
+            print('Failed to sign in with Google');
+          }
         }
       },
       child: Row(

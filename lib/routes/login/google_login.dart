@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/routes/home/home.dart';
+import 'package:okuur/routes/login/welcome_app.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/snackbar.dart';
 
@@ -351,10 +352,40 @@ class _GoogleLoginState extends State<GoogleLogin> {
       children: [
         InkWell(
           onTap: () async {
-            await FirebaseAuthOperation().deleteAccountAndSignOut();
-            setState(() {
-              Navigator.of(context).pop();
-            });
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colors.blue,
+                  ),
+                );
+              },
+              barrierDismissible: false,
+            );
+            try {
+              await FirebaseAuthOperation().deleteAccountAndSignOut();
+            } finally {
+              Navigator.pop(context);
+              setState(() {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    opaque: false,
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (context, animation, nextanim) => WelcomePage(),
+                    reverseTransitionDuration: const Duration(milliseconds: 1),
+                    transitionsBuilder: (context, animation, nexttanim, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                      (Route<dynamic> route) => false,
+                );
+              });
+            }
           },
           highlightColor: colors.greenDark,
           borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -362,14 +393,16 @@ class _GoogleLoginState extends State<GoogleLogin> {
             height: 32,
             width: 48,
             decoration: BoxDecoration(
-                color: colors.blue,
-                borderRadius: const BorderRadius.all(Radius.circular(30))),
+              color: colors.blue,
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset("assets/icons/back_arrow.png"),
             ),
           ),
         ),
+
         RichTextWidget(
             texts: ["Hesaba\n", "Giriş\nYap"],
             colors: [colors.blue, colors.blue],

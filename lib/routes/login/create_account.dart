@@ -336,16 +336,32 @@ class _CreateAccountState extends State<CreateAccount> {
         setState(() {});
           if(onTapType == 0){
             if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
-              String register = await FirebaseAuthOperation().registerWithEmailAndPassword(emailController.text.trim(),passwordController.text);
-              setState(() {
-                if(register == "email-already-in-use"){
-                  errorTextMail = "Bu hesap zaten var. Giriş yapmayı deneyin.";
-                }
-                if(_auth.currentUser != null){
-                  pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
-                  _startEmailVerificationCheckTimer();
-                }
-              });
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: colors.blue,
+                    ),
+                  );
+                },
+                barrierDismissible: false,
+              );
+              String register = "" ;
+              try {
+                register = await FirebaseAuthOperation().registerWithEmailAndPassword(emailController.text.trim(),passwordController.text);
+              } finally {
+                Navigator.pop(context);
+                setState(() {
+                  if(register == "email-already-in-use"){
+                    errorTextMail = "Bu hesap zaten var. Giriş yapmayı deneyin.";
+                  }
+                  if(_auth.currentUser != null){
+                    pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
+                    _startEmailVerificationCheckTimer();
+                  }
+                });
+              }
             }else{
             }
           }else if(onTapType == 1){
@@ -361,7 +377,6 @@ class _CreateAccountState extends State<CreateAccount> {
           }else if(onTapType == 2){
             setState(() {
               if(validateName(nameController.text) && validateSurname(surnameController.text) && validateUsername(userNameController.text)){
-
                 pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
               }else{
 

@@ -145,38 +145,54 @@ class _LoginAccountState extends State<LoginAccount> {
       onTap: () async{
         setState(() {});
           if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
-            String login = await FirebaseAuthOperation().signInWithEmailAndPassword(emailController.text.trim(),passwordController.text);
-            print("hata mesajı $login");
-            setState(() {
-              if(login == "user-not-found"){
-                errorTextMail = "Böyle bir e-posta bulunamadı";
-              }
-              if(login == "wrong-password"){
-                errorTextPassword = "Şifreyi hatalı girdiniz";
-              }
-              if(login != "Ok"){
-                errorTextMail = "Hesap bulunamadı. Bilgileri kontrol ediniz";
-              }
-              if(login == "Ok"){
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  PageRouteBuilder(
-                    opaque: false,
-                    transitionDuration: const Duration(milliseconds: 300),
-                    pageBuilder: (context, animation, nextanim) => const HomePage(),
-                    reverseTransitionDuration: const Duration(milliseconds: 1),
-                    transitionsBuilder: (context, animation, nexttanim, child) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colors.blue,
                   ),
-                (Route<dynamic> route) => false,
                 );
+              },
+              barrierDismissible: false,
+            );
+            String login = "" ;
+            try {
+              login = await FirebaseAuthOperation().signInWithEmailAndPassword(emailController.text.trim(),passwordController.text);
+            } finally {
+              Navigator.pop(context);
+              print("hata mesajı $login");
+              setState(() {
+                if(login == "user-not-found"){
+                  errorTextMail = "Böyle bir e-posta bulunamadı";
+                }
+                if(login == "wrong-password"){
+                  errorTextPassword = "Şifreyi hatalı girdiniz";
+                }
+                if(login != "Ok"){
+                  errorTextMail = "Hesap bulunamadı. Bilgileri kontrol ediniz";
+                }
+                if(login == "Ok"){
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    PageRouteBuilder(
+                      opaque: false,
+                      transitionDuration: const Duration(milliseconds: 300),
+                      pageBuilder: (context, animation, nextanim) => const HomePage(),
+                      reverseTransitionDuration: const Duration(milliseconds: 1),
+                      transitionsBuilder: (context, animation, nexttanim, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                        (Route<dynamic> route) => false,
+                  );
 
-              }
-            });
+                }
+              });
+            }
           }else{
           }
       },

@@ -75,7 +75,6 @@ class _CreateAccountState extends State<CreateAccount> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 topBar(),
-                const Spacer(),
                 SizedBox(
                   height: 236,
                   child: PageView(
@@ -89,10 +88,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     ],
                   ),
                 ),
-                const Spacer(),
-                Text(_auth.currentUser != null ? _auth.currentUser!.email.toString() : "çıkış yapıldı"),
-                Text(_auth.currentUser != null ? _auth.currentUser!.uid : "çıkış yapıldı"),
-                Text(_auth.currentUser != null ? _auth.currentUser!.emailVerified.toString() : "çıkış yapıldı"),
                 bottomBar()
               ],
             ),

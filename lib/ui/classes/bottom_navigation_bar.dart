@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
@@ -64,7 +65,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             context,
             PageRouteBuilder(
               transitionDuration: const Duration(milliseconds: 100),
-              pageBuilder: (context, animation, nextanim) => pageName,
+              pageBuilder: (context, animation, nextanim) => OkuurApp(pageIndex: currentMode),
               reverseTransitionDuration: const Duration(milliseconds: 1),
               transitionsBuilder: (context, animation, nexttanim, child) {
                 return FadeTransition(

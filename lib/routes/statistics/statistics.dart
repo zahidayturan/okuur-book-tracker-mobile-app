@@ -19,7 +19,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BottomNavBar(pageIndex: 1,),
+        bottomNavigationBar: null,
         body: Padding(
           padding: EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(

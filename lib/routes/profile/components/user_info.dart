@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/settings/settings.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
-class UserInfo extends StatefulWidget {
+class UserInfoWidget extends StatefulWidget {
 
-  //get UserInfo
+  final OkuurUserInfo userData;
 
-  const UserInfo({
+  const UserInfoWidget({
     Key? key,
+    required this.userData
   }) : super(key: key);
 
   @override
-  State<UserInfo> createState() => _UserInfoState();
+  State<UserInfoWidget> createState() => _UserInfoWidgetState();
 }
 
-class _UserInfoState extends State<UserInfo> {
+class _UserInfoWidgetState extends State<UserInfoWidget> {
 
   AppColors colors = AppColors();
 
@@ -86,14 +88,15 @@ class _UserInfoState extends State<UserInfo> {
   }
 
   SizedBox proileTexts(){
+    OkuurUserInfo userData = widget.userData;
     return SizedBox(
       height: 86,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          text("user.name user.surname", colors.black, 12, "FontMedium",1),
-          text("@user.username", colors.greenDark, 14, "FontBold",1),
+          text("${userData.name} ${userData.surname}", colors.black, 12, "FontMedium",1),
+          text("@${userData.username}", colors.greenDark, 14, "FontBold",1),
           Spacer(),
           text("Katıldı: 16 Nisan 2024", colors.black, 12, "FontMedium",1),
           Spacer(),

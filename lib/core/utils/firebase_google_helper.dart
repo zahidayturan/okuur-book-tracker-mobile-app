@@ -63,4 +63,14 @@ class FirebaseGoogleOperation{
     }
   }
 
+  Future<DateTime?> getAccountCreationDate() async {
+    final User? user = _auth.currentUser;
+
+    if (user != null) {
+      final creationTime = user.metadata.creationTime;
+      return creationTime;
+    }
+    return null;
+  }
+
 }

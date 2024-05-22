@@ -215,7 +215,6 @@ class _GoogleLoginState extends State<GoogleLogin> {
       onTap: () async {
         setState(() {});
         if (onTapType == 2) {
-
             if (validateName(nameController.text) &&
                 validateSurname(surnameController.text) &&
                 validateUsername(userNameController.text)) {
@@ -237,7 +236,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
                         name: nameController.text,
                         surname: surnameController.text,
                         username: userNameController.text,
-                        email: _auth.currentUser!.email!)
+                        email: _auth.currentUser!.email!,
+                        creationTime: DateTime.now().toString()
+                    )
                 );
               } finally {
                 Navigator.pop(context);

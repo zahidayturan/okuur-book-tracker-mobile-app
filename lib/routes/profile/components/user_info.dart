@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/settings/settings.dart';
-import 'package:okuur/ui/components/rich_text.dart';
 
 class UserInfoWidget extends StatefulWidget {
 
@@ -89,6 +88,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
 
   SizedBox proileTexts(){
     OkuurUserInfo userData = widget.userData;
+    DateTime dateTime = DateTime.parse(userData.creationTime);
     return SizedBox(
       height: 86,
       child: Column(
@@ -98,9 +98,9 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
           text("${userData.name} ${userData.surname}", colors.black, 12, "FontMedium",1),
           text("@${userData.username}", colors.greenDark, 14, "FontBold",1),
           Spacer(),
-          text("Katıldı: 16 Nisan 2024", colors.black, 12, "FontMedium",1),
+          text("Katıldı: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}", colors.black, 12, "FontMedium",1),
           Spacer(),
-          text("Katıldı: 16 Nisan 2024", colors.black, 12, "FontMedium",1)
+          text("Yıldızlayanlar: 16", colors.black, 12, "FontMedium",1)
         ],
       ),
     );
@@ -131,5 +131,21 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
     ),overflow: TextOverflow.ellipsis,maxLines: maxLines,
     );
   }
+
+  List<String> months = [
+    "",
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık"
+  ];
 
 }

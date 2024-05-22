@@ -366,7 +366,9 @@ class _CreateAccountState extends State<CreateAccount> {
                       name: nameController.text,
                       surname: surnameController.text,
                       username: userNameController.text,
-                      email: _auth.currentUser!.email!)
+                      email: _auth.currentUser!.email!,
+                      creationTime: DateTime.now().toString()
+                  )
               );
             } finally {
               setState(() {

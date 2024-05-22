@@ -4,6 +4,7 @@ class OkuurUserInfo {
   String surname;
   String username;
   String email;
+  String creationTime;
 
 
   OkuurUserInfo({
@@ -12,6 +13,7 @@ class OkuurUserInfo {
     required this.surname,
     required this.username,
     required this.email,
+    required this.creationTime
   });
 
   factory OkuurUserInfo.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class OkuurUserInfo {
       surname: json['surname'] ?? '',
       username: json['username'] ?? '',
       email: json['email'] ?? '',
+      creationTime: json['creationTime'] ?? '',
     );
   }
 
@@ -31,6 +34,7 @@ class OkuurUserInfo {
       'surname': surname,
       'username': username,
       'email': email,
+      'creationTime': creationTime
     };
   }
 }

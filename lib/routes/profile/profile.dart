@@ -38,33 +38,30 @@ class _ProfilePageState extends State<ProfilePage> {
         bottomNavigationBar: BottomNavBar(pageIndex: 9,),
         body: Padding(
           padding: const EdgeInsets.only(right: 12, left: 12),
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 12,),
-                  FutureBuilder<OkuurUserInfo?>(
-                    future: FirebaseFirestoreOperation().getUserInfo(uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (!snapshot.hasData || snapshot.data == null) {
-                        return Text('User data not found.');
-                      } else {
-                        OkuurUserInfo userData = snapshot.data!;
-                        return UserInfoWidget(userData: userData);
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 18,),
-                  ProfileDataWidget(),
-                  const SizedBox(height: 18,),
-                  BookListWidget()
-                ],
-              ),
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(height: 12,),
+                FutureBuilder<OkuurUserInfo?>(
+                  future: FirebaseFirestoreOperation().getUserInfo(uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return Text('User data not found.');
+                    } else {
+                      OkuurUserInfo userData = snapshot.data!;
+                      return UserInfoWidget(userData: userData);
+                    }
+                  },
+                ),
+                const SizedBox(height: 18,),
+                ProfileDataWidget(),
+                const SizedBox(height: 18,),
+                Expanded(child: BookListWidget())
+              ],
             ),
           ),
         ),

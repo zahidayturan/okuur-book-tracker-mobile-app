@@ -52,44 +52,99 @@ class _BookListWidgetState extends State<BookListWidget> {
     },
   ];
 
+  List<Map<String, String>> currentBooks = [];
+  List<Map<String, String>> futureBooks = [];
+
+  @override
+  void initState() {
+    for (var book in tempBookList) {
+      int readStatus = int.parse(book['readStatus']!);
+      if (readStatus % 2 == 0) {
+        currentBooks.add(book);
+      } else {
+        futureBooks.add(book);
+      }
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
 
+    List<Map<String, String>> allBooks = [...currentBooks, ...futureBooks];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        text("Şu An Okunanlar", colors.greenDark, 15, "FontBold", 1),
+        SizedBox(height: 12,),
+        SizedBox(
+          height: currentBooks.length*124,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: currentBooks.length,
+            itemBuilder: (context, index) {
+              Map<String, String> item = currentBooks[index];
+              return bookContainer(
+                currentBookText(
+                  item['name']!,
+                  item['author']!,
+                  item['type']!,
+                  item['page']!,
+                  item['startDate']!,
+                ),
+              );
+            },
+          ),
+        ),
+        text("Okunan Bütün Eserler", colors.greenDark, 15, "FontBold", 1),
+        SizedBox(height: 12,),
+        Expanded(
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            physics: BouncingScrollPhysics(),
+            itemCount: futureBooks.length,
+            itemBuilder: (context, index) {
+              Map<String, String> item = futureBooks[index];
+              return bookContainer(
+                currentBookText(
+                  item['name']!,
+                  item['author']!,
+                  item['type']!,
+                  item['page']!,
+                  item['startDate']!,
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
-  Container bookContainer(String url){
+
+  Container bookContainer(Widget child){
     return Container(
-      width: 86,
-      height: 86,
+      height: 112,
+      width: 30,
+      margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-          color: colors.blue,
-          borderRadius: BorderRadius.all(Radius.circular(28))
+          color: colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20))
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Image.asset(url),
-      ),
+      child: child,
     );
   }
 
-
-  Container iconContainer(double width,double height,Color color,String path){
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.all(Radius.circular(50))
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
-      ),
+  Column currentBookText(String name,String author,String type,String page,String date){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        text(name, colors.black, 15, "FontMedium", 2),
+        text(author, colors.black, 13, "FontMedium", 1),
+        text(page, colors.black, 13, "FontMedium", 1),
+        text(date, colors.black, 13, "FontMedium", 1)
+      ],
     );
   }
 

@@ -1,5 +1,5 @@
 class OkuurBookInfo {
-  String id;
+  int? id;
   String name;
   String author;
   int pageCount;
@@ -7,14 +7,13 @@ class OkuurBookInfo {
   String type;
   String startingDate;
   String finishingDate;
-  String currentPage;
-  String readingTime;
+  int currentPage;
+  int readingTime;
   String status;
-  List<String> logIds;
-
+  String logIds;
 
   OkuurBookInfo({
-    required this.id,
+    this.id,
     required this.name,
     required this.author,
     required this.pageCount,
@@ -30,18 +29,18 @@ class OkuurBookInfo {
 
   factory OkuurBookInfo.fromJson(Map<String, dynamic> json) {
     return OkuurBookInfo(
-      id: json['id'] ?? '',
-      name: json['name'] ?? '',
-      author: json['author'] ?? '',
-      pageCount: json['pageCount'] ?? '',
-      imageLink: json['imageLink'] ?? '',
-      type: json['type'] ?? '',
-      startingDate: json['startingDate'] ?? '',
-      finishingDate: json['finishingDate'] ?? '',
-      currentPage: json['currentPage'] ?? '',
-      readingTime: json['readingTime'] ?? '',
-      status: json['status'] ?? '',
-      logIds: json['logIds'] ?? '',
+      id: json['id'],
+      name: json['name'],
+      author: json['author'],
+      pageCount: json['pageCount'],
+      imageLink: json['imageLink'],
+      type: json['type'],
+      startingDate: json['startingDate'],
+      finishingDate: json['finishingDate'],
+      currentPage: json['currentPage'],
+      readingTime: json['readingTime'],
+      status: json['status'],
+      logIds: json['logIds']
     );
   }
 

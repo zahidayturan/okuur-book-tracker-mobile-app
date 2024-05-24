@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseHelper {
 
+class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   factory DatabaseHelper() => _instance;
 
@@ -21,7 +22,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'okuur_database1.db');
+    String path = join(documentsDirectory.path, 'okuur_database2.db');
     return await openDatabase(
       path,
       version: 1,
@@ -29,20 +30,10 @@ class DatabaseHelper {
     );
   }
 
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE userInfo (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        surname TEXT,
-        username TEXT,
-        email TEXT,
-        creationTime TEXT
-      )
-    ''');
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE logInfo (
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         bookId INTEGER,
         numberOfPages INTEGER,
         timeRead INTEGER,
@@ -50,11 +41,21 @@ class DatabaseHelper {
         finishingTime TEXT
       )
     ''');
+    await db.execute('''
+      CREATE TABLE bookInfo (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        author TEXT,
+        pageCount INTEGER,
+        imageLink TEXT,
+        type TEXT,
+        startingDate TEXT,
+        finishingDate TEXT,
+        currentPage INTEGER,
+        readingTime INTEGER,
+        status TEXT,
+        logIds TEXT
+      )
+    ''');
   }
-
-  Future<int> insertLogInfo(OkuurLogInfo row) async {
-    Database db = await _instance.database;
-    return await db.insert('userInfo', row.toJson());
-  }
-
 }

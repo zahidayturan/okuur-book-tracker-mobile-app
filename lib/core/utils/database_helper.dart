@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -20,7 +21,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'okuur_database.db');
+    String path = join(documentsDirectory.path, 'okuur_database1.db');
     return await openDatabase(
       path,
       version: 1,
@@ -30,17 +31,30 @@ class DatabaseHelper {
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE my_table (
+      CREATE TABLE userInfo (
         id INTEGER PRIMARY KEY,
         name TEXT,
-        value INTEGER
+        surname TEXT,
+        username TEXT,
+        email TEXT,
+        creationTime TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE logInfo (
+        id INTEGER PRIMARY KEY,
+        bookId INTEGER,
+        numberOfPages INTEGER,
+        timeRead INTEGER,
+        readingDate TEXT,
+        finishingTime TEXT
       )
     ''');
   }
 
-  Future<int> insert(Map<String, dynamic> row) async {
+  Future<int> insertLogInfo(OkuurLogInfo row) async {
     Database db = await _instance.database;
-    return await db.insert('my_table', row);
+    return await db.insert('userInfo', row.toJson());
   }
 
 }

@@ -265,6 +265,8 @@ class _WelcomePageState extends State<WelcomePage> {
           barrierDismissible: false,
         );
         try {
+          await _auth.currentUser?.reload();
+          await FirebaseGoogleOperation().disconnectGoogle();
           newUser = await FirebaseGoogleOperation().signInWithGoogle();
         } finally {
           Navigator.pop(context);

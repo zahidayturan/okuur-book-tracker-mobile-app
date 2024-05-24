@@ -48,10 +48,9 @@ class FirebaseAuthOperation{
     try {
       User? user = _auth.currentUser;
       if (user != null) {
-        await FirebaseGoogleOperation().signOutGoogle();
         await user.delete();
+        await FirebaseGoogleOperation().signOutGoogle();
         await userSignOut();
-
       }
     } catch (e) {
       print("Error deleting account: $e");

@@ -63,6 +63,15 @@ class FirebaseGoogleOperation{
     }
   }
 
+  Future<void> disconnectGoogle() async {
+      try {
+        await _googleSignIn.disconnect();
+      } catch (e) {
+        print("google hata 1");
+        print(e.toString());
+      }
+  }
+
   Future<DateTime?> getAccountCreationDate() async {
     final User? user = _auth.currentUser;
 

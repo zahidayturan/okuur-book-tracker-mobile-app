@@ -49,10 +49,10 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Okuur',
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: _currentUser != null ? OkuurApp(pageIndex: 0) : WelcomePage() ,
+      home: 3 != null ? OkuurApp(pageIndex: 0) : WelcomePage() ,
     );
   }
 }

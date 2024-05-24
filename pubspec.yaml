@@ -16,6 +16,8 @@ dependencies:
   get_storage: ^2.1.1
   get: ^4.6.5
   flutter_native_splash: ^2.3.7
+  sqflite: ^2.3.2
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:

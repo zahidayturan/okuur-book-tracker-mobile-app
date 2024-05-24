@@ -28,31 +28,38 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 54,
-          margin: EdgeInsets.symmetric(horizontal: 12,vertical: 15),
-          decoration: BoxDecoration(
-            color: colors.blue,
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+    return Container(
+
+      decoration: BoxDecoration(
+        color: colors.white,
+        border: Border(top: BorderSide(width: 1,color: colors.greyDark.withOpacity(0.2)))
+      ),
+      child: Stack(
+        children: [
+          Container(
+            height: 54,
+            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 15),
+            decoration: BoxDecoration(
+              color: colors.blue,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
           ),
-        ),
-        Container(
-          height: 60,
-          margin: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0,HomePage()),
-              getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1,StatisticsPage()),
-              getIconAndText(context, "assets/icons/social.png", "Sosyal",2,HomePage()),
-              getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,HomePage()),
-              getIconAndText(context, "assets/icons/other.png", "Diğer",4,HomePage())
-            ],
+          Container(
+            height: 60,
+            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0,HomePage()),
+                getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1,StatisticsPage()),
+                getIconAndText(context, "assets/icons/social.png", "Sosyal",2,HomePage()),
+                getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,HomePage()),
+                getIconAndText(context, "assets/icons/other.png", "Diğer",4,HomePage())
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

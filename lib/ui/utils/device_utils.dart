@@ -30,6 +30,10 @@ class OkuurDeviceUtils{
     static void setFullScreen(bool enable){
       SystemChrome.setEnabledSystemUIMode(enable ? SystemUiMode.immersiveSticky : SystemUiMode.edgeToEdge);
     }
+
+    static Size getScreenSize(){
+      return MediaQuery.of(Get.context!).size;
+    }
     
     static double getScreenHeight(){
       return MediaQuery.of(Get.context!).size.height;

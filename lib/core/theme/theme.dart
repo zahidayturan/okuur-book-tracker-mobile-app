@@ -11,6 +11,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     primaryColor: ThemeData.light().scaffoldBackgroundColor,
     useMaterial3: false,
+    fontFamily: "FontMedium",
     scaffoldBackgroundColor: colors.grey,
     colorScheme: const ColorScheme.light().copyWith(
         primary: colors.orange,
@@ -20,6 +21,7 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     primaryColor: ThemeData.dark().scaffoldBackgroundColor,
     useMaterial3: false,
+    fontFamily: "FontMedium",
     scaffoldBackgroundColor: colors.greenDark,
     colorScheme: const ColorScheme.dark().copyWith(
       primary: colors.greenDark,

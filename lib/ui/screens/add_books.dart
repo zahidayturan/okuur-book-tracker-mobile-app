@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'dart:ui';
 
-class AddReadsPage extends StatefulWidget {
+class AddBookPage extends StatefulWidget {
 
-  const AddReadsPage({
+  const AddBookPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddReadsPage> createState() => _AddReadsPageState();
+  State<AddBookPage> createState() => _AddBookPageState();
 }
 
-class _AddReadsPageState extends State<AddReadsPage> {
+class _AddBookPageState extends State<AddBookPage> {
 
   AppColors colors = AppColors();
 
@@ -69,7 +69,7 @@ class _AddReadsPageState extends State<AddReadsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title("Okuduklarını Kaydet", colors.greenDark, 16, "FontBold"),
+                  title("Yeni Kitap Ekle", colors.greenDark, 16, "FontBold"),
                   iconButton("assets/icons/close.png")
                 ],
               ),

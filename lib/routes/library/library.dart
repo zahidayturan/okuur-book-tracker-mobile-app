@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/database_helper.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
-import 'package:okuur/data/models/okuur_log_info.dart';
+import 'package:okuur/ui/components/page_header.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -30,32 +30,11 @@ class _LibraryPageState extends State<LibraryPage> {
               child: Column(
                 children: [
                   SizedBox(height: 12,),
-                  FutureBuilder<List<OkuurBookInfo>>(
-                    future: DatabaseHelper().getBookInfo(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No data available'));
-                      } else {
-                        return SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              OkuurBookInfo bookInfo = snapshot.data![index];
-                              return ListTile(
-                                title: Text(bookInfo.name),
-                                subtitle: Text(bookInfo.author),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                  PageHeaderTitle(
+                      title: "Kitaplığın",
+                      pathName: "library",
+                      subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
+                      otherWidget: true).getTitle()
                 ],
               ),
             ),

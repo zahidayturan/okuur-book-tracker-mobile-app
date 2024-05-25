@@ -30,11 +30,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 children: [
                   SizedBox(height: 12,),
                   PageHeaderTitle(
-                      textColor: colors.greenDark,
-                      miniTextColor: colors.black,
-                      iconName: "statistics").getTitle()
-
-
+                      title: "İstatistiklerin",
+                      pathName: "statistics",
+                      subtitle: "Okumalarının analizini ve\ntakvimi görüntüle"
+                  ).getTitle()
                 ],
               ),
             ),

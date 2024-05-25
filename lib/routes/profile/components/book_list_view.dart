@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/settings/settings.dart';
 
@@ -21,44 +22,52 @@ class _BookListWidgetState extends State<BookListWidget> {
   AppColors colors = AppColors();
 
 
-  List<Map<String, String>> tempBookList = [
-    {
-      'id': '1',
-      'name': 'Books 1',
-      'author': 'Author 1',
-      'page': '248',
-      'currentPage': '120',
-      'image': 'https://picsum.photos/250?image=9',
-      'type': 'Type 1',
-      'startDate': '15.05.2024',
-      'endDate': '15.05.2024',
-      'readTime': '254',
-      'readingLogs': '4',
-      'readStatus': '0',
-    },
-    {
-      'id': '2',
-      'name': 'Books 2',
-      'author': 'Author 2',
-      'page': '124',
-      'currentPage': '124',
-      'image': 'https://picsum.photos/250?image=8',
-      'type': 'Type 2',
-      'startDate': '14.05.2024',
-      'endDate': '14.05.2024',
-      'readTime': '155',
-      'readingLogs': '5',
-      'readStatus': '1',
-    },
+  List<OkuurBookInfo> tempBookList = [
+    OkuurBookInfo(
+        name: "Kitap 1",
+        author: "Yazar 1",
+        pageCount: 245,
+        imageLink: 'https://picsum.photos/250?image=8',
+        type: "type",
+        startingDate:"startingDate",
+        finishingDate: "finishingDate",
+        currentPage: 145,
+        readingTime: 220,
+        status: 0,
+        logIds:"1-"),
+    OkuurBookInfo(
+        name: "Kitap 2",
+        author: "Yazar 2",
+        pageCount: 245,
+        imageLink: 'https://picsum.photos/250?image=8',
+        type: "type",
+        startingDate:"startingDate",
+        finishingDate: "finishingDate",
+        currentPage: 145,
+        readingTime: 220,
+        status: 1,
+        logIds:"1-"),
+    OkuurBookInfo(
+        name: "Kitap 3",
+        author: "Yazar 3",
+        pageCount: 245,
+        imageLink: 'https://picsum.photos/250?image=8',
+        type: "type",
+        startingDate:"startingDate",
+        finishingDate: "finishingDate",
+        currentPage: 145,
+        readingTime: 220,
+        status: 2,
+        logIds:"1-"),
   ];
 
-  List<Map<String, String>> currentBooks = [];
-  List<Map<String, String>> futureBooks = [];
+  List<OkuurBookInfo> currentBooks = [];
+  List<OkuurBookInfo> futureBooks = [];
 
   @override
   void initState() {
     for (var book in tempBookList) {
-      int readStatus = int.parse(book['readStatus']!);
+      int readStatus = book.status;
       if (readStatus % 2 == 0) {
         currentBooks.add(book);
       } else {
@@ -71,7 +80,7 @@ class _BookListWidgetState extends State<BookListWidget> {
   @override
   Widget build(BuildContext context) {
 
-    List<Map<String, String>> allBooks = [...currentBooks, ...futureBooks];
+    List<OkuurBookInfo> allBooks = [...currentBooks, ...futureBooks];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -84,17 +93,17 @@ class _BookListWidgetState extends State<BookListWidget> {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             physics: BouncingScrollPhysics(),
-            itemCount: futureBooks.length,
+            itemCount: allBooks.length,
             itemBuilder: (context, index) {
-              Map<String, String> item = futureBooks[index];
+              OkuurBookInfo item = allBooks[index];
               return bookContainer(
                 currentBookText(
-                  item['name']!,
-                  item['author']!,
-                  item['type']!,
-                  item['page']!,
-                  item['startDate']!,
-                ),
+                  item.name,
+                  item.author,
+                  item.type,
+                  item.pageCount.toString(),
+                  item.startingDate,
+                ),"${index+1}",
               );
             },
           ),
@@ -104,16 +113,32 @@ class _BookListWidgetState extends State<BookListWidget> {
   }
 
 
-  Container bookContainer(Widget child){
-    return Container(
-      height: 112,
-      width: 30,
-      margin: EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-          color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(20))
-      ),
-      child: child,
+  Widget bookContainer(Widget child,String index){
+    final Size size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        Container(
+          width: 28,height: 112,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(24),),
+            color: colors.orange
+          ),
+          child: RotatedBox(
+              quarterTurns: 3,
+              child: Center(child: text(index,colors.white,13,"FontBold",1))),
+        ),
+        Container(
+          height: 112,
+          width: size.width,
+          margin: EdgeInsets.only(bottom: 12,left: 24),
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20))
+          ),
+          child: child,
+        ),
+      ],
     );
   }
 

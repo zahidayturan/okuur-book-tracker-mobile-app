@@ -7,8 +7,8 @@ import 'package:okuur/routes/profile/components/book_list_view.dart';
 import 'package:okuur/routes/profile/components/profile_data.dart';
 import 'package:okuur/routes/profile/components/user_info.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
-import 'package:okuur/ui/components/circularProgress.dart';
-import 'package:okuur/ui/components/errorText.dart';
+import 'package:okuur/ui/components/circular_progress.dart';
+import 'package:okuur/ui/components/error_text.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -40,42 +40,37 @@ class _ProfilePageState extends State<ProfilePage> {
         bottomNavigationBar: BottomNavBar(pageIndex: 9,),
         body: Padding(
           padding: const EdgeInsets.only(right: 12, left: 12),
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 12,),
-                  FutureBuilder<OkuurUserInfo?>(
-                    future: FirebaseFirestoreOperation().getUserInfo(uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container(
-                            height: 86,
-                          child: GetProgressIndicator().getCircular(30, colors.blue),
-                            );
-                      } else if (snapshot.hasError) {
-                        return SizedBox(
-                            height: 86,
-                            child: Center(child: ErrorText().error()));
-                      } else if (!snapshot.hasData || snapshot.data == null) {
-                        return SizedBox(
-                            height: 86,
-                            child: Center(child: ErrorText().userDataNotFound()));
-                      } else {
-                        OkuurUserInfo userData = snapshot.data!;
-                        return UserInfoWidget(userData: userData);
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 18,),
-                  ProfileDataWidget(),
-                  const SizedBox(height: 18,),
-                  SizedBox(
-                      height: 500,
-                      child: BookListWidget())
-                ],
-              ),
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(height: 12,),
+                FutureBuilder<OkuurUserInfo?>(
+                  future: FirebaseFirestoreOperation().getUserInfo(uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                          height: 86,
+                        child: GetProgressIndicator().getCircular(30, colors.blue),
+                          );
+                    } else if (snapshot.hasError) {
+                      return SizedBox(
+                          height: 86,
+                          child: Center(child: ErrorText().error()));
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return SizedBox(
+                          height: 86,
+                          child: Center(child: ErrorText().userDataNotFound()));
+                    } else {
+                      OkuurUserInfo userData = snapshot.data!;
+                      return UserInfoWidget(userData: userData);
+                    }
+                  },
+                ),
+                const SizedBox(height: 18,),
+                ProfileDataWidget(),
+                const SizedBox(height: 18,),
+                Expanded(child: BookListWidget())
+              ],
             ),
           ),
         ),

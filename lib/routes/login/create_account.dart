@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
@@ -386,7 +387,7 @@ class _CreateAccountState extends State<CreateAccount> {
               PageRouteBuilder(
                 opaque: false,
                 transitionDuration: const Duration(milliseconds: 400),
-                pageBuilder: (context, animation, nextanim) => const HomePage(),
+                pageBuilder: (context, animation, nextanim) => const OkuurApp(pageIndex: 0),
                 reverseTransitionDuration: const Duration(milliseconds: 1),
                 transitionsBuilder: (context, animation, nexttanim, child) {
                   return FadeTransition(

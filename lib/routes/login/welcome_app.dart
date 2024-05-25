@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
 import 'package:okuur/routes/home/home.dart';
@@ -7,6 +8,8 @@ import 'package:okuur/routes/login/create_account.dart';
 import 'package:okuur/routes/login/google_login.dart';
 import 'package:okuur/routes/login/login_account.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/screens/internet_connection.dart';
+import 'package:okuur/ui/utils/device_utils.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -16,6 +19,20 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+
+  bool internet = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkInternetConnection();
+  }
+
+  void checkInternetConnection() async {
+    internet = await OkuurDeviceUtils.hasInternetConnection();
+    setState(() {});
+  }
+
 
   AppColors colors = AppColors();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -91,15 +108,15 @@ class _WelcomePageState extends State<WelcomePage> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               RichTextWidget(
-                  texts: ["Okuur'a"],
+                  texts: const ["Okuur'a"],
                   colors: [colors.blue],
-                  fontFamilies: ["FontLight"],
+                  fontFamilies: const ["FontLight"],
                   fontSize: 22,
                   align: TextAlign.end),
               RichTextWidget(
-                  texts: ["Hoş\nGeldiniz"],
+                  texts: const ["Hoş\nGeldiniz"],
                   colors: [colors.green],
-                  fontFamilies: ["FontMedium"],
+                  fontFamilies: const ["FontMedium"],
                   fontSize: 32,
                   align: TextAlign.end),
             ],
@@ -112,7 +129,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget containerImage(Color color,String path,double degree,AlignmentGeometry align){
     return SizedBox(
       child: RotationTransition(
-        turns: new AlwaysStoppedAnimation(degree / 360),
+        turns: AlwaysStoppedAnimation(degree / 360),
         child: Container(
           width: 72,
           height: 54,
@@ -132,7 +149,7 @@ class _WelcomePageState extends State<WelcomePage> {
           child: Align(
             alignment: Alignment.center,
             child: RotationTransition(
-              turns: new AlwaysStoppedAnimation(-degree / 360),
+              turns: AlwaysStoppedAnimation(-degree / 360),
               child: Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: Image.asset(path),
@@ -172,9 +189,9 @@ class _WelcomePageState extends State<WelcomePage> {
           googleButton(),
           const SizedBox(height: 16,),
           RichTextWidget(
-              texts: ["Okuur, ","Fezai Tech ","tarafından geliştirilmiştir."],
+              texts: const ["Okuur, ","Fezai Tech ","tarafından geliştirilmiştir."],
               colors: [colors.green,colors.greenDark,colors.green],
-              fontFamilies: ["FontMedium","FontBold","FontMedium"],
+              fontFamilies: const ["FontMedium","FontBold","FontMedium"],
               fontSize: 9,
               align: TextAlign.center)
         ],
@@ -185,11 +202,12 @@ class _WelcomePageState extends State<WelcomePage> {
   InkWell button(String textL,String textB,Color color,Widget pageName){
     return InkWell(
       onTap: () {
+        checkInternetConnection();
         Navigator.push(
           context,
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 100),
-            pageBuilder: (context, animation, nextanim) => pageName,
+            pageBuilder: (context, animation, nextanim) => internet == true ? pageName : const InternetConnection(),
             reverseTransitionDuration: const Duration(milliseconds: 1),
             transitionsBuilder: (context, animation, nexttanim, child) {
               return FadeTransition(
@@ -212,7 +230,7 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Center(child: RichTextWidget(
             texts: [textL,textB],
             colors: [colors.white,colors.white],
-            fontFamilies: ["FontMedium","FontBold"],
+            fontFamilies: const ["FontMedium","FontBold"],
             fontSize: 16,
             align: TextAlign.center)),
       )
@@ -253,6 +271,8 @@ class _WelcomePageState extends State<WelcomePage> {
     bool newUser = true;
     return InkWell(
       onTap: () async{
+        checkInternetConnection();
+        if(internet){
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -292,6 +312,9 @@ class _WelcomePageState extends State<WelcomePage> {
             print('Failed to sign in with Google');
           }
         }
+        }else {
+          Get.to(() => InternetConnection());
+        }
       },
       child: Row(
         children: [
@@ -321,9 +344,9 @@ class _WelcomePageState extends State<WelcomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: RichTextWidget(
-                      texts: ["Google hesabın ile devam et"],
+                      texts: const ["Google hesabın ile devam et"],
                       colors: [colors.greenDark],
-                      fontFamilies: ["FontMedium"],
+                      fontFamilies: const ["FontMedium"],
                       fontSize: 14,
                       align: TextAlign.center),
                 ),

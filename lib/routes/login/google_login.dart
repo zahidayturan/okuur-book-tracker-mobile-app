@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
-import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
 import 'package:okuur/routes/login/components/login_text.dart';
@@ -256,7 +256,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
             PageRouteBuilder(
               opaque: false,
               transitionDuration: const Duration(milliseconds: 400),
-              pageBuilder: (context, animation, nextanim) => const HomePage(),
+              pageBuilder: (context, animation, nextanim) => const OkuurApp(pageIndex: 0),
               reverseTransitionDuration: const Duration(milliseconds: 1),
               transitionsBuilder: (context, animation, nexttanim, child) {
                 return FadeTransition(

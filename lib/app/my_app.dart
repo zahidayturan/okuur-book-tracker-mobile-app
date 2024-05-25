@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: 3 != null ? OkuurApp(pageIndex: 0) : WelcomePage() ,
+      home: _currentUser != null ? OkuurApp(pageIndex: 0) : WelcomePage() ,
     );
   }
 }

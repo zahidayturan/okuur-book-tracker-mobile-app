@@ -77,26 +77,7 @@ class _BookListWidgetState extends State<BookListWidget> {
       children: [
         text("Şu An Okunanlar", colors.greenDark, 15, "FontBold", 1),
         SizedBox(height: 12,),
-        SizedBox(
-          height: currentBooks.length*124,
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: currentBooks.length,
-            itemBuilder: (context, index) {
-              Map<String, String> item = currentBooks[index];
-              return bookContainer(
-                currentBookText(
-                  item['name']!,
-                  item['author']!,
-                  item['type']!,
-                  item['page']!,
-                  item['startDate']!,
-                ),
-              );
-            },
-          ),
-        ),
+
         text("Okunan Bütün Eserler", colors.greenDark, 15, "FontBold", 1),
         SizedBox(height: 12,),
         Expanded(

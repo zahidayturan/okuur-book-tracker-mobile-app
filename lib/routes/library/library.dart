@@ -29,25 +29,6 @@ class _LibraryPageState extends State<LibraryPage> {
             child: Center(
               child: Column(
                 children: [
-                  FloatingActionButton(onPressed: () {
-                    DatabaseHelper db = DatabaseHelper();
-                    db.insertBookInfo(OkuurBookInfo(
-                        name: "Kitap1",
-                        author: "Yazar1",
-                        pageCount: 124,
-                        imageLink: "imageLink",
-                        type: "type",
-                        startingDate: "15.05.2024",
-                        finishingDate: "-",
-                        currentPage: 96,
-                        readingTime: 122,
-                        status: 0,
-                        logIds: ""));
-                  },),
-                  FloatingActionButton(onPressed: () {
-                    DatabaseHelper db = DatabaseHelper();
-                    db.deleteAllBookInfo();
-                  },),
                   SizedBox(height: 12,),
                   FutureBuilder<List<OkuurBookInfo>>(
                     future: DatabaseHelper().getBookInfo(),

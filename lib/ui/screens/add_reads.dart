@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'dart:ui';
 
+import 'package:okuur/ui/components/icon_button.dart';
+
 class AddReadsPage extends StatefulWidget {
 
   const AddReadsPage({
@@ -70,7 +72,7 @@ class _AddReadsPageState extends State<AddReadsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   title("Okuduklarını Kaydet", colors.greenDark, 16, "FontBold"),
-                  iconButton("assets/icons/close.png")
+                  iconButton("assets/icons/close.png",colors.greenDark,context)
                 ],
               ),
               SizedBox(height: 16,),
@@ -292,18 +294,4 @@ class _AddReadsPageState extends State<AddReadsPage> {
     );
   }
 
-  Container iconButton(String path){
-    return Container(
-      height: 32,
-      width: 32,
-      decoration: BoxDecoration(
-          color: colors.greenDark,
-          borderRadius: BorderRadius.all(Radius.circular(20))
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
-      ),
-    );
-  }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'dart:ui';
 
+import 'package:okuur/ui/components/icon_button.dart';
+
 class AddBookPage extends StatefulWidget {
 
   const AddBookPage({
@@ -70,7 +72,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   title("Yeni Kitap Ekle", colors.greenDark, 16, "FontBold"),
-                  iconButton("assets/icons/close.png")
+                  iconButton("assets/icons/close.png",colors.greenDark,context)
                 ],
               ),
               SizedBox(height: 16,),
@@ -108,16 +110,16 @@ class _AddBookPageState extends State<AddBookPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  title("142 -> 188", colors.greenDark, 14, "FontMedium"),
-                  SizedBox(width: 12,),
                   Container(
-                    width: 72,
                     height: 32,
                     decoration: BoxDecoration(
                         color: colors.orange,
                         borderRadius: BorderRadius.all(Radius.circular(20))
                     ),
-                    child: Center(child: title("Kaydet", colors.grey, 15, "FontMedium")),
+                    child: Center(child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: title("Kitabı Ekle", colors.grey, 15, "FontMedium"),
+                    )),
                   )
                 ],
               ),
@@ -292,18 +294,5 @@ class _AddBookPageState extends State<AddBookPage> {
     );
   }
 
-  Container iconButton(String path){
-    return Container(
-      height: 32,
-      width: 32,
-      decoration: BoxDecoration(
-          color: colors.greenDark,
-          borderRadius: BorderRadius.all(Radius.circular(20))
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
-      ),
-    );
-  }
+
 }

@@ -4,7 +4,6 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/screens/add_books.dart';
-import 'package:okuur/ui/screens/internet_connection.dart';
 
 class PageHeaderTitle {
 
@@ -36,7 +35,12 @@ class PageHeaderTitle {
           children: [
             text(title,colorTitle,18,"FontBold",3),
             Spacer(),
-            otherWidget == true ? addBookButton() : SizedBox(),
+            otherWidget == true ? Row(
+              children: [
+                addBookButton(),
+                SizedBox(width: 12,)
+              ],
+            ) : SizedBox(),
             SizedBox(
                 height: 26,
                 child: Image.asset("assets/icons/$pathName.png",color: colorTitle,))
@@ -68,22 +72,19 @@ class PageHeaderTitle {
       },
       highlightColor: colors.orange,
       borderRadius: BorderRadius.all(Radius.circular(2)),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 12),
-        child: Container(
-          decoration: BoxDecoration(
-            color: colors.orange,
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),bottomLeft: Radius.circular(15),topRight: Radius.circular(2),topLeft: Radius.circular(2))
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 10),
-            child: RichTextWidget(
-                texts: ["+ Kitap ","Ekle"],
-                colors: [colors.white,colors.white],
-                fontFamilies: ["FontMedium","FontBold"],
-                fontSize: 15,
-                align: TextAlign.center),
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: colors.orange,
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),bottomLeft: Radius.circular(15),topRight: Radius.circular(2),topLeft: Radius.circular(2))
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 10),
+          child: RichTextWidget(
+              texts: ["+ Kitap ","Ekle"],
+              colors: [colors.white,colors.white],
+              fontFamilies: ["FontMedium","FontBold"],
+              fontSize: 15,
+              align: TextAlign.center),
         ),
       ),
     );

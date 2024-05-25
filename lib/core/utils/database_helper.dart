@@ -22,7 +22,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'okuur_database2.db');
+    String path = join(documentsDirectory.path, 'okuur_database3.db');
     return await openDatabase(
       path,
       version: 1,
@@ -53,9 +53,50 @@ class DatabaseHelper {
         finishingDate TEXT,
         currentPage INTEGER,
         readingTime INTEGER,
-        status TEXT,
+        status INTEGER,
         logIds TEXT
       )
     ''');
   }
+
+  Future<void> insertBookInfo(OkuurBookInfo bookInfo) async {
+    final db = await database;
+    await db.insert(
+      'bookInfo',
+      bookInfo.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print("Kitap added");
+  }
+
+  Future<void> insertLogInfo(OkuurLogInfo logInfo) async {
+    final db = await database;
+    await db.insert(
+      'logInfo',
+      logInfo.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<OkuurBookInfo>> getBookInfo() async {
+    final db = await database;
+    var result = await db.query('bookInfo', orderBy: "id");
+    return result.map((book) => OkuurBookInfo.fromJson(book)).toList();
+  }
+
+  Future<List<OkuurLogInfo>> getLogInfo() async {
+    final db = await database;
+    var result = await db.query('logInfo', orderBy: "id");
+    return result.map((log) => OkuurLogInfo.fromJson(log)).toList();
+  }
+
+
+
+  Future<void> deleteAllBookInfo() async {
+    final db = await database;
+    await db.delete('bookInfo');
+  }
+
+
+
 }

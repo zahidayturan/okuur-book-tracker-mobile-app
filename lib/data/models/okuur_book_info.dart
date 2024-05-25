@@ -9,7 +9,7 @@ class OkuurBookInfo {
   String finishingDate;
   int currentPage;
   int readingTime;
-  String status;
+  int status;
   String logIds;
 
   OkuurBookInfo({
@@ -24,12 +24,11 @@ class OkuurBookInfo {
     required this.currentPage,
     required this.readingTime,
     required this.status,
-    required this.logIds
+    required this.logIds,
   });
 
   factory OkuurBookInfo.fromJson(Map<String, dynamic> json) {
     return OkuurBookInfo(
-      id: json['id'],
       name: json['name'],
       author: json['author'],
       pageCount: json['pageCount'],
@@ -40,7 +39,7 @@ class OkuurBookInfo {
       currentPage: json['currentPage'],
       readingTime: json['readingTime'],
       status: json['status'],
-      logIds: json['logIds']
+      logIds: json['logIds'],
     );
   }
 
@@ -57,7 +56,7 @@ class OkuurBookInfo {
       'currentPage': currentPage,
       'readingTime': readingTime,
       'status': status,
-      'logIds': logIds
+      'logIds': logIds,
     };
   }
 }

@@ -71,8 +71,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   text("Yeni Kitap Ekle", colors.greenDark, 16, "FontBold",1),
-                  iconButton(
-                      "assets/icons/close.png", colors.greenDark, context)
+                  iconButton("assets/icons/close.png", colors.greenDark, context)
                 ],
               ),
               SizedBox(
@@ -85,17 +84,28 @@ class _AddBookPageState extends State<AddBookPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    height: 32,
-                    decoration: BoxDecoration(
-                        color: colors.orange,
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child:
-                          text("Kitabı Ekle", colors.grey, 15, "FontMedium",1),
-                    )),
+                  InkWell(
+                    onTap: () {
+                      if(_bookNameController.text != ""){
+                        Navigator.of(context).pop();
+                      }else{
+                        setState(() {
+                          bookNameValidate = false;
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: 32,
+                      decoration: BoxDecoration(
+                          color: colors.green,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Center(
+                          child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child:
+                            text("Kitabı Ekle", colors.grey, 15, "FontMedium",1),
+                      )),
+                    ),
                   )
                 ],
               ),
@@ -106,6 +116,9 @@ class _AddBookPageState extends State<AddBookPage> {
     );
   }
 
+  final _bookNameKey = GlobalKey<FormState>();
+  final TextEditingController _bookNameController = TextEditingController();
+  bool bookNameValidate = true;
   Widget nameForm() {
     return SizedBox(
       height: 38,
@@ -114,8 +127,16 @@ class _AddBookPageState extends State<AddBookPage> {
           formIcon("assets/icons/books.png"),
           SizedBox(width: 8,),
           Expanded(
-            child: getTextFormFieldForPage(),
-          )
+            child: OkuurTextFormField(
+                label: "Kitabın Adı",
+                hint: "Adını yazınız",
+                controller: _bookNameController,
+              key: _bookNameKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",bookNameValidate),
+
         ],
       ),
     );
@@ -129,6 +150,19 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Image.asset(path),
+      ),
+    );
+  }
+
+  Visibility errorIcon(String path,bool validate) {
+    return Visibility(
+      visible: validate != true,
+      child: SizedBox(
+        height: 38,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(path,color: colors.red,),
+        ),
       ),
     );
   }

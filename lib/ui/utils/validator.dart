@@ -39,5 +39,12 @@ class OkuurValidator {
     return null;
   }
 
+  static bool basicValidate(String? value){
+    if(value == null || value.isEmpty){
+      return false;
+    }
+    return true;
+  }
+
 
 }

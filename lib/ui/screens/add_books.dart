@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:okuur/ui/components/icon_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
+import 'package:okuur/ui/utils/validator.dart';
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({
@@ -74,24 +75,27 @@ class _AddBookPageState extends State<AddBookPage> {
                   iconButton("assets/icons/close.png", colors.greenDark, context)
                 ],
               ),
-              SizedBox(
-                height: 16,
-              ),
+              SizedBox(height: 16,),
               nameForm(), //nameForm(),
-              SizedBox(
-                height: 16,
-              ),
+              SizedBox(height: 16,),
+              authorForm(),
+              SizedBox(height: 16,),
+              pageForm(),
+              SizedBox(height: 16,),
+              typeForm(),
+              SizedBox(height: 16,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
                     onTap: () {
-                      if(_bookNameController.text != ""){
+                      setState(() {
+                        bookNameValidate = OkuurValidator.basicValidate(_bookNameController.text);
+                        bookAuthorValidate = OkuurValidator.basicValidate(_bookAuthorController.text);
+                        bookPageValidate = OkuurValidator.basicValidate(_bookPageController.text);
+                      });
+                      if(bookNameValidate == true && bookAuthorValidate == true && bookPageValidate == true){
                         Navigator.of(context).pop();
-                      }else{
-                        setState(() {
-                          bookNameValidate = false;
-                        });
                       }
                     },
                     child: Container(
@@ -142,6 +146,84 @@ class _AddBookPageState extends State<AddBookPage> {
     );
   }
 
+  final _bookAuthorKey = GlobalKey<FormState>();
+  final TextEditingController _bookAuthorController = TextEditingController();
+  bool bookAuthorValidate = true;
+  Widget authorForm() {
+    return SizedBox(
+      height: 38,
+      child: Row(
+        children: [
+          formIcon("assets/icons/people.png"),
+          SizedBox(width: 8,),
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Kitabın Yazarı",
+                hint:  "Yazarını yazınız",
+                controller: _bookAuthorController,
+                key: _bookAuthorKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",bookAuthorValidate),
+
+        ],
+      ),
+    );
+  }
+
+  final _bookPageKey = GlobalKey<FormState>();
+  final TextEditingController _bookPageController = TextEditingController();
+  bool bookPageValidate = true;
+  Widget pageForm() {
+    return SizedBox(
+      height: 38,
+      child: Row(
+        children: [
+          formIcon("assets/icons/page.png"),
+          SizedBox(width: 8,),
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Kitabın Sayfa Sayısı",
+                hint:  "Sayfa sayısını yazınız",
+                controller: _bookPageController,
+                key: _bookPageKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",bookPageValidate),
+
+        ],
+      ),
+    );
+  }
+
+  final _bookTypeKey = GlobalKey<FormState>();
+  final TextEditingController _bookTypeController = TextEditingController();
+  bool bookTypeValidate = true;
+  Widget typeForm() {
+    return SizedBox(
+      height: 38,
+      child: Row(
+        children: [
+          formIcon("assets/icons/goals.png"),
+          SizedBox(width: 8,),
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Kitabın Türü",
+                hint:  "Türünü seçiniz",
+                controller: _bookTypeController,
+                key: _bookTypeKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",bookTypeValidate),
+
+        ],
+      ),
+    );
+  }
+
   Container formIcon(String path) {
     return Container(
       height: 38,
@@ -154,15 +236,13 @@ class _AddBookPageState extends State<AddBookPage> {
     );
   }
 
-  Visibility errorIcon(String path,bool validate) {
-    return Visibility(
-      visible: validate != true,
-      child: SizedBox(
-        height: 38,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(path,color: colors.red,),
-        ),
+  AnimatedContainer errorIcon(String path,bool validate) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: validate == true ? 0 : 34,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Image.asset(path,color: colors.red,),
       ),
     );
   }

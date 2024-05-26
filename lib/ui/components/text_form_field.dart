@@ -24,11 +24,6 @@ class OkuurTextFormField {
           maxLines: 1,
           maxLength: 54,
           controller: controller,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Boş bırakılamaz';
-            }
-          },
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             hintText: hint,

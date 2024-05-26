@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/core/utils/database_helper.dart';
-import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/ui/components/page_header.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -34,9 +32,9 @@ class _LibraryPageState extends State<LibraryPage> {
                       title: "Kitaplığın",
                       pathName: "library",
                       subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
-                      otherWidget: true).getTitle()
-                ],
-              ),
+                      otherWidget: true).getTitle(),
+                  SizedBox(height: 12,),
+                ],),
             ),
           ),
         ),

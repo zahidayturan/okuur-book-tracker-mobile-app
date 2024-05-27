@@ -4,6 +4,7 @@ import 'package:okuur/ui/components/dropdown_menu.dart';
 import 'dart:ui';
 import 'package:okuur/ui/components/icon_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
+import 'package:okuur/ui/components/switch_button.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
 import 'package:okuur/ui/utils/validator.dart';
@@ -47,6 +48,14 @@ class _AddBookPageState extends State<AddBookPage> {
     );
   }
 
+  int currentButtonIndex = 0;
+
+  void handleButtonChange(int newButton) {
+    setState(() {
+      currentButtonIndex = newButton;
+    });
+  }
+
   Widget formContent() {
     return Center(
       child: GestureDetector(
@@ -78,15 +87,28 @@ class _AddBookPageState extends State<AddBookPage> {
                 ],
               ),
               SizedBox(height: 16,),
-              nameForm(), //nameForm(),
+              OkuurSwitchButton(buttonCount: 2,buttonNames: ["Kendin Ekle","Kitabı Ara"],onChanged:  handleButtonChange,),
               SizedBox(height: 16,),
-              authorForm(),
-              SizedBox(height: 16,),
-              pageForm(),
-              SizedBox(height: 16,),
-              typeForm(),
-              SizedBox(height: 16,),
-              imageForm(),
+              Visibility(
+                visible: currentButtonIndex == 0,
+                child: Column(
+                  children: [
+                    nameForm(), //nameForm(),
+                    SizedBox(height: 16,),
+                    authorForm(),
+                    SizedBox(height: 16,),
+                    pageForm(),
+                    SizedBox(height: 16,),
+                    typeForm(),
+                    SizedBox(height: 16,),
+                    imageForm(),
+                  ],
+                ),
+              ),
+              Visibility(
+                  visible: currentButtonIndex == 1,
+                  child: SizedBox(height: 254,child: Center(child: Text("Not yet")),)),
+
               SizedBox(height: 16,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

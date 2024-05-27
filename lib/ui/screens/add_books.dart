@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:okuur/ui/components/icon_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
+import 'package:okuur/ui/const/book_type_list.dart';
 import 'package:okuur/ui/utils/validator.dart';
 
 class AddBookPage extends StatefulWidget {
@@ -85,6 +86,8 @@ class _AddBookPageState extends State<AddBookPage> {
               SizedBox(height: 16,),
               typeForm(),
               SizedBox(height: 16,),
+              imageForm(),
+              SizedBox(height: 16,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -94,8 +97,12 @@ class _AddBookPageState extends State<AddBookPage> {
                         bookNameValidate = OkuurValidator.basicValidate(_bookNameController.text);
                         bookAuthorValidate = OkuurValidator.basicValidate(_bookAuthorController.text);
                         bookPageValidate = OkuurValidator.basicValidate(_bookPageController.text);
+                        bookTypeValidate = OkuurValidator.compareValidate(_bookTypeController.text,bookTypeList.first);
                       });
-                      if(bookNameValidate == true && bookAuthorValidate == true && bookPageValidate == true){
+                      if(bookNameValidate == true &&
+                          bookAuthorValidate == true &&
+                          bookPageValidate == true &&
+                          bookTypeValidate == true){
                         Navigator.of(context).pop();
                       }
                     },
@@ -202,7 +209,6 @@ class _AddBookPageState extends State<AddBookPage> {
   final _bookTypeKey = GlobalKey<FormState>();
   final TextEditingController _bookTypeController = TextEditingController();
   bool bookTypeValidate = true;
-  List<String> bookTypeList = ["Türünü seçiniz","Roman","Şiir","Masal"];
   Widget typeForm() {
     return SizedBox(
       height: 38,
@@ -210,18 +216,19 @@ class _AddBookPageState extends State<AddBookPage> {
         children: [
           formIcon("assets/icons/list.png"),
           SizedBox(width: 8,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              text("Kitabın Türü",colors.blue,13,"FontMedium",1),
-              Expanded(
-                child: OkuurDropdownMenu(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                text("Kitabın Türü",colors.blue,13,"FontMedium",1),
+                OkuurDropdownMenu(
                     controller: _bookTypeController,
                     key: _bookTypeKey,
                   list: bookTypeList
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",bookTypeValidate),
@@ -231,10 +238,33 @@ class _AddBookPageState extends State<AddBookPage> {
     );
   }
 
+  Widget imageForm() {
+    return SizedBox(
+      height: 38,
+      child: Row(
+        children: [
+          formIcon("assets/icons/add_box.png"),
+          SizedBox(width: 8,),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                text("Kitabın Kapak Fotoğrafı",colors.blue,13,"FontMedium",1),
+                text("Yüklemek için dokunun",colors.greyDark,15,"FontMedium",1),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Container formIcon(String path) {
     return Container(
       height: 38,
       width: 38,
+      margin: EdgeInsets.only(left: 8),
       decoration: BoxDecoration(color: colors.blue, shape: BoxShape.circle),
       child: Padding(
         padding: const EdgeInsets.all(10.0),

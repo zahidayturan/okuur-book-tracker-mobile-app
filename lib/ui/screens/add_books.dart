@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/dropdown_menu.dart';
 import 'dart:ui';
 import 'package:okuur/ui/components/icon_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
@@ -201,20 +202,26 @@ class _AddBookPageState extends State<AddBookPage> {
   final _bookTypeKey = GlobalKey<FormState>();
   final TextEditingController _bookTypeController = TextEditingController();
   bool bookTypeValidate = true;
+  List<String> bookTypeList = ["Türünü seçiniz","Roman","Şiir","Masal"];
   Widget typeForm() {
     return SizedBox(
       height: 38,
       child: Row(
         children: [
-          formIcon("assets/icons/goals.png"),
+          formIcon("assets/icons/list.png"),
           SizedBox(width: 8,),
-          Expanded(
-            child: OkuurTextFormField(
-                label: "Kitabın Türü",
-                hint:  "Türünü seçiniz",
-                controller: _bookTypeController,
-                key: _bookTypeKey
-            ).getTextFormFieldForPage(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              text("Kitabın Türü",colors.blue,13,"FontMedium",1),
+              Expanded(
+                child: OkuurDropdownMenu(
+                    controller: _bookTypeController,
+                    key: _bookTypeKey,
+                  list: bookTypeList
+                ),
+              ),
+            ],
           ),
           SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",bookTypeValidate),
@@ -230,8 +237,8 @@ class _AddBookPageState extends State<AddBookPage> {
       width: 38,
       decoration: BoxDecoration(color: colors.blue, shape: BoxShape.circle),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
+        padding: const EdgeInsets.all(10.0),
+        child: Image.asset(path,color: colors.white,),
       ),
     );
   }

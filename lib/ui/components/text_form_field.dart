@@ -34,6 +34,9 @@ class OkuurTextFormField {
             labelStyle: TextStyle(
                 color: colors.blue
             ),
+            hintStyle: TextStyle(
+              color: colors.black
+            ),
             contentPadding: const EdgeInsets.symmetric(vertical: 2),
             border: InputBorder.none,
           ),

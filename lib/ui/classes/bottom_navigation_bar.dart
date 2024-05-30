@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
+import 'package:okuur/routes/library/library.dart';
+import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -52,8 +54,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               children: [
                 getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0,HomePage()),
                 getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1,StatisticsPage()),
-                getIconAndText(context, "assets/icons/social.png", "Sosyal",2,HomePage()),
-                getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,HomePage()),
+                getIconAndText(context, "assets/icons/social.png", "Sosyal",2,SocialPage()),
+                getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,LibraryPage()),
                 getIconAndText(context, "assets/icons/other.png", "Diğer",4,HomePage())
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/page_header.dart';
+import 'package:okuur/ui/components/switch_button.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -12,6 +13,14 @@ class LibraryPage extends StatefulWidget {
 class _LibraryPageState extends State<LibraryPage> {
 
   AppColors colors = AppColors();
+
+  int currentButtonIndex = 0;
+
+  void handleButtonChange(int newButton) {
+    setState(() {
+      currentButtonIndex = newButton;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +42,12 @@ class _LibraryPageState extends State<LibraryPage> {
                       pathName: "library",
                       subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
                       otherWidget: true).getTitle(),
-                  SizedBox(height: 12,),
+                  SizedBox(height: 16,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: OkuurSwitchButton(buttonCount: 2,buttonNames: ["Okuduklarınız","Okuyacaklarınız"],onChanged:  handleButtonChange,),
+                  ),
+                  SizedBox(height: 16,),
                 ],),
             ),
           ),

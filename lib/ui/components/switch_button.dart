@@ -43,7 +43,7 @@ class _OkuurSwitchButtonState extends State<OkuurSwitchButton> {
           padding: EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: currentButton == index ? colors.blue : colors.blueLight,
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Center(
             child: Text(
@@ -67,7 +67,7 @@ class _OkuurSwitchButtonState extends State<OkuurSwitchButton> {
           height: 36,
           decoration: BoxDecoration(
             color: colors.blueLight,
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
         Row(

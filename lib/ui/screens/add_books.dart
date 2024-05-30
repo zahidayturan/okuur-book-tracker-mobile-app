@@ -7,6 +7,7 @@ import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/switch_button.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
+import 'package:okuur/ui/utils/device_utils.dart';
 import 'package:okuur/ui/utils/validator.dart';
 
 class AddBookPage extends StatefulWidget {
@@ -26,22 +27,30 @@ class _AddBookPageState extends State<AddBookPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                  child: Container(
-                    color: colors.white.withOpacity(0.4),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                    child: Container(
+                      color: colors.white.withOpacity(0.4),
+                    ),
                   ),
                 ),
-              ),
-              formContent()
-            ],
+                Column(
+                  children: [
+                    SizedBox(height: OkuurDeviceUtils.getScreenHeight()-640,),
+                    formContent(),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

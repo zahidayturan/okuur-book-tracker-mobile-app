@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/ui/screens/add_reads.dart';
+import 'package:okuur/ui/screens/add_reads_log.dart';
 import '../../../ui/components/rich_text.dart';
 
 class OperationButtons extends StatefulWidget {

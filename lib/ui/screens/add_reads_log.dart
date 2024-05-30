@@ -3,6 +3,7 @@ import 'package:okuur/core/constants/colors.dart';
 import 'dart:ui';
 
 import 'package:okuur/ui/components/icon_button.dart';
+import 'package:okuur/ui/components/text_form_field.dart';
 
 class AddReadsPage extends StatefulWidget {
 
@@ -76,34 +77,18 @@ class _AddReadsPageState extends State<AddReadsPage> {
                 ],
               ),
               SizedBox(height: 16,),
-              Row(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        bookForm(),
-                        SizedBox(height: 16,),
-                        selectedBookInfo()
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        pageForm(),
-                        SizedBox(height: 16,),
-                        dateForm(),
-                        SizedBox(height: 16,),
-                        clockForm(),
-                        SizedBox(height: 16,),
-                        timeForm()
-                      ],
-                    ),
-                  )
+                  bookForm(),
+                  SizedBox(height: 16,),
+                  pageForm(),
+                  SizedBox(height: 16,),
+                  dateForm(),
+                  SizedBox(height: 16,),
+                  clockForm(),
+                  SizedBox(height: 16,),
+                  timeForm()
                 ],
               ),
               SizedBox(height: 16,),
@@ -130,6 +115,9 @@ class _AddReadsPageState extends State<AddReadsPage> {
     );
   }
 
+  final _selectedBookKey = GlobalKey<FormState>();
+  final TextEditingController _selectedBookController = TextEditingController();
+  bool selectedBookValidate = true;
   Widget bookForm(){
     return SizedBox(
       height: 40,
@@ -151,6 +139,9 @@ class _AddReadsPageState extends State<AddReadsPage> {
     );
   }
 
+  final _pageCountKey = GlobalKey<FormState>();
+  final TextEditingController _pageCountController = TextEditingController();
+  bool pageCountValidate = true;
   Widget pageForm(){
     return SizedBox(
       height: 40,
@@ -158,20 +149,24 @@ class _AddReadsPageState extends State<AddReadsPage> {
         children: [
           formIcon("assets/icons/page.png"),
           SizedBox(width: 8,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              title("Sayfa Sayısı", colors.blue, 14, "FontMedium"),
-              title("40", colors.black, 15, "FontMedium")
-            ],
-          )
-
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Sayfa Sayısı",
+                hint:  "Giriniz",
+                controller: _pageCountController,
+                key: _pageCountKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",pageCountValidate),
         ],
       ),
     );
   }
 
+  final _dateKey = GlobalKey<FormState>();
+  final TextEditingController _dateController = TextEditingController();
+  bool dateValidate = true;
   Widget dateForm(){
     return SizedBox(
       height: 40,
@@ -179,20 +174,25 @@ class _AddReadsPageState extends State<AddReadsPage> {
         children: [
           formIcon("assets/icons/calendar.png"),
           SizedBox(width: 8,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              title("Tarih", colors.blue, 14, "FontMedium"),
-              title("8.05.2024", colors.black, 15, "FontMedium")
-            ],
-          )
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Tarih",
+                hint:  "Seçiniz",
+                controller: _dateController,
+                key: _dateKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",dateValidate),
 
         ],
       ),
     );
   }
 
+  final _clockKey = GlobalKey<FormState>();
+  final TextEditingController _clockController = TextEditingController();
+  bool clockValidate = true;
   Widget clockForm(){
     return SizedBox(
       height: 40,
@@ -200,20 +200,25 @@ class _AddReadsPageState extends State<AddReadsPage> {
         children: [
           formIcon("assets/icons/clock.png"),
           SizedBox(width: 8,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              title("Bitirme Saati", colors.blue, 14, "FontMedium"),
-              title("18:55", colors.black, 15, "FontMedium")
-            ],
-          )
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Bitirme Saati",
+                hint:  "Seçiniz",
+                controller: _clockController,
+                key: _clockKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",clockValidate),
 
         ],
       ),
     );
   }
 
+  final _timeKey = GlobalKey<FormState>();
+  final TextEditingController _timeController = TextEditingController();
+  bool timeValidate = true;
   Widget timeForm(){
     return SizedBox(
       height: 40,
@@ -221,54 +226,22 @@ class _AddReadsPageState extends State<AddReadsPage> {
         children: [
           formIcon("assets/icons/time.png"),
           SizedBox(width: 8,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              title("Okuma Süresi", colors.blue, 14, "FontMedium"),
-              title("25 dk", colors.black, 15, "FontMedium")
-            ],
-          )
+          Expanded(
+            child: OkuurTextFormField(
+                label: "Okuma Süresi",
+                hint:  "Giriniz",
+                controller: _timeController,
+                key: _timeKey
+            ).getTextFormFieldForPage(),
+          ),
+          SizedBox(width: 8,),
+          errorIcon("assets/icons/error.png",timeValidate),
 
         ],
       ),
     );
   }
 
-  Widget selectedBookInfo(){
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          title("Kralın Dönüşü", colors.black, 14, "FontMedium"),
-          title("J.R.R. Tolkien", colors.black, 12, "FontMedium"),
-          title("Roman / 240 sayfa", colors.black, 12, "FontMedium"),
-          SizedBox(height: 12,),
-          Container(
-            width: 16,
-            height: 4,
-            decoration: BoxDecoration(
-                color: colors.blue,
-                borderRadius: BorderRadius.all(Radius.circular(10))
-            ),
-          ),
-          title("142.sayfada kalmıştınız", colors.black, 11, "FontMedium"),
-          SizedBox(height: 12,),
-          Container(
-            width: 16,
-            height: 4,
-            decoration: BoxDecoration(
-                color: colors.red,
-                borderRadius: BorderRadius.all(Radius.circular(10))
-            ),
-          ),
-          title("Son okuduğunuz eser otomatik seçildi, değiştirmek için dokunun", colors.black, 11, "FontMedium"),
-        ],
-      ),
-
-    );
-
-  }
   Text title(String text,Color color,double size, String family){
     return Text(
       text,style: TextStyle(
@@ -290,6 +263,17 @@ class _AddReadsPageState extends State<AddReadsPage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Image.asset(path),
+      ),
+    );
+  }
+
+  AnimatedContainer errorIcon(String path,bool validate) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: validate == true ? 0 : 34,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Image.asset(path,color: colors.red,),
       ),
     );
   }

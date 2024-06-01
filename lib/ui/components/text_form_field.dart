@@ -7,12 +7,16 @@ class OkuurTextFormField {
   final String hint;
   final TextEditingController? controller;
   final Key key;
+  final void Function()? onTap;
+  final bool? readOnly;
 
   OkuurTextFormField({
     required this.label,
     required this.hint,
     required this.controller,
-    required this.key
+    required this.key,
+    this.readOnly,
+    this.onTap
   });
 
   Widget getTextFormFieldForPage(){
@@ -25,6 +29,7 @@ class OkuurTextFormField {
           maxLength: 54,
           controller: controller,
           keyboardType: TextInputType.text,
+          readOnly: readOnly != null ? readOnly! : false,
           decoration: InputDecoration(
             hintText: hint,
             counterText: "",
@@ -40,6 +45,7 @@ class OkuurTextFormField {
             contentPadding: const EdgeInsets.symmetric(vertical: 2),
             border: InputBorder.none,
           ),
+          onTap: onTap
         ),
       ),
     );

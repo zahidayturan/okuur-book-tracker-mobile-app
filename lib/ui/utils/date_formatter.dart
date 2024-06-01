@@ -7,4 +7,8 @@ class OkuurDateFormatter {
     return DateFormat('dd-MMM-yyyy').format(date);
   }
 
+  static DateTime getDateNow(){
+    return DateTime.now();
+  }
+
 }

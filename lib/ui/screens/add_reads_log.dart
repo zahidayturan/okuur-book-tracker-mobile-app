@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/date_picker.dart';
 import 'dart:ui';
 
 import 'package:okuur/ui/components/icon_button.dart';
@@ -175,12 +176,10 @@ class _AddReadsPageState extends State<AddReadsPage> {
           formIcon("assets/icons/calendar.png"),
           SizedBox(width: 8,),
           Expanded(
-            child: OkuurTextFormField(
-                label: "Tarih",
-                hint:  "Seçiniz",
+            child: OkuurDateTimePicker(
                 controller: _dateController,
-                key: _dateKey
-            ).getTextFormFieldForPage(),
+                formKey: _dateKey
+            ),
           ),
           SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",dateValidate),

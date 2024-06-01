@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/library/library.dart';
+import 'package:okuur/routes/others/others.dart';
 import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
@@ -46,7 +47,7 @@ class _OkuurAppState extends  State<OkuurApp> {
       }else if(widget.pageIndex == 3){
         return LibraryPage();
       }else if(widget.pageIndex == 4){
-        return StatisticsPage();
+        return OtherPage();
       }else{
         return HomePage();
       }

@@ -6,6 +6,8 @@ import 'dart:ui';
 import 'package:okuur/ui/components/icon_button.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
 
+import '../components/clock_picker.dart';
+
 class AddReadsPage extends StatefulWidget {
 
   const AddReadsPage({
@@ -200,12 +202,10 @@ class _AddReadsPageState extends State<AddReadsPage> {
           formIcon("assets/icons/clock.png"),
           SizedBox(width: 8,),
           Expanded(
-            child: OkuurTextFormField(
-                label: "Bitirme Saati",
-                hint:  "Seçiniz",
+            child: OkuurTimePicker(
                 controller: _clockController,
-                key: _clockKey
-            ).getTextFormFieldForPage(),
+                formKey: _clockKey
+            ),
           ),
           SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",clockValidate),

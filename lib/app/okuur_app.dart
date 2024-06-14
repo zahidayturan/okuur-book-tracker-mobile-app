@@ -56,7 +56,7 @@ class _OkuurAppState extends  State<OkuurApp> {
       child: Scaffold(
         body : setWidget(),
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: true == true ? BottomNavBar(pageIndex: widget.pageIndex,) : null,
+        bottomNavigationBar: BottomNavBar(pageIndex: widget.pageIndex),
       ),
     );
   }

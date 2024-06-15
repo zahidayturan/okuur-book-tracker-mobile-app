@@ -9,6 +9,9 @@ import 'package:okuur/ui/components/text_form_field.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
 import 'package:okuur/ui/utils/device_utils.dart';
 import 'package:okuur/ui/utils/validator.dart';
+import 'dart:async';
+import 'dart:io';
+import '../components/image_picker.dart';
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({
@@ -28,7 +31,7 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: GestureDetector(
             onTap: () {
               Navigator.of(context).pop();
@@ -71,7 +74,7 @@ class _AddBookPageState extends State<AddBookPage> {
         onTap: () {},
         child: Container(
           padding: const EdgeInsets.all(8),
-          margin: EdgeInsets.symmetric(horizontal: 12),
+          margin: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: colors.grey,
             borderRadius: BorderRadius.circular(16),
@@ -80,7 +83,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 color: colors.greyDark.withOpacity(0.4),
                 blurRadius: 5,
                 spreadRadius: 2,
-                offset: Offset(0, 5),
+                offset: const Offset(0, 5),
               ),
             ],
           ),
@@ -95,30 +98,30 @@ class _AddBookPageState extends State<AddBookPage> {
                   iconButton("assets/icons/close.png", colors.greenDark, context)
                 ],
               ),
-              SizedBox(height: 16,),
+              const SizedBox(height: 16,),
               OkuurSwitchButton(buttonCount: 2,buttonNames: ["Kendin Ekle","Kitabı Ara"],onChanged:  handleButtonChange,),
-              SizedBox(height: 16,),
+              const SizedBox(height: 16,),
               Visibility(
                 visible: currentButtonIndex == 0,
                 child: Column(
                   children: [
                     nameForm(), //nameForm(),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     authorForm(),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     pageForm(),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     typeForm(),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     imageForm(),
                   ],
                 ),
               ),
               Visibility(
                   visible: currentButtonIndex == 1,
-                  child: SizedBox(height: 254,child: Center(child: Text("Not yet")),)),
+                  child: const SizedBox(height: 254,child: Center(child: Text("Not yet")),)),
 
-              SizedBox(height: 16,),
+              const SizedBox(height: 16,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -141,7 +144,7 @@ class _AddBookPageState extends State<AddBookPage> {
                       height: 32,
                       decoration: BoxDecoration(
                           color: colors.green,
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                          borderRadius: const BorderRadius.all(Radius.circular(20))),
                       child: Center(
                           child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -168,7 +171,7 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Row(
         children: [
           formIcon("assets/icons/books.png"),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           Expanded(
             child: OkuurTextFormField(
                 label: "Kitabın Adı",
@@ -177,7 +180,7 @@ class _AddBookPageState extends State<AddBookPage> {
               key: _bookNameKey
             ).getTextFormFieldForPage(),
           ),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",bookNameValidate),
 
         ],
@@ -194,7 +197,7 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Row(
         children: [
           formIcon("assets/icons/people.png"),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           Expanded(
             child: OkuurTextFormField(
                 label: "Kitabın Yazarı",
@@ -203,7 +206,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 key: _bookAuthorKey
             ).getTextFormFieldForPage(),
           ),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",bookAuthorValidate),
 
         ],
@@ -220,7 +223,7 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Row(
         children: [
           formIcon("assets/icons/page.png"),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           Expanded(
             child: OkuurTextFormField(
                 label: "Kitabın Sayfa Sayısı",
@@ -229,7 +232,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 key: _bookPageKey
             ).getTextFormFieldForPage(),
           ),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",bookPageValidate),
 
         ],
@@ -246,7 +249,7 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Row(
         children: [
           formIcon("assets/icons/list.png"),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,12 +264,25 @@ class _AddBookPageState extends State<AddBookPage> {
               ],
             ),
           ),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",bookTypeValidate),
 
         ],
       ),
     );
+  }
+
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final pickerService = OkuurImagePicker(context: context);
+    final File? selectedImage = await pickerService.pickImageFromCamera();
+
+    if (selectedImage != null) {
+      setState(() {
+        _image = selectedImage;
+      });
+    }
   }
 
   Widget imageForm() {
@@ -275,14 +291,18 @@ class _AddBookPageState extends State<AddBookPage> {
       child: Row(
         children: [
           formIcon("assets/icons/add_box.png"),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 text("Kitabın Kapak Fotoğrafı",colors.blue,13,"FontMedium",1),
-                text("Yüklemek için dokunun",colors.greyDark,15,"FontMedium",1),
+                GestureDetector(
+                    onTap: () {
+                      _pickImage();
+                    },
+                    child: text(_image == null ? "Yüklemek için dokunun" : "Yüklediniz",_image == null ? colors.greyDark : colors.black,15,"FontMedium",1)),
               ],
             ),
           ),
@@ -295,7 +315,7 @@ class _AddBookPageState extends State<AddBookPage> {
     return Container(
       height: 38,
       width: 38,
-      margin: EdgeInsets.only(left: 8),
+      margin: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(color: colors.blue, shape: BoxShape.circle),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -306,7 +326,7 @@ class _AddBookPageState extends State<AddBookPage> {
 
   AnimatedContainer errorIcon(String path,bool validate) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       height: validate == true ? 0 : 34,
       child: Padding(
         padding: const EdgeInsets.all(8.0),

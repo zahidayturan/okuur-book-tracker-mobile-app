@@ -134,7 +134,7 @@ class _BookListWidgetState extends State<BookListWidget> {
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
               color: colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20))
+              borderRadius: BorderRadius.all(Radius.circular(10))
           ),
           child: child,
         ),

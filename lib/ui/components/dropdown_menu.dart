@@ -6,11 +6,20 @@ class OkuurDropdownMenu extends StatefulWidget {
 
   final List<String> list;
   final TextEditingController controller;
+  final Color dropdownColor;
+  final Color textColor;
+  final double padding;
+  final double fontSize;
+
 
   const OkuurDropdownMenu({
     super.key,
     required this.list,
     required this.controller,
+    required this.dropdownColor,
+    required this.textColor,
+    required this.padding,
+    required this.fontSize
   });
 
   @override
@@ -27,20 +36,25 @@ class _OkuurDropdownMenuState extends State<OkuurDropdownMenu> {
   @override
   Widget build(BuildContext context) {
     AppColors colors = AppColors();
-    return SizedBox(
-      height: 20,
+    return Container(
+      height: 20+(widget.padding/2),
+      padding: EdgeInsets.symmetric(horizontal: widget.padding),
+      decoration: BoxDecoration(
+        color: widget.dropdownColor,
+        borderRadius: BorderRadius.all(Radius.circular(30))
+      ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: widget.controller.text,
-          dropdownColor: colors.white,
-          iconEnabledColor: colors.black,
+          dropdownColor: widget.dropdownColor,
+          iconEnabledColor: widget.textColor,
           icon: const Icon(Icons.keyboard_arrow_down_rounded,size: 22),
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           menuMaxHeight: 180,
           items: widget.list.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value,style: TextStyle(fontSize: 15,fontFamily: "FontMedium",color: colors.black)),
+              child: Text(value,style: TextStyle(fontSize: widget.fontSize,fontFamily: "FontMedium",color: widget.textColor)),
             );
           }).toList(),
           onChanged: (value) {

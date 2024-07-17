@@ -103,12 +103,12 @@ class PageHeaderTitle {
         highlightColor: colors.white,
         borderRadius: BorderRadius.all(Radius.circular(2)),
         child: Container(
-          height: 24,
-          width: 24,
-          padding: EdgeInsets.all(2),
+          height: 28,
+          width: 28,
+          padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
               color: colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(6))
+              borderRadius: BorderRadius.all(Radius.circular(8))
           ),
           child: Image.asset("assets/icons/back_arrow.png",color: colors.greenDark,)
         ),

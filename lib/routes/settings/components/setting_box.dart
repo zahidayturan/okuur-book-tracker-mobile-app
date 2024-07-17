@@ -23,7 +23,7 @@ class SettingBox {
         color: colors.white,
         borderRadius: BorderRadius.all(Radius.circular(8))
       ),
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,9 +32,9 @@ class SettingBox {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               text(title,color,15,"FontBold",1),
-              SizedBox(
+              /*SizedBox(
                   height: 18,
-                  child: Image.asset("assets/icons/star.png",color: color,))
+                  child: Image.asset("assets/icons/star.png",color: color,))*/
             ],
           ),
           widget

@@ -143,7 +143,7 @@ class _AddBookPageState extends State<AddBookPage> {
                     child: Container(
                       height: 32,
                       decoration: BoxDecoration(
-                          color: colors.green,
+                          color: colors.orange,
                           borderRadius: const BorderRadius.all(Radius.circular(20))),
                       child: Center(
                           child: Padding(
@@ -259,7 +259,11 @@ class _AddBookPageState extends State<AddBookPage> {
                 OkuurDropdownMenu(
                     controller: _bookTypeController,
                     key: _bookTypeKey,
-                  list: bookTypeList
+                  list: bookTypeList,
+                  dropdownColor: colors.grey,
+                  textColor: colors.black,
+                  padding: 0,
+                  fontSize: 15
                 ),
               ],
             ),

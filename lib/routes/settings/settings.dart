@@ -4,6 +4,10 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
+import 'package:okuur/routes/settings/components/ReadingSettings.dart';
+import 'package:okuur/routes/settings/components/account_settings.dart';
+import 'package:okuur/routes/settings/components/backup_settings.dart';
+import 'package:okuur/routes/settings/components/language_settings.dart';
 import 'package:okuur/routes/settings/components/setting_box.dart';
 import 'package:okuur/routes/settings/components/theme_settings.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
@@ -51,13 +55,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   SizedBox(height: 12,),
                   SettingBox(color: colors.greenDark, title: "Görünüm", widget: ThemeSettings()).getSettingBox(),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Dil", widget: SizedBox()).getSettingBox(),
+                  SettingBox(color: colors.greenDark, title: "Dil", widget: LanguageSettings()).getSettingBox(),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Hesap", widget: SizedBox()).getSettingBox(),
+                  SettingBox(color: colors.greenDark, title: "Hesap", widget: AccountSettings()).getSettingBox(),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.blue, title: "Okuma Tercihlerin", widget: SizedBox()).getSettingBox(),
+                  SettingBox(color: colors.blue, title: "Okuma Tercihlerin", widget: ReadingSettings()).getSettingBox(),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Yedekleme", widget: SizedBox()).getSettingBox(),
+                  SettingBox(color: colors.greenDark, title: "Yedekleme", widget: BackupSettings()).getSettingBox(),
                   SizedBox(height: 12,),
                   InkWell(
                     onTap: () async{

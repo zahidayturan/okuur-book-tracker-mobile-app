@@ -26,11 +26,11 @@ class _OkuurSearchBarState extends State<OkuurSearchBar> {
         borderRadius: BorderRadius.all(Radius.circular(54)),
         color: colors.white
       ),
-      child: TextFormField(
+      child: TextField(
         onTap: () {},
         style: TextStyle(
           fontSize: 14,
-          color: colors.green
+          color: colors.black
         ),
         decoration: InputDecoration(
           hintText: widget.hintText,

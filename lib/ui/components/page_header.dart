@@ -13,11 +13,13 @@ class PageHeaderTitle {
   final String subtitle;
   final String pathName;
   final bool? otherWidget;
+  final bool? backButton;
 
   PageHeaderTitle({
     required this.title,
     required this.pathName,
     required this.subtitle,
+    this.backButton,
     this.otherWidget,
   });
 
@@ -33,6 +35,7 @@ class PageHeaderTitle {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            backButton == true ? backButtonWidget() : SizedBox(),
             text(title,colorTitle,18,"FontBold",3),
             Spacer(),
             otherWidget == true ? Row(
@@ -85,6 +88,29 @@ class PageHeaderTitle {
               fontFamilies: ["FontMedium","FontBold"],
               fontSize: 15,
               align: TextAlign.center),
+        ),
+      ),
+    );
+  }
+
+  Widget backButtonWidget(){
+    return Padding(
+      padding: EdgeInsets.only(right: 8,bottom: 4),
+      child: InkWell(
+        onTap: () {
+          Get.back();
+        },
+        highlightColor: colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(2)),
+        child: Container(
+          height: 24,
+          width: 24,
+          padding: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+              color: colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(6))
+          ),
+          child: Image.asset("assets/icons/back_arrow.png",color: colors.greenDark,)
         ),
       ),
     );

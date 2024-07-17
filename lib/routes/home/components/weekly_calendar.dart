@@ -44,13 +44,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        weekdays(),
-        SizedBox(height: 4,),
-        dayInfo()
-      ],
-    );
+    return dayInfo();
   }
 
   Widget weekdays(){
@@ -61,20 +55,20 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           arrowContainer(0),
-          dayContainer(28,28, weeks[0], colors.greenDark, 12,"FontMedium"),
-          dayContainer(32,32, weeks[1], colors.greenDark, 13,"FontMedium"),
-          dayContainer(36,36, weeks[2], colors.greenDark, 14,"FontMedium"),
-          dayContainer(46,66, weeks[3], colors.green, 15,"FontBold"),
-          dayContainer(36,36, weeks[4], colors.greyDark, 14,"FontMedium"),
-          dayContainer(32,32, weeks[5], colors.greyDark, 13,"FontMedium"),
-          dayContainer(28,28, weeks[6], colors.greyDark, 12,"FontMedium"),
+          dayContainer(28,28, weeks[0], colors.greenDark, 12,"FontMedium",true),
+          dayContainer(32,32, weeks[1], colors.greenDark, 13,"FontMedium",true),
+          dayContainer(36,36, weeks[2], colors.greenDark, 14,"FontMedium",true),
+          dayContainer(46,66, weeks[3], colors.green, 15,"FontBold",false),
+          dayContainer(36,36, weeks[4], colors.greyDark, 14,"FontMedium",true),
+          dayContainer(32,32, weeks[5], colors.greyDark, 13,"FontMedium",true),
+          dayContainer(28,28, weeks[6], colors.greyDark, 12,"FontMedium",true),
           arrowContainer(1)
         ],
       ),
     );
   }
 
-  Widget dayContainer(double height,double width,DateTime date,Color color,double fontSize,String family){
+  Widget dayContainer(double height,double width,DateTime date,Color color,double fontSize,String family,bool isCircle){
     String dayInfo = "";
     bool isSameDay(DateTime date1, DateTime date2) {
       return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
@@ -118,7 +112,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderRadius: isCircle == true ? 
+          BorderRadius.all(Radius.circular(30)) :
+            BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomLeft: Radius.circular(18),bottomRight: Radius.circular(18)),
           color: color
         ),
         child: Center(
@@ -197,27 +193,20 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   Container dayInfo(){
     return Container(
-      height: 120,
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           color: colors.white
       ),
-      padding: EdgeInsets.only(bottom: 8,left: 8,right: 8),
+      padding: EdgeInsets.all(8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 54,
-            height: 6,
-            decoration: BoxDecoration(
-              color: colors.green,
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10))
-            ),
-          ),
+          weekdays(),
+          SizedBox(height: 4,),
           title("Günlük Hedefe Ulaşıldı!", colors.green, 14, "FontMedium"),
+          SizedBox(height: 4,),
           title("Kralın Dönüşü kitabından", colors.black, 13, "FontMedium"),
+          SizedBox(height: 8,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -225,6 +214,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             iconAndText("assets/icons/clock.png", "dakika","54"),
             iconAndText("assets/icons/point.png", "puan+","40"),
           ],),
+          SizedBox(height: 8,),
           RichTextWidget(
               texts: ["Bu ","haftanın en iyi okumasını"," yaptın."],
               colors: [colors.black,colors.black,colors.black],

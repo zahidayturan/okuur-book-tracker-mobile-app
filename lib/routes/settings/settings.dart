@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:okuur/app/my_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
+import 'package:okuur/routes/settings/components/setting_box.dart';
+import 'package:okuur/routes/settings/components/theme_settings.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
+import 'package:okuur/ui/components/page_header.dart';
+import 'package:okuur/ui/components/search_bar.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -34,6 +37,28 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: [
                   SizedBox(height: 12,),
+                  PageHeaderTitle(
+                      backButton: true,
+                      title: "Ayarlar",
+                      pathName: "settings",
+                      subtitle: "Uygulama içi tercihlerinizi ayarlayın"
+                  ).getTitle(),
+                  SizedBox(height: 12,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: OkuurSearchBar(hintText: "Ayarlar içerisinde arama yapın", onChanged: (value) {},),
+                  ),
+                  SizedBox(height: 12,),
+                  SettingBox(color: colors.greenDark, title: "Görünüm", widget: ThemeSettings()).getSettingBox(),
+                  SizedBox(height: 12,),
+                  SettingBox(color: colors.greenDark, title: "Dil", widget: SizedBox()).getSettingBox(),
+                  SizedBox(height: 12,),
+                  SettingBox(color: colors.greenDark, title: "Hesap", widget: SizedBox()).getSettingBox(),
+                  SizedBox(height: 12,),
+                  SettingBox(color: colors.blue, title: "Okuma Tercihlerin", widget: SizedBox()).getSettingBox(),
+                  SizedBox(height: 12,),
+                  SettingBox(color: colors.greenDark, title: "Yedekleme", widget: SizedBox()).getSettingBox(),
+                  SizedBox(height: 12,),
                   InkWell(
                     onTap: () async{
                       await FirebaseGoogleOperation().disconnectGoogle();
@@ -56,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
                     },
                     child: Container(
-                      height: 44,
+                      height: 26,
                       decoration: BoxDecoration(
                         color: colors.red,
                         borderRadius: BorderRadius.all(Radius.circular(5))
@@ -96,7 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
                     },
                     child: Container(
-                      height: 44,
+                      height: 26,
                       decoration: BoxDecoration(
                           color: colors.orange,
                           borderRadius: BorderRadius.all(Radius.circular(5))

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/action_button.dart';
 import 'package:okuur/ui/components/page_header.dart';
+import 'package:okuur/ui/components/search_bar.dart';
 import 'package:okuur/ui/components/switch_button.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -47,7 +49,16 @@ class _LibraryPageState extends State<LibraryPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: OkuurSwitchButton(buttonCount: 2,buttonNames: ["Okuduklarınız","Okuyacaklarınız"],onChanged:  handleButtonChange,),
                   ),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 12,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OkuurActionButton(path: "sort", color: colors.white, onChanged: (value) {},),
+                      SizedBox(width: 12,),
+                      Expanded(child: OkuurSearchBar(hintText: "Kitap veya yazar arayın", onChanged: (value) {},),),
+                    ],
+                  ),
+                  SizedBox(height: 12,),
                 ],),
             ),
           ),

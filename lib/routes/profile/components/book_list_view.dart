@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/utils/database_helper.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/routes/settings/settings.dart';
 
 class BookListWidget extends StatefulWidget {
@@ -20,6 +23,7 @@ class BookListWidget extends StatefulWidget {
 class _BookListWidgetState extends State<BookListWidget> {
 
   AppColors colors = AppColors();
+  final BookOperations bookOperations = BookOperations();
 
 
   List<OkuurBookInfo> tempBookList = [
@@ -66,46 +70,72 @@ class _BookListWidgetState extends State<BookListWidget> {
 
   @override
   void initState() {
-    for (var book in tempBookList) {
+    super.initState();
+    _fetchBooks();
+  }
+
+  Future<void> _fetchBooks() async {
+    List<OkuurBookInfo> books = await bookOperations.getBookInfo();
+    List<OkuurBookInfo> current = [];
+    List<OkuurBookInfo> future = [];
+
+    for (var book in books) {
       int readStatus = book.status;
+      print(readStatus % 2);
       if (readStatus % 2 == 0) {
-        currentBooks.add(book);
+        current.add(book);
       } else {
-        futureBooks.add(book);
+        future.add(book);
       }
     }
-    super.initState();
+
+    setState(() {
+      currentBooks = current;
+      futureBooks = future;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
-
-    List<OkuurBookInfo> allBooks = [...currentBooks, ...futureBooks];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        text("Şu An Okunanlar", colors.greenDark, 15, "FontBold", 1),
-        SizedBox(height: 12,),
-
-        text("Okunan Bütün Eserler", colors.greenDark, 15, "FontBold", 1),
-        SizedBox(height: 12,),
         Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            physics: BouncingScrollPhysics(),
-            itemCount: allBooks.length,
-            itemBuilder: (context, index) {
-              OkuurBookInfo item = allBooks[index];
-              return bookContainer(
+          child: ListView(
+            children: [
+              text("Şu An Okunanlar", colors.greenDark, 15, "FontBold", 1),
+              SizedBox(height: 12,),
+              ...currentBooks.map((item) => bookContainer(
                 currentBookText(
                   item.name,
                   item.author,
                   item.type,
                   item.pageCount.toString(),
                   item.startingDate,
-                ),"${index+1}",
-              );
-            },
+                  item.finishingDate,
+                  item.imageLink,
+                  true
+                ),
+                "${currentBooks.indexOf(item) + 1}",
+              )).toList(),
+              SizedBox(height: 12,),
+              text("Okunan Bütün Eserler", colors.greenDark, 15, "FontBold", 1),
+              SizedBox(height: 12,),
+              ...futureBooks.map((item) => bookContainer(
+                currentBookText(
+                  item.name,
+                  item.author,
+                  item.type,
+                  item.pageCount.toString(),
+                  item.startingDate,
+                  item.finishingDate,
+                  item.imageLink,
+                  false
+                ),
+                "${currentBooks.length + futureBooks.indexOf(item) + 1}",
+              )).toList(),
+            ],
           ),
         ),
       ],
@@ -134,7 +164,7 @@ class _BookListWidgetState extends State<BookListWidget> {
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
               color: colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10))
+              borderRadius: BorderRadius.all(Radius.circular(14))
           ),
           child: child,
         ),
@@ -142,14 +172,87 @@ class _BookListWidgetState extends State<BookListWidget> {
     );
   }
 
-  Column currentBookText(String name,String author,String type,String page,String date){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Row currentBookText(String name,String author,String type,String page,String startedDate,String finishedDate,String image,bool isReading){
+    DateTime? formattedDate;
+    try {
+      formattedDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(startedDate);
+    } catch (e) {
+      print("Başlangıç tarihi format hatası: $e");
+    }
+
+    String finishingDate = "";
+    if (isReading) {
+      if (formattedDate != null) {
+        int differenceDay = DateTime.now().difference(formattedDate).inDays;
+        finishingDate = differenceDay != 0 ? "$differenceDay gündür okuyor" : "Bugün başladı";
+      } else {
+        finishingDate = "Başlangıç tarihi geçersiz";
+      }
+    } else {
+      DateTime? formattedFinishDate;
+      try {
+        formattedFinishDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(finishedDate);
+      } catch (e) {
+        
+      }
+
+      if (formattedFinishDate != null) {
+        finishingDate = "${formattedFinishDate.day}.${formattedFinishDate.month}.${formattedFinishDate.year}";
+      } else {
+        finishingDate = "Bitiş tarihi yok";
+      }
+    }
+
+    return Row(
       children: [
-        text(name, colors.black, 15, "FontMedium", 2),
-        text(author, colors.black, 13, "FontMedium", 1),
-        text(page, colors.black, 13, "FontMedium", 1),
-        text(date, colors.black, 13, "FontMedium", 1)
+        Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                    color: colors.blueLight,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        bottomLeft: Radius.circular(8),
+                        topRight: Radius.circular(4),
+                        bottomRight: Radius.circular(4)
+                    )
+
+                ),
+              ),
+            ),
+            Container(
+              width: 58,
+              height: 90,
+              margin: EdgeInsets.only(left: 4, bottom: 4),
+              decoration: BoxDecoration(
+                color: colors.grey,
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                child: Image.network(
+                  image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+
+          ],
+        ),
+        SizedBox(width: 6,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            text(name, colors.black, 15, "FontMedium", 2),
+            text(author, colors.black, 13, "FontMedium", 1),
+            text("$type - $page sayfa", colors.black, 13, "FontMedium", 1),
+            formattedDate != null ? text("${formattedDate.day}.${formattedDate.month}.${formattedDate.year} / $finishingDate", colors.black, 13, "FontMedium", 1) : Text("")
+          ],
+        ),
       ],
     );
   }

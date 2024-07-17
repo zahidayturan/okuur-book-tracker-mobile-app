@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:okuur/data/models/okuur_book_info.dart';
-import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -58,45 +56,4 @@ class DatabaseHelper {
       )
     ''');
   }
-
-  Future<void> insertBookInfo(OkuurBookInfo bookInfo) async {
-    final db = await database;
-    await db.insert(
-      'bookInfo',
-      bookInfo.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    print("Kitap added");
-  }
-
-  Future<void> insertLogInfo(OkuurLogInfo logInfo) async {
-    final db = await database;
-    await db.insert(
-      'logInfo',
-      logInfo.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<List<OkuurBookInfo>> getBookInfo() async {
-    final db = await database;
-    var result = await db.query('bookInfo', orderBy: "id");
-    return result.map((book) => OkuurBookInfo.fromJson(book)).toList();
-  }
-
-  Future<List<OkuurLogInfo>> getLogInfo() async {
-    final db = await database;
-    var result = await db.query('logInfo', orderBy: "id");
-    return result.map((log) => OkuurLogInfo.fromJson(log)).toList();
-  }
-
-
-
-  Future<void> deleteAllBookInfo() async {
-    final db = await database;
-    await db.delete('bookInfo');
-  }
-
-
-
 }

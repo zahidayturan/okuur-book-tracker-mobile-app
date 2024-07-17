@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/ui/components/dropdown_menu.dart';
 import 'dart:ui';
 import 'package:okuur/ui/components/icon_button.dart';
@@ -24,6 +26,7 @@ class AddBookPage extends StatefulWidget {
 
 class _AddBookPageState extends State<AddBookPage> {
   AppColors colors = AppColors();
+  final BookOperations bookOperations = BookOperations();
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +129,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         bookNameValidate = OkuurValidator.basicValidate(_bookNameController.text);
                         bookAuthorValidate = OkuurValidator.basicValidate(_bookAuthorController.text);
@@ -137,6 +140,19 @@ class _AddBookPageState extends State<AddBookPage> {
                           bookAuthorValidate == true &&
                           bookPageValidate == true &&
                           bookTypeValidate == true){
+                        var bookInfo = OkuurBookInfo(
+                            name: _bookNameController.text,
+                            author: _bookAuthorController.text,
+                            pageCount: int.tryParse(_bookPageController.text)!,
+                            imageLink: 'https://picsum.photos/250?image=8',
+                            type: _bookTypeController.text,
+                            startingDate:DateTime.now().toString(),
+                            finishingDate: "finishingDate",
+                            currentPage: 0,
+                            readingTime: 0,
+                            status: 0,
+                            logIds:"1-");
+                        await bookOperations.insertBookInfo(bookInfo);
                         Navigator.of(context).pop();
                       }
                     },

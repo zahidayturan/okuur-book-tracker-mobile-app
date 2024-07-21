@@ -15,16 +15,16 @@ import 'dart:async';
 import 'dart:io';
 import '../components/image_picker.dart';
 
-class AddBookPage extends StatefulWidget {
-  const AddBookPage({
+class AddBook extends StatefulWidget {
+  const AddBook({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddBookPage> createState() => _AddBookPageState();
+  State<AddBook> createState() => _AddBookState();
 }
 
-class _AddBookPageState extends State<AddBookPage> {
+class _AddBookState extends State<AddBook> {
   AppColors colors = AppColors();
   final BookOperations bookOperations = BookOperations();
 

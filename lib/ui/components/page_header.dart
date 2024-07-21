@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/addBook/add_book.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
-import 'package:okuur/ui/screens/add_books.dart';
 
 class PageHeaderTitle {
 
@@ -60,8 +60,7 @@ class PageHeaderTitle {
         Navigator.push(
           Get.context!,
           PageRouteBuilder(
-            opaque: false,
-            transitionDuration: const Duration(milliseconds: 200),
+            transitionDuration: const Duration(milliseconds: 100),
             pageBuilder: (context, animation, nextanim) => const AddBookPage(),
             reverseTransitionDuration: const Duration(milliseconds: 1),
             transitionsBuilder: (context, animation, nexttanim, child) {

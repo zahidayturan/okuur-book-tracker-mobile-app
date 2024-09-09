@@ -60,11 +60,13 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
                   ),
                   Expanded(
                     child: Center(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          color: currentOption == index ? colors.blue : colors.black,
-                          fontSize: 14,
+                      child: FittedBox(
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            color: currentOption == index ? colors.blue : colors.black,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ),

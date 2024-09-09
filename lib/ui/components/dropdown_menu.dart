@@ -37,7 +37,7 @@ class _OkuurDropdownMenuState extends State<OkuurDropdownMenu> {
   Widget build(BuildContext context) {
     AppColors colors = AppColors();
     return Container(
-      height: 20+(widget.padding/2),
+      height: 17+(widget.padding/2),
       padding: EdgeInsets.symmetric(horizontal: widget.padding),
       decoration: BoxDecoration(
         color: widget.dropdownColor,
@@ -48,7 +48,7 @@ class _OkuurDropdownMenuState extends State<OkuurDropdownMenu> {
           value: widget.controller.text,
           dropdownColor: widget.dropdownColor,
           iconEnabledColor: widget.textColor,
-          icon: const Icon(Icons.keyboard_arrow_down_rounded,size: 22),
+          icon: const Icon(Icons.keyboard_arrow_down_rounded,size: 20),
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           menuMaxHeight: 180,
           items: widget.list.map((String value) {

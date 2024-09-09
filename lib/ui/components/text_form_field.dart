@@ -3,7 +3,7 @@ import 'package:okuur/core/constants/colors.dart';
 
 class OkuurTextFormField {
 
-  final String label;
+  final String? label;
   final String hint;
   final TextEditingController? controller;
   final Key key;
@@ -11,7 +11,7 @@ class OkuurTextFormField {
   final bool? readOnly;
 
   OkuurTextFormField({
-    required this.label,
+    this.label,
     required this.hint,
     required this.controller,
     required this.key,
@@ -40,7 +40,8 @@ class OkuurTextFormField {
                 color: colors.blue
             ),
             hintStyle: TextStyle(
-              color: colors.black
+              color: colors.black,
+              fontSize: 14
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 2),
             border: InputBorder.none,

@@ -80,12 +80,15 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120,
-      child: Column(
-        children: List.generate(widget.optionCount, (index) {
-          return option(widget.options[index], index);
-        }),
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: SizedBox(
+        height: 120,
+        child: Column(
+          children: List.generate(widget.optionCount, (index) {
+            return option(widget.options[index], index);
+          }),
+        ),
       ),
     );
   }

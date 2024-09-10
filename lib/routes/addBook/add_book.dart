@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/addBook/components/add_book_app_bar.dart';
+import 'package:okuur/routes/addBook/components/book_image.dart';
 import 'package:okuur/routes/addBook/components/book_info.dart';
 import 'package:okuur/routes/addBook/components/book_init.dart';
 import 'package:okuur/routes/addBook/components/book_state.dart';
@@ -47,6 +48,8 @@ class _AddBookPageState extends State<AddBookPage> {
                   BookInfo(),
                   SizedBox(height: 12,),
                   addBookState(),
+                  SizedBox(height: 12,),
+                  addBookImage(),
                   SizedBox(height: 12,),
                   addBookInit()
                 ],),

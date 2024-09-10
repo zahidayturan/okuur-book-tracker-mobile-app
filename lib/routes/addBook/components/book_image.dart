@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/image_picker.dart';
+import 'package:okuur/ui/components/rich_text.dart';
 
 AppColors colors = AppColors();
 
@@ -37,10 +38,12 @@ Container addBookImage() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Kitabın Kapak Fotoğrafı",
-                style: TextStyle(fontSize: 15),
-              ),
+              RichTextWidget(
+                  texts: ["Kitabın ","Kapak Fotoğrafı"],
+                  colors: [colors.black,colors.black],
+                  fontFamilies: ["FontMedium","FontBold"],
+                  fontSize: 15,
+                  align: TextAlign.start),
               const SizedBox(height: 4),
               const Text(
                 "İsterseniz kapak fotoğrafı yükleyebilirsiniz. Yüklemek için dokunun",

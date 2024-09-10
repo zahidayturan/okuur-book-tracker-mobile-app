@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:okuur/core/constants/colors.dart';
-
 
 class OkuurDropdownMenu extends StatefulWidget {
 
@@ -35,7 +33,7 @@ class _OkuurDropdownMenuState extends State<OkuurDropdownMenu> {
   }
   @override
   Widget build(BuildContext context) {
-    AppColors colors = AppColors();
+
     return Container(
       height: 17+(widget.padding/2),
       padding: EdgeInsets.symmetric(horizontal: widget.padding),

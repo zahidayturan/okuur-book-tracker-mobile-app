@@ -8,6 +8,7 @@ class OkuurDropdownMenu extends StatefulWidget {
   final Color textColor;
   final double padding;
   final double fontSize;
+  final ValueChanged<String>? onChanged;
 
 
   const OkuurDropdownMenu({
@@ -17,7 +18,8 @@ class OkuurDropdownMenu extends StatefulWidget {
     required this.dropdownColor,
     required this.textColor,
     required this.padding,
-    required this.fontSize
+    required this.fontSize,
+    this.onChanged
   });
 
   @override
@@ -58,6 +60,7 @@ class _OkuurDropdownMenuState extends State<OkuurDropdownMenu> {
           onChanged: (value) {
             setState(() {
               widget.controller.text = value!;
+              widget.onChanged != null ? widget.onChanged!(value) : null;
             });
           },
         ),

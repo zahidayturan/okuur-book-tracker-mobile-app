@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import '../../../ui/components/selectable_question.dart';
 
 AppColors colors = AppColors();
+final AddBookController controller = Get.find();
 Container addBookState(){
   return Container(
     decoration: BoxDecoration(
@@ -20,8 +23,13 @@ Container addBookState(){
             fontFamilies: ["FontMedium","FontBold","FontMedium"],
             fontSize: 15,
             align: TextAlign.start),
-        OkuurSelectableQuestion(optionCount: 3,onChanged: (value) {
-        },options: ["Kitaba daha başlamadım","Kitaptan biraz okudum","Kitabın hepsini okudum"]),
+        OkuurSelectableQuestion(
+            optionCount: 3,
+            currentOption: controller.bookCurrentStatus.toInt(),
+            onChanged: (value) {
+              controller.setBookCurrentStatus(value);
+            },
+            options: ["Kitaba daha başlamadım","Kitaptan biraz okudum","Kitabın hepsini okudum"]),
       ],
     ),
 

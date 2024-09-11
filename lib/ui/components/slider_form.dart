@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/ui/components/text_form_field.dart';
 
 class PageCountSelector extends StatefulWidget {
   final double minValue;
   final double maxValue;
+  final double currentValue;
+  final ValueChanged<int> onChanged;
+  final TextEditingController textController;
 
   const PageCountSelector({
     super.key,
     required this.minValue,
     required this.maxValue,
+    required this.currentValue,
+    required this.onChanged,
+    required this.textController,
   });
 
   @override
@@ -18,18 +24,19 @@ class PageCountSelector extends StatefulWidget {
 
 class _PageCountSelectorState extends State<PageCountSelector> {
   double _currentPageCount = 1;
-  final TextEditingController _textController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
-    _textController.text = _currentPageCount.toInt().toString();
+    _currentPageCount = widget.currentValue;
+    widget.textController.text = _currentPageCount.toInt().toString();
   }
 
   void _updatePageCount(double value) {
     setState(() {
       _currentPageCount = value;
-      _textController.text = value.toInt().toString();
+      widget.textController.text = value.toInt().toString();
     });
   }
 
@@ -39,18 +46,19 @@ class _PageCountSelectorState extends State<PageCountSelector> {
       if (enteredValue < widget.minValue) {
         setState(() {
           _currentPageCount = widget.minValue;
-          _textController.text = widget.minValue.toInt().toString();
+          widget.textController.text = widget.minValue.toInt().toString();
         });
       } else if (enteredValue > widget.maxValue) {
         setState(() {
           _currentPageCount = widget.maxValue;
-          _textController.text = widget.maxValue.toInt().toString();
+          widget.textController.text = widget.maxValue.toInt().toString();
         });
       } else {
         setState(() {
           _currentPageCount = enteredValue;
         });
       }
+      widget.onChanged(_currentPageCount.toInt());
     }
   }
 
@@ -66,7 +74,7 @@ class _PageCountSelectorState extends State<PageCountSelector> {
           child: SizedBox(
             height: 36,
             child: Slider(
-              value: _currentPageCount,
+              value: _currentPageCount > widget.maxValue ? widget.maxValue : _currentPageCount,
               min: widget.minValue,
               max: widget.maxValue,
               divisions: (widget.maxValue - widget.minValue).toInt(),
@@ -74,6 +82,9 @@ class _PageCountSelectorState extends State<PageCountSelector> {
               onChanged: _updatePageCount,
               activeColor: colors.blue,
               inactiveColor: colors.blueLight,
+              onChangeEnd: (value) {
+                widget.onChanged(_currentPageCount.toInt());
+              },
             ),
           ),
         ),
@@ -81,9 +92,12 @@ class _PageCountSelectorState extends State<PageCountSelector> {
         SizedBox(
           width: 60,
           child: TextFormField(
-            controller: _textController,
+            controller: widget.textController,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
             decoration: const InputDecoration(
               border: InputBorder.none,
             ),

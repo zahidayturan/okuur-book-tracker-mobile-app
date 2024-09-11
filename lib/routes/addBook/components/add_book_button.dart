@@ -56,7 +56,7 @@ class _AddBookButtonState extends State<AddBookButton> {
             height: 36,
             decoration: BoxDecoration(
                 color: colors.orange,
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),

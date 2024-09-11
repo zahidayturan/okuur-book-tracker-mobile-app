@@ -85,7 +85,7 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: SizedBox(
-        height: 120,
+        height: widget.optionCount*40,
         child: Column(
           children: List.generate(widget.optionCount, (index) {
             return option(widget.options[index], index);

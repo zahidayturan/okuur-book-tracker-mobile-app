@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:okuur/core/constants/colors.dart';
 
 class PageCountSelector extends StatefulWidget {
@@ -55,6 +56,7 @@ class _PageCountSelectorState extends State<PageCountSelector> {
           _currentPageCount = enteredValue;
         });
       }
+      widget.onChanged(_currentPageCount.toInt());
     }
   }
 
@@ -91,13 +93,13 @@ class _PageCountSelectorState extends State<PageCountSelector> {
             controller: _textController,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
             decoration: const InputDecoration(
               border: InputBorder.none,
             ),
             onChanged: _onTextChanged,
-            onEditingComplete: () {
-              widget.onChanged(_currentPageCount.toInt());
-            },
           ),
         ),
       ],

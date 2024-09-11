@@ -1,4 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/ui/components/dropdown_menu.dart';
@@ -17,6 +21,8 @@ class BookInfo extends StatefulWidget {
 class _BookInfoState extends State<BookInfo> {
   AppColors colors = AppColors();
   final BookOperations bookOperations = BookOperations();
+
+  final AddBookController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -41,65 +47,25 @@ class _BookInfoState extends State<BookInfo> {
               fontSize: 15,
               align: TextAlign.start),
           const SizedBox(height: 12,),
-          form("Kitabın\nAdı","Adını yazınız",bookNameValidate,_bookNameController,_bookNameKey),
+          form("Kitabın\nAdı","Adını yazınız",bookNameValidate,_bookNameController,_bookNameKey,(name) {
+            controller.setBookName(name);
+          },TextInputType.text),
           const SizedBox(height: 12,),
-          form("Kitabın\nYazarı","Yazarını yazınız",bookAuthorValidate,_bookAuthorController,_bookAuthorKey),
+          form("Kitabın\nYazarı","Yazarını yazınız",bookAuthorValidate,_bookAuthorController,_bookAuthorKey,(author) {
+            controller.setBookAuthor(author);
+          },TextInputType.text),
           const SizedBox(height: 12,),
-          form("Sayfa\nSayısı","Sayfa sayısını yazınız",bookPageValidate,_bookPageController,_bookPageKey),
+          form("Sayfa\nSayısı","Sayfa sayısını yazınız",bookPageValidate,_bookPageController,_bookPageKey,(page) {
+            controller.setBookPageCount(int.parse(page));
+          },TextInputType.number),
           const SizedBox(height: 12,),
           typeForm(),
           const SizedBox(height: 12,),
-          /*Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () async {
-                  setState(() {
-                    bookNameValidate = OkuurValidator.basicValidate(_bookNameController.text);
-                    bookAuthorValidate = OkuurValidator.basicValidate(_bookAuthorController.text);
-                    bookPageValidate = OkuurValidator.basicValidate(_bookPageController.text);
-                    bookTypeValidate = OkuurValidator.compareValidate(_bookTypeController.text,bookTypeList.first);
-                  });
-                  if(bookNameValidate == true &&
-                      bookAuthorValidate == true &&
-                      bookPageValidate == true &&
-                      bookTypeValidate == true){
-                    var bookInfo = OkuurBookInfo(
-                        name: _bookNameController.text,
-                        author: _bookAuthorController.text,
-                        pageCount: int.tryParse(_bookPageController.text)!,
-                        imageLink: 'https://picsum.photos/250?image=8',
-                        type: _bookTypeController.text,
-                        startingDate:DateTime.now().toString(),
-                        finishingDate: "finishingDate",
-                        currentPage: 0,
-                        readingTime: 0,
-                        status: 0,
-                        logIds:"1-");
-                    await bookOperations.insertBookInfo(bookInfo);
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: Container(
-                  height: 32,
-                  decoration: BoxDecoration(
-                      color: colors.orange,
-                      borderRadius: const BorderRadius.all(Radius.circular(20))),
-                  child: Center(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child:
-                        text("Kitabı Ekle", colors.grey, 15, "FontMedium",1),
-                  )),
-                ),
-              )
-            ],
-          ),*/
         ],
       ),
     );
   }
-  Widget form(String label,String hint,validate,controller,key) {
+  Widget form(String label,String hint,validate,controller,key,void Function(String)? onFieldSubmitted,keyboardType) {
     return Row(
       children: [
         labelText(label,validate),
@@ -107,7 +73,9 @@ class _BookInfoState extends State<BookInfo> {
           child: OkuurTextFormField(
               hint: hint,
               controller: controller,
-              key: key
+              key: key,
+              keyboardType: keyboardType,
+              onFieldSubmitted: onFieldSubmitted
           ).getTextFormFieldForPage(),
         ),
       ],

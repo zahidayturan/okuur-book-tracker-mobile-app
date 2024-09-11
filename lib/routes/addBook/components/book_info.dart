@@ -26,7 +26,11 @@ class _BookInfoState extends State<BookInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return  formContent();
+    return  Column(
+      children: [
+        formContent(),
+      ],
+    );
   }
 
   Widget formContent() {
@@ -112,7 +116,10 @@ class _BookInfoState extends State<BookInfo> {
           dropdownColor: colors.white,
           textColor: colors.black,
           padding: 0,
-          fontSize: 14
+          fontSize: 14,
+          onChanged: (value) {
+            controller.setBookType(value);
+          },
         ),
       ],
     );

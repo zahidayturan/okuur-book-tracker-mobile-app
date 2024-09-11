@@ -27,11 +27,12 @@ Obx addBookCurrentPage(){
               fontFamilies: ["FontMedium","FontBold"],
               fontSize: 15,
               align: TextAlign.start),
+          controller.bookPageCount.value == 0 ?
+          const Text("Kaldığınız sayfayı girebilmek için önce kitabın sayfa sayısını girmelisiniz") :
           PageCountSelector(
-              minValue: 1,maxValue: 50, currentValue: controller.bookCurrentPage.toDouble(),onChanged: (int value) {
+              minValue: 1,maxValue: controller.bookPageCount.value.toDouble(), currentValue: controller.bookCurrentPage.value.toDouble(),textController: controller.textController,onChanged: (int value) {
                 controller.setBookCurrentPage(value);
           },
-
           ),
         ],
       ),

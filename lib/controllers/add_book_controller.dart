@@ -1,5 +1,5 @@
-import 'dart:ffi';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddBookController extends GetxController {
@@ -38,6 +38,10 @@ class AddBookController extends GetxController {
 
   void setBookPageCount(int pageCount) {
     bookPageCount.value = pageCount;
+    if(bookCurrentPage.value > pageCount){
+      setBookCurrentPage(pageCount != 0 ? pageCount : 1);
+      textController.text = bookCurrentPage.toString();
+    }
   }
 
   void clearBookPageCount() {
@@ -75,5 +79,7 @@ class AddBookController extends GetxController {
   void clearBookInit() {
     bookInit.value = 0;
   }
+
+  final TextEditingController textController = TextEditingController();
 }
 

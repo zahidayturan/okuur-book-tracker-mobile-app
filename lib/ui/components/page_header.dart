@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/addBook/add_book.dart';
+import 'package:okuur/routes/addBook/components/book_current_page.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 

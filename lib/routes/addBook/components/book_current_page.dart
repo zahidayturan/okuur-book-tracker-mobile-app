@@ -27,7 +27,12 @@ Obx addBookCurrentPage(){
               fontFamilies: ["FontMedium","FontBold"],
               fontSize: 15,
               align: TextAlign.start),
-          PageCountSelector(minValue: 1,maxValue: 50),
+          PageCountSelector(
+              minValue: 1,maxValue: 50, currentValue: controller.bookCurrentPage.toDouble(),onChanged: (int value) {
+                controller.setBookCurrentPage(value);
+          },
+
+          ),
         ],
       ),
 

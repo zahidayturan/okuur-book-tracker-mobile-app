@@ -4,12 +4,14 @@ import 'package:okuur/core/constants/colors.dart';
 class OkuurSelectableQuestion extends StatefulWidget {
   final int optionCount;
   final List<String> options;
+  final int currentOption;
   final ValueChanged<int> onChanged;
 
   const OkuurSelectableQuestion({
     super.key,
     required this.optionCount,
     required this.options,
+    required this.currentOption,
     required this.onChanged,
   });
 
@@ -24,7 +26,7 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
   @override
   void initState() {
     super.initState();
-    currentOption = 0;
+    currentOption = widget.currentOption;
   }
 
   Widget option(String name, int index) {

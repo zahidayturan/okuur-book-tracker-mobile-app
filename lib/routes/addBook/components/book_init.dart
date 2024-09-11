@@ -21,7 +21,7 @@ Container addBookInit(){
             fontFamilies: ["FontMedium","FontBold","FontMedium"],
             fontSize: 15,
             align: TextAlign.start),
-        OkuurSelectableQuestion(optionCount: 2,onChanged: (value) {
+        OkuurSelectableQuestion(optionCount: 2,currentOption: 0,onChanged: (value) {
         },options: ["Kitabı hemen okumaya başlayacağım","Kitabı daha sonra okuyacağım"]),
       ],
     ),

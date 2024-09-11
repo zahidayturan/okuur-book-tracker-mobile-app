@@ -25,8 +25,8 @@ Container addBookState(){
             align: TextAlign.start),
         OkuurSelectableQuestion(
             optionCount: 3,
+            currentOption: controller.bookCurrentStatus.toInt(),
             onChanged: (value) {
-              print(value);
               controller.setBookCurrentStatus(value);
             },
             options: ["Kitaba daha başlamadım","Kitaptan biraz okudum","Kitabın hepsini okudum"]),

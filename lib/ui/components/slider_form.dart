@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/ui/components/text_form_field.dart';
 
 class PageCountSelector extends StatefulWidget {
   final double minValue;
   final double maxValue;
+  final double currentValue;
+  final ValueChanged<int> onChanged;
 
   const PageCountSelector({
     super.key,
     required this.minValue,
     required this.maxValue,
+    required this.currentValue,
+    required this.onChanged,
   });
 
   @override
@@ -23,6 +26,7 @@ class _PageCountSelectorState extends State<PageCountSelector> {
   @override
   void initState() {
     super.initState();
+    _currentPageCount = widget.currentValue;
     _textController.text = _currentPageCount.toInt().toString();
   }
 
@@ -74,6 +78,9 @@ class _PageCountSelectorState extends State<PageCountSelector> {
               onChanged: _updatePageCount,
               activeColor: colors.blue,
               inactiveColor: colors.blueLight,
+              onChangeEnd: (value) {
+                widget.onChanged(_currentPageCount.toInt());
+              },
             ),
           ),
         ),
@@ -88,6 +95,9 @@ class _PageCountSelectorState extends State<PageCountSelector> {
               border: InputBorder.none,
             ),
             onChanged: _onTextChanged,
+            onEditingComplete: () {
+              widget.onChanged(_currentPageCount.toInt());
+            },
           ),
         ),
       ],

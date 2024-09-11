@@ -9,7 +9,7 @@ class AddBookController extends GetxController {
   var bookPageCount = Rx<Int?>(null);
   var bookType = Rx<String?>(null);
   var bookCurrentPage = Rx<Int?>(null);
-  var bookCurrentStatus = Rx<Int?>(null);
+  var bookCurrentStatus = RxInt(0);
 
   void setImage(File? image) {
     selectedImage.value = image;
@@ -59,12 +59,12 @@ class AddBookController extends GetxController {
     bookCurrentPage.value = null;
   }
 
-  void setBookCurrentStatus(Int currentStatus) {
+  void setBookCurrentStatus(int currentStatus) {
     bookCurrentStatus.value = currentStatus;
   }
 
   void clearBookCurrentStatus() {
-    bookCurrentStatus.value = null;
+    bookCurrentStatus.value = 0;
   }
 }
 

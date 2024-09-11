@@ -61,7 +61,7 @@ class _AddBookPageState extends State<AddBookPage> {
                   addBookState(),
                   SizedBox(height: 12,),
                   addBookCurrentPage(),
-                  SizedBox(height: 12,),
+                  //SizedBox(height: 12,),
                   addBookImage(),
                   SizedBox(height: 12,),
                   addBookInit(),

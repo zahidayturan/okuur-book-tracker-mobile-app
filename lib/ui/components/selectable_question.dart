@@ -32,47 +32,45 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
       padding: const EdgeInsets.only(top: 8),
       child: SizedBox(
         height: 32,
-        child: Expanded(
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                currentOption = index;
-                widget.onChanged(currentOption);
-              });
-            },
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              padding: EdgeInsets.symmetric(horizontal: 6),
-              decoration: BoxDecoration(
-                border: Border.all(width: 1,color: currentOption == index ? colors.blue : colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: currentOption == index ? colors.blue : colors.grey
-                    ),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              currentOption = index;
+              widget.onChanged(currentOption);
+            });
+          },
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            padding: EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              border: Border.all(width: 1,color: currentOption == index ? colors.blue : colors.grey),
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: currentOption == index ? colors.blue : colors.grey
                   ),
-                  Expanded(
-                    child: Center(
-                      child: FittedBox(
-                        child: Text(
-                          name,
-                          style: TextStyle(
-                            color: currentOption == index ? colors.blue : colors.black,
-                            fontSize: 14,
-                          ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: FittedBox(
+                      child: Text(
+                        name,
+                        style: TextStyle(
+                          color: currentOption == index ? colors.blue : colors.black,
+                          fontSize: 14,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

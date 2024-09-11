@@ -25,6 +25,8 @@ class _AddBookPageState extends State<AddBookPage> {
   void initState() {
     super.initState();
     Get.put(AddBookController());
+    AddBookController controller = Get.find();
+    controller.clearAll();
   }
 
   AppColors colors = AppColors();

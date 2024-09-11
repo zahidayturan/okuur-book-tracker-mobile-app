@@ -40,7 +40,7 @@ class AddBookController extends GetxController {
     bookPageCount.value = pageCount;
     if(bookCurrentPage.value > pageCount){
       setBookCurrentPage(pageCount != 0 ? pageCount : 1);
-      textController.text = bookCurrentPage.toString();
+      textControllerForSlider.text = bookCurrentPage.toString();
     }
   }
 
@@ -80,6 +80,76 @@ class AddBookController extends GetxController {
     bookInit.value = 0;
   }
 
-  final TextEditingController textController = TextEditingController();
+  final TextEditingController textControllerForSlider = TextEditingController(text: "1");
+
+  final bookNameKey = GlobalKey<FormState>();
+  final TextEditingController bookNameController = TextEditingController();
+  var bookNameValidate = RxBool(true);
+
+  void setBookNameValidate(bool valid) {
+    bookNameValidate.value = valid;
+  }
+  void clearBookNameValidate() {
+    bookNameValidate.value = true;
+  }
+
+
+  final bookAuthorKey = GlobalKey<FormState>();
+  final TextEditingController bookAuthorController = TextEditingController();
+  var bookAuthorValidate = RxBool(true);
+
+  void setBookAuthorValidate(bool valid) {
+    bookAuthorValidate.value = valid;
+  }
+  void clearBookAuthorValidate() {
+    bookAuthorValidate.value = true;
+  }
+
+
+  final bookPageKey = GlobalKey<FormState>();
+  final TextEditingController bookPageController = TextEditingController();
+  var bookPageValidate = RxBool(true);
+
+  void setBookPageValidate(bool valid) {
+    bookPageValidate.value = valid;
+  }
+  void clearBookPageValidate() {
+    bookPageValidate.value = true;
+  }
+
+
+  final bookTypeKey = GlobalKey<FormState>();
+  final TextEditingController bookTypeController = TextEditingController();
+  var bookTypeValidate = RxBool(true);
+
+  void setBookTypeValidate(bool valid) {
+    bookTypeValidate.value = valid;
+  }
+  void clearBookTypeValidate() {
+    bookTypeValidate.value = true;
+  }
+
+
+  void clearAll(){
+    clearBookName();
+    clearBookAuthor();
+    clearBookPageCount();
+    clearBookType();
+
+    clearBookCurrentStatus();
+    clearBookCurrentPage();
+    clearImage();
+    clearBookInit();
+
+    bookNameController.clear();
+    bookAuthorController.clear();
+    bookPageController.clear();
+    bookTypeController.clear();
+
+    clearBookNameValidate();
+    clearBookAuthorValidate();
+    clearBookPageValidate();
+    clearBookTypeValidate();
+  }
 }
 

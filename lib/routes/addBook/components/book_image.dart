@@ -9,7 +9,7 @@ import 'package:okuur/ui/components/rich_text.dart';
 AppColors colors = AppColors();
 
 Container addBookImage() {
-  final AddBookController controller = Get.find(); // Find the controller
+  final AddBookController controller = Get.find();
 
   Future<void> _pickImage() async {
     try {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
+import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/library/library.dart';
@@ -8,11 +10,9 @@ import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
 
 class BottomNavBar extends StatefulWidget {
-
-  final int pageIndex;
+  
   const BottomNavBar({
     Key? key,
-    required this.pageIndex
   }) : super(key: key);
 
   @override
@@ -22,17 +22,18 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
 
   AppColors colors = AppColors();
-
-  int currentMode = 0;
+  
   @override
   void initState() {
-    currentMode = widget.pageIndex;
     super.initState();
+    Get.put(OkuurController());
   }
+
+  OkuurController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
-
       decoration: BoxDecoration(
         color: colors.white,
         border: Border(top: BorderSide(width: 1,color: colors.greyDark.withOpacity(0.2)))
@@ -40,16 +41,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
       child: Stack(
         children: [
           Container(
-            height: 54,
-            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 15),
+            height: 48,
+            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
             decoration: BoxDecoration(
               color: colors.blue,
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
           ),
           Container(
-            height: 60,
-            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
+            height: 54,
+            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 9),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -66,37 +67,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 
-  InkWell getIconAndText(BuildContext context,String path,String text,int mode,Widget pageName){
-    return InkWell(
+  Obx getIconAndText(BuildContext context,String path,String text,int mode,Widget pageName){
+    return Obx(() => InkWell(
       onTap: () {
-        setState(() {
-          currentMode = mode;
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 100),
-              pageBuilder: (context, animation, nextanim) => OkuurApp(pageIndex: currentMode),
-              reverseTransitionDuration: const Duration(milliseconds: 1),
-              transitionsBuilder: (context, animation, nexttanim, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-            ),
-          );
-        });
+          controller.setHomePageCurrentMode(mode);
       },
       borderRadius: BorderRadius.all(Radius.circular(30)),
       highlightColor: colors.greenDark,
       child: AnimatedContainer(
-        height: 60,
-        width: 60,
+        height: 54,
+        width: 54,
         duration: Duration(milliseconds: 400),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: mode == currentMode ? colors.greenDark : null
+            shape: BoxShape.circle,
+            color: mode == controller.homePageCurrentMode.value ? colors.greenDark : null
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +91,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 400),
                 curve: Curves.easeInOut,
-                width: mode == currentMode ? 28: 24,
+                width: mode == controller.homePageCurrentMode.value ? 24: 20,
                 child:Image.asset(path),
               ),
             ),
@@ -114,18 +99,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
             AnimatedContainer(
               duration: Duration(milliseconds: 400),
               curve: Curves.easeInOut,
-              height: mode == currentMode ? 0: 12,
+              height: mode == controller.homePageCurrentMode.value ? 0: 12,
               child: Text(text,style: TextStyle(
-                fontSize: 10,
-                color: colors.grey,
-                fontFamily: "FontMedium",
-                overflow: TextOverflow.ellipsis
+                  fontSize: 10,
+                  color: colors.grey,
+                  fontFamily: "FontMedium",
+                  overflow: TextOverflow.ellipsis
               ),),
             )
           ],
         ),
       ),
-    );
+    ));
   }
 }
 

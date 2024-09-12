@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/profile/profile.dart';
 import '../../../ui/components/rich_text.dart';
@@ -22,6 +24,7 @@ class HomeProfileInfo extends StatefulWidget {
 class _HomeProfileInfoState extends State<HomeProfileInfo> {
 
   AppColors colors = AppColors();
+  final OkuurController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -50,20 +53,7 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 100),
-                  pageBuilder: (context, animation, nextanim) => const ProfilePage(),
-                  reverseTransitionDuration: const Duration(milliseconds: 1),
-                  transitionsBuilder: (context, animation, nexttanim, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
+              controller.setHomePageCurrentMode(5);
             },
             highlightColor: colors.greenDark,
             borderRadius: BorderRadius.all(Radius.circular(6)),

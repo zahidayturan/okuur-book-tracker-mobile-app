@@ -32,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BottomNavBar(pageIndex: 9,),
+        bottomNavigationBar: null,
         body: Padding(
           padding: EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
@@ -147,6 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text(_auth.currentUser != null ? _auth.currentUser!.uid : "uid"),
                   Text(_auth.currentUser != null ? _auth.currentUser!.emailVerified.toString() : "verified"),
                   Text(_auth.currentUser != null ? _auth.currentUser!.providerData.length ==  1 ? _auth.currentUser!.providerData[0].providerId : "${_auth.currentUser!.providerData[0].providerId} - ${_auth.currentUser!.providerData[1].providerId}" : "Hesap Türü"),
+                  SizedBox(height: 12,)
                 ],
               ),
             ),

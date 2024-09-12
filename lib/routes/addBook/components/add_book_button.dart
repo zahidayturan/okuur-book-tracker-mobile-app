@@ -51,13 +51,13 @@ class _AddBookButtonState extends State<AddBookButton> {
                   pageCount: int.tryParse(controller.bookPageController.text)!,
                   imageLink: 'https://picsum.photos/250?image=8',
                   type: controller.bookTypeController.text,
-                  startingDate:DateTime.now().toString(),
+                  startingDate: controller.bookInit.value == 0 ? DateTime.now().toString() : "startingDate",
                   finishingDate: "finishingDate",
-                  currentPage: 0,
+                  currentPage: controller.bookCurrentStatus.value == 1 ? controller.bookCurrentPage.value : 0,
                   readingTime: 0,
-                  status: 0,
-                  logIds:"1-");
-              //await bookOperations.insertBookInfo(bookInfo);
+                  status: controller.bookInit.value == 0 ? 1 : 0,
+                  logIds:"");
+              await bookOperations.insertBookInfo(bookInfo);
               Navigator.of(context).pop();
             } else {
               if(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,9999) == false){

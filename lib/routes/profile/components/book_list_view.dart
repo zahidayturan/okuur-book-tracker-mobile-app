@@ -82,10 +82,12 @@ class _BookListWidgetState extends State<BookListWidget> {
     for (var book in books) {
       int readStatus = book.status;
       print(readStatus % 2);
-      if (readStatus % 2 == 0) {
-        current.add(book);
-      } else {
-        future.add(book);
+      if(readStatus != 0){
+        if (readStatus % 2 == 1) {
+          current.add(book);
+        } else {
+          future.add(book);
+        }
       }
     }
 

@@ -53,4 +53,11 @@ class OkuurValidator {
     return true;
   }
 
+  static bool rangeValidate(double? value, double minValue,double maxValue) {
+    if (value == null || value>maxValue || value<minValue) {
+      return false;
+    }
+    return true;
+  }
+
 }

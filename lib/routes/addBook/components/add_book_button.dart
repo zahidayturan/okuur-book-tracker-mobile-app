@@ -38,6 +38,7 @@ class _AddBookButtonState extends State<AddBookButton> {
               controller.setBookNameValidate(OkuurValidator.basicValidate(controller.bookNameController.text));
               controller.setBookAuthorValidate(OkuurValidator.basicValidate(controller.bookAuthorController.text));
               controller.setBookPageValidate(OkuurValidator.basicValidate(controller.bookPageController.text));
+              controller.setBookPageValidate(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,10000));
               controller.setBookTypeValidate(OkuurValidator.compareValidate(controller.bookTypeController.text,bookTypeList.first));
             });
             if(controller.bookNameValidate.value == true &&
@@ -56,21 +57,24 @@ class _AddBookButtonState extends State<AddBookButton> {
                   readingTime: 0,
                   status: 0,
                   logIds:"1-");
-              print(bookInfo);
               //await bookOperations.insertBookInfo(bookInfo);
               Navigator.of(context).pop();
             } else {
-              showAlert("Uyarı","Lütfen kitabın bilgilerini eksiksiz giriniz.");
+              if(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,9999) == false){
+                showAlert("Uyarı","Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır");
+              }else {
+                showAlert("Uyarı","Lütfen kitabın bilgilerini\neksiksiz ve doğru giriniz.");
+              }
             }
           },
           child: Container(
-            height: 36,
+            height: 42,
             decoration: BoxDecoration(
                 color: colors.orange,
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 36),
               child:
                   text("Kitabı Ekle", colors.white, 15, "FontMedium",1),
             )),

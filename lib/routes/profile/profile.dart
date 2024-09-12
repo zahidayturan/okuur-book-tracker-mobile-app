@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BottomNavBar(pageIndex: 9,),
+        bottomNavigationBar: null,
         body: Padding(
           padding: const EdgeInsets.only(right: 12, left: 12),
           child: Center(

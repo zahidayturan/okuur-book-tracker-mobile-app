@@ -17,15 +17,13 @@ void showAlert(String title,String message){
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Expanded(
-                  child: Container(
-                    height: 36,
-                      decoration: BoxDecoration(
-                        color: colors.blue,
-                        borderRadius: const BorderRadius.all(Radius.circular(8))
-                      ),
-                      child: Center(child: Text("Tamam",style: TextStyle(color: colors.white),))),
-                ))
+                child: Container(
+                  height: 36,
+                    decoration: BoxDecoration(
+                      color: colors.blue,
+                      borderRadius: const BorderRadius.all(Radius.circular(8))
+                    ),
+                    child: Center(child: Text("Tamam",style: TextStyle(color: colors.white),))))
           ],
         );
       });

@@ -38,7 +38,7 @@ class _AddBookButtonState extends State<AddBookButton> {
               controller.setBookNameValidate(OkuurValidator.basicValidate(controller.bookNameController.text));
               controller.setBookAuthorValidate(OkuurValidator.basicValidate(controller.bookAuthorController.text));
               controller.setBookPageValidate(OkuurValidator.basicValidate(controller.bookPageController.text));
-              controller.setBookPageValidate(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,10000));
+              controller.setBookPageValidate(OkuurValidator.rangeValidate(double.tryParse(controller.bookPageController.text),1,10000));
               controller.setBookTypeValidate(OkuurValidator.compareValidate(controller.bookTypeController.text,bookTypeList.first));
             });
             if(controller.bookNameValidate.value == true &&
@@ -60,7 +60,7 @@ class _AddBookButtonState extends State<AddBookButton> {
               await bookOperations.insertBookInfo(bookInfo);
               Navigator.of(context).pop();
             } else {
-              if(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,9999) == false){
+              if(OkuurValidator.rangeValidate(double.tryParse(controller.bookPageController.text),1,9999) == false){
                 showAlert("Uyarı","Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır");
               }else {
                 showAlert("Uyarı","Lütfen kitabın bilgilerini\neksiksiz ve doğru giriniz.");

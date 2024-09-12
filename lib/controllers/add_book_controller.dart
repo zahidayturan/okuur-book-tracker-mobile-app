@@ -39,7 +39,7 @@ class AddBookController extends GetxController {
   void setBookPageCount(int pageCount) {
     bookPageCount.value = pageCount;
     if(bookCurrentPage.value > pageCount){
-      setBookCurrentPage(pageCount != 0 ? pageCount : 1);
+      setBookCurrentPage(pageCount != 0 ? pageCount-1 : 1);
       textControllerForSlider.text = bookCurrentPage.toString();
     }
   }

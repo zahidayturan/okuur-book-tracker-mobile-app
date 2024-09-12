@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/library/components/book_container.dart';
 import 'package:okuur/ui/components/action_button.dart';
 import 'package:okuur/ui/components/page_header.dart';
 import 'package:okuur/ui/components/search_bar.dart';
@@ -59,6 +60,7 @@ class _LibraryPageState extends State<LibraryPage> {
                     ],
                   ),
                   SizedBox(height: 12,),
+                  bookContainer()
                 ],),
             ),
           ),

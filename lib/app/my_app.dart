@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: currentUser != null ? OkuurApp(pageIndex: 0) : WelcomePage(),
+      home: currentUser != null ? OkuurApp() : WelcomePage(),
     );
   }
 }

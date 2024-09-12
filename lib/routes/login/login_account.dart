@@ -152,7 +152,7 @@ class _LoginAccountState extends State<LoginAccount> {
                     PageRouteBuilder(
                       opaque: false,
                       transitionDuration: const Duration(milliseconds: 300),
-                      pageBuilder: (context, animation, nextanim) => const OkuurApp(pageIndex: 0),
+                      pageBuilder: (context, animation, nextanim) => const OkuurApp(),
                       reverseTransitionDuration: const Duration(milliseconds: 1),
                       transitionsBuilder: (context, animation, nexttanim, child) {
                         return FadeTransition(

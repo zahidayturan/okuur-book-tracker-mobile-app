@@ -35,7 +35,7 @@ Obx addBookCurrentPage(){
           const Text("Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır")
               :
           PageCountSelector(
-              minValue: 1,maxValue: controller.bookPageCount.value.toDouble(), currentValue: controller.bookCurrentPage.value.toDouble(),textController: controller.textControllerForSlider,onChanged: (int value) {
+              minValue: 1,maxValue: controller.bookPageCount.value.toDouble()-1, currentValue: controller.bookCurrentPage.value.toDouble(),textController: controller.textControllerForSlider,onChanged: (int value) {
                 controller.setBookCurrentPage(value);
           },
           ),

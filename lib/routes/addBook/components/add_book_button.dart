@@ -4,6 +4,7 @@ import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
+import 'package:okuur/ui/components/alert_dialog.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
 
@@ -58,6 +59,8 @@ class _AddBookButtonState extends State<AddBookButton> {
               print(bookInfo);
               //await bookOperations.insertBookInfo(bookInfo);
               Navigator.of(context).pop();
+            } else {
+              showAlert("Uyarı","Lütfen kitabın bilgilerini eksiksiz giriniz.");
             }
           },
           child: Container(

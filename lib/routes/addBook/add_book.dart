@@ -54,7 +54,7 @@ class _AddBookPageState extends State<AddBookPage> {
               child: Column(
                 children: [
                   SizedBox(height: 12,),
-                  addBookAppBar(),
+                  addBookAppBar(context),
                   SizedBox(height: 16,),
                   OkuurSwitchButton(buttonCount: 2,buttonNames: ["Kendin Ekle","Kitabı Ara"],onChanged:  handleButtonChange,),
                   SizedBox(height: 12,),

@@ -4,6 +4,7 @@ import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
+import 'package:okuur/ui/components/alert_dialog.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
 
@@ -37,6 +38,7 @@ class _AddBookButtonState extends State<AddBookButton> {
               controller.setBookNameValidate(OkuurValidator.basicValidate(controller.bookNameController.text));
               controller.setBookAuthorValidate(OkuurValidator.basicValidate(controller.bookAuthorController.text));
               controller.setBookPageValidate(OkuurValidator.basicValidate(controller.bookPageController.text));
+              controller.setBookPageValidate(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,10000));
               controller.setBookTypeValidate(OkuurValidator.compareValidate(controller.bookTypeController.text,bookTypeList.first));
             });
             if(controller.bookNameValidate.value == true &&
@@ -49,25 +51,30 @@ class _AddBookButtonState extends State<AddBookButton> {
                   pageCount: int.tryParse(controller.bookPageController.text)!,
                   imageLink: 'https://picsum.photos/250?image=8',
                   type: controller.bookTypeController.text,
-                  startingDate:DateTime.now().toString(),
+                  startingDate: controller.bookInit.value == 0 ? DateTime.now().toString() : "startingDate",
                   finishingDate: "finishingDate",
-                  currentPage: 0,
+                  currentPage: controller.bookCurrentStatus.value == 1 ? controller.bookCurrentPage.value : 0,
                   readingTime: 0,
-                  status: 0,
-                  logIds:"1-");
-              print(bookInfo);
-              //await bookOperations.insertBookInfo(bookInfo);
+                  status: controller.bookInit.value == 0 ? 1 : 0,
+                  logIds:"");
+              await bookOperations.insertBookInfo(bookInfo);
               Navigator.of(context).pop();
+            } else {
+              if(OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,9999) == false){
+                showAlert("Uyarı","Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır");
+              }else {
+                showAlert("Uyarı","Lütfen kitabın bilgilerini\neksiksiz ve doğru giriniz.");
+              }
             }
           },
           child: Container(
-            height: 36,
+            height: 42,
             decoration: BoxDecoration(
                 color: colors.orange,
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 36),
               child:
                   text("Kitabı Ekle", colors.white, 15, "FontMedium",1),
             )),

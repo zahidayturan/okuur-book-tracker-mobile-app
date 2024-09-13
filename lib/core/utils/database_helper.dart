@@ -52,7 +52,8 @@ class DatabaseHelper {
         currentPage INTEGER,
         readingTime INTEGER,
         status INTEGER,
-        logIds TEXT
+        logIds TEXT,
+        rating REAL
       )
     ''');
   }

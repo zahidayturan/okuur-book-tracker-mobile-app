@@ -56,7 +56,9 @@ class _AddBookButtonState extends State<AddBookButton> {
                   currentPage: controller.bookCurrentStatus.value == 1 ? controller.bookCurrentPage.value : 0,
                   readingTime: 0,
                   status: controller.bookInit.value == 0 ? 1 : 0,
-                  logIds:"");
+                  logIds:"",
+                  rating: 0
+              );
               await bookOperations.insertBookInfo(bookInfo);
               Navigator.of(context).pop();
             } else {

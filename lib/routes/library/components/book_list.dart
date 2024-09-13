@@ -60,14 +60,19 @@ class _BookListLibraryState extends State<BookListLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      children: [
-        ...currentBooks.map((item) => bookContainerLibrary(
-            item
-        )).toList(),
-      ],
+      itemCount: currentBooks.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8.0), // Alt tarafa 8px boşluk ekler
+          child: bookContainerLibrary(
+            currentBooks[index],
+            "${index + 1}",
+          ),
+        );
+      },
     );
   }
 

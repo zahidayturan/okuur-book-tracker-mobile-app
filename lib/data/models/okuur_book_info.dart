@@ -11,6 +11,7 @@ class OkuurBookInfo {
   int readingTime;
   int status;
   String logIds;
+  double rating;
 
   OkuurBookInfo({
     this.id,
@@ -25,6 +26,7 @@ class OkuurBookInfo {
     required this.readingTime,
     required this.status,
     required this.logIds,
+    required this.rating,
   });
 
   factory OkuurBookInfo.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class OkuurBookInfo {
       readingTime: json['readingTime'],
       status: json['status'],
       logIds: json['logIds'],
+      rating: json['rating'],
     );
   }
 
@@ -57,6 +60,7 @@ class OkuurBookInfo {
       'readingTime': readingTime,
       'status': status,
       'logIds': logIds,
+      'rating': rating,
     };
   }
 }

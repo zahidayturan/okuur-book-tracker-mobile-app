@@ -9,7 +9,9 @@ AppColors colors = AppColors();
 
 
 Row bookContainerLibrary(OkuurBookInfo bookInfo,String index){
-  bool isReading = bookInfo.status %2 == 1 ? true : false;
+  bool isNotStarted = bookInfo.status == 0;
+  bool isReading = bookInfo.status %2 == 1;
+  String percentage = OkuurCalc.calcPercentage(bookInfo.pageCount,bookInfo.currentPage);
   return Row(
     children: [
       Expanded(
@@ -17,35 +19,25 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index){
           alignment:  Alignment.centerLeft,
           children: [
             Container(
-              width: 24,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(24),),
-                  color: isReading ? colors.orange : null
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: RotatedBox(
-                    quarterTurns: 3,
-                    child: Center(child: text(index,isReading ? colors.white : colors.greenDark,13,"FontBold",1,FontWeight.normal))),
-              ),
-            ),
-            Container(
               decoration: BoxDecoration(
                 color: colors.white,
                 borderRadius: const BorderRadius.all(Radius.circular(8))
               ),
               padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.only(left: 22),
+              margin: const EdgeInsets.only(left: 20),
               child: Column(
                 children: [
+                  isNotStarted ?
+                  const SizedBox()
+                      :
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       text(isReading ? "Şu an okuyorsun" : "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} - ${OkuurDateFormatter.convertDate(bookInfo.finishingDate)}", isReading ? colors.orange : colors.black, 13, "FontMedium", 1,FontWeight.normal),
-                      text("%${OkuurCalc.calcPercentage(bookInfo.pageCount,bookInfo.currentPage)}", isReading ? colors.orange : colors.greenDark, 13, "FontMedium", 1,FontWeight.w700),
+                      text(percentage == "100.0"? "Bitti" : "%$percentage", isReading ? colors.orange : colors.greenDark, 13, "FontMedium", 1,percentage == "100.0" ? FontWeight.normal : FontWeight.w700),
                     ],
                   ),
-                  const SizedBox(height: 8,),
+                  Visibility( visible:isNotStarted == false, child: const SizedBox(height: 8,)),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -85,8 +77,11 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index){
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
+                                  isNotStarted ?
+                                  text("Planlanmadı", colors.black, 13, "FontMedium", 1, FontWeight.normal)
+                                      :
                                   text(isReading ? "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} / ${OkuurCalc.calcDaysBetween(bookInfo.startingDate, DateTime.now().toString())} gündür okuyorsun" : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate,bookInfo.finishingDate)} günde okudunuz", colors.black, 11, "FontMedium", 1,FontWeight.normal),
-                                  moreButton(isReading)
+                                  moreButton(isReading ? colors.orange : colors.greenDark)
                                 ],
                               )
                             ],
@@ -98,11 +93,28 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index){
                 ],
               ),
             ),
+            Container(
+              width: 22,
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16),topRight: Radius.circular(6),bottomRight: Radius.circular(6)),
+                  color: isReading ? colors.orange : null
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: RotatedBox(
+                    quarterTurns: 3,
+                    child: Center(child: text(index,isReading ? colors.white : colors.greenDark,13,"FontBold",1,FontWeight.normal))),
+              ),
+            ),
           ],
         ),
       ),
-      const SizedBox(width: 4,),
-      OkuurStarRating(rating: bookInfo.rating,filledStarColor:colors.greenDark,unfilledStarColor: isReading ? colors.blueLight :colors.blue,text: isReading ? "" : bookInfo.rating.toString(),)
+      Visibility(
+        visible: isNotStarted == false,
+        child: Container(
+            margin: EdgeInsets.only(left: 4),
+            child: OkuurStarRating(rating: bookInfo.rating,filledStarColor:colors.greenDark,unfilledStarColor: isReading ? colors.blueLight :colors.blue,text: isReading ? "" : bookInfo.rating.toString(),)),
+      )
     ],
   );
 }
@@ -118,7 +130,7 @@ Text text(String text,Color color,double size, String family,int maxLines,FontWe
   );
 }
 
-InkWell moreButton(bool isReading){
+InkWell moreButton(Color color){
   return InkWell(
     onTap: () {
 
@@ -126,7 +138,7 @@ InkWell moreButton(bool isReading){
     child: Container(
       height: 11,
       decoration: BoxDecoration(
-        color: isReading ? colors.orange : colors.greenDark,
+        color: color,
         borderRadius: const BorderRadius.all(Radius.circular(50)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 2.5,horizontal: 3),

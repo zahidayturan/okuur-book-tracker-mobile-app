@@ -6,11 +6,11 @@ import 'package:okuur/routes/library/components/book_container.dart';
 
 class BookListLibrary extends StatefulWidget {
 
-  //final OkuurUserInfo userData;
+  final int buttonIndex;
 
   const BookListLibrary({
     Key? key,
-    //required this.userData
+    required this.buttonIndex
   }) : super(key: key);
 
   @override
@@ -53,8 +53,6 @@ class _BookListLibraryState extends State<BookListLibrary> {
       currentBooks = {...current, ...past}.toList();
       futureBooks = future;
     });
-    print(currentBooks.length);
-    print(futureBooks.length);
   }
 
 
@@ -63,12 +61,12 @@ class _BookListLibraryState extends State<BookListLibrary> {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: currentBooks.length,
+      itemCount: widget.buttonIndex == 0 ? currentBooks.length : futureBooks.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 8.0), // Alt tarafa 8px boşluk ekler
+          padding: const EdgeInsets.only(bottom: 8.0),
           child: bookContainerLibrary(
-            currentBooks[index],
+            widget.buttonIndex == 0 ? currentBooks[index] : futureBooks[index],
             "${index + 1}",
           ),
         );

@@ -8,7 +8,7 @@ class OkuurCalc {
     }else if(min>max) {
       return "100";
     }
-    return (min/max).toStringAsFixed(1);
+    return (min/max*100).toStringAsFixed(1);
   }
 
   static int calcDaysBetween(String startDate, String endDate) {

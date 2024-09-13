@@ -11,4 +11,9 @@ class OkuurDateFormatter {
     return DateTime.now();
   }
 
+  static String convertDate(String startedDate){
+    DateTime format = DateFormat("yyyy-MM-dd hh:mm:ss").parse(startedDate);
+    return "${format.day}.${format.month}.${format.year}";
+  }
+
 }

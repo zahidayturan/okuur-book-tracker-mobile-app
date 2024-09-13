@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
+import 'package:okuur/ui/utils/simple_calc.dart';
 
 AppColors colors = AppColors();
-String convertDate(String startedDate){
-  DateTime format = DateFormat("yyyy-MM-dd hh:mm:ss").parse(startedDate);
-  return "${format.day}.${format.month}.${format.year}";
-}
-String calcPercentage(int page, int currentPage){
-  return (currentPage/page).toStringAsFixed(1);
-}
+
+
 Container bookContainerLibrary(OkuurBookInfo bookInfo){
   return Container(
     decoration: BoxDecoration(
@@ -18,14 +14,14 @@ Container bookContainerLibrary(OkuurBookInfo bookInfo){
       borderRadius: const BorderRadius.all(Radius.circular(8))
     ),
     padding: const EdgeInsets.all(8),
-    margin: EdgeInsets.only(bottom: 8),
+    margin: const EdgeInsets.only(bottom: 8),
     child: Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             text(bookInfo.status %2 == 1 ? "Şu an okuyorsun" : "${bookInfo.startingDate} - ${bookInfo.finishingDate}", colors.orange, 13, "FontMedium", 1,FontWeight.normal),
-            text("%${calcPercentage(bookInfo.pageCount,bookInfo.currentPage)}", colors.orange, 13, "FontMedium", 1,FontWeight.w700),
+            text("%${OkuurCalc.calcPercentage(bookInfo.pageCount,bookInfo.currentPage)}", colors.orange, 13, "FontMedium", 1,FontWeight.w700),
           ],
         ),
         const SizedBox(height: 8,),
@@ -68,7 +64,7 @@ Container bookContainerLibrary(OkuurBookInfo bookInfo){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        text("${convertDate(bookInfo.startingDate)} / 4 gündür okuyorsun", colors.black, 11, "FontMedium", 1,FontWeight.normal),
+                        text("${OkuurDateFormatter.convertDate(bookInfo.startingDate)} / 4 gündür okuyorsun", colors.black, 11, "FontMedium", 1,FontWeight.normal),
                         moreButton(true)
                       ],
                     )

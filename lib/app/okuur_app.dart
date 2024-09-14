@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
@@ -27,6 +28,7 @@ class _OkuurAppState extends State<OkuurApp> {
   void initState() {
     super.initState();
     Get.put(OkuurController());
+    Get.put(LibraryController());
     controller = Get.find();
   }
 

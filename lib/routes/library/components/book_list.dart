@@ -3,6 +3,7 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/routes/library/components/book_container.dart';
+import 'package:okuur/ui/components/rich_text.dart';
 
 class BookListLibrary extends StatefulWidget {
 
@@ -58,8 +59,14 @@ class _BookListLibraryState extends State<BookListLibrary> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.buttonIndex == 0 && currentBooks.isEmpty){
+      return infoBox("Henüz bir kitap okumaya başlamadınız.\nDaha önce eklediğiniz kitaplardan bir tanesini okumaya başlayın veya bir ","kitap ekleyin",false);
+    }
+    if(widget.buttonIndex == 1 && futureBooks.isEmpty){
+      return infoBox("Okumayı planladığınız bir kitap yok.\nOkumaya başlamak için bir ","kitap ekleyin.",true);
+    }
     return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: widget.buttonIndex == 0 ? currentBooks.length : futureBooks.length,
       itemBuilder: (context, index) {
@@ -71,6 +78,37 @@ class _BookListLibraryState extends State<BookListLibrary> {
           ),
         );
       },
+    );
+  }
+  
+  Column infoBox(String text,String boldText,bool isRight){
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              color: colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(8))
+          ),
+          child: Stack(
+            children: [
+                  Positioned(
+                      top: -8,
+                      child: Icon(Icons.book_rounded,color: colors.grey,size: 64,)),
+                  Center(
+                    child: Padding(
+                      padding:  const EdgeInsets.symmetric(horizontal: 12,vertical: 24),
+                      child: RichTextWidget(
+                      texts: [text,boldText],
+                      colors: [colors.black,colors.green],
+                      fontFamilies: ["FontMedium","FontBold"],
+                      fontSize: 14,
+                      align: TextAlign.center),
+                    ),
+                  ),
+                ],
+          )
+        ),
+      ],
     );
   }
 

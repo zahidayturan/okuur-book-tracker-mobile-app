@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/library/components/book_list.dart';
 import 'package:okuur/ui/components/action_button.dart';
@@ -17,11 +19,12 @@ class _LibraryPageState extends State<LibraryPage> {
 
   AppColors colors = AppColors();
 
-  int currentButtonIndex = 0;
+  LibraryController controller = Get.find();
+
 
   void handleButtonChange(int newButton) {
     setState(() {
-      currentButtonIndex = newButton;
+      controller.setPageCurrentMode(newButton);
     });
   }
 
@@ -60,7 +63,7 @@ class _LibraryPageState extends State<LibraryPage> {
                     ],
                   ),
                   SizedBox(height: 12,),
-                  BookListLibrary(buttonIndex: currentButtonIndex),
+                  Obx(() => BookListLibrary(buttonIndex: controller.pageCurrentMode.value),),
                   SizedBox(height: 12,),
                 ],),
             ),

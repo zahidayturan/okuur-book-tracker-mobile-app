@@ -21,6 +21,11 @@ class _LibraryPageState extends State<LibraryPage> {
 
   LibraryController controller = Get.find();
 
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchBooks();
+  }
 
   void handleButtonChange(int newButton) {
     setState(() {
@@ -36,36 +41,73 @@ class _LibraryPageState extends State<LibraryPage> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: null,
         body: Padding(
-          padding: EdgeInsets.only(right: 12,left: 12),
+          padding: const EdgeInsets.only(right: 12, left: 12),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 12,),
+                  SizedBox(height: 12),
                   PageHeaderTitle(
                       title: "Kitaplığın",
                       pathName: "library",
                       subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
-                      otherWidget: true).getTitle(),
-                  SizedBox(height: 16,),
-                  Padding(
+                      otherWidget: true
+                  ).getTitle(),
+                  SizedBox(height: 16),
+                  Obx(() => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: OkuurSwitchButton(buttonCount: 2,buttonNames: ["Okuduklarınız","Okuyacaklarınız"],onChanged:  handleButtonChange,),
-                  ),
-                  SizedBox(height: 12,),
+                    child: OkuurSwitchButton(
+                      buttonCount: 2,
+                      buttonNames: ["Okuduklarınız", "Okuyacaklarınız"],
+                      onChanged: handleButtonChange,
+                      initValue: controller.pageCurrentMode.value,
+                    ),
+                  ),),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      OkuurActionButton(path: "sort", color: colors.white, onChanged: (value) {},),
-                      SizedBox(width: 12,),
-                      Expanded(child: OkuurSearchBar(hintText: "Kitap veya yazar arayın", onChanged: (value) {},),),
+                      Obx(() => Visibility(
+                        visible: controller.pageCurrentMode.value == 0
+                            ? controller.currentBooks.isNotEmpty
+                            : controller.futureBooks.isNotEmpty,
+                        child: Row(
+                          children: [
+                            OkuurActionButton(path: "sort", color: colors.white, onChanged: (value) {}),
+                            SizedBox(width: 12),
+                          ],
+                        ),
+                      )),
+                      Expanded(
+                        child: OkuurSearchBar(
+                          hintText: "Kitap veya yazar arayın",
+                          onChanged: (value) {},
+                          readOnly: controller.pageCurrentMode.value == 0
+                              ? controller.currentBooks.isEmpty
+                              : controller.futureBooks.isEmpty,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 12,),
-                  Obx(() => BookListLibrary(buttonIndex: controller.pageCurrentMode.value),),
-                  SizedBox(height: 12,),
-                ],),
+                  SizedBox(height: 12),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      // Yükleme ekranı
+                      return CircularProgressIndicator();
+                    } else {
+                      // Kitap listesi
+                      return BookListLibrary(
+                        buttonIndex: controller.pageCurrentMode.value,
+                        bookList: controller.pageCurrentMode.value == 0
+                            ? controller.currentBooks
+                            : controller.futureBooks,
+                      );
+                    }
+                  }),
+                  SizedBox(height: 12),
+                ],
+              ),
             ),
           ),
         ),

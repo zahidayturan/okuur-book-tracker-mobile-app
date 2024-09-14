@@ -8,10 +8,12 @@ import 'package:okuur/ui/components/rich_text.dart';
 class BookListLibrary extends StatefulWidget {
 
   final int buttonIndex;
+  final List<OkuurBookInfo> bookList;
 
   const BookListLibrary({
     Key? key,
-    required this.buttonIndex
+    required this.buttonIndex,
+    required this.bookList,
   }) : super(key: key);
 
   @override
@@ -24,56 +26,23 @@ class _BookListLibraryState extends State<BookListLibrary> {
   final BookOperations bookOperations = BookOperations();
 
 
-  List<OkuurBookInfo> currentBooks = [];
-  List<OkuurBookInfo> futureBooks = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchBooks();
-  }
-
-  Future<void> _fetchBooks() async {
-    List<OkuurBookInfo> books = await bookOperations.getBookInfo();
-    List<OkuurBookInfo> current = [];
-    List<OkuurBookInfo> future = [];
-    List<OkuurBookInfo> past = [];
-
-    for (var book in books) {
-      int readStatus = book.status;
-      if(readStatus == 0){
-        future.add(book);
-      }else if(readStatus %2 == 1) {
-        current.add(book);
-      } else {
-        past.add(book);
-      }
-    }
-
-    setState(() {
-      currentBooks = {...current, ...past}.toList();
-      futureBooks = future;
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    if(widget.buttonIndex == 0 && currentBooks.isEmpty){
+    if(widget.buttonIndex == 0 && widget.bookList.isEmpty){
       return infoBox("Henüz bir kitap okumaya başlamadınız.\nDaha önce eklediğiniz kitaplardan bir tanesini okumaya başlayın veya bir ","kitap ekleyin",false);
     }
-    if(widget.buttonIndex == 1 && futureBooks.isEmpty){
+    if(widget.buttonIndex == 1 && widget.bookList.isEmpty){
       return infoBox("Okumayı planladığınız bir kitap yok.\nOkumaya başlamak için bir ","kitap ekleyin.",true);
     }
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: widget.buttonIndex == 0 ? currentBooks.length : futureBooks.length,
+      itemCount: widget.bookList.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: bookContainerLibrary(
-            widget.buttonIndex == 0 ? currentBooks[index] : futureBooks[index],
+            widget.bookList[index],
             "${index + 1}",
           ),
         );

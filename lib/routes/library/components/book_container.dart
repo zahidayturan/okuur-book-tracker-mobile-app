@@ -52,7 +52,7 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index){
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
                       child: Image.network(
-                        'https://picsum.photos/250?image=8',
+                        bookInfo.imageLink,
                         fit: BoxFit.cover,
                       ),
                     ),

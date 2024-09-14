@@ -5,12 +5,14 @@ class OkuurSwitchButton extends StatefulWidget {
   final int buttonCount;
   final List<String> buttonNames;
   final ValueChanged<int> onChanged;
+  final int initValue;
 
   OkuurSwitchButton({
     super.key,
     required this.buttonCount,
     required this.buttonNames,
     required this.onChanged,
+    this.initValue = 0
   });
 
   @override
@@ -24,7 +26,7 @@ class _OkuurSwitchButtonState extends State<OkuurSwitchButton> {
   @override
   void initState() {
     super.initState();
-    currentButton = 0;
+    currentButton = widget.initValue;
   }
 
   Widget button(String name, int index) {

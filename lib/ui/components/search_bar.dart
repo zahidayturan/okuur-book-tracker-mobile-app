@@ -4,11 +4,13 @@ import 'package:okuur/core/constants/colors.dart';
 class OkuurSearchBar extends StatefulWidget {
   final String hintText;
   final ValueChanged<int> onChanged;
+  final bool readOnly;
 
   const OkuurSearchBar({
     super.key,
     required this.hintText,
     required this.onChanged,
+    this.readOnly = false
   });
 
   @override
@@ -32,18 +34,19 @@ class _OkuurSearchBarState extends State<OkuurSearchBar> {
           fontSize: 14,
           color: colors.black
         ),
+        readOnly: widget.readOnly,
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintMaxLines: 1,
             isDense: true,
           hintStyle: TextStyle(
             fontSize: 14,
-            color: colors.greenDark
+            color: widget.readOnly ? colors.blueLight : colors.greenDark
           ),
             border: InputBorder.none,
           suffixIcon: IconButton(
             padding: EdgeInsets.zero,
-            icon: Image.asset("assets/icons/search.png",height: 26),
+            icon: Image.asset("assets/icons/search.png",height: 26,color: widget.readOnly ? colors.blueLight : colors.greenDark,),
             onPressed: () {
               widget.onChanged;
             },

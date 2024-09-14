@@ -8,7 +8,6 @@ import 'package:okuur/routes/addBook/components/book_image.dart';
 import 'package:okuur/routes/addBook/components/book_info.dart';
 import 'package:okuur/routes/addBook/components/book_init.dart';
 import 'package:okuur/routes/addBook/components/book_state.dart';
-import 'package:okuur/ui/components/slider_form.dart';
 import 'package:okuur/ui/components/switch_button.dart';
 import 'package:get/get.dart';
 

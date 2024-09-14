@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/library/components/book_list.dart';
 import 'package:okuur/ui/components/action_button.dart';
@@ -17,11 +19,17 @@ class _LibraryPageState extends State<LibraryPage> {
 
   AppColors colors = AppColors();
 
-  int currentButtonIndex = 0;
+  LibraryController controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchBooks();
+  }
 
   void handleButtonChange(int newButton) {
     setState(() {
-      currentButtonIndex = newButton;
+      controller.setPageCurrentMode(newButton);
     });
   }
 
@@ -33,36 +41,73 @@ class _LibraryPageState extends State<LibraryPage> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: null,
         body: Padding(
-          padding: EdgeInsets.only(right: 12,left: 12),
+          padding: const EdgeInsets.only(right: 12, left: 12),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 12,),
+                  SizedBox(height: 12),
                   PageHeaderTitle(
                       title: "Kitaplığın",
                       pathName: "library",
                       subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
-                      otherWidget: true).getTitle(),
-                  SizedBox(height: 16,),
-                  Padding(
+                      otherWidget: true
+                  ).getTitle(),
+                  SizedBox(height: 16),
+                  Obx(() => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: OkuurSwitchButton(buttonCount: 2,buttonNames: ["Okuduklarınız","Okuyacaklarınız"],onChanged:  handleButtonChange,),
-                  ),
-                  SizedBox(height: 12,),
+                    child: OkuurSwitchButton(
+                      buttonCount: 2,
+                      buttonNames: ["Okuduklarınız", "Okuyacaklarınız"],
+                      onChanged: handleButtonChange,
+                      initValue: controller.pageCurrentMode.value,
+                    ),
+                  ),),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      OkuurActionButton(path: "sort", color: colors.white, onChanged: (value) {},),
-                      SizedBox(width: 12,),
-                      Expanded(child: OkuurSearchBar(hintText: "Kitap veya yazar arayın", onChanged: (value) {},),),
+                      Obx(() => Visibility(
+                        visible: controller.pageCurrentMode.value == 0
+                            ? controller.currentBooks.isNotEmpty
+                            : controller.futureBooks.isNotEmpty,
+                        child: Row(
+                          children: [
+                            OkuurActionButton(path: "sort", color: colors.white, onChanged: (value) {}),
+                            SizedBox(width: 12),
+                          ],
+                        ),
+                      )),
+                      Expanded(
+                        child: OkuurSearchBar(
+                          hintText: "Kitap veya yazar arayın",
+                          onChanged: (value) {},
+                          readOnly: controller.pageCurrentMode.value == 0
+                              ? controller.currentBooks.isEmpty
+                              : controller.futureBooks.isEmpty,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 12,),
-                  BookListLibrary(buttonIndex: currentButtonIndex),
-                  SizedBox(height: 12,),
-                ],),
+                  SizedBox(height: 12),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      // Yükleme ekranı
+                      return CircularProgressIndicator();
+                    } else {
+                      // Kitap listesi
+                      return BookListLibrary(
+                        buttonIndex: controller.pageCurrentMode.value,
+                        bookList: controller.pageCurrentMode.value == 0
+                            ? controller.currentBooks
+                            : controller.futureBooks,
+                      );
+                    }
+                  }),
+                  SizedBox(height: 12),
+                ],
+              ),
             ),
           ),
         ),

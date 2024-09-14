@@ -36,33 +36,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Container(
       decoration: BoxDecoration(
         color: colors.white,
-        border: Border(top: BorderSide(width: 1,color: colors.greyDark.withOpacity(0.2)))
+        border: Border(top: BorderSide(width: 1,color: colors.greyDark.withOpacity(0.3)))
       ),
-      child: Stack(
-        children: [
-          Container(
-            height: 48,
-            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
-            decoration: BoxDecoration(
-              color: colors.blue,
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-          ),
-          Container(
-            height: 54,
-            margin: EdgeInsets.symmetric(horizontal: 12,vertical: 9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0,HomePage()),
-                getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1,StatisticsPage()),
-                getIconAndText(context, "assets/icons/social.png", "Sosyal",2,SocialPage()),
-                getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,LibraryPage()),
-                getIconAndText(context, "assets/icons/other.png", "Diğer",4,OtherPage())
-              ],
-            ),
-          ),
-        ],
+      child: Container(
+        height: 54,
+        margin: EdgeInsets.symmetric(horizontal: 12,vertical: 9),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            getIconAndText(context, "assets/icons/home.png", "Ana Sayfa",0,HomePage()),
+            getIconAndText(context, "assets/icons/statistics.png", "İstatistik",1,StatisticsPage()),
+            getIconAndText(context, "assets/icons/social.png", "Sosyal",2,SocialPage()),
+            getIconAndText(context, "assets/icons/library.png", "Kitaplık",3,LibraryPage()),
+            getIconAndText(context, "assets/icons/other.png", "Diğer",4,OtherPage())
+          ],
+        ),
       ),
     );
   }
@@ -92,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 duration: Duration(milliseconds: 400),
                 curve: Curves.easeInOut,
                 width: mode == controller.homePageCurrentMode.value ? 24: 20,
-                child:Image.asset(path),
+                child:Image.asset(path,color:mode == controller.homePageCurrentMode.value ? colors.white: colors.greenDark,),
               ),
             ),
             SizedBox(height: 4,),
@@ -102,7 +90,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               height: mode == controller.homePageCurrentMode.value ? 0: 12,
               child: Text(text,style: TextStyle(
                   fontSize: 10,
-                  color: colors.grey,
+                  color: colors.greenDark,
                   fontFamily: "FontMedium",
                   overflow: TextOverflow.ellipsis
               ),),

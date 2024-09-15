@@ -37,9 +37,14 @@ class LibraryController extends GetxController {
       }
     }
 
+    current.sort((a, b) => b.startingDate.compareTo(a.startingDate));
+    past.sort((a, b) => b.startingDate.compareTo(a.startingDate));
+    future.sort((a, b) => b.startingDate.compareTo(a.startingDate));
+
     currentBooks.assignAll([...current, ...past]);
     futureBooks.assignAll(future);
     isLoading.value = false;
   }
+
 }
 

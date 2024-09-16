@@ -43,7 +43,7 @@ class _BookListLibraryState extends State<BookListLibrary> {
           padding: const EdgeInsets.only(bottom: 8.0),
           child: bookContainerLibrary(
             widget.bookList[index],
-            "${index + 1}",
+            "${widget.bookList.length - index}",
           ),
         );
       },

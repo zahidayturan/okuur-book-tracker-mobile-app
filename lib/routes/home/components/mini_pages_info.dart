@@ -48,14 +48,14 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        color: colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(14))
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 48,top: 24),
-            child: Image.asset("assets/icons/goals.png"),
+            child: Image.asset("assets/icons/goals.png",color: Theme.of(context).scaffoldBackgroundColor),
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
@@ -63,11 +63,11 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                title("Hedefler",colors.green,14,"FontBold"),
+                title("Hedefler",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
                 RichTextWidget(
                     fontSize: 12,
                     texts: ["Günlük\n","${widget.dailyGoal} sayfa"],
-                    colors: [colors.black,colors.black],
+                    colors: [Theme.of(context).colorScheme.primary,Theme.of(context).colorScheme.primary],
                     fontFamilies: ["FontMedium","FontBold"],
                   align: TextAlign.start,
                 ),
@@ -75,9 +75,9 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  title("${widget.goalCount} tane", colors.black, 10, "FontMedium"),
+                  title("${widget.goalCount} tane", Theme.of(context).colorScheme.primary, 10, "FontMedium"),
                   Spacer(),
-                  title("Göz at", colors.green, 10, "FontMedium"),
+                  title("Göz at", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
                   actionContainer()
                 ],)
               ],
@@ -93,14 +93,14 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       height: size,
       width: size,
       decoration: BoxDecoration(
-          color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 48,bottom: 24),
-            child: Image.asset("assets/icons/achievements.png"),
+            child: Image.asset("assets/icons/achievements.png",color: Theme.of(context).scaffoldBackgroundColor),
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
@@ -108,16 +108,16 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                title("Başarımlar",colors.green,14,"FontBold"),
+                title("Başarımlar",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset("assets/icons/achievements_example.png"),
+                  child: Image.asset("assets/icons/achievements_example.png",color: Theme.of(context).colorScheme.onSurface,),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    title("Görüntüle", colors.green, 10, "FontMedium"),
+                    title("Görüntüle", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
                     actionContainer()
                   ],)
               ],
@@ -133,14 +133,14 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       height: size,
       width: size,
       decoration: BoxDecoration(
-          color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8,top: 48),
-            child: Image.asset("assets/icons/reads.png",color: colors.grey,),
+            child: Image.asset("assets/icons/reads.png",color: Theme.of(context).scaffoldBackgroundColor),
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
@@ -148,13 +148,13 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                title("Okumalar",colors.green,14,"FontBold"),
-                title("Kaydettiğin bütün okumaların", colors.black, 12, "FontMedium"),
+                title("Okumalar",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
+                title("Kaydettiğin bütün okumaların", Theme.of(context).colorScheme.primary, 12, "FontMedium"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    title("Listele", colors.green, 10, "FontMedium"),
+                    title("Listele", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
                     actionContainer()
                   ],)
               ],
@@ -170,14 +170,14 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       height: size,
       width: size,
       decoration: BoxDecoration(
-          color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 48,top: 16),
-            child: Image.asset("assets/icons/connection.png",color: colors.grey,),
+            child: Image.asset("assets/icons/connection.png",color:Theme.of(context).scaffoldBackgroundColor),
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
@@ -185,13 +185,13 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                title("Keşfet",colors.green,14,"FontBold"),
-                title("Okuyacak yeni kitaplar bul", colors.black, 12, "FontMedium"),
+                title("Keşfet",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
+                title("Okuyacak yeni kitaplar bul", Theme.of(context).colorScheme.primary, 12, "FontMedium"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    title("Keşfet", colors.green, 10, "FontMedium"),
+                    title("Keşfet", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
                     actionContainer()
                   ],)
               ],
@@ -218,7 +218,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       height: 12,
       margin: EdgeInsets.only(left: 4),
       decoration: BoxDecoration(
-        color: colors.green,
+        color: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.all(Radius.circular(20))
       ),
       child:Center(
@@ -226,7 +226,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
           width: 2,
           height: 6,
           decoration: BoxDecoration(
-              color: colors.white,
+              color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.all(Radius.circular(20))
           ),
         ),

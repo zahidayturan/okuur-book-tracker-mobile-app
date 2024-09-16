@@ -35,8 +35,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: colors.white,
-        border: Border(top: BorderSide(width: 1,color: colors.greyDark.withOpacity(0.3)))
+        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        border: Border(top: BorderSide(width: 1,color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3)))
       ),
       child: Container(
         height: 54,
@@ -80,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 duration: Duration(milliseconds: 400),
                 curve: Curves.easeInOut,
                 width: mode == controller.homePageCurrentMode.value ? 24: 20,
-                child:Image.asset(path,color:mode == controller.homePageCurrentMode.value ? colors.white: colors.greenDark,),
+                child:Image.asset(path,color:mode == controller.homePageCurrentMode.value ? colors.grey: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,),
               ),
             ),
             SizedBox(height: 4,),
@@ -90,7 +90,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               height: mode == controller.homePageCurrentMode.value ? 0: 12,
               child: Text(text,style: TextStyle(
                   fontSize: 10,
-                  color: colors.greenDark,
+                  color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                   fontFamily: "FontMedium",
                   overflow: TextOverflow.ellipsis
               ),),

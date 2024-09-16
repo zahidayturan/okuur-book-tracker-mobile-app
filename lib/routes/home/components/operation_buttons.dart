@@ -55,9 +55,9 @@ class _OperationButtonsState extends State<OperationButtons> {
           );
         },
         child: Container(
-          height: 54,
+          height: 60,
           decoration: BoxDecoration(
-              color: colors.orange,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(50),
                 bottomRight: Radius.circular(50),
@@ -75,24 +75,22 @@ class _OperationButtonsState extends State<OperationButtons> {
                   textAlign: TextAlign.start,
                   overflow: TextOverflow.ellipsis,
                   text: TextSpan(
-                      style: TextStyle(
-                          color: colors.grey
-                      ),
-                      children: const [
+
+                      children:  [
                         TextSpan(
                             text: "Okuduklarını\n",
                             style: TextStyle(
-                                fontFamily: "FontMedium", fontSize: 13
+                                fontFamily: "FontMedium", fontSize: 13, color: Theme.of(context).colorScheme.secondary
                             )),
                         TextSpan(
                             text: "Kaydet",
                             style: TextStyle(
-                                fontFamily: "FontBold", fontSize: 14
+                                fontFamily: "FontBold", fontSize: 14,color: colors.orange
                             )),
                       ]
                   ),
                 ),
-                iconButton("assets/icons/add.png",colors.orange,0)
+                iconButton("assets/icons/add.png",Theme.of(context).colorScheme.onBackground,0)
               ],
             ),
           ),
@@ -108,9 +106,9 @@ class _OperationButtonsState extends State<OperationButtons> {
 
         },
         child: Container(
-          height: 54,
+          height: 60,
           decoration: BoxDecoration(
-              color: colors.blue,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20),
@@ -124,24 +122,21 @@ class _OperationButtonsState extends State<OperationButtons> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                iconButton("assets/icons/play.png",colors.blue,1),
+                iconButton("assets/icons/play.png",Theme.of(context).colorScheme.onSecondary,1),
                 RichText(
                   textAlign: TextAlign.end,
                   overflow: TextOverflow.ellipsis,
                   text: TextSpan(
-                    style: TextStyle(
-                      color: colors.grey
-                    ),
-                      children: const [
+                      children: [
                     TextSpan(
                       text: "Okuma Modunu\n",
                       style: TextStyle(
-                        fontFamily: "FontMedium", fontSize: 13
+                        fontFamily: "FontMedium", fontSize: 13 ,color: Theme.of(context).colorScheme.secondary
                       )),
                     TextSpan(
                         text: "Başlat",
                         style: TextStyle(
-                            fontFamily: "FontBold", fontSize: 14
+                            fontFamily: "FontBold", fontSize: 14, color: colors.blue
                         )),
                   ]
                   ),
@@ -165,13 +160,13 @@ class _OperationButtonsState extends State<OperationButtons> {
   }
 
   Container iconButton(String path,Color color,int type){
-    double radius1 = type == 0 ? 25 : 50;
-    double radius2 = type == 0 ? 50 : 25;
+    double radius1 = type == 0 ? 25 : 85;
+    double radius2 = type == 0 ? 85 : 25;
     return Container(
-      height: 40,
-      width: 24,
+      height: 46,
+      width: 28,
       decoration: BoxDecoration(
-        color: colors.grey,
+        color: color,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(radius1),
             bottomLeft: Radius.circular(radius1),
@@ -180,8 +175,8 @@ class _OperationButtonsState extends State<OperationButtons> {
         )
       ),
       child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Image.asset(path),
+        padding: const EdgeInsets.all(7.0),
+        child: Image.asset(path,color: colors.grey,),
       ),
     );
   }

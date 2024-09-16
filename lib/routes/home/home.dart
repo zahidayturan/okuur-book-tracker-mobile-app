@@ -43,7 +43,8 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 18,),
                   WeeklySeries(weeklySeries: [1,1,1,1,0,0,0],currentSeries: 34),
                   SizedBox(height: 18,),
-                  MiniPagesInfo(dailyGoal: 40,goalCount: 6,)
+                  MiniPagesInfo(dailyGoal: 40,goalCount: 6,),
+                  SizedBox(height: 18,),
                 ],
               ),
             ),

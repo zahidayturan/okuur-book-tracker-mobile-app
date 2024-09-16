@@ -57,7 +57,7 @@ class _OperationButtonsState extends State<OperationButtons> {
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-              color: colors.white,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(50),
                 bottomRight: Radius.circular(50),
@@ -80,7 +80,7 @@ class _OperationButtonsState extends State<OperationButtons> {
                         TextSpan(
                             text: "Okuduklarını\n",
                             style: TextStyle(
-                                fontFamily: "FontMedium", fontSize: 13, color: colors.black
+                                fontFamily: "FontMedium", fontSize: 13, color: Theme.of(context).colorScheme.secondary
                             )),
                         TextSpan(
                             text: "Kaydet",
@@ -90,7 +90,7 @@ class _OperationButtonsState extends State<OperationButtons> {
                       ]
                   ),
                 ),
-                iconButton("assets/icons/add.png",colors.orange,0)
+                iconButton("assets/icons/add.png",Theme.of(context).colorScheme.onBackground,0)
               ],
             ),
           ),
@@ -108,7 +108,7 @@ class _OperationButtonsState extends State<OperationButtons> {
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-              color: colors.white,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20),
@@ -122,7 +122,7 @@ class _OperationButtonsState extends State<OperationButtons> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                iconButton("assets/icons/play.png",colors.blue,1),
+                iconButton("assets/icons/play.png",Theme.of(context).colorScheme.onSecondary,1),
                 RichText(
                   textAlign: TextAlign.end,
                   overflow: TextOverflow.ellipsis,
@@ -131,7 +131,7 @@ class _OperationButtonsState extends State<OperationButtons> {
                     TextSpan(
                       text: "Okuma Modunu\n",
                       style: TextStyle(
-                        fontFamily: "FontMedium", fontSize: 13 ,color: colors.black
+                        fontFamily: "FontMedium", fontSize: 13 ,color: Theme.of(context).colorScheme.secondary
                       )),
                     TextSpan(
                         text: "Başlat",
@@ -176,7 +176,7 @@ class _OperationButtonsState extends State<OperationButtons> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(7.0),
-        child: Image.asset(path,color: colors.white,),
+        child: Image.asset(path,color: colors.grey,),
       ),
     );
   }

@@ -89,7 +89,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               topRight: Radius.circular(6),
               bottomLeft: Radius.circular(14),
               bottomRight: Radius.circular(14)),
-          color: colors.blue,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -103,7 +103,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             },
             child: RichTextWidget(
               texts: ["${date.day.toString()} ${months[date.month]} ", dayInfo],
-              colors: [colors.white, colors.white],
+              colors: [colors.grey, colors.grey],
               fontFamilies: ["FontBold", "FontMedium"],
               fontSize: 14,
               key: ValueKey<int>(date.day),
@@ -130,13 +130,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         height: 28,
         width: 28,
         decoration: BoxDecoration(
-          color: colors.grey,
+          color: Theme.of(context).primaryColor,
           shape: BoxShape.circle
         ),
         padding: const EdgeInsets.all(6),
         child: RotatedBox(
             quarterTurns: type == 0 ? 2 : 0,
-            child: Image.asset("assets/icons/arrow.png",color: colors.blue)
+            child: Image.asset("assets/icons/arrow.png",color: Theme.of(context).colorScheme.primary)
         ),
       ),
     );
@@ -146,7 +146,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: colors.white
+          color: Theme.of(context).colorScheme.onPrimaryContainer
       ),
       padding: const EdgeInsets.all(8),
       child: Column(
@@ -155,9 +155,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           const SizedBox(height: 4,),
           weekdays(),
           const SizedBox(height: 12,),
-          title("Günlük Hedefe Ulaşıldı!", colors.green, 14, "FontMedium"),
+          title("Günlük Hedefe Ulaşıldı!", Theme.of(context).colorScheme.inversePrimary, 14, "FontMedium"),
           const SizedBox(height: 4,),
-          title("Kralın Dönüşü kitabından", colors.black, 13, "FontMedium"),
+          title("Kralın Dönüşü kitabından", Theme.of(context).colorScheme.secondary, 13, "FontMedium"),
           const SizedBox(height: 8,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -169,7 +169,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           const SizedBox(height: 8,),
           RichTextWidget(
               texts: ["Bu ","haftanın en iyi okumasını"," yaptın."],
-              colors: [colors.black,colors.black,colors.black],
+              colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary],
               fontFamilies: ["FontMedium","FontRegular","FontMedium"],
               fontSize: 11,
               align: TextAlign.center),
@@ -200,17 +200,17 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           height: 24,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: colors.blueLight
+            color: Theme.of(context).colorScheme.inverseSurface
           ),
           padding: const EdgeInsets.all(5),
-          child: Image.asset(path,color: colors.white,),
+          child: Image.asset(path,color: colors.grey,),
         ),
         const SizedBox(width: 4,),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            title(count, colors.black, 13, "FontMedium"),
-            title(text, colors.black, 11, "FontMedium"),
+            title(count, Theme.of(context).colorScheme.secondary, 13, "FontMedium"),
+            title(text, Theme.of(context).colorScheme.secondary, 11, "FontMedium"),
           ],
         )
       ],

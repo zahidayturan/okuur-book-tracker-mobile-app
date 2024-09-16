@@ -26,7 +26,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: colors.white
+          color: Theme.of(context).colorScheme.onPrimaryContainer
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -50,7 +50,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichTextWidget(texts: ["Okuyorsun"," (2)"],
-                colors: [colors.blue,colors.blue],
+                colors: [Theme.of(context).colorScheme.inversePrimary,Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontBold","FontMedium"],
                 fontSize: 14,
                 align: TextAlign.start),
@@ -65,8 +65,8 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                textInfo("Kralın Dönüşü", colors.black, 15, "FontBold",TextAlign.start,2),
-                textInfo("J.R.R. Tolkien", colors.black, 12, "FontMedium",TextAlign.start,1),
+                textInfo("Kralın Dönüşü", Theme.of(context).colorScheme.secondary, 15, "FontBold",TextAlign.start,2),
+                textInfo("J.R.R. Tolkien", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,1),
                 const SizedBox(height: 8,),
                 SizedBox(
                   height: 96,
@@ -76,7 +76,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                       Container(
                         width: 68,
                         decoration: BoxDecoration(
-                            color: colors.grey,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: const BorderRadius.all(Radius.circular(6))
                         ),
                       ),
@@ -86,9 +86,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            textInfo("148.sayfadasın\n360 sayfa", colors.black, 12, "FontMedium",TextAlign.start,2),
-                            textInfo("Hedefin 12 günde bitirmek\n4/12", colors.black, 12, "FontMedium",TextAlign.start,2),
-                            textInfo("Başl. 22.08.2024", colors.black, 11, "FontMedium",TextAlign.end,1)
+                            textInfo("148.sayfadasın\n360 sayfa", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,2),
+                            textInfo("Hedefin 12 günde bitirmek\n4/12", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,2),
+                            textInfo("Başl. 22.08.2024", Theme.of(context).colorScheme.secondary, 11, "FontMedium",TextAlign.end,1)
                           ],
                         ),
                       ),
@@ -108,13 +108,13 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                     double innerContainerHeight = 90 * (rate/100);
                     return Column(
                       children: [
-                        textInfo("%${rate.toString()}", colors.blue, 11, "FontMedium",TextAlign.center,1),
+                        textInfo("%${rate.toString()}", Theme.of(context).colorScheme.primary, 11, "FontMedium",TextAlign.center,1),
                         const SizedBox(height: 2,),
                         Container(
                           width: 22,
                           height: 90,
                           decoration: BoxDecoration(
-                            color: colors.grey,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: const BorderRadius.all(Radius.circular(100)),
                           ),
                           child: Align(
@@ -125,7 +125,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                               width: 22,
                               height: innerContainerHeight,
                               decoration: BoxDecoration(
-                                color: colors.blue,
+                                color: Theme.of(context).colorScheme.inversePrimary,
                                 borderRadius: const BorderRadius.only(
                                     bottomRight: Radius.circular(100),
                                     bottomLeft: Radius.circular(100)
@@ -162,15 +162,15 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   InkWell moreButton(){
     return InkWell(
       onTapDown: (TapDownDetails details) {
-        showOkuurPopupMenu(details.globalPosition, colors.white, 12,[
+        showOkuurPopupMenu(details.globalPosition, Theme.of(context).colorScheme.onPrimaryContainer, 12,[
           PopupMenuItem(
             height: 32,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
-                Icon(Icons.slideshow_rounded,color: colors.greenDark,size: 16),
+                Icon(Icons.slideshow_rounded,color: Theme.of(context).colorScheme.primaryContainer,size: 16),
                 const SizedBox(width: 6),
-                Text('Görüntüle',style: TextStyle(fontSize: 13,color: colors.greenDark),),
+                Text('Görüntüle',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
               ],
             ),
           ),
@@ -180,11 +180,11 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         height: 11,
         margin: const EdgeInsets.only(top: 4),
         decoration: BoxDecoration(
-          color: colors.blue,
+          color: Theme.of(context).colorScheme.inversePrimary,
           borderRadius: const BorderRadius.all(Radius.circular(50)),
         ),
         padding: const EdgeInsets.symmetric(vertical: 2.5,horizontal: 3),
-        child: Image.asset("assets/icons/more.png"),
+        child: Image.asset("assets/icons/more.png",color: Theme.of(context).primaryColor,),
       ),
     );
   }

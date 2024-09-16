@@ -28,6 +28,7 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).colorScheme.primaryContainer;
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,14 +38,14 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
             children: [
               RichTextWidget(
                 texts: ['Merhaba ', '${widget.userName}'],
-                colors: [colors.greenDark, colors.greenDark],
+                colors: [mainColor, mainColor],
                 fontSize: 15,
                 fontFamilies: ['FontMedium', 'FontBold'],
                 align: TextAlign.start,
               ),
               RichTextWidget(
                 texts: ['Bu ay ', '${widget.pageCount} sayfa',' kitap okudun'],
-                colors: [colors.green, colors.green,colors.green],
+                colors: [mainColor, mainColor,mainColor],
                 fontSize: 13,
                 fontFamilies: ['FontMedium', 'FontBold','FontMedium'],
                 align: TextAlign.start,
@@ -55,17 +56,17 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
             onTap: () {
               controller.setHomePageCurrentMode(5);
             },
-            highlightColor: colors.greenDark,
+            highlightColor: mainColor,
             borderRadius: BorderRadius.all(Radius.circular(6)),
             child: Container(
               width: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: colors.greenDark,
+                color: mainColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset("assets/icons/social.png"),
+                child: Image.asset("assets/icons/social.png",color: Theme.of(context).primaryColor,),
               ),
             ),
           )

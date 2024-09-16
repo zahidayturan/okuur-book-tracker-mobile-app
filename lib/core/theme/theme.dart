@@ -9,22 +9,50 @@ class AppTheme {
 
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: ThemeData.light().scaffoldBackgroundColor,
+    primaryColor: colors.grey,
     useMaterial3: false,
     fontFamily: "FontMedium",
-    scaffoldBackgroundColor: colors.grey,
+    scaffoldBackgroundColor: colors.backLight,
     colorScheme: const ColorScheme.light().copyWith(
-        primary: colors.orange,
-    )
+        primary: colors.blue,
+        secondary: colors.black,
+        onPrimaryContainer: colors.white,
+        onSecondary: colors.blue,
+        inversePrimary: colors.blue,
+        inverseSurface: colors.blueLight,
+        primaryContainer: colors.greenDark,
+        surface: colors.green,
+        onBackground: colors.orange,
+        onSurface: colors.green
+    ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: colors.white,
+          unselectedItemColor: colors.greenDark,
+          selectedItemColor: colors.grey
+      )
   );
 
   static ThemeData darkTheme = ThemeData(
-    primaryColor: ThemeData.dark().scaffoldBackgroundColor,
+    primaryColor: colors.black, //
     useMaterial3: false,
     fontFamily: "FontMedium",
-    scaffoldBackgroundColor: colors.greenDark,
+    scaffoldBackgroundColor: colors.backDark,
     colorScheme: const ColorScheme.dark().copyWith(
-      primary: colors.greenDark,
+        primary: colors.grey, //
+        secondary: colors.grey,//
+        onPrimaryContainer: colors.blackLight,//
+        onSecondary: colors.black,//
+        inversePrimary: colors.blueMid,//
+        inverseSurface: colors.black,//
+        primaryContainer: colors.grey,//
+        surface: colors.grey,//
+        onBackground: colors.black,//
+        onSurface: colors.blueMid,//
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colors.black,
+        unselectedItemColor: colors.grey,
+        selectedItemColor: colors.blackLight
+    )
   );
 }

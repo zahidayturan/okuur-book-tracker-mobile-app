@@ -49,7 +49,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       width: size,
       decoration: BoxDecoration(
         color: colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(14))
+        borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
@@ -94,7 +94,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       width: size,
       decoration: BoxDecoration(
           color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))
+          borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
@@ -134,7 +134,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       width: size,
       decoration: BoxDecoration(
           color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))
+          borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [
@@ -171,7 +171,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       width: size,
       decoration: BoxDecoration(
           color: colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))
+          borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Stack(
         children: [

@@ -26,10 +26,10 @@ class _WeeklySeriesState extends State<WeeklySeries> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 66,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        color: colors.green
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: colors.white
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -62,14 +62,14 @@ class _WeeklySeriesState extends State<WeeklySeries> {
               height: 26,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: colors.white,
+                color: colors.grey,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: series[i] == 0 ? colors.grey : colors.greenDark
+                    color: series[i] == 0 ? colors.white : colors.blue
                   ),
                 ),
               ),
@@ -79,7 +79,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
               days[i],
               style: TextStyle(
                 fontSize: 10,
-                color: colors.white,
+                color: colors.blue,
                 fontFamily: "FontMedium"
               ),
             ),
@@ -101,9 +101,9 @@ class _WeeklySeriesState extends State<WeeklySeries> {
       children: [
         const SizedBox(height: 2,),
         RichTextWidget(
-          texts: ["${widget.currentSeries}\n","Günlük\n","Seri"],
-          colors: [colors.grey,colors.grey,colors.grey],
-          fontFamilies: const ["FontBold","FontBold","FontMedium"],
+          texts: ["${widget.currentSeries}\n","Günlük\nSeri"],
+          colors: [colors.blue,colors.black],
+          fontFamilies: const ["FontBold","FontMedium"],
           fontSize: 13,
           align: TextAlign.center,
         ),
@@ -111,7 +111,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
           width: 54,
           height: 6,
           decoration: BoxDecoration(
-            color: colors.greenDark,
+            color: colors.grey,
             borderRadius: const BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10))
           ),
         )
@@ -135,7 +135,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Image.asset("assets/icons/arrow.png"),
+        child: Image.asset("assets/icons/arrow.png",color: colors.blue,),
       ),
     );
   }

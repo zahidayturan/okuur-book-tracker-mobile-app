@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class CurrentBookAndDiscover extends StatefulWidget {
@@ -17,29 +18,28 @@ class CurrentBookAndDiscover extends StatefulWidget {
 class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
 
   AppColors colors = AppColors();
+  int rate = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 168,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(16)),
-                color: colors.white
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: bookInfo(),
-            ),
-          ),
-        ),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: colors.white
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: bookInfo(),
+      ),
     );
   }
 
   Column bookInfo(){
+    if(360 > 0 && (148 < 360)){
+      rate = ((148 / 360)*100).toInt();
+    }else if(148 > 360){
+      rate = 100;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,91 +47,100 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            textInfo("Okuyorsun", colors.greenDark, 14, "FontBold",TextAlign.start,1),
-            textInfo("Başl. 22.08.2024", colors.black, 11, "FontMedium",TextAlign.end,1),
+            RichTextWidget(texts: ["Okuyorsun"," (2)"],
+                colors: [colors.blue,colors.blue],
+                fontFamilies: ["FontBold","FontMedium"],
+                fontSize: 14,
+                align: TextAlign.start),
           ],
         ),
-        textInfo("Kralın Dönüşü", colors.black, 15, "FontMedium",TextAlign.start,2),
-        textInfo("J.R.R. Tolkien", colors.black, 12, "FontMedium",TextAlign.start,1),
+        const SizedBox(height: 12,),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Stack(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: colors.blueLight,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        bottomLeft: Radius.circular(8),
-                        topRight: Radius.circular(4),
-                        bottomRight: Radius.circular(4)
-                      )
-
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 54,
-                  height: 76,
-                  margin: EdgeInsets.only(left: 4,bottom: 4),
-                  decoration: BoxDecoration(
-                    color: colors.grey,
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              height: 80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                textInfo("Kralın Dönüşü", colors.black, 15, "FontBold",TextAlign.start,2),
+                textInfo("J.R.R. Tolkien", colors.black, 12, "FontMedium",TextAlign.start,1),
+                const SizedBox(height: 8,),
+                SizedBox(
+                  height: 96,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      textInfo("148.sayfadasın / 240", colors.green, 11, "FontMedium",TextAlign.end,1),
-                      SizedBox(width: 4,),
                       Container(
-                        width: 5,
-                        height: 12,
+                        width: 68,
                         decoration: BoxDecoration(
-                          color: colors.green,
-                          borderRadius: BorderRadius.all(Radius.circular(8))
+                            color: colors.grey,
+                            borderRadius: const BorderRadius.all(Radius.circular(6))
                         ),
-                      )
+                      ),
+                      const SizedBox(width: 12,),
+                      Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            textInfo("148.sayfadasın\n360 sayfa", colors.black, 12, "FontMedium",TextAlign.start,2),
+                            textInfo("Hedefin 12 günde bitirmek\n4/12", colors.black, 12, "FontMedium",TextAlign.start,2),
+                            textInfo("Başl. 22.08.2024", colors.black, 11, "FontMedium",TextAlign.end,1)
+                          ],
+                        ),
+                      ),
+
                     ],
                   ),
-                  Spacer(),
-                  textInfo("4 gündür okuyorsun", colors.black, 11, "FontMedium",TextAlign.end,1),
-                  RichTextWidget(
-                      texts: ["Hedefin ","12 günde ","bitirmek"],
-                      colors: [colors.black,colors.black,colors.black],
-                      fontFamilies: ["FontMedium","FontBold","FontMedium"],
-                      fontSize: 11,
-                      align: TextAlign.end),
-                  Spacer(),
-                  Container(
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: colors.green,
-                      borderRadius: BorderRadius.all(Radius.circular(4))
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Center(child: textInfo("İşlem menüsü", colors.white, 11, "FontMedium",TextAlign.end,1)),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        )
+                )
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    //double outerContainerHeight = constraints.maxHeight;
+                    double innerContainerHeight = 90 * (rate/100);
+                    return Column(
+                      children: [
+                        textInfo("%${rate.toString()}", colors.blue, 11, "FontMedium",TextAlign.center,1),
+                        const SizedBox(height: 2,),
+                        Container(
+                          width: 22,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            color: colors.grey,
+                            borderRadius: const BorderRadius.all(Radius.circular(100)),
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 1000),
+                              curve: Curves.easeInOut,
+                              width: 22,
+                              height: innerContainerHeight,
+                              decoration: BoxDecoration(
+                                color: colors.blue,
+                                borderRadius: const BorderRadius.only(
+                                    bottomRight: Radius.circular(100),
+                                    bottomLeft: Radius.circular(100)
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 6,),
+                moreButton()
+              ]),
+        ],
+        ),
+
       ],
 
     );
@@ -144,6 +153,36 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         fontFamily: family,
         fontSize: size
     ),textAlign: align,overflow: TextOverflow.ellipsis,maxLines: maxLines,
+    );
+  }
+
+  InkWell moreButton(){
+    return InkWell(
+      onTapDown: (TapDownDetails details) {
+        showOkuurPopupMenu(details.globalPosition, colors.white, 12,[
+          PopupMenuItem(
+            height: 32,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                Icon(Icons.slideshow_rounded,color: colors.greenDark,size: 16),
+                const SizedBox(width: 6),
+                Text('Görüntüle',style: TextStyle(fontSize: 13,color: colors.greenDark),),
+              ],
+            ),
+          ),
+        ]);
+      },
+      child: Container(
+        height: 11,
+        margin: const EdgeInsets.only(top: 4),
+        decoration: BoxDecoration(
+          color: colors.blue,
+          borderRadius: const BorderRadius.all(Radius.circular(50)),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 2.5,horizontal: 3),
+        child: Image.asset("assets/icons/more.png"),
+      ),
     );
   }
 }

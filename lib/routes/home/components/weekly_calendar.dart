@@ -144,7 +144,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   Container dayInfo(){
     return Container(
       decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
           color: colors.white
       ),
       padding: const EdgeInsets.all(8),

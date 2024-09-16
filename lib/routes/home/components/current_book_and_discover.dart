@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
@@ -46,12 +47,14 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichTextWidget(texts: ["Okuyorsun"," (2)"],
                 colors: [colors.blue,colors.blue],
                 fontFamilies: ["FontBold","FontMedium"],
                 fontSize: 14,
                 align: TextAlign.start),
+            OkuurPageSwitcher(pageCount: 2, onChanged: (value) {},)
           ],
         ),
         const SizedBox(height: 12,),

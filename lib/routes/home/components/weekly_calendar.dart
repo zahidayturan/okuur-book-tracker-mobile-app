@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class WeeklyCalendar extends StatefulWidget {
@@ -88,7 +89,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               topRight: Radius.circular(6),
               bottomLeft: Radius.circular(14),
               bottomRight: Radius.circular(14)),
-          color: colors.green,
+          color: colors.blue,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -135,7 +136,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         padding: const EdgeInsets.all(6),
         child: RotatedBox(
             quarterTurns: type == 0 ? 2 : 0,
-            child: Image.asset("assets/icons/arrow.png",color: colors.green)
+            child: Image.asset("assets/icons/arrow.png",color: colors.blue)
         ),
       ),
     );
@@ -151,8 +152,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const SizedBox(height: 4,),
           weekdays(),
-          const SizedBox(height: 8,),
+          const SizedBox(height: 12,),
           title("Günlük Hedefe Ulaşıldı!", colors.green, 14, "FontMedium"),
           const SizedBox(height: 4,),
           title("Kralın Dönüşü kitabından", colors.black, 13, "FontMedium"),
@@ -170,7 +172,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               colors: [colors.black,colors.black,colors.black],
               fontFamilies: ["FontMedium","FontRegular","FontMedium"],
               fontSize: 11,
-              align: TextAlign.center)
+              align: TextAlign.center),
+          const SizedBox(height: 8,),
+          OkuurPageSwitcher(pageCount: 2, onChanged: (value) {},)
         ],
       ),
     );

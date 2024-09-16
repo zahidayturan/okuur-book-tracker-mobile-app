@@ -97,7 +97,7 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index){
         ),
       ),
       Visibility(
-        visible: isNotStarted == false,
+        visible: !isNotStarted && !isReading,
         child: Container(
             margin: const EdgeInsets.only(left: 4),
             child: OkuurStarRating(rating: bookInfo.rating,filledStarColor:colors.greenDark,unfilledStarColor: isReading ? colors.blueLight :colors.blue,text: isReading ? "" : bookInfo.rating.toString(),)),

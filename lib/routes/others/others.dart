@@ -32,7 +32,7 @@ class _OtherPageState extends State<OtherPage> {
                       title: "Diğer",
                       pathName: "other",
                       subtitle: "Kolay işlem menüleri\nve seçenekler"
-                  ).getTitle()
+                  ).getTitle(context)
                 ],
               ),
             ),

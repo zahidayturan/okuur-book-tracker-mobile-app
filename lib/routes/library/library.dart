@@ -53,7 +53,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       pathName: "library",
                       subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
                       otherWidget: true
-                  ).getTitle(),
+                  ).getTitle(context),
                   SizedBox(height: 16),
                   Obx(() => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),

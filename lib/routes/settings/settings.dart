@@ -46,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: "Ayarlar",
                       pathName: "settings",
                       subtitle: "Uygulama içi tercihlerinizi ayarlayın"
-                  ).getTitle(),
+                  ).getTitle(context),
                   SizedBox(height: 12,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),

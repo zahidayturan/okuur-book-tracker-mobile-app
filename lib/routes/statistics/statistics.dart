@@ -33,7 +33,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       title: "İstatistiklerin",
                       pathName: "statistics",
                       subtitle: "Okumalarının analizini ve\ntakvimi görüntüle"
-                  ).getTitle()
+                  ).getTitle(context)
                 ],
               ),
             ),

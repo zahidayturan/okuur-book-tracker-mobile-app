@@ -29,6 +29,12 @@ class AppTheme {
           backgroundColor: colors.white,
           unselectedItemColor: colors.greenDark,
           selectedItemColor: colors.grey
+      ),
+      buttonTheme: ButtonThemeData(
+          colorScheme: ColorScheme.dark(
+              primary: colors.blue,
+              secondary: colors.blueLight
+          )
       )
   );
 
@@ -53,6 +59,12 @@ class AppTheme {
         backgroundColor: colors.black,
         unselectedItemColor: colors.grey,
         selectedItemColor: colors.blackLight
+    ),
+    buttonTheme: ButtonThemeData(
+      colorScheme: ColorScheme.dark(
+        primary: colors.greyMid,
+        secondary: colors.blackLight
+      )
     )
   );
 }

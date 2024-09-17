@@ -25,9 +25,9 @@ class PageHeaderTitle {
 
 
 
-  Column getTitle(){
-    Color colorTitle = colors.greenDark;
-    Color colorText = colors.greenDark;
+  Column getTitle(BuildContext context){
+    Color colorTitle = Theme.of(context).colorScheme.primaryContainer;
+    Color colorText = Theme.of(context).colorScheme.primaryContainer;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

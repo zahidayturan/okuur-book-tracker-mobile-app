@@ -8,10 +8,10 @@ import '../../../ui/components/selectable_question.dart';
 
 AppColors colors = AppColors();
 final AddBookController controller = Get.find();
-Container addBookInit(){
+Container addBookInit(BuildContext context){
   return Container(
     decoration: BoxDecoration(
-      color: colors.white,
+      color: Theme.of(context).colorScheme.onPrimaryContainer,
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     padding: EdgeInsets.all(8),
@@ -20,7 +20,7 @@ Container addBookInit(){
       children: [
         RichTextWidget(
             texts: ["Kitabın ","İlk Durumu ","Ne Olsun"],
-            colors: [colors.black,colors.black,colors.black],
+            colors: [Theme.of(context).colorScheme.secondary],
             fontFamilies: ["FontMedium","FontBold","FontMedium"],
             fontSize: 15,
             align: TextAlign.start),

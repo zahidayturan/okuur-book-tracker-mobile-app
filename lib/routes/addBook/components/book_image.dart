@@ -8,7 +8,7 @@ import 'package:okuur/ui/components/rich_text.dart';
 
 AppColors colors = AppColors();
 
-Container addBookImage() {
+Container addBookImage(BuildContext context) {
   final AddBookController controller = Get.find();
 
   Future<void> _pickImage() async {
@@ -26,7 +26,7 @@ Container addBookImage() {
 
   return Container(
     decoration: BoxDecoration(
-      color: colors.white,
+      color: Theme.of(context).colorScheme.onPrimaryContainer,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
     ),
     padding: const EdgeInsets.all(8),
@@ -40,14 +40,12 @@ Container addBookImage() {
             children: [
               RichTextWidget(
                   texts: ["Kitabın ","Kapak Fotoğrafı"],
-                  colors: [colors.black,colors.black],
-                  fontFamilies: ["FontMedium","FontBold"],
-                  fontSize: 15,
-                  align: TextAlign.start),
+                  colors: [Theme.of(context).colorScheme.secondary],
+                  fontFamilies: ["FontMedium","FontBold"],),
               const SizedBox(height: 4),
-              const Text(
+              Text(
                 "İsterseniz kapak fotoğrafı yükleyebilirsiniz. Yüklemek için dokunun",
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.secondary),
               ),
               Obx(() => Visibility(
                 visible: controller.selectedImage.value != null,
@@ -76,7 +74,7 @@ Container addBookImage() {
               width: 58,
               height: 84,
               decoration: BoxDecoration(
-                color: colors.grey,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 image: controller.selectedImage.value != null
                     ? DecorationImage(
@@ -86,7 +84,7 @@ Container addBookImage() {
                     : null,
               ),
               child: controller.selectedImage.value == null
-                  ? Icon(Icons.camera_alt_rounded, color: colors.greenDark)
+                  ? Icon(Icons.camera_alt_rounded, color: colors.blue)
                   : null,
             ),
           );

@@ -7,10 +7,10 @@ import '../../../ui/components/selectable_question.dart';
 
 AppColors colors = AppColors();
 final AddBookController controller = Get.find();
-Container addBookState(){
+Container addBookState(BuildContext context){
   return Container(
     decoration: BoxDecoration(
-      color: colors.white,
+      color: Theme.of(context).colorScheme.onPrimaryContainer,
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     padding: EdgeInsets.all(8),
@@ -19,10 +19,8 @@ Container addBookState(){
       children: [
         RichTextWidget(
             texts: ["Kitabın ","İlerleme Durumunu ","Seçiniz"],
-            colors: [colors.black,colors.black,colors.black],
-            fontFamilies: ["FontMedium","FontBold","FontMedium"],
-            fontSize: 15,
-            align: TextAlign.start),
+            colors: [Theme.of(context).colorScheme.secondary],
+            fontFamilies: ["FontMedium","FontBold","FontMedium"],),
         OkuurSelectableQuestion(
             optionCount: 3,
             currentOption: controller.bookCurrentStatus.toInt(),

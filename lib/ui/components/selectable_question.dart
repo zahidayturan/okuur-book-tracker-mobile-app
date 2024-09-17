@@ -46,7 +46,7 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
             curve: Curves.easeInOut,
             padding: EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
-              border: Border.all(width: 1,color: currentOption == index ? colors.blue : colors.grey),
+              border: Border.all(width: 1,color: currentOption == index ? colors.blue : Theme.of(context).colorScheme.onTertiary),
               borderRadius: BorderRadius.all(Radius.circular(30)),
             ),
             child: Row(
@@ -56,7 +56,7 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
                   width: 20,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: currentOption == index ? colors.blue : colors.grey
+                    color: currentOption == index ? colors.blue : Theme.of(context).colorScheme.onTertiary
                   ),
                 ),
                 Expanded(
@@ -65,7 +65,7 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
                       child: Text(
                         name,
                         style: TextStyle(
-                          color: currentOption == index ? colors.blue : colors.black,
+                          color: currentOption == index ? colors.blue : Theme.of(context).colorScheme.secondary,
                           fontSize: 14,
                         ),
                       ),

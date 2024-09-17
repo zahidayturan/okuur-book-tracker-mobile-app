@@ -158,7 +158,7 @@ class _AddReadsPageState extends State<AddReadsPage> {
                 hint:  "Giriniz",
                 controller: _pageCountController,
                 key: _pageCountKey
-            ).getTextFormFieldForPage(),
+            ).getTextFormFieldForPage(context),
           ),
           SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",pageCountValidate),
@@ -231,7 +231,7 @@ class _AddReadsPageState extends State<AddReadsPage> {
                 hint:  "Giriniz",
                 controller: _timeController,
                 key: _timeKey
-            ).getTextFormFieldForPage(),
+            ).getTextFormFieldForPage(context),
           ),
           SizedBox(width: 8,),
           errorIcon("assets/icons/error.png",timeValidate),

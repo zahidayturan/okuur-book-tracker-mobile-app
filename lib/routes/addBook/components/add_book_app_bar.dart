@@ -25,7 +25,7 @@ WillPopScope addBookAppBar(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        text("Yeni Kitap Ekle", colors.greenDark, 18, "FontBold", 3),
+        text("Yeni Kitap Ekle", Theme.of(context).colorScheme.primaryContainer, 18, "FontBold", 3),
         InkWell(
           onTap: () async {
             if (controller.bookNameController.text.isNotEmpty ||
@@ -40,19 +40,19 @@ WillPopScope addBookAppBar(BuildContext context) {
               Get.back();
             }
           },
-          highlightColor: colors.greenDark,
+          highlightColor: Theme.of(context).colorScheme.tertiaryContainer,
           borderRadius: BorderRadius.all(Radius.circular(6)),
           child: Container(
             height: 32,
             width: 32,
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: colors.greenDark,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
               shape: BoxShape.circle,
             ),
             child: Image.asset(
               "assets/icons/close.png",
-              color: colors.white,
+              color: colors.grey,
             ),
           ),
         ),

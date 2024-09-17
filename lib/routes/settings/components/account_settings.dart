@@ -26,8 +26,8 @@ class _AccountSettingsState extends State<AccountSettings> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-            Text("Hesap ayarlarını değiştir",style: TextStyle(fontSize: 13,color: colors.greenDark),),
-            Image.asset("assets/icons/arrow.png",height: 16,color: colors.greenDark,)
+            Text("Hesap ayarlarını değiştir",style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
+            Image.asset("assets/icons/arrow.png",height: 16,color: Theme.of(context).colorScheme.primaryContainer)
           ],)
         ],
       ),

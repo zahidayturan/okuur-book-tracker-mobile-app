@@ -21,14 +21,14 @@ class _ThemeSettingsState extends State<ThemeSettings> {
     return Column(
       children: [
           SizedBox(height: 12,),
-          SettingRow(color: colors.greenDark, title: "Uygulama Teması", widget: OkuurDropdownMenu(
+          SettingRow(color: Theme.of(context).colorScheme.primaryContainer, title: "Uygulama Teması", widget: OkuurDropdownMenu(
             list: ["Aydınlık Tema","Karanlık Tema"],
             controller: _themeController,
             dropdownColor: colors.greenDark,
-            textColor: colors.white,
+            textColor: colors.grey,
             padding: 8,
             fontSize: 13,
-          )).getSettingRow(),
+          )).getSettingRow(context),
       ],
     );
   }

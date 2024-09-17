@@ -21,14 +21,14 @@ class _ReadingSettingsState extends State<ReadingSettings> {
     return Column(
       children: [
         SizedBox(height: 12,),
-        SettingRow(color: colors.blue, title: "Günlük Okuma Hedefi", widget: OkuurDropdownMenu(
+        SettingRow(color: Theme.of(context).colorScheme.primary, title: "Günlük Okuma Hedefi", widget: OkuurDropdownMenu(
           list: ["50"],
           controller: _themeController,
           dropdownColor: colors.blue,
           textColor: colors.white,
           padding: 8,
           fontSize: 13,
-        )).getSettingRow(),
+        )).getSettingRow(context),
       ],
     );
   }

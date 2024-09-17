@@ -10,7 +10,6 @@ import 'package:okuur/routes/settings/components/backup_settings.dart';
 import 'package:okuur/routes/settings/components/language_settings.dart';
 import 'package:okuur/routes/settings/components/setting_box.dart';
 import 'package:okuur/routes/settings/components/theme_settings.dart';
-import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
 import 'package:okuur/ui/components/page_header.dart';
 import 'package:okuur/ui/components/search_bar.dart';
 
@@ -53,15 +52,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: OkuurSearchBar(hintText: "Ayarlar içerisinde arama yapın", onChanged: (value) {},),
                   ),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Görünüm", widget: ThemeSettings()).getSettingBox(),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Görünüm", widget: ThemeSettings()).getSettingBox(context),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Dil", widget: LanguageSettings()).getSettingBox(),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Dil", widget: LanguageSettings()).getSettingBox(context),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Hesap", widget: AccountSettings()).getSettingBox(),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Hesap", widget: AccountSettings()).getSettingBox(context),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.blue, title: "Okuma Tercihlerin", widget: ReadingSettings()).getSettingBox(),
+                  SettingBox(color: Theme.of(context).colorScheme.primary, title: "Okuma Tercihlerin", widget: ReadingSettings()).getSettingBox(context),
                   SizedBox(height: 12,),
-                  SettingBox(color: colors.greenDark, title: "Yedekleme", widget: BackupSettings()).getSettingBox(),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Yedekleme", widget: BackupSettings()).getSettingBox(context),
                   SizedBox(height: 12,),
                   InkWell(
                     onTap: () async{

@@ -17,10 +17,10 @@ class SettingBox {
   });
 
 
-  Container getSettingBox(){
+  Container getSettingBox(BuildContext context){
     return Container(
       decoration: BoxDecoration(
-        color: colors.white,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
         borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       padding: EdgeInsets.all(12),

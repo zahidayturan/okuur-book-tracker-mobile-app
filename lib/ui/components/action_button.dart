@@ -45,7 +45,7 @@ class _OkuurActionButtonState extends State<OkuurActionButton> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset("assets/icons/${widget.path}.png"),
+            child: Image.asset("assets/icons/${widget.path}.png",color: Theme.of(context).colorScheme.primaryContainer),
           ),
         ),
       ),

@@ -74,7 +74,7 @@ class _LibraryPageState extends State<LibraryPage> {
                             : controller.futureBooks.isNotEmpty,
                         child: Row(
                           children: [
-                            OkuurActionButton(path: "sort", color: colors.white, onChanged: (value) {}),
+                            OkuurActionButton(path: "sort", color: Theme.of(context).colorScheme.onPrimaryContainer, onChanged: (value) {}),
                             SizedBox(width: 12),
                           ],
                         ),
@@ -93,10 +93,8 @@ class _LibraryPageState extends State<LibraryPage> {
                   SizedBox(height: 12),
                   Obx(() {
                     if (controller.isLoading.value) {
-                      // Yükleme ekranı
-                      return CircularProgressIndicator();
+                      return CircularProgressIndicator(color: colors.orange,);
                     } else {
-                      // Kitap listesi
                       return BookListLibrary(
                         buttonIndex: controller.pageCurrentMode.value,
                         bookList: controller.pageCurrentMode.value == 0

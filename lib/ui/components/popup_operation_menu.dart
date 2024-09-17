@@ -12,10 +12,11 @@ void showOkuurPopupMenu(Offset offset, Color backColor, double marginRight, List
     position: RelativeRect.fromLTRB(left, top+8, marginRight, 0),
     items: items,
     elevation: 4.0,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
+    shape: RoundedRectangleBorder(
+      borderRadius: const BorderRadius.all(
         Radius.circular(8.0),
       ),
+      side: BorderSide(color: Theme.of(Get.context!).primaryColor,width: 1)
     ),
   );
 }

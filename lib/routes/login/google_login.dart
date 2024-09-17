@@ -181,7 +181,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 ], fontFamilies: [
                   "FontMedium",
                   "FontBold"
-                ], fontSize: 15, align: TextAlign.center)
+                ], align: TextAlign.center)
               ],
             ),
           ),
@@ -201,10 +201,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
       children: [
         RichTextWidget(
             texts: [text, "Bilgileriniz"],
-            colors: [color, color],
+            colors: [color],
             fontFamilies: ["FontBold", "FontMedium"],
-            fontSize: 16,
-            align: TextAlign.start),
+            fontSize: 16),
         loginText("Yardım", colors.greenDark, 12, "FontMedium")
       ],
     );
@@ -356,7 +355,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
 
         RichTextWidget(
             texts: ["Google ile\n", "Kayıt\nOl"],
-            colors: [colors.blue, colors.blue],
+            colors: [colors.blue],
             fontFamilies: ["FontMedium", "FontBold"],
             fontSize: 19,
             align: TextAlign.end)

@@ -105,10 +105,9 @@ class _LoginAccountState extends State<LoginAccount> {
       children: [
         RichTextWidget(
             texts: [text,"Bilgileriniz"],
-            colors: [color,color],
+            colors: [color],
             fontFamilies: ["FontBold","FontMedium"],
-            fontSize: 16,
-            align: TextAlign.start),
+            fontSize: 16),
         loginText("Yardım", colors.greenDark, 12, "FontMedium")
       ],
     );
@@ -231,7 +230,7 @@ class _LoginAccountState extends State<LoginAccount> {
         ),
         RichTextWidget(
             texts: ["Hesaba\n","Giriş\nYap"],
-            colors: [colors.blue,colors.blue],
+            colors: [colors.blue],
             fontFamilies: ["FontMedium","FontBold"],
             fontSize: 19,
             align: TextAlign.end)

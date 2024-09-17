@@ -22,6 +22,4 @@ class ThemeColors{
 
   Color get backLight => grey;
   Color get backDark => black;
-
-
 }

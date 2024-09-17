@@ -83,9 +83,8 @@ class PageHeaderTitle {
           padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 10),
           child: RichTextWidget(
               texts: ["+ Kitap ","Ekle"],
-              colors: [colors.white,colors.white],
+              colors: [colors.white],
               fontFamilies: ["FontMedium","FontBold"],
-              fontSize: 15,
               align: TextAlign.center),
         ),
       ),

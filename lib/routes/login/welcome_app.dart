@@ -229,7 +229,7 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         child: Center(child: RichTextWidget(
             texts: [textL,textB],
-            colors: [colors.white,colors.white],
+            colors: [colors.white],
             fontFamilies: const ["FontMedium","FontBold"],
             fontSize: 16,
             align: TextAlign.center)),

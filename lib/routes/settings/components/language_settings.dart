@@ -28,6 +28,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
           textColor: colors.grey,
           padding: 8,
           fontSize: 13,
+          initialIndex: 0,
         )).getSettingRow(context),
       ],
     );

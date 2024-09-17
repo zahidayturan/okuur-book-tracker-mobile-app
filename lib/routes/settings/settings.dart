@@ -4,7 +4,7 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
-import 'package:okuur/routes/settings/components/ReadingSettings.dart';
+import 'package:okuur/routes/settings/components/reading_settings.dart';
 import 'package:okuur/routes/settings/components/account_settings.dart';
 import 'package:okuur/routes/settings/components/backup_settings.dart';
 import 'package:okuur/routes/settings/components/language_settings.dart';

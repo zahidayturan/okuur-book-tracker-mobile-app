@@ -102,6 +102,7 @@ class _BookInfoState extends State<BookInfo> {
               textColor: Theme.of(context).colorScheme.secondary,
               padding: 0,
               fontSize: 14,
+              initialIndex: 0,
               onChanged: (value) {
                 controller.setBookType(value);
                 controller.setBookTypeValidate(value != bookTypeList.first ? true : false);

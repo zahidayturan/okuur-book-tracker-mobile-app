@@ -28,6 +28,7 @@ class _ReadingSettingsState extends State<ReadingSettings> {
           textColor: colors.white,
           padding: 8,
           fontSize: 13,
+          initialIndex: 0,
         )).getSettingRow(context),
       ],
     );

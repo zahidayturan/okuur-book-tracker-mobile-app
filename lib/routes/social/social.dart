@@ -32,7 +32,7 @@ class _SocialPageState extends State<SocialPage> {
                       title: "Sosyal",
                       pathName: "social",
                       subtitle: ""
-                  ).getTitle()
+                  ).getTitle(context)
                 ],
               ),
             ),

@@ -272,7 +272,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     texts: ["Okuma hedeflerini ekle, okumaya ve keşfetmeye başla, başarımlar kazan.\n"," Okuur seni bekliyor"],
                     colors: [colors.black,colors.greenDark],
                     fontFamilies: ["FontMedium","FontBold"],
-                    fontSize: 15,
                     align: TextAlign.center)
               ],
             ),
@@ -295,10 +294,9 @@ class _CreateAccountState extends State<CreateAccount> {
       children: [
         RichTextWidget(
             texts: [text,"Bilgileriniz"],
-            colors: [color,color],
+            colors: [color],
             fontFamilies: ["FontBold","FontMedium"],
-            fontSize: 16,
-            align: TextAlign.start),
+            fontSize: 16),
         loginText("$step.adım / 4", colors.greenDark, 12, "FontMedium")
       ],
     );
@@ -462,7 +460,7 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
         RichTextWidget(
             texts: ["Yeni\nHesap\n","Oluştur"],
-            colors: [colors.greenDark,colors.greenDark],
+            colors: [colors.greenDark],
             fontFamilies: ["FontMedium","FontBold"],
             fontSize: 19,
             align: TextAlign.end)

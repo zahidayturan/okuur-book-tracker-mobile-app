@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
+import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/theme/theme.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,10 +14,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final OkuurController okuurController = Get.put(OkuurController());
+    final OkuurLocalStorage storage = OkuurLocalStorage();
+    final themeMode = okuurController.getTheme(storage.getTheme());
+    okuurController.setSystemNavBarColor(MediaQuery.of(context).platformBrightness == Brightness.dark);
+
     return GetMaterialApp(
       title: 'Okuur',
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       home: currentUser != null ? OkuurApp() : WelcomePage(),

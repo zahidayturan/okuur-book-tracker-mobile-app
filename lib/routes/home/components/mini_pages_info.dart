@@ -67,9 +67,8 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 RichTextWidget(
                     fontSize: 12,
                     texts: ["Günlük\n","${widget.dailyGoal} sayfa"],
-                    colors: [Theme.of(context).colorScheme.primary,Theme.of(context).colorScheme.primary],
-                    fontFamilies: ["FontMedium","FontBold"],
-                  align: TextAlign.start,
+                    colors: [Theme.of(context).colorScheme.primary],
+                    fontFamilies: ["FontMedium","FontBold"]
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

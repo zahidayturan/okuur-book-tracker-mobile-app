@@ -50,10 +50,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichTextWidget(texts: ["Okuyorsun"," (2)"],
-                colors: [Theme.of(context).colorScheme.inversePrimary,Theme.of(context).colorScheme.inversePrimary],
+                colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontBold","FontMedium"],
-                fontSize: 14,
-                align: TextAlign.start),
+                fontSize: 14),
             OkuurPageSwitcher(pageCount: 2, onChanged: (value) {},)
           ],
         ),

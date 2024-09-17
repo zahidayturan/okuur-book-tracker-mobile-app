@@ -34,7 +34,7 @@ class _BookInfoState extends State<BookInfo> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: colors.white,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -43,10 +43,9 @@ class _BookInfoState extends State<BookInfo> {
         children: [
           RichTextWidget(
               texts: const ["Kitabın ","Bilgilerini ","Giriniz"],
-              colors: [colors.black,colors.black,colors.black],
+              colors: [Theme.of(context).colorScheme.secondary],
               fontFamilies: const ["FontMedium","FontBold","FontMedium"],
-              fontSize: 15,
-              align: TextAlign.start),
+             ),
           const SizedBox(height: 12,),
           Obx(() => form("Kitabın\nAdı","Adını yazınız",controller.bookNameValidate.value,controller.bookNameController,controller.bookNameKey,(name) {
             controller.setBookName(name);
@@ -80,7 +79,7 @@ class _BookInfoState extends State<BookInfo> {
               key: key,
               keyboardType: keyboardType,
               onFieldSubmitted: onFieldSubmitted
-          ).getTextFormFieldForPage(),
+          ).getTextFormFieldForPage(context),
         ),
       ],
     );
@@ -99,10 +98,11 @@ class _BookInfoState extends State<BookInfo> {
               controller: controller.bookTypeController,
               key: controller.bookTypeKey,
               list: bookTypeList,
-              dropdownColor: colors.white,
-              textColor: colors.black,
+              dropdownColor: Theme.of(context).colorScheme.onPrimaryContainer,
+              textColor: Theme.of(context).colorScheme.secondary,
               padding: 0,
               fontSize: 14,
+              initialIndex: 0,
               onChanged: (value) {
                 controller.setBookType(value);
                 controller.setBookTypeValidate(value != bookTypeList.first ? true : false);

@@ -17,10 +17,10 @@ class SettingRow {
   });
 
 
-  Container getSettingRow(){
+  Container getSettingRow(BuildContext context){
     return Container(
       decoration: BoxDecoration(
-          color: colors.grey,
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.all(Radius.circular(30))
       ),
       padding: EdgeInsets.symmetric(horizontal: 6,vertical: 6),

@@ -44,6 +44,7 @@ class _BookListLibraryState extends State<BookListLibrary> {
           child: bookContainerLibrary(
             widget.bookList[index],
             "${widget.bookList.length - index}",
+            context
           ),
         );
       },
@@ -55,20 +56,20 @@ class _BookListLibraryState extends State<BookListLibrary> {
       children: [
         Container(
           decoration: BoxDecoration(
-              color: colors.white,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               borderRadius: const BorderRadius.all(Radius.circular(8))
           ),
           child: Stack(
             children: [
                   Positioned(
                       top: -8,
-                      child: Icon(Icons.book_rounded,color: colors.grey,size: 64,)),
+                      child: Icon(Icons.book_rounded,color: Theme.of(context).scaffoldBackgroundColor,size: 64,)),
                   Center(
                     child: Padding(
                       padding:  const EdgeInsets.symmetric(horizontal: 12,vertical: 24),
                       child: RichTextWidget(
                       texts: [text,boldText],
-                      colors: [colors.black,colors.green],
+                      colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.onSurface],
                       fontFamilies: ["FontMedium","FontBold"],
                       fontSize: 14,
                       align: TextAlign.center),

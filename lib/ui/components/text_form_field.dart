@@ -25,7 +25,7 @@ class OkuurTextFormField {
     this.onTap,
   });
 
-  Widget getTextFormFieldForPage() {
+  Widget getTextFormFieldForPage(BuildContext context) {
     AppColors colors = AppColors();
     return Center(
       child: Form(
@@ -51,7 +51,7 @@ class OkuurTextFormField {
                 color: colors.blue
             ),
             hintStyle: TextStyle(
-              color: colors.black,
+              color: Theme.of(context).colorScheme.secondary,
               fontSize: 14
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 2),

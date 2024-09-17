@@ -21,14 +21,15 @@ class _LanguageSettingsState extends State<LanguageSettings> {
     return Column(
       children: [
         SizedBox(height: 12,),
-        SettingRow(color: colors.greenDark, title: "Uygulama Dili", widget: OkuurDropdownMenu(
+        SettingRow(color: Theme.of(context).colorScheme.primaryContainer, title: "Uygulama Dili", widget: OkuurDropdownMenu(
           list: ["Türkçe"],
           controller: _languageController,
           dropdownColor: colors.greenDark,
-          textColor: colors.white,
+          textColor: colors.grey,
           padding: 8,
           fontSize: 13,
-        )).getSettingRow(),
+          initialIndex: 0,
+        )).getSettingRow(context),
       ],
     );
   }

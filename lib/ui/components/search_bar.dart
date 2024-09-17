@@ -26,13 +26,13 @@ class _OkuurSearchBarState extends State<OkuurSearchBar> {
       padding: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(54)),
-        color: colors.white
+        color: Theme.of(context).colorScheme.onPrimaryContainer
       ),
       child: TextField(
         onTap: () {},
         style: TextStyle(
           fontSize: 14,
-          color: colors.black
+          color: Theme.of(context).colorScheme.secondary
         ),
         readOnly: widget.readOnly,
         decoration: InputDecoration(
@@ -41,12 +41,12 @@ class _OkuurSearchBarState extends State<OkuurSearchBar> {
             isDense: true,
           hintStyle: TextStyle(
             fontSize: 14,
-            color: widget.readOnly ? colors.blueLight : colors.greenDark
+            color: widget.readOnly ? colors.blueLight : Theme.of(context).colorScheme.primaryContainer
           ),
             border: InputBorder.none,
           suffixIcon: IconButton(
             padding: EdgeInsets.zero,
-            icon: Image.asset("assets/icons/search.png",height: 26,color: widget.readOnly ? colors.blueLight : colors.greenDark,),
+            icon: Image.asset("assets/icons/search.png",height: 26,color: widget.readOnly ? colors.blueLight : Theme.of(context).colorScheme.primaryContainer),
             onPressed: () {
               widget.onChanged;
             },

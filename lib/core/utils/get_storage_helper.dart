@@ -1,32 +1,69 @@
 import 'package:get_storage/get_storage.dart';
 
 class OkuurLocalStorage {
+
   static final OkuurLocalStorage _instance = OkuurLocalStorage._internal();
 
-  factory OkuurLocalStorage(){
+  factory OkuurLocalStorage() {
     return _instance;
   }
 
   OkuurLocalStorage._internal();
 
-  final _storage = GetStorage();
 
-  Future<void> saveData<Okuur>(String key, Okuur value) async{
-    await _storage.write(key, value);
+  final GetStorage _storage = GetStorage();
+
+
+  final String _themeKey = 'theme';
+  final String _languageKey = 'language';
+  final String _dailyGoalKey = 'dailyGoal';
+
+
+  final int _defaultTheme = 2; // default theme (0=light, 1=dark, 2=system)
+  final String _defaultLanguage = 'tr'; // default language (tr,en)
+  final int _defaultDailyGoal = 50;
+
+
+  Future<void> saveTheme(int theme) async {
+    await _storage.write(_themeKey, theme);
   }
 
-  Okuur? readData<Okuur>(String key){
-    return _storage.read<Okuur>(key);
+  Future<void> saveLanguage(String language) async {
+    await _storage.write(_languageKey, language);
   }
 
-  Future<void> removeData(String key) async {
-    await _storage.remove(key);
+  Future<void> saveDailyGoal(int dailyGoal) async {
+    await _storage.write(_dailyGoalKey, dailyGoal);
   }
+
+
+  int getTheme() {
+    return _storage.read<int>(_themeKey) ?? _defaultTheme;
+  }
+
+  String getLanguage() {
+    return _storage.read<String>(_languageKey) ?? _defaultLanguage;
+  }
+
+  int getDailyGoal() {
+    return _storage.read<int>(_dailyGoalKey) ?? _defaultDailyGoal;
+  }
+
+
+  Future<void> removeTheme() async {
+    await _storage.remove(_themeKey);
+  }
+
+  Future<void> removeLanguage() async {
+    await _storage.remove(_languageKey);
+  }
+
+  Future<void> removeDailyGoal() async {
+    await _storage.remove(_dailyGoalKey);
+  }
+
 
   Future<void> clearAll() async {
     await _storage.erase();
   }
-  
-
-
 }

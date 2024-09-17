@@ -68,7 +68,7 @@ class _ProfileDataWidgetState extends State<ProfileDataWidget> {
       child: Center(
         child: RichTextWidget(
             texts: ["$textBold\n",textMedium],
-            colors: [colors.white,colors.white],
+            colors: [colors.white],
             fontFamilies: ["FontBold","FontMedium"],
             fontSize: 14,
             align: TextAlign.center),

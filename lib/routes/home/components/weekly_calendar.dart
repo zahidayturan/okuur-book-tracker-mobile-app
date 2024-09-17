@@ -103,7 +103,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             },
             child: RichTextWidget(
               texts: ["${date.day.toString()} ${months[date.month]} ", dayInfo],
-              colors: [colors.grey, colors.grey],
+              colors: [colors.grey],
               fontFamilies: ["FontBold", "FontMedium"],
               fontSize: 14,
               key: ValueKey<int>(date.day),
@@ -169,7 +169,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           const SizedBox(height: 8,),
           RichTextWidget(
               texts: ["Bu ","haftanın en iyi okumasını"," yaptın."],
-              colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary],
+              colors: [Theme.of(context).colorScheme.secondary],
               fontFamilies: ["FontMedium","FontRegular","FontMedium"],
               fontSize: 11,
               align: TextAlign.center),

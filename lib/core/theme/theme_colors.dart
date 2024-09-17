@@ -8,6 +8,7 @@ class ThemeColors{
   final blueLight = const Color(0xFF8AA6A3);
   final blueMid = const Color(0XFF00B0B0);
   final greyDark = const Color(0xFF4C5958);
+  final greyMid = const Color(0xFF606060);
   final grey = const Color(0xFFF5F5F5);
   final white = const Color(0xFFFFFFFF);
   final orange = const Color(0xFFF24405);
@@ -21,6 +22,4 @@ class ThemeColors{
 
   Color get backLight => grey;
   Color get backDark => black;
-
-
 }

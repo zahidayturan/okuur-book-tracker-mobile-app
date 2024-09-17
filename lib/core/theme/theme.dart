@@ -23,12 +23,21 @@ class AppTheme {
         primaryContainer: colors.greenDark,
         surface: colors.green,
         onBackground: colors.orange,
-        onSurface: colors.green
+        onSurface: colors.green,
+        tertiary: colors.greenDark,
+        tertiaryContainer: colors.greenDark,
+        onTertiary: colors.grey
     ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: colors.white,
           unselectedItemColor: colors.greenDark,
           selectedItemColor: colors.grey
+      ),
+      buttonTheme: ButtonThemeData(
+          colorScheme: ColorScheme.dark(
+              primary: colors.blue,
+              secondary: colors.blueLight
+          )
       )
   );
 
@@ -48,11 +57,20 @@ class AppTheme {
         surface: colors.grey,//
         onBackground: colors.black,//
         onSurface: colors.blueMid,//
+        tertiary: colors.blue,//
+        tertiaryContainer: colors.blackLight,//
+        onTertiary: colors.greyMid,//
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: colors.black,
         unselectedItemColor: colors.grey,
         selectedItemColor: colors.blackLight
+    ),
+    buttonTheme: ButtonThemeData(
+      colorScheme: ColorScheme.dark(
+        primary: colors.greyMid,
+        secondary: colors.blackLight
+      )
     )
   );
 }

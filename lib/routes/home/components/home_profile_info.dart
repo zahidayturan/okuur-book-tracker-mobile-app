@@ -38,17 +38,14 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
             children: [
               RichTextWidget(
                 texts: ['Merhaba ', '${widget.userName}'],
-                colors: [mainColor, mainColor],
-                fontSize: 15,
+                colors: [mainColor],
                 fontFamilies: ['FontMedium', 'FontBold'],
-                align: TextAlign.start,
               ),
               RichTextWidget(
                 texts: ['Bu ay ', '${widget.pageCount} sayfa',' kitap okudun'],
-                colors: [mainColor, mainColor,mainColor],
+                colors: [mainColor],
                 fontSize: 13,
                 fontFamilies: ['FontMedium', 'FontBold','FontMedium'],
-                align: TextAlign.start,
               ),
             ],
           ),

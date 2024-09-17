@@ -7,14 +7,20 @@ class RichTextWidget extends StatelessWidget {
   final double fontSize;
   final TextAlign align;
 
-  const RichTextWidget({
+  RichTextWidget({
     Key? key,
     required this.texts,
-    required this.colors,
-    required this.fontFamilies,
-    required this.fontSize,
-    required this.align
-  }) : super(key: key);
+    required List<Color> colors,
+    required List<String> fontFamilies,
+    this.fontSize = 15.0,
+    this.align = TextAlign.start,
+  })  : colors = (colors.length == 1)
+      ? List.generate(texts.length, (index) => colors[0])
+      : colors,
+        fontFamilies = (fontFamilies.length == 1)
+            ? List.generate(texts.length, (index) => fontFamilies[0])
+            : fontFamilies,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,4 +47,3 @@ class RichTextWidget extends StatelessWidget {
     );
   }
 }
-

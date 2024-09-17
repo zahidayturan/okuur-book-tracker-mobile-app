@@ -25,9 +25,9 @@ class PageHeaderTitle {
 
 
 
-  Column getTitle(){
-    Color colorTitle = colors.greenDark;
-    Color colorText = colors.greenDark;
+  Column getTitle(BuildContext context){
+    Color colorTitle = Theme.of(context).colorScheme.primaryContainer;
+    Color colorText = Theme.of(context).colorScheme.primaryContainer;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -83,9 +83,8 @@ class PageHeaderTitle {
           padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 10),
           child: RichTextWidget(
               texts: ["+ Kitap ","Ekle"],
-              colors: [colors.white,colors.white],
+              colors: [colors.white],
               fontFamilies: ["FontMedium","FontBold"],
-              fontSize: 15,
               align: TextAlign.center),
         ),
       ),

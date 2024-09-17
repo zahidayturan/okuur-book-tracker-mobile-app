@@ -81,7 +81,7 @@ class _PageCountSelectorState extends State<PageCountSelector> {
               label: _currentPageCount.toInt().toString(),
               onChanged: _updatePageCount,
               activeColor: colors.blue,
-              inactiveColor: colors.blueLight,
+              inactiveColor: Theme.of(context).colorScheme.inverseSurface,
               onChangeEnd: (value) {
                 widget.onChanged(_currentPageCount.toInt());
               },

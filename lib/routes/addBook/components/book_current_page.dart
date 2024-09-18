@@ -15,18 +15,22 @@ Obx addBookCurrentPage(BuildContext context){
     child: Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onPrimaryContainer,
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichTextWidget(
-              texts: ["Kaldığınız ","Sayfa"],
-              colors: [Theme.of(context).colorScheme.secondary],
-              fontFamilies: ["FontMedium","FontBold"],),
-          SizedBox(height: 4,),
+          Row(
+            children: [
+              RichTextWidget(
+                  texts: ["Kaldığınız ","Sayfa"],
+                  colors: [Theme.of(context).colorScheme.secondary],
+                  fontFamilies: ["FontMedium","FontBold"],),
+            ],
+          ),
+          const SizedBox(height: 4,),
           controller.bookPageCount.value == 0 ?
           Text("Kaldığınız sayfayı girebilmek için önce kitabın sayfa sayısını girmelisiniz",style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
               :

@@ -20,7 +20,7 @@ class _InternetConnectionState extends State<InternetConnection> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: colors.grey,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -39,16 +39,19 @@ class _InternetConnectionState extends State<InternetConnection> {
               ),
               RichTextWidget(
                   texts: const ["İnternet bağlantısı\n","bulunamadı"],
-                  colors: [colors.green,colors.greenDark],
+                  colors: [Theme.of(context).colorScheme.onSurface,Theme.of(context).colorScheme.primaryContainer],
                   fontFamilies: const ["FontMedium","FontBold"],
                   fontSize: 18,
                   align: TextAlign.center),
-              RichTextWidget(
-                  texts: const ["Lütfen\n","internet bağlantısını\n","sağlayın"],
-                  colors: [colors.blue,colors.green,colors.blue],
-                  fontFamilies: const ["FontMedium","FontBold","FontMedium"],
-                  fontSize: 14,
-                  align: TextAlign.center),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: RichTextWidget(
+                    texts: const ["Lütfen\n","internet bağlantısını\n","sağlayın"],
+                    colors: [Theme.of(context).colorScheme.primary,Theme.of(context).colorScheme.onSurface,Theme.of(context).colorScheme.primary],
+                    fontFamilies: const ["FontMedium","FontBold","FontMedium"],
+                    fontSize: 14,
+                    align: TextAlign.center),
+              ),
             ],
           ),
         ),
@@ -58,15 +61,15 @@ class _InternetConnectionState extends State<InternetConnection> {
 
   Container iconButton(String path){
     return Container(
-      height: 32,
-      width: 32,
+      height: 36,
+      width: 36,
       decoration: BoxDecoration(
-          color: colors.greenDark,
+          color: Theme.of(context).colorScheme.tertiaryContainer,
           borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
+        child: Image.asset(path,color: colors.grey),
       ),
     );
   }

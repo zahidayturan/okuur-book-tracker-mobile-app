@@ -47,7 +47,6 @@ class OkuurController extends GetxController {
   }
 
   void setSystemNavBarColor(bool isDark){
-    print(isDark);
       SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle(
             systemNavigationBarColor: storage.getTheme() == 1 ? const Color(0xFF0E0E0E)  : isDark ?   const Color(0xFF0E0E0E) : Colors.white,

@@ -61,14 +61,14 @@ class _LoginAccountState extends State<LoginAccount> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              formTitleAndStep("Hesap ",colors.blue,"1"),
+              formTitleAndStep("Hesap ",Theme.of(context).colorScheme.primary,"1"),
               const SizedBox(height: 16,),
-              getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,false),
+              getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,false,context),
               const SizedBox(height: 12,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: getTextFormField(passwordController, "Şifrenizi giriniz", 54, "", _passwordKey, errorTextPassword,passwordVisible)),
+                  Expanded(child: getTextFormField(passwordController, "Şifrenizi giriniz", 54, "", _passwordKey, errorTextPassword,passwordVisible,context)),
                   SizedBox(width: 8,),
                   InkWell(
                     onTap: () {
@@ -78,7 +78,7 @@ class _LoginAccountState extends State<LoginAccount> {
                     },
                     child: Container(width: 48,height: 48,
                       decoration: BoxDecoration(
-                          color: colors.grey,
+                          color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle
                       ),
                       child: Icon(passwordVisible == true ? Icons.visibility_rounded : Icons.visibility_off_rounded,color: colors.blue,),
@@ -88,6 +88,7 @@ class _LoginAccountState extends State<LoginAccount> {
               ),
             ],
           ),
+          context
         ),
         const SizedBox(height: 8,),
         confirmButtons(
@@ -108,7 +109,7 @@ class _LoginAccountState extends State<LoginAccount> {
             colors: [color],
             fontFamilies: ["FontBold","FontMedium"],
             fontSize: 16),
-        loginText("Yardım", colors.greenDark, 12, "FontMedium")
+        loginText("Yardım", Theme.of(context).colorScheme.primaryContainer, 12, "FontMedium")
       ],
     );
   }
@@ -175,6 +176,7 @@ class _LoginAccountState extends State<LoginAccount> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.bounceInOut,
         height: 48,
+        constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
             color: color,
             borderRadius: const BorderRadius.only(

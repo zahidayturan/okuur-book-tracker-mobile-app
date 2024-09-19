@@ -3,10 +3,12 @@ import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/addBook/components/add_book_app_bar.dart';
 import 'package:okuur/routes/addBook/components/add_book_button.dart';
+import 'package:okuur/routes/addBook/components/add_book_finish_date.dart';
 import 'package:okuur/routes/addBook/components/book_current_page.dart';
 import 'package:okuur/routes/addBook/components/book_image.dart';
 import 'package:okuur/routes/addBook/components/book_info.dart';
 import 'package:okuur/routes/addBook/components/book_init.dart';
+import 'package:okuur/routes/addBook/components/book_rating.dart';
 import 'package:okuur/routes/addBook/components/book_state.dart';
 import 'package:okuur/ui/components/switch_button.dart';
 import 'package:get/get.dart';
@@ -62,11 +64,13 @@ class _AddBookPageState extends State<AddBookPage> {
                   addBookState(context),
                   SizedBox(height: 12,),
                   addBookCurrentPage(context),
+                  addBookFinishDate(context),
+                  addBookReadingTime(context),
                   //SizedBox(height: 12,),
                   addBookImage(context),
                   SizedBox(height: 12,),
                   addBookInit(context),
-                  SizedBox(height: 12,),
+                  //SizedBox(height: 12,),
                   AddBookButton(),
                   SizedBox(height: 12,)
                 ],),

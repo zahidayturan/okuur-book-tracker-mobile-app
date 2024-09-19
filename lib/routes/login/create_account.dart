@@ -5,7 +5,6 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
-import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
 import 'package:okuur/routes/login/components/login_text.dart';
@@ -106,14 +105,14 @@ class _CreateAccountState extends State<CreateAccount> {
           Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            formTitleAndStep("Hesap ",colors.greenDark,"1"),
+            formTitleAndStep("Hesap ",Theme.of(context).colorScheme.primaryContainer,"1"),
             const SizedBox(height: 16,),
-            getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,false),
+            getTextFormField(emailController, "E-Posta adresinizi giriniz", 100, "", _emailKey, errorTextMail,false,context),
             const SizedBox(height: 12,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: getTextFormField(passwordController, "Şifre belirleyiniz", 54, "", _passwordKey, errorTextPassword,passwordVisible)),
+                Expanded(child: getTextFormField(passwordController, "Şifre belirleyiniz", 54, "", _passwordKey, errorTextPassword,passwordVisible,context)),
                 const SizedBox(width: 8,),
                 InkWell(
                   onTap: () {
@@ -123,16 +122,17 @@ class _CreateAccountState extends State<CreateAccount> {
                   },
                   child: Container(width: 48,height: 48,
                   decoration: BoxDecoration(
-                    color: colors.grey,
+                    color: Theme.of(context).primaryColor,
                     shape: BoxShape.circle
                   ),
-                    child: Icon(passwordVisible == true ? Icons.visibility_rounded : Icons.visibility_off_rounded,color: colors.greenDark,),
+                    child: Icon(passwordVisible == true ? Icons.visibility_rounded : Icons.visibility_off_rounded,color: Theme.of(context).colorScheme.primaryContainer),
                   ),
                 )
               ],
             ),
           ],
         ),
+          context
         ),
         const SizedBox(height: 8,),
         confirmButtons(
@@ -153,12 +153,13 @@ class _CreateAccountState extends State<CreateAccount> {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                formTitleAndStep("E-Posta ",colors.greenDark,"2"),
+                formTitleAndStep("E-Posta ",Theme.of(context).colorScheme.primaryContainer,"2"),
                 const SizedBox(height: 16,),
-                loginText("Mail adresinize doğrulama bağlantısı gönderdik.\nLütfen posta kutunuzu kontrol edin.\n", colors.black, 13, "FontMedium"),
-                loginText(emailController.text != "" ? emailController.text : "E-posta bilgisi alınamadı", colors.black, 13, "FontBold"),
+                loginText("Mail adresinize doğrulama bağlantısı gönderdik.\nLütfen posta kutunuzu kontrol edin.\n", Theme.of(context).colorScheme.secondary, 13, "FontMedium"),
+                loginText(emailController.text != "" ? emailController.text : "E-posta bilgisi alınamadı", Theme.of(context).colorScheme.secondary, 13, "FontBold"),
               ],
             ),
+            context
           ),
           const SizedBox(height: 8,),
           confirmButtons(
@@ -179,13 +180,13 @@ class _CreateAccountState extends State<CreateAccount> {
                     pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
                   });
                 },
-                child: loginText("Geri Dön", colors.greenDark, 13, "FontMedium"),
+                child: loginText("Geri Dön", Theme.of(context).colorScheme.primaryContainer, 13, "FontMedium"),
               ),
               InkWell(
                 onTap: () {
                   FirebaseAuthOperation().sendVerification();
                 },
-                child: loginText(checkVerify() ? "Doğrulandı" :"Yeni Bağlantı Gönder", colors.green, 13, "FontMedium"),
+                child: loginText(checkVerify() ? "Doğrulandı" :"Yeni Bağlantı Gönder", Theme.of(context).colorScheme.tertiary, 13, "FontMedium"),
               ),
             ],
           ),
@@ -201,13 +202,13 @@ class _CreateAccountState extends State<CreateAccount> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              formTitleAndStep("Kişisel ",colors.blue,"3"),
+              formTitleAndStep("Kişisel ",Theme.of(context).colorScheme.primary,"3"),
               const SizedBox(height: 16,),
               Row(
                 children: [
-                  Expanded(child: getTextFormField(nameController, "Adınız", 24, "", _nameKey, errorTextName,false)),
+                  Expanded(child: getTextFormField(nameController, "Adınız", 24, "", _nameKey, errorTextName,false,context)),
                   const SizedBox(width: 12,),
-                  Expanded(child: getTextFormField(surnameController, "Soyadınız", 24, "", _surnameKey, errorTextSurname,false))
+                  Expanded(child: getTextFormField(surnameController, "Soyadınız", 24, "", _surnameKey, errorTextSurname,false,context))
                 ],
               ),
               const SizedBox(height: 12,),
@@ -217,7 +218,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 children: [
                   loginText("@", colors.blue, 22, "FontBold"),
                   const SizedBox(width: 8,),
-                  Expanded(child: getTextFormField(userNameController, "Kullanıcı Adınız", 54, "", _userNameKey, errorTextUserName,false),),
+                  Expanded(child: getTextFormField(userNameController, "Kullanıcı Adınız", 54, "", _userNameKey, errorTextUserName,false,context),),
                   const SizedBox(width: 8,),
                   InkWell(
                     onTap: () {
@@ -229,7 +230,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     },
                     child: Container(width: 36,height: 36,
                       decoration: BoxDecoration(
-                          color: colors.grey,
+                          color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle
                       ),
                       child: Icon(Icons.question_mark_rounded,color: colors.blue,),
@@ -240,6 +241,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
             ],
           ),
+          context
         ),
         const SizedBox(height: 8,),
         confirmButtons(
@@ -267,14 +269,15 @@ class _CreateAccountState extends State<CreateAccount> {
                   ],
                 ),
                 const SizedBox(height: 16,),
-                loginText("@${userNameController.text}\n", colors.black, 15, "FontBold"),
+                loginText("@${userNameController.text}\n", Theme.of(context).colorScheme.secondary, 15, "FontBold"),
                 RichTextWidget(
                     texts: ["Okuma hedeflerini ekle, okumaya ve keşfetmeye başla, başarımlar kazan.\n"," Okuur seni bekliyor"],
-                    colors: [colors.black,colors.greenDark],
+                    colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.tertiary],
                     fontFamilies: ["FontMedium","FontBold"],
                     align: TextAlign.center)
               ],
             ),
+            context
           ),
           const SizedBox(height: 8,),
           confirmButtons(
@@ -297,7 +300,7 @@ class _CreateAccountState extends State<CreateAccount> {
             colors: [color],
             fontFamilies: ["FontBold","FontMedium"],
             fontSize: 16),
-        loginText("$step.adım / 4", colors.greenDark, 12, "FontMedium")
+        loginText("$step.adım / 4", Theme.of(context).colorScheme.primaryContainer, 12, "FontMedium")
       ],
     );
   }
@@ -405,6 +408,7 @@ class _CreateAccountState extends State<CreateAccount> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.bounceInOut,
         height: 48,
+        constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
           color: color,
           borderRadius: const BorderRadius.only(
@@ -443,13 +447,13 @@ class _CreateAccountState extends State<CreateAccount> {
             passwordController.clear();
             });
           },
-          highlightColor: colors.greenDark,
+          highlightColor: Theme.of(context).colorScheme.tertiaryContainer,
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           child: Container(
             height: 32,
             width: 48,
             decoration: BoxDecoration(
-              color: colors.greenDark,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
               borderRadius: const BorderRadius.all(Radius.circular(30))
             ),
             child: Padding(
@@ -460,7 +464,7 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
         RichTextWidget(
             texts: ["Yeni\nHesap\n","Oluştur"],
-            colors: [colors.greenDark],
+            colors: [Theme.of(context).colorScheme.primaryContainer],
             fontFamilies: ["FontMedium","FontBold"],
             fontSize: 19,
             align: TextAlign.end)

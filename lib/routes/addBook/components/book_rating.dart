@@ -4,14 +4,15 @@ import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/slider_form.dart';
+import 'package:okuur/ui/components/text_form_field.dart';
 import 'package:okuur/ui/utils/validator.dart';
 
 
 AppColors colors = AppColors();
 final AddBookController controller = Get.find();
-Obx addBookCurrentPage(BuildContext context){
+Obx addBookReadingTime(BuildContext context){
   return Obx(() => Visibility(
-    visible: controller.bookCurrentStatus.value == 1,
+    visible: controller.bookCurrentStatus.value == 2,
     child: Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -25,21 +26,16 @@ Obx addBookCurrentPage(BuildContext context){
           Row(
             children: [
               RichTextWidget(
-                  texts: ["Kaldığınız ","Sayfa"],
-                  colors: [Theme.of(context).colorScheme.secondary],
-                  fontFamilies: ["FontMedium","FontBold"],),
+                texts: ["Kitap ","Değerlenirme Puanınız"],
+                colors: [Theme.of(context).colorScheme.secondary],
+                fontFamilies: ["FontMedium","FontBold"],),
             ],
           ),
           const SizedBox(height: 4,),
-          controller.bookPageCount.value == 0 ?
-          Text("Kaldığınız sayfayı girebilmek için önce kitabın sayfa sayısını girmelisiniz",style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
-              :
-          OkuurValidator.rangeValidate(double.parse(controller.bookPageController.text),1,9999) == false ?
-          Text("Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır",style: TextStyle(color: Theme.of(context).colorScheme.secondary))
-              :
+          Text("Kitaba 100 üzerinden bir puan verebilirsiniz.",style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
           PageCountSelector(
-              minValue: 1,maxValue: controller.bookPageCount.value.toDouble()-1, currentValue: controller.bookCurrentPage.value.toDouble(),textController: controller.textControllerForSlider,onChanged: (int value) {
-                controller.setBookCurrentPage(value);
+            minValue: 0,maxValue: 100, currentValue: controller.bookRating.value,textController: controller.textControllerForSlider,onChanged: (int value) {
+            controller.setBookRating(double.parse((value/20).toStringAsFixed(1)));
           },
           ),
         ],

@@ -82,13 +82,13 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 children: [
                   Expanded(
                       child: getTextFormField(nameController, "Adınız", 24, "",
-                          _nameKey, errorTextName,false)),
+                          _nameKey, errorTextName,false,context)),
                   const SizedBox(
                     width: 12,
                   ),
                   Expanded(
                       child: getTextFormField(surnameController, "Soyadınız",
-                          24, "", _surnameKey, errorTextSurname,false))
+                          24, "", _surnameKey, errorTextSurname,false,context))
                 ],
               ),
               const SizedBox(
@@ -109,7 +109,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                       54,
                       "",
                       _userNameKey,
-                      errorTextUserName,false
+                      errorTextUserName,false,context
                     ),
                   ),
                   const SizedBox(
@@ -143,6 +143,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
               ),
             ],
           ),
+          context
         ),
         const SizedBox(
           height: 8,
@@ -184,6 +185,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 ], align: TextAlign.center)
               ],
             ),
+            context
           ),
           const SizedBox(
             height: 8,
@@ -274,6 +276,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.bounceInOut,
         height: 48,
+        constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
           color: color,
           borderRadius: const BorderRadius.only(

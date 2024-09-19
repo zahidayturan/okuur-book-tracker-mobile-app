@@ -129,6 +129,40 @@ class AddBookController extends GetxController {
     bookTypeValidate.value = true;
   }
 
+  final bookStartedDateKey = GlobalKey<FormState>();
+  final TextEditingController bookStartedDateController = TextEditingController();
+  var bookStartedDateValidate = RxBool(true);
+
+  void setStartedDateValidate(bool valid) {
+    bookStartedDateValidate.value = valid;
+  }
+  void clearStartedDateValidate() {
+    bookStartedDateValidate.value = true;
+  }
+
+  final bookFinishedDateKey = GlobalKey<FormState>();
+  final TextEditingController bookFinishedDateController = TextEditingController();
+  var bookFinishedDateValidate = RxBool(true);
+
+  void setFinishedDateValidate(bool valid) {
+    bookFinishedDateValidate.value = valid;
+  }
+  void clearFinishedDateValidate() {
+    bookFinishedDateValidate.value = true;
+  }
+
+  var bookRating = RxDouble(0.0);
+  final bookRatingKey = GlobalKey<FormState>();
+  final TextEditingController bookRatingController = TextEditingController();
+
+  void setBookRating(double rate) {
+    bookRating.value = rate;
+  }
+
+  void clearBookRating() {
+    bookRating.value = 0;
+  }
+
 
   void clearAll(){
     clearBookName();
@@ -140,16 +174,22 @@ class AddBookController extends GetxController {
     clearBookCurrentPage();
     clearImage();
     clearBookInit();
+    clearBookRating();
 
     bookNameController.clear();
     bookAuthorController.clear();
     bookPageController.clear();
     bookTypeController.clear();
+    bookStartedDateController.clear();
+    bookFinishedDateController.clear();
+    bookRatingController.clear();
 
     clearBookNameValidate();
     clearBookAuthorValidate();
     clearBookPageValidate();
     clearBookTypeValidate();
+    clearStartedDateValidate();
+    clearFinishedDateValidate();
   }
 }
 

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
+import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/ui/components/alert_dialog.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
+import 'package:okuur/ui/utils/simple_calc.dart';
 
 import 'package:okuur/ui/utils/validator.dart';
 
@@ -22,6 +24,7 @@ class _AddBookButtonState extends State<AddBookButton> {
   final BookOperations bookOperations = BookOperations();
 
   final AddBookController controller = Get.find();
+  final LibraryController libraryController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +48,48 @@ class _AddBookButtonState extends State<AddBookButton> {
                 controller.bookAuthorValidate.value == true &&
                 controller.bookPageValidate.value == true &&
                 controller.bookTypeValidate.value == true){
+
+              String tempStartingDate = "startingDate";
+              String tempFinishingDate = "finishingDate";
+              int tempCurrentPage = 0;
+              int tempStatus = 1;
+              int tempReadingTime = 0;
+              double tempRating = 0;
+
+                if(controller.bookCurrentStatus.value != 2){
+
+                  if(controller.bookInit.value == 0){
+                    tempStartingDate = DateTime.now().toString();
+                  }
+                  if(controller.bookCurrentStatus.value == 1){
+                    tempCurrentPage = controller.bookCurrentPage.value;
+                  }
+                  tempStatus = controller.bookInit.value == 0 ? 1 : 0;
+                }else{
+                  tempStartingDate = controller.bookStartedDateController.text;
+                  tempFinishingDate = controller.bookFinishedDateController.text;
+                  tempCurrentPage = 0;
+                  tempStatus = 2;
+                  tempReadingTime = (int.tryParse(controller.bookPageController.text)! *1.5).toInt();
+                  tempRating = controller.bookRating.value;
+                }
+
               var bookInfo = OkuurBookInfo(
                   name: controller.bookNameController.text,
                   author: controller.bookAuthorController.text,
                   pageCount: int.tryParse(controller.bookPageController.text)!,
                   imageLink: 'https://picsum.photos/250?image=8',
                   type: controller.bookTypeController.text,
-                  startingDate: controller.bookInit.value == 0 ? DateTime.now().toString() : "startingDate",
-                  finishingDate: "finishingDate",
-                  currentPage: controller.bookCurrentStatus.value == 1 ? controller.bookCurrentPage.value : 0,
-                  readingTime: 0,
-                  status: controller.bookInit.value == 0 ? 1 : 0,
+                  startingDate: tempStartingDate,
+                  finishingDate: tempFinishingDate,
+                  currentPage: tempCurrentPage,
+                  readingTime: tempReadingTime,
+                  status: tempStatus,
                   logIds:"",
-                  rating: 0
+                  rating: tempRating
               );
               await bookOperations.insertBookInfo(bookInfo);
+              await libraryController.fetchBooks();
               Navigator.of(context).pop();
             } else {
               if(OkuurValidator.rangeValidate(double.tryParse(controller.bookPageController.text),1,9999) == false){

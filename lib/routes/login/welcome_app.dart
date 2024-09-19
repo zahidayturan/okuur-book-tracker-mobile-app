@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
-import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/create_account.dart';
 import 'package:okuur/routes/login/google_login.dart';
 import 'package:okuur/routes/login/login_account.dart';
@@ -53,7 +53,7 @@ class _WelcomePageState extends State<WelcomePage> {
               children: [
                 SizedBox(
                     height: 28,
-                    child: Image.asset("assets/logo/logo_text.png")),
+                    child: Image.asset("assets/logo/logo_text.png",color: Theme.of(context).colorScheme.surface)),
                 const SizedBox(height: 6,),
                 body(),
                 const SizedBox(),
@@ -72,7 +72,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     const SizedBox(height: 16,),
                     SizedBox(
                         height: 28,
-                        child: Image.asset("assets/logo/logo_text.png")),
+                        child: Image.asset("assets/logo/logo_text.png",color: Theme.of(context).colorScheme.surface)),
                   ],
                 )),
                 Expanded(child: buttonContainer())],
@@ -109,13 +109,13 @@ class _WelcomePageState extends State<WelcomePage> {
             children: [
               RichTextWidget(
                   texts: const ["Okuur'a"],
-                  colors: [colors.blue],
+                  colors: [Theme.of(context).colorScheme.primary],
                   fontFamilies: const ["FontLight"],
                   fontSize: 22,
                   align: TextAlign.end),
               RichTextWidget(
                   texts: const ["Hoş\nGeldiniz"],
-                  colors: [colors.green],
+                  colors: [Theme.of(context).colorScheme.inversePrimary],
                   fontFamilies: const ["FontMedium"],
                   fontSize: 32,
                   align: TextAlign.end),
@@ -138,7 +138,7 @@ class _WelcomePageState extends State<WelcomePage> {
               borderRadius: const BorderRadius.all(Radius.circular(50)),
             boxShadow: [
               BoxShadow(
-                color: colors.greyDark.withOpacity(0.3),
+                color: colors.blackLight.withOpacity(0.3),
                 blurRadius: 5,
                 spreadRadius: 2,
                 offset: const Offset(0, 4),
@@ -167,7 +167,7 @@ class _WelcomePageState extends State<WelcomePage> {
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-          color: colors.white,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
           borderRadius: const BorderRadius.all(Radius.circular(36)),
         boxShadow: [
           BoxShadow(
@@ -190,7 +190,7 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(height: 16,),
           RichTextWidget(
               texts: const ["Okuur, ","Fezai Tech ","tarafından geliştirilmiştir."],
-              colors: [colors.green,colors.greenDark,colors.green],
+              colors: [Theme.of(context).colorScheme.primary,Theme.of(context).colorScheme.primaryContainer,Theme.of(context).colorScheme.primary],
               fontFamilies: const ["FontMedium","FontBold","FontMedium"],
               fontSize: 9,
               align: TextAlign.center)
@@ -229,7 +229,7 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         child: Center(child: RichTextWidget(
             texts: [textL,textB],
-            colors: [colors.white],
+            colors: [colors.grey],
             fontFamilies: const ["FontMedium","FontBold"],
             fontSize: 16,
             align: TextAlign.center)),
@@ -245,20 +245,20 @@ class _WelcomePageState extends State<WelcomePage> {
           child: Container(
             height: 1,
             decoration: BoxDecoration(
-              color: colors.greenDark,
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: const BorderRadius.all(Radius.circular(10))
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text("veya",style: TextStyle(color: colors.greenDark,fontSize: 14,fontFamily: "FontMedium"),),
+          child: Text("veya",style: TextStyle(color: Theme.of(context).colorScheme.primaryContainer,fontSize: 14,fontFamily: "FontMedium"),),
         ),
         Expanded(
           child: Container(
             height: 1,
             decoration: BoxDecoration(
-                color: colors.greenDark,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(10))
             ),
           ),
@@ -297,7 +297,7 @@ class _WelcomePageState extends State<WelcomePage> {
               PageRouteBuilder(
                 opaque: false,
                 transitionDuration: const Duration(milliseconds: 300),
-                pageBuilder: (context, animation, nextanim) => newUser == true ? const GoogleLogin() : const HomePage(),
+                pageBuilder: (context, animation, nextanim) => newUser == true ? const GoogleLogin() : const OkuurApp(),
                 reverseTransitionDuration: const Duration(milliseconds: 1),
                 transitionsBuilder: (context, animation, nexttanim, child) {
                   return FadeTransition(
@@ -323,7 +323,7 @@ class _WelcomePageState extends State<WelcomePage> {
             height: 44,
             padding: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
-                color: colors.grey,
+                color: Theme.of(context).primaryColor,
                 borderRadius: const BorderRadius.all(Radius.circular(24))
             ),
             child: Row(
@@ -333,7 +333,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   height: 36,
                   width: 36,
                   decoration: BoxDecoration(
-                      color: colors.white,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                       shape: BoxShape.circle
                   ),
                   child: Padding(
@@ -345,7 +345,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: RichTextWidget(
                       texts: const ["Google hesabın ile devam et"],
-                      colors: [colors.greenDark],
+                      colors: [Theme.of(context).colorScheme.primaryContainer],
                       fontFamilies: const ["FontMedium"],
                       fontSize: 14,
                       align: TextAlign.center),

@@ -20,7 +20,7 @@ class _ThemeSettingsState extends State<ThemeSettings> {
   final OkuurController okuurController = Get.put(OkuurController());
   final OkuurLocalStorage storage = OkuurLocalStorage();
 
-  final List<String> themeOptions = ["Aydınlık Tema", "Karanlık Tema","Sitem Teması"];
+  final List<String> themeOptions = ["Aydınlık Tema", "Karanlık Tema","Sistem Teması"];
 
   @override
   void initState() {

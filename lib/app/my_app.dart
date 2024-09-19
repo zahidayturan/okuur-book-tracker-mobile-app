@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
@@ -25,6 +26,16 @@ class MyApp extends StatelessWidget {
       themeMode: themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('tr', ''),
+      ],
+      locale: const Locale('tr'),
       home: currentUser != null ? OkuurApp() : WelcomePage(),
     );
   }

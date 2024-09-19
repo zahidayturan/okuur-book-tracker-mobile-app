@@ -63,6 +63,7 @@ class _OkuurDateTimePickerState extends State<OkuurDateTimePicker> {
       DateTimeRange? pickedDateRange = await showDateRangePicker(
         context: context,
         initialEntryMode: DatePickerEntryMode.input,
+        locale: const Locale('tr'),
         initialDateRange: DateTimeRange(
           start: widget.initialDate ?? DateTime.now().subtract(Duration(days: 7)),
           end: widget.lastDate ?? DateTime.now(),
@@ -73,7 +74,7 @@ class _OkuurDateTimePickerState extends State<OkuurDateTimePicker> {
 
       if (pickedDateRange != null) {
         setState(() {
-          widget.controller.text = DateFormat('dd.MM.yyyy').format(pickedDateRange.start);
+          widget.controller.text = pickedDateRange.start.toString();
           if (widget.endController != null) {
             widget.endController!.text = DateFormat('dd.MM.yyyy').format(pickedDateRange.end);
           }

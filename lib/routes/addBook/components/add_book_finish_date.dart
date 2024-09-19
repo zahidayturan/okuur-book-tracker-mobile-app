@@ -4,9 +4,6 @@ import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/date_picker.dart';
 import 'package:okuur/ui/components/rich_text.dart';
-import 'package:okuur/ui/components/slider_form.dart';
-import 'package:okuur/ui/utils/validator.dart';
-
 
 AppColors colors = AppColors();
 final AddBookController controller = Get.find();

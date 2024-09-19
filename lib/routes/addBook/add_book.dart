@@ -8,6 +8,7 @@ import 'package:okuur/routes/addBook/components/book_current_page.dart';
 import 'package:okuur/routes/addBook/components/book_image.dart';
 import 'package:okuur/routes/addBook/components/book_info.dart';
 import 'package:okuur/routes/addBook/components/book_init.dart';
+import 'package:okuur/routes/addBook/components/book_rating.dart';
 import 'package:okuur/routes/addBook/components/book_state.dart';
 import 'package:okuur/ui/components/switch_button.dart';
 import 'package:get/get.dart';
@@ -62,13 +63,14 @@ class _AddBookPageState extends State<AddBookPage> {
                   SizedBox(height: 12,),
                   addBookState(context),
                   SizedBox(height: 12,),
-                  addBookFinishDate(context),
                   addBookCurrentPage(context),
+                  addBookFinishDate(context),
+                  addBookReadingTime(context),
                   //SizedBox(height: 12,),
                   addBookImage(context),
                   SizedBox(height: 12,),
                   addBookInit(context),
-                  SizedBox(height: 12,),
+                  //SizedBox(height: 12,),
                   AddBookButton(),
                   SizedBox(height: 12,)
                 ],),

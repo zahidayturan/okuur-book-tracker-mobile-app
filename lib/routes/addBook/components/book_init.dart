@@ -8,27 +8,34 @@ import '../../../ui/components/selectable_question.dart';
 
 AppColors colors = AppColors();
 final AddBookController controller = Get.find();
-Container addBookInit(BuildContext context){
-  return Container(
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.onPrimaryContainer,
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-    ),
-    padding: EdgeInsets.all(8),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichTextWidget(
-            texts: ["Kitabın ","İlk Durumu ","Ne Olsun"],
-            colors: [Theme.of(context).colorScheme.secondary],
-            fontFamilies: ["FontMedium","FontBold","FontMedium"],
-            fontSize: 15,
-            align: TextAlign.start),
-        OkuurSelectableQuestion(optionCount: 2,currentOption: controller.bookInit.toInt(),onChanged: (value) {
-          controller.setBookInit(value);
-        },options: ["Kitabı hemen okumaya başlayacağım","Kitabı daha sonra okuyacağım"]),
-      ],
-    ),
+Obx addBookInit(BuildContext context){
+  return Obx(() => Visibility(
+    visible: controller.bookCurrentStatus.value != 2,
+    child: Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+      ),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichTextWidget(
+              texts: ["Kitabın ","İlk Durumu ","Ne Olsun"],
+              colors: [Theme.of(context).colorScheme.secondary],
+              fontFamilies: ["FontMedium","FontBold","FontMedium"],
+              fontSize: 15,
+              align: TextAlign.start),
+          OkuurSelectableQuestion(optionCount: 2,currentOption: controller.bookInit.toInt(),onChanged: (value) {
+            controller.setBookInit(value);
+          },options: controller.bookCurrentStatus == 0 ?
+          ["Kitabı okumaya hemen başlayacağım","Kitaba daha sonra başlayacağım"] :
+          ["Kitabı okumaya devam edeceğim","Kitaba daha sonra devam edeceğim"]
+          ),
+        ],
+      ),
 
-  );
+    ),
+  ));
 }

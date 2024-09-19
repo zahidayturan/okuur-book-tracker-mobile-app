@@ -151,6 +151,18 @@ class AddBookController extends GetxController {
     bookFinishedDateValidate.value = true;
   }
 
+  var bookRating = RxDouble(0.0);
+  final bookRatingKey = GlobalKey<FormState>();
+  final TextEditingController bookRatingController = TextEditingController();
+
+  void setBookRating(double rate) {
+    bookRating.value = rate;
+  }
+
+  void clearBookRating() {
+    bookRating.value = 0;
+  }
+
 
   void clearAll(){
     clearBookName();
@@ -162,6 +174,7 @@ class AddBookController extends GetxController {
     clearBookCurrentPage();
     clearImage();
     clearBookInit();
+    clearBookRating();
 
     bookNameController.clear();
     bookAuthorController.clear();
@@ -169,6 +182,7 @@ class AddBookController extends GetxController {
     bookTypeController.clear();
     bookStartedDateController.clear();
     bookFinishedDateController.clear();
+    bookRatingController.clear();
 
     clearBookNameValidate();
     clearBookAuthorValidate();

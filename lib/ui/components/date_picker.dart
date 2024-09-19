@@ -74,7 +74,7 @@ class _OkuurDateTimePickerState extends State<OkuurDateTimePicker> {
 
       if (pickedDateRange != null) {
         setState(() {
-          widget.controller.text = pickedDateRange.start.toString();
+          widget.controller.text = DateFormat('dd.MM.yyyy').format(pickedDateRange.start);
           if (widget.endController != null) {
             widget.endController!.text = DateFormat('dd.MM.yyyy').format(pickedDateRange.end);
           }

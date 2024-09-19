@@ -56,8 +56,12 @@ class _OkuurSelectableQuestionState extends State<OkuurSelectableQuestion> {
                   width: 20,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: currentOption == index ? colors.blue : Theme.of(context).colorScheme.onTertiary
+                    border: Border.all(color: Theme.of(context).colorScheme.onTertiary,width: currentOption != index ? 2 : 0),
+                    color: currentOption == index ? colors.blue : null
                   ),
+                  child: Visibility(
+                      visible: currentOption == index,
+                      child: Icon(Icons.check_rounded,color: colors.grey,size: 16,)),
                 ),
                 Expanded(
                   child: Center(

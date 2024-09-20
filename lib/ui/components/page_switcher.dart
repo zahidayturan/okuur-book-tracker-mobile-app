@@ -32,8 +32,8 @@ class _OkuurPageSwitcherState extends State<OkuurPageSwitcher> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          height: currentOption == index ? 6 : 10,
-          width: currentOption == index ? 28 : 10,
+          height: currentOption == index ? 8 : 6,
+          width: currentOption == index ? 8 : 6,
           padding: const EdgeInsets.symmetric(horizontal: 6),
           decoration: BoxDecoration(
             color: currentOption == index ? Theme.of(context).colorScheme.inversePrimary : colors.blueLight,

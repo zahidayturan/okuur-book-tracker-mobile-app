@@ -53,7 +53,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                 colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontBold","FontMedium"],
                 fontSize: 14),
-            OkuurPageSwitcher(pageCount: 2, onChanged: (value) {},)
+            OkuurPageSwitcher(pageCount: 2,currentPage: 0,)
           ],
         ),
         const SizedBox(height: 12,),

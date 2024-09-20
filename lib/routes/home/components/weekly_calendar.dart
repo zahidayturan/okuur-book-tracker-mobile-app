@@ -36,6 +36,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     "Kasım",
     "Aralık"
   ];
+
+  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,7 +57,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           const SizedBox(height: 4,),
           dayInfo(),
           const SizedBox(height: 8,),
-          OkuurPageSwitcher(pageCount: 2, onChanged: (value) {},)
+          OkuurPageSwitcher(pageCount: tempData.length,currentPage: currentPage,)
         ],
       ),
     );
@@ -189,6 +192,11 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       child: PageView.builder(
           itemCount: tempData.length,
           physics: BouncingScrollPhysics(),
+          onPageChanged: (value) {
+            setState(() {
+              currentPage = value;
+            });
+          },
           itemBuilder: (context, index) {
             var list = tempData;
             return Column(

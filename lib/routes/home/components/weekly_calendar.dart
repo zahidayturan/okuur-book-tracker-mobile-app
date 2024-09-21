@@ -188,7 +188,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   SizedBox dayInfo(){
     return SizedBox(
-      height: 86,
+      height: 90,
       child: PageView.builder(
           itemCount: tempData.length,
           physics: BouncingScrollPhysics(),

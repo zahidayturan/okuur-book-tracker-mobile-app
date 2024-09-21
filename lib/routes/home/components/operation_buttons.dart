@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/ui/screens/add_reads_log.dart';
-import '../../../ui/components/rich_text.dart';
+import 'package:okuur/routes/addLog/add_log.dart';
 
 class OperationButtons extends StatefulWidget {
 
@@ -39,11 +39,10 @@ class _OperationButtonsState extends State<OperationButtons> {
         highlightColor: colors.orange,
         onTap: () {
           Navigator.push(
-            context,
+            Get.context!,
             PageRouteBuilder(
-              opaque: false,
-              transitionDuration: const Duration(milliseconds: 200),
-              pageBuilder: (context, animation, nextanim) => const AddReadsPage(),
+              transitionDuration: const Duration(milliseconds: 100),
+              pageBuilder: (context, animation, nextanim) => const AddLogPage(),
               reverseTransitionDuration: const Duration(milliseconds: 1),
               transitionsBuilder: (context, animation, nexttanim, child) {
                 return FadeTransition(

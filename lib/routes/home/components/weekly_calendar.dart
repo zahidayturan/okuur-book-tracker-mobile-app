@@ -36,9 +36,31 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     "Kasım",
     "Aralık"
   ];
+
+  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
-    return dayInfo();
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: Theme.of(context).colorScheme.onPrimaryContainer
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 4,),
+          weekdays(),
+          const SizedBox(height: 12,),
+          title("Günlük Hedefe Ulaşıldı!", Theme.of(context).colorScheme.inversePrimary, 14, "FontMedium",1),
+          const SizedBox(height: 4,),
+          dayInfo(),
+          const SizedBox(height: 8,),
+          OkuurPageSwitcher(pageCount: tempData.length,currentPage: currentPage,)
+        ],
+      ),
+    );
   }
 
   Widget weekdays(){
@@ -142,51 +164,77 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     );
   }
 
-  Container dayInfo(){
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: Theme.of(context).colorScheme.onPrimaryContainer
-      ),
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(height: 4,),
-          weekdays(),
-          const SizedBox(height: 12,),
-          title("Günlük Hedefe Ulaşıldı!", Theme.of(context).colorScheme.inversePrimary, 14, "FontMedium"),
-          const SizedBox(height: 4,),
-          title("Kralın Dönüşü kitabından", Theme.of(context).colorScheme.secondary, 13, "FontMedium"),
-          const SizedBox(height: 8,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-            iconAndText("assets/icons/page.png", "sayfa","48"),
-            iconAndText("assets/icons/clock.png", "dakika","54"),
-            iconAndText("assets/icons/point.png", "puan+","40"),
-          ],),
-          const SizedBox(height: 8,),
-          RichTextWidget(
-              texts: ["Bu ","haftanın en iyi okumasını"," yaptın."],
-              colors: [Theme.of(context).colorScheme.secondary],
-              fontFamilies: ["FontMedium","FontRegular","FontMedium"],
-              fontSize: 11,
-              align: TextAlign.center),
-          const SizedBox(height: 8,),
-          OkuurPageSwitcher(pageCount: 2, onChanged: (value) {},)
-        ],
+  List<Map<String,String>> tempData = [
+    {
+      "bookName":"Kralın Dönüşü",
+      "page" : "46",
+      "minute": "54",
+      "point": "40",
+      "info":"1"
+    },
+    {
+      "bookName":"İki Kule",
+      "page" : "40",
+      "minute": "60",
+      "point": "32",
+      "info":"0"
+    }
+  ];
+
+  List<List<String>> infoList = [
+    ["Bu ","haftanın en uzun okumasını"," yaptın."],
+    ["Bu ","haftanın en iyi okumasını"," yaptın."]
+  ];
+
+  SizedBox dayInfo(){
+    return SizedBox(
+      height: 90,
+      child: PageView.builder(
+          itemCount: tempData.length,
+          physics: BouncingScrollPhysics(),
+          onPageChanged: (value) {
+            setState(() {
+              currentPage = value;
+            });
+          },
+          itemBuilder: (context, index) {
+            var list = tempData;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                title("${list[index]["bookName"]} kitabından", Theme.of(context).colorScheme.secondary, 13, "FontMedium",2),
+                const SizedBox(height: 8,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    iconAndText("assets/icons/page.png", "sayfa","${list[index]["page"]}"),
+                    iconAndText("assets/icons/clock.png", "dakika","${list[index]["minute"]}"),
+                    iconAndText("assets/icons/point.png", "puan+","${list[index]["point"]}"),
+                  ],),
+                const SizedBox(height: 8,),
+                RichTextWidget(
+                    texts: infoList[int.tryParse(list[index]["info"]!) ?? 0],
+                    colors: [Theme.of(context).colorScheme.secondary],
+                    fontFamilies: ["FontMedium","FontRegular","FontMedium"],
+                    fontSize: 11,
+                    align: TextAlign.center),
+              ],
+            );
+          },
       ),
     );
   }
 
-  Text title(String text,Color color,double size, String family){
+  Text title(String text,Color color,double size, String family,int maxLines){
     return Text(
       text,style: TextStyle(
         color: color,
         fontFamily: family,
-        fontSize: size
+        fontSize: size,
+        overflow: TextOverflow.ellipsis
     ),
+      maxLines: maxLines,
+      textAlign: TextAlign.center,
     );
   }
   
@@ -209,8 +257,8 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            title(count, Theme.of(context).colorScheme.secondary, 13, "FontMedium"),
-            title(text, Theme.of(context).colorScheme.secondary, 11, "FontMedium"),
+            title(count, Theme.of(context).colorScheme.secondary, 13, "FontMedium",1),
+            title(text, Theme.of(context).colorScheme.secondary, 11, "FontMedium",1),
           ],
         )
       ],

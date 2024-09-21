@@ -20,7 +20,7 @@ class OkuurLocalStorage {
 
 
   final int _defaultTheme = 2; // default theme (0=light, 1=dark, 2=system)
-  final String _defaultLanguage = 'tr'; // default language (tr,en)
+  final String _defaultLanguage = 'null'; // default language (tr,en)
   final int _defaultDailyGoal = 50;
 
 

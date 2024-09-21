@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
@@ -66,9 +67,9 @@ class _AddBookButtonState extends State<AddBookButton> {
                   }
                   tempStatus = controller.bookInit.value == 0 ? 1 : 0;
                 }else{
-                  tempStartingDate = controller.bookStartedDateController.text;
-                  tempFinishingDate = controller.bookFinishedDateController.text;
-                  tempCurrentPage = 0;
+                  tempStartingDate = DateFormat('dd.MM.yyyy').parse(controller.bookStartedDateController.text).toString();
+                  tempFinishingDate = DateFormat('dd.MM.yyyy').parse(controller.bookFinishedDateController.text).toString();
+                  tempCurrentPage = int.tryParse(controller.bookPageController.text)!;
                   tempStatus = 2;
                   tempReadingTime = (int.tryParse(controller.bookPageController.text)! *1.5).toInt();
                   tempRating = controller.bookRating.value;

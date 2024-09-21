@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:okuur/core/theme/theme_colors.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 
 class OkuurController extends GetxController {
@@ -32,7 +31,6 @@ class OkuurController extends GetxController {
       Get.changeThemeMode(ThemeMode.system);
       setSystemNavBarColor(systemIsDark);
     }
-
   }
 
 
@@ -53,5 +51,31 @@ class OkuurController extends GetxController {
           )
       );
   }
+
+  Locale getLocale(String code) {
+    print(Get.deviceLocale == const Locale('tr', 'TR'));
+    if(code == 'null'){
+      print(Get.deviceLocale == const Locale('tr', 'TR'));
+      switchLocale(Get.deviceLocale == const Locale('tr', 'TR') ? "tr" : "en");
+      return Locale(storage.getLanguage());
+    }
+    
+    if (code == 'tr' || code == 'en') {
+      return Locale(code);
+    }
+
+    if (Get.deviceLocale == const Locale('tr', 'TR') || Get.deviceLocale == const Locale('en', 'US')) {
+      return Get.deviceLocale ?? const Locale('en');
+    }
+
+    return const Locale('en');
+  }
+
+  void switchLocale(String value) {
+    storage.saveLanguage(value);
+
+    Get.updateLocale(getLocale(value));
+  }
+
 
 }

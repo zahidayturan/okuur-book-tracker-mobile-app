@@ -63,6 +63,7 @@ class _OkuurDateTimePickerState extends State<OkuurDateTimePicker> {
       DateTimeRange? pickedDateRange = await showDateRangePicker(
         context: context,
         initialEntryMode: DatePickerEntryMode.input,
+        locale: const Locale('tr'),
         initialDateRange: DateTimeRange(
           start: widget.initialDate ?? DateTime.now().subtract(Duration(days: 7)),
           end: widget.lastDate ?? DateTime.now(),

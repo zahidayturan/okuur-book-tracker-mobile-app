@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/addLog/components/add_log_app_bar.dart';
+import 'package:okuur/routes/addLog/components/add_log_button.dart';
+import 'package:okuur/routes/addLog/components/log_info.dart';
 
 class AddLogPage extends StatefulWidget {
   const AddLogPage({super.key});
@@ -14,6 +18,9 @@ class _AddLogPageState extends State<AddLogPage> {
   @override
   void initState() {
     super.initState();
+    Get.put(AddLogController());
+    AddLogController controller = Get.find();
+    controller.clearAll();
   }
 
   AppColors colors = AppColors();
@@ -35,6 +42,10 @@ class _AddLogPageState extends State<AddLogPage> {
                   const SizedBox(height: 12,),
                   addLogAppBar(context),
                   const SizedBox(height: 16,),
+                  const LogInfo(),
+                  const SizedBox(height: 12,),
+                  AddLogButton(),
+                  const SizedBox(height: 12,),
                 ],),
             ),
           ),

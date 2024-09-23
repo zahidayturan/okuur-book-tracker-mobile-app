@@ -1,39 +1,69 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddLogController extends GetxController {
 
-  var logBook = Rx<String?>(null);
-  final logPageKey = GlobalKey<FormState>();
-  final TextEditingController logBookController = TextEditingController();
-  var logBookValidate = RxBool(true);
-  void setLogBook(String name) {
-    logBook.value = name;
-  }
-  void clearLogBook() {
-    logBook.value = null;
-  }
-  void setLogBookValidate(bool valid) {
-    logBookValidate.value = valid;
-  }
-  void clearLogBookValidate() {
-    logBookValidate.value = true;
-  }
+  var logBookId = Rx<int?>(null);
+  void setLogBook(int id) {logBookId.value = id;}
+  void clearLogBook() {logBookId.value = null;}
 
 
+  var logNewCurrentPage = Rx<int?>(null);
+  void setLogPage(int page) {logNewCurrentPage.value = page;}
+  void clearLogPage() {logNewCurrentPage.value = null;}
 
+  var logReadingTime = Rx<int?>(null);
+  void setLogReadingTime(int minute) {logReadingTime.value = minute;}
+  void clearLogReadingTime() {logReadingTime.value = null;}
 
-  var logPage = RxInt(0);
-  var logTime = RxInt(1);
-  var logDate = RxInt(0);
+  var logReadingDate = Rx<String?>(null);
+  void setLogReadingDate(String date) {logReadingDate.value = date;}
+  void clearLogReadingDate() {logReadingDate.value = null;}
 
-
-
+  var logStartingHour = Rx<String?>(null);
+  void setLogStartingHour(String date) {logStartingHour.value = date;}
+  void clearLogStartingHour() {logStartingHour.value = null;}
 
 
   void clearAll(){
-  clearLogBook();
-  clearLogBookValidate();
+    clearLogBook();
+    clearLogPage();
+    clearLogReadingTime();
+    clearLogReadingDate();
+    clearLogStartingHour();
+  }
+
+
+  var logAllValidate = RxBool(false);
+  void setLogAllValidate(bool valid) {
+    logAllValidate.value = valid;
+  }
+  void clearLogAllValidate() {
+    logAllValidate.value = false;
+  }
+  void checkAllValidate(){
+    if(logBookId.value != null
+        && logNewCurrentPage.value != null
+        && logReadingTime.value != null
+        && logReadingDate.value != null
+        && logStartingHour.value != null
+    ){
+      setLogAllValidate(true);
+    }else{
+      setLogAllValidate(false);
+    }
+  }
+
+  bool checkAllInfoIsNull(){
+    if(logBookId.value == null
+        && logNewCurrentPage.value == null
+        && logReadingTime.value == null
+        && logReadingDate.value == null
+        && logStartingHour.value == null
+    ){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }

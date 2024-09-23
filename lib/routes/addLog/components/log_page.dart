@@ -20,11 +20,23 @@ class _LogPageInfoState extends State<LogPageInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
-      children: [
-        formContent(),
-      ],
-    );
+    return  Obx(() => Visibility(
+      visible: controller.logBookId.value != null,
+      child: Column(
+        children: [
+          const SizedBox(height: 12,),
+          formContent(),
+        ],
+      ),
+    ));
+  }
+
+  double _currentPageCount = 141;
+
+  void _updatePageCount(double value) {
+    setState(() {
+      _currentPageCount = value;
+    });
   }
 
   Widget formContent() {
@@ -50,7 +62,40 @@ class _LogPageInfoState extends State<LogPageInfo> {
           ),
           italicText("Kralın Dönüşü kitabı 360 sayfa. Siz 140. sayfada kalmıştınız."),
           const SizedBox(height: 12,),
-
+          Row(
+            children: [
+              RichTextWidget(
+                  texts: ["Eski\nSayfanız\n","140"],
+                  colors: [colors.black],
+                  fontFamilies: ["FontMedium","FontBold"],
+                  align: TextAlign.center,
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: 36,
+                  child: Slider(
+                    value: _currentPageCount,
+                    min: 141,
+                    max: 360,
+                    divisions: (360 - 141).toInt(),
+                    label: _currentPageCount.toInt().toString(),
+                    onChanged: _updatePageCount,
+                    activeColor: colors.blue,
+                    inactiveColor: Theme.of(context).colorScheme.inverseSurface,
+                    onChangeEnd: (value) {
+                      controller.setLogPage(_currentPageCount.toInt());
+                    },
+                  ),
+                ),
+              ),
+              RichTextWidget(
+                texts: ["Yeni\nSayfanız\n","${_currentPageCount.toInt().toString()}"],
+                colors: [colors.black],
+                fontFamilies: ["FontMedium","FontBold"],
+                align: TextAlign.center,
+              )
+            ],
+          )
         ],
       ),
     );

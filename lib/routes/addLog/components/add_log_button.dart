@@ -31,10 +31,10 @@ class _AddLogButtonState extends State<AddLogButton> {
           onTap: () {
 
           },
-          child: Container(
+          child: Obx(() => Container(
             height: 42,
             decoration: BoxDecoration(
-                color: true != false ? colors.blueLight : colors.blueMid,
+                color: controller.logAllValidate.value ? colors.blueMid : colors.blueLight,
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(
@@ -42,7 +42,7 @@ class _AddLogButtonState extends State<AddLogButton> {
                   child:
                   text("Okumayı Kaydet", colors.white, 15, "FontMedium",1),
                 )),
-          ),
+          ),)
         ),
       ],
     );

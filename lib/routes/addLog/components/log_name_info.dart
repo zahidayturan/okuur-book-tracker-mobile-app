@@ -50,7 +50,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
             ],
           ),
           const SizedBox(height: 12,),
-          tempData.isEmpty ?
+          tempData.isNotEmpty ?
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
@@ -64,16 +64,18 @@ class _LogNameInfoState extends State<LogNameInfo> {
 
   List<Map<String,String>> tempData = [
     {
+      "id": "1",
       "name" : "Kralın Dönüşü",
       "image" : "https://picsum.photos/250?image=8"
     },
     {
+      "id": "2",
       "name" : "Bir İdam Mahkumunun Son Günü",
       "image" : "https://picsum.photos/250?image=7"
     }
   ];
 
-  int selectedBookIndex = 0;
+  int? selectedBookIndex;
 
 
   Widget bookList(){
@@ -92,6 +94,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
         setState(() {
           selectedBookIndex = index;
         });
+        controller.setLogBook(int.parse(data["id"].toString()));
       },
       child: Container(
         width: 90,
@@ -122,7 +125,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(2)),
-                    child: selectedBookIndex == index
+                    child: selectedBookIndex == index || selectedBookIndex == null
                         ? Image.network(
                       data["image"].toString(),
                       fit: BoxFit.cover,
@@ -179,6 +182,6 @@ class _LogNameInfoState extends State<LogNameInfo> {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: Theme.of(context).primaryColor,
         ),
-        child: Text("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",textAlign: TextAlign.center,));
+        child: Text("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",textAlign: TextAlign.center,style: TextStyle(color: colors.blue),));
   }
 }

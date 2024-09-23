@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:okuur/controllers/add_book_controller.dart';
+import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 
 AppColors colors = AppColors();
-final AddBookController controller = Get.find();
+final AddLogController controller = Get.find();
 
 WillPopScope addLogAppBar(BuildContext context) {
   return WillPopScope(
     onWillPop: () async {
-      if (true != false) {
+      if (!controller.checkAllInfoIsNull()) {
         bool shouldExit = await _showExitConfirmation(context);
         return shouldExit;
       } else {
@@ -24,7 +24,7 @@ WillPopScope addLogAppBar(BuildContext context) {
         text("Okuma Kaydı Ekle", Theme.of(context).colorScheme.primaryContainer, 18, "FontBold", 3),
         InkWell(
           onTap: () async {
-            if (true != false) {
+            if (!controller.checkAllInfoIsNull()) {
               bool shouldExit = await _showExitConfirmation(context);
               if (shouldExit) {
                 Get.back();
@@ -66,10 +66,10 @@ Future<bool> _showExitConfirmation(BuildContext context) async {
         borderRadius: BorderRadius.all(Radius.circular(12.0)),
       ),
       actions: [
-        Column(
+        Row(
           children: [
             getAlertButton("Geri Dön", false, false, context),
-            const SizedBox(height: 8),
+            const SizedBox(width: 8),
             getAlertButton("Çık", true, true, context),
           ],
         ),
@@ -79,22 +79,24 @@ Future<bool> _showExitConfirmation(BuildContext context) async {
       false;
 }
 
-InkWell getAlertButton(
+Expanded getAlertButton(
     String text, bool isPop, bool fill, BuildContext context) {
-  return InkWell(
-    onTap: () => Navigator.of(context).pop(isPop),
-    child: Container(
-      height: 36,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: fill ? colors.blue : null,
-        border: fill ? null : Border.all(color: colors.blue, width: 1),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            color: fill ? colors.white : colors.blue,
+  return Expanded(
+    child: InkWell(
+      onTap: () => Navigator.of(context).pop(isPop),
+      child: Container(
+        height: 36,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: fill ? colors.blue : null,
+          border: fill ? null : Border.all(color: colors.blue, width: 1),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: fill ? colors.white : colors.blue,
+            ),
           ),
         ),
       ),

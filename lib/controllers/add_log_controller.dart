@@ -8,8 +8,8 @@ class AddLogController extends GetxController {
 
 
   var logNewCurrentPage = Rx<int?>(null);
-  void setLogPage(int page) {logNewCurrentPage.value = page;}
-  void clearLogPage() {logNewCurrentPage.value = null;}
+  void setLogNewCurrentPage(int page) {logNewCurrentPage.value = page;}
+  void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
 
   var logReadingTime = Rx<int?>(null);
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
@@ -26,7 +26,7 @@ class AddLogController extends GetxController {
 
   void clearAll(){
     clearLogBook();
-    clearLogPage();
+    clearLogNewCurrentPage();
     clearLogReadingTime();
     clearLogReadingDate();
     clearLogStartingHour();

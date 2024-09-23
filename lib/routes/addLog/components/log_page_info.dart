@@ -83,14 +83,14 @@ class _LogPageInfoState extends State<LogPageInfo> {
                     activeColor: colors.blue,
                     inactiveColor: Theme.of(context).colorScheme.inverseSurface,
                     onChangeEnd: (value) {
-                      controller.setLogPage(_currentPageCount.toInt());
+                      controller.setLogNewCurrentPage(_currentPageCount.toInt());
                     },
                   ),
                 ),
               ),
               RichTextWidget(
                 texts: ["Yeni\nSayfanız\n","${_currentPageCount.toInt().toString()}"],
-                colors: [colors.black],
+                colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontMedium","FontBold"],
                 align: TextAlign.center,
               )

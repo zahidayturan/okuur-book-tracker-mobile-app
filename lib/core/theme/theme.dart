@@ -38,7 +38,8 @@ class AppTheme {
               primary: colors.blue,
               secondary: colors.blueLight
           )
-      )
+      ),
+      shadowColor: Colors.grey
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -71,6 +72,7 @@ class AppTheme {
         primary: colors.greyMid,
         secondary: colors.blackLight
       )
-    )
+    ),
+    shadowColor: colors.black
   );
 }

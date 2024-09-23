@@ -34,7 +34,7 @@ class _AddLogButtonState extends State<AddLogButton> {
           child: Container(
             height: 42,
             decoration: BoxDecoration(
-                color: colors.blueMid,
+                color: true != false ? colors.blueLight : colors.blueMid,
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(

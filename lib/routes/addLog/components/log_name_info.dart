@@ -3,18 +3,16 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
-import 'package:okuur/ui/components/text_form_field.dart';
-import 'package:okuur/ui/utils/device_utils.dart';
 import '../../../ui/components/rich_text.dart';
 
-class LogInfo extends StatefulWidget {
-  const LogInfo({Key? key,}) : super(key: key);
+class LogNameInfo extends StatefulWidget {
+  const LogNameInfo({Key? key,}) : super(key: key);
 
   @override
-  State<LogInfo> createState() => _LogInfoState();
+  State<LogNameInfo> createState() => _LogNameInfoState();
 }
 
-class _LogInfoState extends State<LogInfo> {
+class _LogNameInfoState extends State<LogNameInfo> {
   AppColors colors = AppColors();
   final BookOperations bookOperations = BookOperations();
 
@@ -52,10 +50,13 @@ class _LogInfoState extends State<LogInfo> {
             ],
           ),
           const SizedBox(height: 12,),
+          tempData.isEmpty ?
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: bookList())
+              :
+          notFoundBook()
         ],
       ),
     );
@@ -104,10 +105,11 @@ class _LogInfoState extends State<LogInfo> {
                 AnimatedContainer(
                   height: 126,
                   width: 90,
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      color: Theme.of(context).primaryColor,
                       boxShadow: [
                         BoxShadow(
                           color: Theme.of(context).shadowColor.withOpacity(0.7),
@@ -120,25 +122,34 @@ class _LogInfoState extends State<LogInfo> {
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(2)),
-                    child: Image.network(
+                    child: selectedBookIndex == index
+                        ? Image.network(
                       data["image"].toString(),
                       fit: BoxFit.cover,
+                    )
+                        : ColorFiltered(
+                      colorFilter: const ColorFilter.mode(
+                        Colors.grey,
+                        BlendMode.saturation,
+                      ),
+                      child: Image.network(
+                        data["image"].toString(),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-
                 ),
-                Visibility(
-                  visible: selectedBookIndex == index,
-                  child: Container(
-                    width: 28,
-                    height: 28,
-                    margin: EdgeInsets.only(bottom: 6),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).colorScheme.inversePrimary
-                    ),
-                    child: Icon(Icons.check_rounded,color: colors.grey,),
+                AnimatedContainer(
+                  curve: Curves.easeInOut,
+                  duration: const Duration(milliseconds: 300),
+                  width: 28,
+                  height: selectedBookIndex == index ? 28 : 0,
+                  margin: const EdgeInsets.only(bottom: 6),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.inversePrimary
                   ),
+                  child: selectedBookIndex == index ? Icon(Icons.check_rounded,color: colors.grey,) : null,
                 ),
               ],
             ),
@@ -159,5 +170,15 @@ class _LogInfoState extends State<LogInfo> {
         color: Theme.of(context).colorScheme.secondary
       ),
     );
+  }
+
+  Widget notFoundBook(){
+    return Container(
+      padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            color: Theme.of(context).primaryColor,
+        ),
+        child: Text("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",textAlign: TextAlign.center,));
   }
 }

@@ -34,7 +34,7 @@ class _AddLogButtonState extends State<AddLogButton> {
           child: Obx(() => Container(
             height: 42,
             decoration: BoxDecoration(
-                color: controller.logAllValidate.value ? colors.blueMid : colors.blueLight,
+                color: controller.logAllValidate.value ? colors.blueMid : Theme.of(context).buttonTheme.colorScheme?.secondary,
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddLogController extends GetxController {
@@ -14,6 +15,8 @@ class AddLogController extends GetxController {
   var logReadingTime = Rx<int?>(null);
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
   void clearLogReadingTime() {logReadingTime.value = null;}
+  final logReadingTimeKey = GlobalKey<FormState>();
+  final TextEditingController logReadingTimeController = TextEditingController();
 
   var logReadingDate = Rx<String?>(null);
   void setLogReadingDate(String date) {logReadingDate.value = date;}

@@ -66,9 +66,10 @@ class _LogPageInfoState extends State<LogPageInfo> {
             children: [
               RichTextWidget(
                   texts: ["Eski\nSayfanız\n","140"],
-                  colors: [colors.black],
+                  colors: [Theme.of(context).colorScheme.secondary],
                   fontFamilies: ["FontMedium","FontBold"],
                   align: TextAlign.center,
+                fontSize: 14,
               ),
               Expanded(
                 child: SizedBox(
@@ -93,6 +94,7 @@ class _LogPageInfoState extends State<LogPageInfo> {
                 colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontMedium","FontBold"],
                 align: TextAlign.center,
+                fontSize: 14,
               )
             ],
           )

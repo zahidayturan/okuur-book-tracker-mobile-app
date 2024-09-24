@@ -24,6 +24,13 @@ class BookOperations implements BookService {
     return result.map((book) => OkuurBookInfo.fromJson(book)).toList();
   }
 
+  Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo() async {
+    final db = await DatabaseHelper().database;
+    var result = await db.query('bookInfo', orderBy: "id", where: "status % 2 = 1");
+    return result.map((book) => OkuurBookInfo.fromJson(book)).toList();
+  }
+
+
   Future<void> deleteAllBookInfo() async {
     final db = await DatabaseHelper().database;
     await db.delete('bookInfo');

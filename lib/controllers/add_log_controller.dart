@@ -1,27 +1,44 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/services/operations/book_operations.dart';
 
 class AddLogController extends GetxController {
 
   var logBookId = Rx<int?>(null);
-  void setLogBook(int id) {logBookId.value = id;}
+  void setLogBook(int id,int totalPage,int currentlyPage) {
+    logBookId.value = id;
+    bookInfoForPage = {"total":"","currently":""};
+  }
   void clearLogBook() {logBookId.value = null;}
 
 
   var logNewCurrentPage = Rx<int?>(null);
-  void setLogNewCurrentPage(int page) {logNewCurrentPage.value = page;}
+  void setLogNewCurrentPage(int page) {
+    logNewCurrentPage.value = page;
+    setLogReadingTime(63);
+    setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
+    setLogStartingHour("${DateTime.now().hour}:${DateTime.now().minute}");
+    checkAllValidate();
+  }
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
+  final TextEditingController logNewCurrentPageController = TextEditingController();
 
   var logReadingTime = Rx<int?>(null);
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
   void clearLogReadingTime() {logReadingTime.value = null;}
+  final TextEditingController logReadingTimeController = TextEditingController();
 
   var logReadingDate = Rx<String?>(null);
   void setLogReadingDate(String date) {logReadingDate.value = date;}
   void clearLogReadingDate() {logReadingDate.value = null;}
+  final TextEditingController logReadingDateController = TextEditingController();
 
   var logStartingHour = Rx<String?>(null);
-  void setLogStartingHour(String date) {logStartingHour.value = date;}
+  void setLogStartingHour(String hour) {logStartingHour.value = hour;}
   void clearLogStartingHour() {logStartingHour.value = null;}
+  final TextEditingController logStartingHourController = TextEditingController();
 
 
   void clearAll(){
@@ -30,6 +47,11 @@ class AddLogController extends GetxController {
     clearLogReadingTime();
     clearLogReadingDate();
     clearLogStartingHour();
+
+    logNewCurrentPageController.clear();
+    logReadingTimeController.clear();
+    logReadingDateController.clear();
+    logStartingHourController.clear();
   }
 
 
@@ -65,6 +87,21 @@ class AddLogController extends GetxController {
       return false;
     }
   }
+
+
+  List<OkuurBookInfo> currentlyReadBooks = [];
+  BookOperations bookOperations = BookOperations();
+  var booksLoading = Rx<bool>(false);
+
+
+  Future<void> fetchCurrentlyReadBooks() async {
+    booksLoading.value = true;
+    currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
+    booksLoading.value = false;
+  }
+
+  Map<String,String> bookInfoForPage = {};
+
 
 }
 

@@ -6,7 +6,9 @@ import 'package:okuur/routes/addLog/components/add_log_app_bar.dart';
 import 'package:okuur/routes/addLog/components/add_log_button.dart';
 import 'package:okuur/routes/addLog/components/log_page_info.dart';
 import 'package:okuur/routes/addLog/components/log_name_info.dart';
+import 'package:okuur/routes/addLog/components/log_reading_date_info.dart';
 import 'package:okuur/routes/addLog/components/log_reading_time_info.dart';
+import 'package:okuur/routes/addLog/components/log_finishing_hour_info.dart';
 
 class AddLogPage extends StatefulWidget {
   const AddLogPage({super.key});
@@ -49,6 +51,8 @@ class _AddLogPageState extends State<AddLogPage> {
                   //const SizedBox(height: 12,),
                   const LogPageInfo(),
                   const LogReadingTimeInfo(),
+                  const LogReadingDateInfo(),
+                  const LogStartingHourInfo(),
                   const SizedBox(height: 12,),
                   const AddLogButton(),
                   const SizedBox(height: 12,),

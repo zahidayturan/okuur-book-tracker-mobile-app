@@ -31,6 +31,7 @@ class OkuurBookInfo {
 
   factory OkuurBookInfo.fromJson(Map<String, dynamic> json) {
     return OkuurBookInfo(
+      id: json['id'],
       name: json['name'],
       author: json['author'],
       pageCount: json['pageCount'],

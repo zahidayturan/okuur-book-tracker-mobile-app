@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/services/operations/book_operations.dart';
 
 class AddLogController extends GetxController {
 
   var logBookId = Rx<int?>(null);
-  void setLogBook(int id) {logBookId.value = id;}
+  void setLogBook(int id,int totalPage,int currentlyPage) {
+    logBookId.value = id;
+    bookInfoForPage = {"total":"","currently":""};
+  }
   void clearLogBook() {logBookId.value = null;}
 
 
@@ -82,6 +87,21 @@ class AddLogController extends GetxController {
       return false;
     }
   }
+
+
+  List<OkuurBookInfo> currentlyReadBooks = [];
+  BookOperations bookOperations = BookOperations();
+  var booksLoading = Rx<bool>(false);
+
+
+  Future<void> fetchCurrentlyReadBooks() async {
+    booksLoading.value = true;
+    currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
+    booksLoading.value = false;
+  }
+
+  Map<String,String> bookInfoForPage = {};
+
 
 }
 

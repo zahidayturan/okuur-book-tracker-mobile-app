@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogNameInfo extends StatefulWidget {
@@ -15,6 +16,13 @@ class _LogNameInfoState extends State<LogNameInfo> {
   AppColors colors = AppColors();
 
   final AddLogController controller = Get.find();
+
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchCurrentlyReadBooks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,30 +56,15 @@ class _LogNameInfoState extends State<LogNameInfo> {
             ],
           ),
           const SizedBox(height: 12,),
-          tempData.isNotEmpty ?
-          SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              child: bookList())
-              :
-          notFoundBook()
+          Obx(() => controller.booksLoading.value
+              ? loadingBook()
+              : controller.currentlyReadBooks.isNotEmpty
+              ? bookList()
+              : notFoundBook()),
         ],
       ),
     );
   }
-
-  List<Map<String,String>> tempData = [
-    {
-      "id": "1",
-      "name" : "Kralın Dönüşü",
-      "image" : "https://picsum.photos/250?image=8"
-    },
-    {
-      "id": "2",
-      "name" : "Bir İdam Mahkumunun Son Günü",
-      "image" : "https://picsum.photos/250?image=7"
-    }
-  ];
 
   int? selectedBookIndex;
 
@@ -80,13 +73,13 @@ class _LogNameInfoState extends State<LogNameInfo> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(tempData.length, (index) {
-        return bookOption(tempData[index],index);
+      children: List.generate(controller.currentlyReadBooks.length, (index) {
+        return bookOption(controller.currentlyReadBooks[index],index);
       }),
     );
   }
 
-  Widget bookOption(Map<String,String> data,int index){
+  Widget bookOption(OkuurBookInfo data,int index){
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -95,7 +88,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
           }
           selectedBookIndex = index;
         });
-        controller.setLogBook(int.parse(data["id"].toString()));
+        controller.setLogBook(data.id!,data.pageCount,data.currentPage);
       },
       child: Container(
         width: 90,
@@ -128,7 +121,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
                     borderRadius: const BorderRadius.all(Radius.circular(2)),
                     child: selectedBookIndex == index || selectedBookIndex == null
                         ? Image.network(
-                      data["image"].toString(),
+                      data.imageLink,
                       fit: BoxFit.cover,
                     )
                         : ColorFiltered(
@@ -137,7 +130,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
                         BlendMode.saturation,
                       ),
                       child: Image.network(
-                        data["image"].toString(),
+                        data.imageLink,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -158,7 +151,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
               ],
             ),
             const SizedBox(height: 8,),
-            Text(data["name"].toString(),style: TextStyle(fontSize: 12,color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
+            Text(data.name,style: TextStyle(fontSize: 12,color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
           ],
         ),
       ),
@@ -176,13 +169,44 @@ class _LogNameInfoState extends State<LogNameInfo> {
     );
   }
 
-  Widget notFoundBook(){
+  Widget notFoundBook() {
+    return messageContainer(
+      "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",
+    );
+  }
+
+
+  Widget loadingBook() {
+    return messageContainer(
+      "Kitaplar yükleniyor...",
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.inversePrimary),
+      ),
+    );
+  }
+
+  Widget messageContainer(String message, {Widget? child}) {
     return Container(
-      padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            color: Theme.of(context).primaryColor,
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: Theme.of(context).primaryColor,
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            if (child != null) ...[
+              SizedBox(height: 24, width: 24, child: child),
+              const SizedBox(height: 8),
+            ],
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: colors.blue),
+            ),
+          ],
         ),
-        child: Text("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",textAlign: TextAlign.center,style: TextStyle(color: colors.blue),));
+      ),
+    );
   }
 }

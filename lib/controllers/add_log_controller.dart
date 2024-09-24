@@ -17,8 +17,8 @@ class AddLogController extends GetxController {
     setLogStartingHour("${DateTime.now().hour}:${DateTime.now().minute}");
     checkAllValidate();
   }
-
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
+  final TextEditingController logNewCurrentPageController = TextEditingController();
 
   var logReadingTime = Rx<int?>(null);
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
@@ -29,11 +29,11 @@ class AddLogController extends GetxController {
   void setLogReadingDate(String date) {logReadingDate.value = date;}
   void clearLogReadingDate() {logReadingDate.value = null;}
   final TextEditingController logReadingDateController = TextEditingController();
-  final logReadingDateKey = GlobalKey<FormState>();
 
   var logStartingHour = Rx<String?>(null);
   void setLogStartingHour(String hour) {logStartingHour.value = hour;}
   void clearLogStartingHour() {logStartingHour.value = null;}
+  final TextEditingController logStartingHourController = TextEditingController();
 
 
   void clearAll(){
@@ -42,6 +42,11 @@ class AddLogController extends GetxController {
     clearLogReadingTime();
     clearLogReadingDate();
     clearLogStartingHour();
+
+    logNewCurrentPageController.clear();
+    logReadingTimeController.clear();
+    logReadingDateController.clear();
+    logStartingHourController.clear();
   }
 
 

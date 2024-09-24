@@ -90,6 +90,9 @@ class _LogNameInfoState extends State<LogNameInfo> {
     return GestureDetector(
       onTap: () {
         setState(() {
+          if(selectedBookIndex != index){
+            controller.clearAll();
+          }
           selectedBookIndex = index;
         });
         controller.setLogBook(int.parse(data["id"].toString()));

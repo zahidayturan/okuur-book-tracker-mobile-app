@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import '../../../ui/components/rich_text.dart';
 
-class LogReadingDateInfo extends StatefulWidget {
-  const LogReadingDateInfo({Key? key,}) : super(key: key);
+class LogStartingHourInfo extends StatefulWidget {
+  const LogStartingHourInfo({Key? key,}) : super(key: key);
 
   @override
-  State<LogReadingDateInfo> createState() => _LogReadingDateInfoState();
+  State<LogStartingHourInfo> createState() => _LogStartingHourInfoState();
 }
 
-class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
+class _LogStartingHourInfoState extends State<LogStartingHourInfo> {
   AppColors colors = AppColors();
 
 
@@ -46,18 +45,22 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
           Row(
             children: [
               RichTextWidget(
-                texts: const ["Hangi ","Gün ","Okudunuz"],
+                texts: const ["Okumayı ","Saat Kaçta ","Bitirdiniz"],
                 colors: [Theme.of(context).colorScheme.secondary],
                 fontFamilies: const ["FontMedium","FontBold","FontMedium"],
               ),
             ],
           ),
+          const Row(
+            children: [
+              SizedBox(height: 8,),
+            ],
+          ),
+          italicText("Şimdi bitirdiyseniz ${DateTime.now().hour}:${DateTime.now().minute} bitiş saati olarak kayıt edilecektir."),
           const SizedBox(height: 12,),
           Row(
             children: [
-              alreadyButton(0,"Bugün",DateTime.now().toString()),
-              const SizedBox(width: 12,),
-              alreadyButton(1,"Dün",DateTime.now().subtract(const Duration(days: 1)).toString()),
+              alreadyButton(0,"${DateTime.now().hour}:${DateTime.now().minute}"),
               const SizedBox(width: 12,),
               optionalButton(2)
             ],
@@ -69,13 +72,13 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
 
   int selectedButtonIndex = 0;
 
-  Widget alreadyButton(int index,String text,String date){
+  Widget alreadyButton(int index,String hour){
     return GestureDetector(
         onTap: () {
           setState(() {
             selectedButtonIndex = index;
-            controller.logReadingDateController.clear();
-            controller.setLogReadingDate(date);
+            controller.logStartingHourController.clear();
+            controller.setLogStartingHour(hour);
           });
         },
         child: AnimatedContainer(
@@ -86,7 +89,7 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
               borderRadius: const BorderRadius.all(Radius.circular(100))
           ),
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 14),
-          child: Text(text,style: TextStyle(color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
+          child: Text("Şimdi Bitirdim",style: TextStyle(color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
         )
     );
   }
@@ -106,20 +109,20 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
           onTap: () {
             setState(() {
               selectedButtonIndex = index;
-              controller.clearLogReadingDate();
+              controller.clearLogStartingHour();
             });
-            _selectDate();
+            _selectHour();
           },
-          controller: controller.logReadingDateController,
+          controller: controller.logStartingHourController,
           readOnly: true,
           decoration: InputDecoration(
-              hintText: "Tarih Seç",
-              counterText: "",
-              hintStyle: TextStyle(
-                color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
-              ),
-              contentPadding: const EdgeInsets.only(bottom: 12),
-              border: InputBorder.none,
+            hintText: "Saat Seç",
+            counterText: "",
+            hintStyle: TextStyle(
+              color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
+            ),
+            contentPadding: const EdgeInsets.only(bottom: 12),
+            border: InputBorder.none,
           ),
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -130,33 +133,43 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
     );
   }
 
-  Future<void> _selectDate() async {
-      DateTime? pickedDate = await showDatePicker(
-        context: context,
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-            ),
-            child: child!,
-          );
-        },
-        initialDate: DateTime.now(),
-        firstDate:  DateTime.now().subtract(const Duration(days: 180)),
-        lastDate: DateTime.now().add(const Duration(days: 1)),
-      );
+  Future<void> _selectHour() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (pickedTime != null) {
+      setState(() {
+        String formattedTime = "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
+        controller.logStartingHourController.text = formattedTime;
+        controller.setLogStartingHour(formattedTime);
+      });
+    } else {
+      setState(() {
+        String nowTime = "${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}";
+        controller.logStartingHourController.clear();
+        selectedButtonIndex = 0;
+        controller.setLogStartingHour(nowTime);
+      });
+    }
+  }
 
-      if (pickedDate != null) {
-        setState(() {
-          controller.logReadingDateController.text = DateFormat('dd.MM.yyyy').format(pickedDate);
-          controller.setLogReadingDate(controller.logReadingTimeController.text);
-        });
-      }else{
-        setState(() {
-          selectedButtonIndex = 0;
-          controller.logReadingDateController.clear();
-          controller.setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
-        });
-      }
 
+  Widget italicText(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+          fontSize: 12,
+          fontStyle: FontStyle.italic,
+          color: Theme.of(context).colorScheme.secondary
+      ),
+    );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/data/services/operations/book_operations.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogPageInfo extends StatefulWidget {
@@ -14,7 +13,6 @@ class LogPageInfo extends StatefulWidget {
 
 class _LogPageInfoState extends State<LogPageInfo> {
   AppColors colors = AppColors();
-  final BookOperations bookOperations = BookOperations();
 
   final AddLogController controller = Get.find();
 

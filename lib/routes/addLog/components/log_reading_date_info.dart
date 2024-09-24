@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import '../../../ui/components/rich_text.dart';
 
-class LogReadingTimeInfo extends StatefulWidget {
-  const LogReadingTimeInfo({Key? key,}) : super(key: key);
+class LogReadingDateInfo extends StatefulWidget {
+  const LogReadingDateInfo({Key? key,}) : super(key: key);
 
   @override
-  State<LogReadingTimeInfo> createState() => _LogReadingTimeInfoState();
+  State<LogReadingDateInfo> createState() => _LogReadingDateInfoState();
 }
 
-class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
+class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
   AppColors colors = AppColors();
+
 
   final AddLogController controller = Get.find();
 
@@ -42,23 +43,23 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichTextWidget(
-            texts: const ["42 Sayfayı ","Kaç Dakikada ","Okudunuz"],
-            colors: [Theme.of(context).colorScheme.secondary],
-            fontFamilies: const ["FontMedium","FontBold","FontMedium"],
-          ),
-          const Row(
+          Row(
             children: [
-              SizedBox(height: 8,),
+              RichTextWidget(
+                texts: const ["Hangi ","Gün ","Okudunuz"],
+                colors: [Theme.of(context).colorScheme.secondary],
+                fontFamilies: const ["FontMedium","FontBold","FontMedium"],
+              ),
             ],
           ),
-          italicText("Önceki kayıtlarınıza göre bir sayfayı ortalama 1.5 dakikada okumuşsunuz. (42 sayfa için 63 dakika)"),
           const SizedBox(height: 12,),
           Row(
             children: [
-              alreadyButton(0,63),
+              alreadyButton(0,"Bugün",DateTime.now().toString()),
               const SizedBox(width: 12,),
-              optionalButton(1)
+              alreadyButton(1,"Dün",DateTime.now().subtract(const Duration(days: 1)).toString()),
+              const SizedBox(width: 12,),
+              optionalButton(2)
             ],
           )
         ],
@@ -66,38 +67,26 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
     );
   }
 
-
-  Widget italicText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-          fontSize: 12,
-          fontStyle: FontStyle.italic,
-          color: Theme.of(context).colorScheme.secondary
-      ),
-    );
-  }
-
   int selectedButtonIndex = 0;
 
-  Widget alreadyButton(int index,int minute){
+  Widget alreadyButton(int index,String text,String date){
     return GestureDetector(
         onTap: () {
           setState(() {
             selectedButtonIndex = index;
-            controller.logReadingTimeController.clear();
-            controller.setLogReadingTime(minute);
+            controller.logReadingDateController.clear();
+            controller.setLogReadingDate(date);
           });
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           decoration: BoxDecoration(
-            color: selectedButtonIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.all(Radius.circular(100))
+              color: selectedButtonIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(100))
           ),
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 14),
-          child: Text("$minute Dakika",style: TextStyle(color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
+          child: Text(text,style: TextStyle(color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
         )
     );
   }
@@ -105,7 +94,7 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
   Widget optionalButton(int index){
     return AnimatedContainer(
         height: 38,
-        width: 108,
+        width: 112,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -113,48 +102,52 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
             color: selectedButtonIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(100))
         ),
-      child: TextFormField(
+        child: TextFormField(
           onTap: () {
             setState(() {
               selectedButtonIndex = index;
-              controller.clearLogReadingTime();
+              controller.clearLogReadingDate();
             });
+            _selectDate();
           },
-          maxLength: 4,
-          controller: controller.logReadingTimeController,
-          keyboardType: TextInputType.number,
-          inputFormatters:  <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ] ,
+          controller: controller.logReadingDateController,
+          readOnly: true,
           decoration: InputDecoration(
-            hintText: "Dakika Gir",
-            counterText: "",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintStyle: TextStyle(
+              hintText: "Tarih Seç",
+              counterText: "",
+              hintStyle: TextStyle(
                 color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
-            ),
-            contentPadding: const EdgeInsets.only(bottom: 12),
-            border: InputBorder.none,
-            suffix: controller.logReadingTimeController.text.isNotEmpty ? const Text("Dakika") : null
+              ),
+              contentPadding: const EdgeInsets.only(bottom: 12),
+              border: InputBorder.none,
           ),
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14,
             color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
           ),
-          onChanged: (value) {
-            if(value.isNotEmpty){
-                controller.setLogReadingTime(int.parse(value));
-            }else{
-              selectedButtonIndex = 0;
-              controller.setLogReadingTime(63);
-            }
-            setState(() {});
-          },
-        onFieldSubmitted: (value) {
-          setState(() {});
-        },
-      )
+        )
     );
+  }
+
+  Future<void> _selectDate() async {
+      DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate:  DateTime.now().subtract(const Duration(days: 180)),
+        lastDate: DateTime.now().add(const Duration(days: 1)),
+      );
+
+      if (pickedDate != null) {
+        setState(() {
+          controller.logReadingDateController.text = DateFormat('dd.MM.yyyy').format(pickedDate);
+          controller.setLogReadingDate(controller.logReadingTimeController.text);
+        });
+      }else{}
+      selectedButtonIndex = 0;
+      controller.setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
+      setState(() {
+
+      });
   }
 }

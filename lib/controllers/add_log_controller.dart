@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddLogController extends GetxController {
 
@@ -9,21 +10,29 @@ class AddLogController extends GetxController {
 
 
   var logNewCurrentPage = Rx<int?>(null);
-  void setLogNewCurrentPage(int page) {logNewCurrentPage.value = page;}
+  void setLogNewCurrentPage(int page) {
+    logNewCurrentPage.value = page;
+    setLogReadingTime(63);
+    setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
+    setLogStartingHour("${DateTime.now().hour}:${DateTime.now().minute}");
+    checkAllValidate();
+  }
+
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
 
   var logReadingTime = Rx<int?>(null);
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
   void clearLogReadingTime() {logReadingTime.value = null;}
-  final logReadingTimeKey = GlobalKey<FormState>();
   final TextEditingController logReadingTimeController = TextEditingController();
 
   var logReadingDate = Rx<String?>(null);
   void setLogReadingDate(String date) {logReadingDate.value = date;}
   void clearLogReadingDate() {logReadingDate.value = null;}
+  final TextEditingController logReadingDateController = TextEditingController();
+  final logReadingDateKey = GlobalKey<FormState>();
 
   var logStartingHour = Rx<String?>(null);
-  void setLogStartingHour(String date) {logStartingHour.value = date;}
+  void setLogStartingHour(String hour) {logStartingHour.value = hour;}
   void clearLogStartingHour() {logStartingHour.value = null;}
 
 

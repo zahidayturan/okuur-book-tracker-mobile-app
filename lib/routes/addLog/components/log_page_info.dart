@@ -29,11 +29,9 @@ class _LogPageInfoState extends State<LogPageInfo> {
     ));
   }
 
-  double _currentPageCount = 141;
-
   void _updatePageCount(double value) {
     setState(() {
-      _currentPageCount = value;
+      controller.sliderBookPageCount.value = value;
     });
   }
 
@@ -58,12 +56,12 @@ class _LogPageInfoState extends State<LogPageInfo> {
               SizedBox(height: 8,),
             ],
           ),
-          italicText("Kralın Dönüşü kitabı 360 sayfa. Siz 140. sayfada kalmıştınız."),
+          italicText("Kralın Dönüşü kitabı ${controller.bookPageCount.value.toInt()} sayfa. Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız."),
           const SizedBox(height: 12,),
           Row(
             children: [
               RichTextWidget(
-                  texts: ["Eski\nSayfanız\n","140"],
+                  texts: ["Eski\nSayfanız\n","${controller.bookCurrentlyPage.value.toInt()}"],
                   colors: [Theme.of(context).colorScheme.secondary],
                   fontFamilies: ["FontMedium","FontBold"],
                   align: TextAlign.center,
@@ -73,22 +71,22 @@ class _LogPageInfoState extends State<LogPageInfo> {
                 child: SizedBox(
                   height: 36,
                   child: Slider(
-                    value: _currentPageCount,
-                    min: 141,
-                    max: 360,
-                    divisions: (360 - 141).toInt(),
-                    label: _currentPageCount.toInt().toString(),
+                    value:  controller.sliderBookPageCount.value,
+                    min: controller.bookCurrentlyPage.value+1,
+                    max: controller.bookPageCount.value,
+                    divisions: (controller.bookPageCount.value - (controller.bookCurrentlyPage.value+1)).toInt(),
+                    label: controller.sliderBookPageCount.value.toInt().toString(),
                     onChanged: _updatePageCount,
                     activeColor: colors.blue,
                     inactiveColor: Theme.of(context).colorScheme.inverseSurface,
                     onChangeEnd: (value) {
-                      controller.setLogNewCurrentPage(_currentPageCount.toInt());
+                      controller.setLogNewCurrentPage(controller.sliderBookPageCount.value.toInt());
                     },
                   ),
                 ),
               ),
               RichTextWidget(
-                texts: ["Yeni\nSayfanız\n","${_currentPageCount.toInt().toString()}"],
+                texts: ["Yeni\nSayfanız\n",(controller.sliderBookPageCount.value.toInt().toString())],
                 colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontMedium","FontBold"],
                 align: TextAlign.center,

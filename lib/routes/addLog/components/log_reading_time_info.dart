@@ -43,7 +43,7 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichTextWidget(
-            texts: const ["42 Sayfayı ","Kaç Dakikada ","Okudunuz"],
+            texts: ["${controller.bookReadingPageCount.value} Sayfayı ","Kaç Dakikada ","Okudunuz"],
             colors: [Theme.of(context).colorScheme.secondary],
             fontFamilies: const ["FontMedium","FontBold","FontMedium"],
           ),
@@ -52,11 +52,11 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
               SizedBox(height: 8,),
             ],
           ),
-          italicText("Önceki kayıtlarınıza göre bir sayfayı ortalama 1.5 dakikada okumuşsunuz. (42 sayfa için 63 dakika)"),
+          italicText("Önceki kayıtlarınıza göre bir sayfayı ortalama 1.5 dakikada okumuşsunuz. (${controller.bookReadingPageCount.value} sayfa için ${(controller.bookReadingPageCount.value*1.5).toInt()} dakika)"),
           const SizedBox(height: 12,),
           Row(
             children: [
-              alreadyButton(0,63),
+              alreadyButton(0,(controller.bookReadingPageCount.value*1.5).toInt()),
               const SizedBox(width: 12,),
               optionalButton(1)
             ],

@@ -9,6 +9,9 @@ class AddLogController extends GetxController {
   var logBookId = Rx<int?>(null);
   void setLogBook(int id,int totalPage,int currentlyPage) {
     logBookId.value = id;
+    bookPageCount.value = 3;
+    bookCurrentlyPage.value = 1;
+    sliderBookPageCount.value = 2;
     bookPageCount.value = totalPage.toDouble();
     bookCurrentlyPage.value = currentlyPage.toDouble();
     sliderBookPageCount.value = (currentlyPage+1).toDouble();
@@ -59,6 +62,11 @@ class AddLogController extends GetxController {
     logReadingTimeController.clear();
     logReadingDateController.clear();
     logStartingHourController.clear();
+
+    bookPageCount.value = 3;
+    bookCurrentlyPage.value = 1;
+    sliderBookPageCount.value = 2;
+    bookReadingPageCount.value = 1;
   }
 
 

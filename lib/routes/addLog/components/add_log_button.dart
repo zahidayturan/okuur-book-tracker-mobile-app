@@ -38,9 +38,9 @@ class _AddLogButtonState extends State<AddLogButton> {
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 36),
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
                   child:
-                  text("Okumayı Kaydet", colors.white, 15, "FontMedium",1),
+                  text( controller.logAllValidate.value ? "Okumayı Kaydet" : "Tüm Bilgileri Doldurun", colors.white, 15, "FontMedium",1),
                 )),
           ),)
         ),

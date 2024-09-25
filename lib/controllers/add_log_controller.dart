@@ -9,7 +9,12 @@ class AddLogController extends GetxController {
   var logBookId = Rx<int?>(null);
   void setLogBook(int id,int totalPage,int currentlyPage) {
     logBookId.value = id;
-    bookInfoForPage = {"total":"","currently":""};
+    bookPageCount.value = 3;
+    bookCurrentlyPage.value = 1;
+    sliderBookPageCount.value = 2;
+    bookPageCount.value = totalPage.toDouble();
+    bookCurrentlyPage.value = currentlyPage.toDouble();
+    sliderBookPageCount.value = (currentlyPage+1).toDouble();
   }
   void clearLogBook() {logBookId.value = null;}
 
@@ -17,6 +22,7 @@ class AddLogController extends GetxController {
   var logNewCurrentPage = Rx<int?>(null);
   void setLogNewCurrentPage(int page) {
     logNewCurrentPage.value = page;
+    bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
     setLogReadingTime(63);
     setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
     setLogStartingHour("${DateTime.now().hour}:${DateTime.now().minute}");
@@ -24,11 +30,15 @@ class AddLogController extends GetxController {
   }
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
   final TextEditingController logNewCurrentPageController = TextEditingController();
+  var bookPageCount = Rx<double>(3);
+  var bookCurrentlyPage = Rx<double>(1);
+  var sliderBookPageCount = Rx<double>(2);
 
   var logReadingTime = Rx<int?>(null);
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
   void clearLogReadingTime() {logReadingTime.value = null;}
   final TextEditingController logReadingTimeController = TextEditingController();
+  var bookReadingPageCount = Rx<int>(1);
 
   var logReadingDate = Rx<String?>(null);
   void setLogReadingDate(String date) {logReadingDate.value = date;}
@@ -52,6 +62,11 @@ class AddLogController extends GetxController {
     logReadingTimeController.clear();
     logReadingDateController.clear();
     logStartingHourController.clear();
+
+    bookPageCount.value = 3;
+    bookCurrentlyPage.value = 1;
+    sliderBookPageCount.value = 2;
+    bookReadingPageCount.value = 1;
   }
 
 
@@ -99,9 +114,5 @@ class AddLogController extends GetxController {
     currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
     booksLoading.value = false;
   }
-
-  Map<String,String> bookInfoForPage = {};
-
-
 }
 

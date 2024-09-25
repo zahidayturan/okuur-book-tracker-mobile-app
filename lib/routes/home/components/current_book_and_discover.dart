@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/rich_text.dart';
@@ -20,24 +23,25 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
 
   AppColors colors = AppColors();
   int currentPage = 0;
+  HomeController controller = Get.find();
 
-  @override
+
   @override
   void initState() {
     super.initState();
-    initAsync();
+    controller.fetchCurrentlyReadBooks().then((value) => initAsync());
   }
 
   Future<void> initAsync() async {
-    String? tempData0 = tempData[0]["currentPage"];
+    int tempData0 = controller.currentlyReadBooks[0].currentPage;
 
     setState(() {
-      tempData[0]["currentPage"] = "0";
+      controller.currentlyReadBooks[0].currentPage = 0;
     });
 
     await Future.delayed(const Duration(milliseconds: 100));
     setState(() {
-      tempData[0]["currentPage"] = tempData0!;
+      controller.currentlyReadBooks[0].currentPage = tempData0;
     });
   }
 
@@ -51,23 +55,15 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: bookInfo(),
+        child: Obx(() => controller.booksLoading.value
+            ? loadingBook()
+            : controller.currentlyReadBooks.isNotEmpty
+            ? bookInfo(controller.currentlyReadBooks)
+            : notFoundBook()),
       ),
     );
   }
 
-  List<Map<String,String>> tempData = [
-    {
-      "bookName":"Kralın Dönüşü",
-      "page":"360",
-      "currentPage":"148",
-    },
-    {
-      "bookName":"İki Kule",
-      "page":"396",
-      "currentPage":"372",
-    }
-  ];
 
   int calculateRate(int page,int currentPage){
     if(page > 0 && (currentPage < page)){
@@ -79,42 +75,42 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     }
   }
 
-  Column bookInfo(){
+  Column bookInfo(List<OkuurBookInfo> list){
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RichTextWidget(texts: ["Okuyorsun"," (${tempData.length})"],
+            RichTextWidget(texts: ["Okuyorsun"," (${list.length})"],
                 colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: ["FontBold","FontMedium"],
                 fontSize: 14),
-            OkuurPageSwitcher(pageCount: tempData.length,currentPage: currentPage,)
+            OkuurPageSwitcher(pageCount: list.length,currentPage: currentPage,)
           ],
         ),
         const SizedBox(height: 12,),
         SizedBox(
           height: 145,
           child: PageView.builder(
-            itemCount: tempData.length,
+            itemCount: list.length,
+            physics: BouncingScrollPhysics(),
             onPageChanged: (value) async {
               setState(() {
                 currentPage = value;
               });
 
-              String? tempData0 = tempData[value]["currentPage"];
+              int tempData0 = list[value].currentPage;
               setState(() {
-                tempData[value]["currentPage"] = "0";
+                list[value].currentPage = 0;
               });
 
               await Future.delayed(const Duration(milliseconds: 1000));
               setState(() {
-                tempData[value]["currentPage"] = tempData0!;
+                list[value].currentPage = tempData0;
               });
             },
             itemBuilder: (context, index) {
-              List<Map<String,String>> item = tempData;
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
@@ -124,7 +120,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          textInfo("${item[index]["bookName"]}", Theme.of(context).colorScheme.secondary, 15, "FontBold",TextAlign.start,2),
+                          textInfo(list[index].name, Theme.of(context).colorScheme.secondary, 15, "FontBold",TextAlign.start,2),
                           textInfo("J.R.R. Tolkien", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,1),
                           const SizedBox(height: 8,),
                           SizedBox(
@@ -134,9 +130,17 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                               children: [
                                 Container(
                                   width: 68,
+                                  height: 96,
                                   decoration: BoxDecoration(
                                       color: Theme.of(context).primaryColor,
                                       borderRadius: const BorderRadius.all(Radius.circular(6))
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    child: Image.network(
+                                      list[index].imageLink,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 12,),
@@ -145,7 +149,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      textInfo("148.sayfadasın\n360 sayfa", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,2),
+                                      textInfo("${list[index].currentPage}.sayfadasın\n${list[index].pageCount} sayfa", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,2),
                                       textInfo("Hedefin 12 günde bitirmek\n4/12", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,2),
                                       textInfo("Başl. 22.08.2024", Theme.of(context).colorScheme.secondary, 11, "FontMedium",TextAlign.end,1)
                                     ],
@@ -165,7 +169,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                           LayoutBuilder(
                             builder: (context, constraints) {
                               //double outerContainerHeight = constraints.maxHeight;
-                              int rate = calculateRate(int.parse(item[index]["page"]!),int.parse(item[index]["currentPage"]!));
+                              int rate = calculateRate(list[index].pageCount,list[index].currentPage);
                               double innerContainerHeight = 90 * (rate/100);
                               return Column(
                                 children: [
@@ -248,6 +252,19 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         padding: const EdgeInsets.symmetric(vertical: 2.5,horizontal: 3),
         child: Image.asset("assets/icons/more.png",color: Theme.of(context).primaryColor,),
       ),
+    );
+  }
+
+  Widget notFoundBook() {
+    return Text(
+      "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",
+    );
+  }
+
+
+  Widget loadingBook() {
+    return Text(
+      "Kitaplar yükleniyor..."
     );
   }
 }

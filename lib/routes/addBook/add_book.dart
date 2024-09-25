@@ -10,6 +10,7 @@ import 'package:okuur/routes/addBook/components/book_info.dart';
 import 'package:okuur/routes/addBook/components/book_init.dart';
 import 'package:okuur/routes/addBook/components/book_rating.dart';
 import 'package:okuur/routes/addBook/components/book_state.dart';
+import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/switch_button.dart';
 import 'package:get/get.dart';
 
@@ -59,20 +60,36 @@ class _AddBookPageState extends State<AddBookPage> {
                   SizedBox(height: 16,),
                   OkuurSwitchButton(buttonCount: 2,buttonNames: ["Kendin Ekle","Kitabı Ara"],onChanged:  handleButtonChange,),
                   SizedBox(height: 12,),
-                  BookInfo(),
-                  SizedBox(height: 12,),
-                  addBookState(context),
-                  SizedBox(height: 12,),
-                  addBookCurrentPage(context),
-                  addBookFinishDate(context),
-                  addBookReadingTime(context),
-                  //SizedBox(height: 12,),
-                  addBookImage(context),
-                  SizedBox(height: 12,),
-                  addBookInit(context),
-                  //SizedBox(height: 12,),
-                  AddBookButton(),
-                  SizedBox(height: 12,)
+                  currentButtonIndex == 0 ?
+                  Column(
+                    children: [
+                      BookInfo(),
+                      SizedBox(height: 12,),
+                      addBookState(context),
+                      SizedBox(height: 12,),
+                      addBookCurrentPage(context),
+                      addBookFinishDate(context),
+                      addBookReadingTime(context),
+                      //SizedBox(height: 12,),
+                      addBookImage(context),
+                      SizedBox(height: 12,),
+                      addBookInit(context),
+                      //SizedBox(height: 12,),
+                      AddBookButton(),
+                      SizedBox(height: 12,)
+                    ],
+                  ) : 
+                  Column(
+                    children: [
+                      SizedBox(height: 12,),
+                      RichTextWidget(
+                          texts: ["Bu özellik ","Okuur+ ","aboneliği gerektirir"],
+                          colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.inversePrimary,Theme.of(context).colorScheme.secondary],
+                          fontFamilies: ["FontMedium","FontBold","FontMedium"],
+                      )
+                    ],
+                  ),
+
                 ],),
             ),
           ),

@@ -56,12 +56,10 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                     ),
                   );
                 },
-                highlightColor: colors.greenDark,
+                highlightColor: Theme.of(context).colorScheme.onPrimaryContainer,
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                child: iconContainer(36,36, colors.greenDark, "assets/icons/settings.png"),
+                child: iconContainer(36,36, Theme.of(context).colorScheme.onPrimaryContainer, "assets/icons/settings.png"),
               ),
-              iconContainer(36,46, colors.blue, "assets/icons/star_filled.png")
-
             ],
           ),
         )
@@ -73,16 +71,13 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
 
   Container profilePhoto(String url){
     return Container(
-      width: 86,
-      height: 86,
+      width: 82,
+      height: 82,
       decoration: BoxDecoration(
-        color: colors.blue,
-        borderRadius: BorderRadius.all(Radius.circular(28))
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        shape: BoxShape.circle
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Image.asset(url),
-      ),
+      child: Icon(Icons.photo_camera_rounded,color: colors.greyMid,),
     );
   }
 
@@ -92,15 +87,15 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
     return SizedBox(
       height: 86,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          text("${userData.name} ${userData.surname}", colors.black, 12, "FontMedium",1),
-          text("@${userData.username}", colors.greenDark, 14, "FontBold",1),
-          Spacer(),
-          text("Katıldı: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}", colors.black, 12, "FontMedium",1),
-          Spacer(),
-          text("Yıldızlayanlar: 16", colors.black, 12, "FontMedium",1)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [text("${userData.name} ${userData.surname}", Theme.of(context).colorScheme.secondary, 12, "FontMedium",2),
+              text("@${userData.username}", Theme.of(context).colorScheme.secondary, 14, "FontBold",1),],
+          ),
+          text("Katıldın: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}", Theme.of(context).colorScheme.secondary, 12, "FontMedium",1),
         ],
       ),
     );
@@ -116,7 +111,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
+        child: Image.asset(path,color: Theme.of(context).colorScheme.secondary,),
       ),
     );
   }

@@ -22,67 +22,66 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            profilePhoto("assets/icons/reads.png"),
-            SizedBox(width: 12,),
-            proileTexts()
+            Row(
+              children: [
+                profilePhoto("assets/icons/reads.png"),
+                SizedBox(width: 12,),
+                proileTexts()
+              ],
+            ),
+            SizedBox(
+              height: 86,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          opaque: false,
+                          transitionDuration: const Duration(milliseconds: 200),
+                          pageBuilder: (context, animation, nextanim) => const SettingsPage(),
+                          reverseTransitionDuration: const Duration(milliseconds: 1),
+                          transitionsBuilder: (context, animation, nexttanim, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    highlightColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    child: iconContainer(36,36, Theme.of(context).colorScheme.onPrimaryContainer, "assets/icons/settings.png"),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
-        SizedBox(
-          height: 86,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      opaque: false,
-                      transitionDuration: const Duration(milliseconds: 200),
-                      pageBuilder: (context, animation, nextanim) => const SettingsPage(),
-                      reverseTransitionDuration: const Duration(milliseconds: 1),
-                      transitionsBuilder: (context, animation, nexttanim, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                },
-                highlightColor: colors.greenDark,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                child: iconContainer(36,36, colors.greenDark, "assets/icons/settings.png"),
-              ),
-              iconContainer(36,46, colors.blue, "assets/icons/star_filled.png")
-
-            ],
-          ),
-        )
-
-
+        SizedBox(height: 12),
+        userStarInfo()
       ],
     );
   }
 
   Container profilePhoto(String url){
     return Container(
-      width: 86,
-      height: 86,
+      width: 82,
+      height: 82,
       decoration: BoxDecoration(
-        color: colors.blue,
-        borderRadius: BorderRadius.all(Radius.circular(28))
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        shape: BoxShape.circle
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Image.asset(url),
-      ),
+      child: Icon(Icons.photo_camera_rounded,color: colors.greyMid,),
     );
   }
 
@@ -92,15 +91,15 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
     return SizedBox(
       height: 86,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          text("${userData.name} ${userData.surname}", colors.black, 12, "FontMedium",1),
-          text("@${userData.username}", colors.greenDark, 14, "FontBold",1),
-          Spacer(),
-          text("Katıldı: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}", colors.black, 12, "FontMedium",1),
-          Spacer(),
-          text("Yıldızlayanlar: 16", colors.black, 12, "FontMedium",1)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [text("${userData.name} ${userData.surname}", Theme.of(context).colorScheme.secondary, 12, "FontMedium",2),
+              text("@${userData.username}", Theme.of(context).colorScheme.secondary, 14, "FontBold",1),],
+          ),
+          text("Katıldın: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}", Theme.of(context).colorScheme.secondary, 12, "FontMedium",1),
         ],
       ),
     );
@@ -116,7 +115,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path),
+        child: Image.asset(path,color: Theme.of(context).colorScheme.secondary,),
       ),
     );
   }
@@ -129,6 +128,47 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
         fontFamily: family,
         fontSize: size
     ),overflow: TextOverflow.ellipsis,maxLines: maxLines,
+    );
+  }
+
+  Widget userStarInfo(){
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        userStarBox(Theme.of(context).colorScheme.surface,colors.green,"Yıldızladıkların",124),
+        SizedBox(width: 12,),
+        userStarBox(Theme.of(context).colorScheme.primaryContainer,colors.greenDark,"Yıldızlayanlar",1)
+      ],
+    );
+  }
+
+  Expanded userStarBox(Color textColor,Color boxColor,String text,int stars){
+    return Expanded(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: 250,minHeight: 28),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Theme.of(context).colorScheme.onPrimaryContainer
+        ),
+        padding: EdgeInsets.all(4),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: Text(text,style: TextStyle(color: textColor,fontSize: 13),textAlign: TextAlign.center,)),
+            Container(
+              constraints: BoxConstraints(minWidth: 30,minHeight: 20),
+                decoration: BoxDecoration(
+                  color: boxColor,
+                  borderRadius: BorderRadius.circular(50)
+                ),
+                child: Center(child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Text(stars.toString(),style: TextStyle(color: colors.grey,fontSize: 13),),
+                )))
+          ],
+        ),
+      ),
     );
   }
 

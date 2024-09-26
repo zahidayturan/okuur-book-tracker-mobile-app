@@ -21,9 +21,9 @@ class SettingRow {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.all(Radius.circular(30))
+          borderRadius: BorderRadius.all(Radius.circular(6))
       ),
-      padding: EdgeInsets.symmetric(horizontal: 6,vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

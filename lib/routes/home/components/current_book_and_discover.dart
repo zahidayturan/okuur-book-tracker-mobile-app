@@ -33,16 +33,18 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   }
 
   Future<void> initAsync() async {
-    int tempData0 = controller.currentlyReadBooks[0].currentPage;
+    if(controller.currentlyReadBooks.isNotEmpty){
+      int tempData0 = controller.currentlyReadBooks[0].currentPage;
 
-    setState(() {
-      controller.currentlyReadBooks[0].currentPage = 0;
-    });
+      setState(() {
+        controller.currentlyReadBooks[0].currentPage = 0;
+      });
 
-    await Future.delayed(const Duration(milliseconds: 100));
-    setState(() {
-      controller.currentlyReadBooks[0].currentPage = tempData0;
-    });
+      await Future.delayed(const Duration(milliseconds: 100));
+      setState(() {
+        controller.currentlyReadBooks[0].currentPage = tempData0;
+      });
+    }
   }
 
 
@@ -56,11 +58,10 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Obx(() => controller.booksLoading.value
-            ? loadingBook()
-            : controller.currentlyReadBooks.isNotEmpty
-            ? bookInfo(controller.currentlyReadBooks)
-            : notFoundBook()),
+            ? loadingBox()
+            : bookInfo(controller.currentlyReadBooks)
       ),
+    )
     );
   }
 
@@ -91,10 +92,10 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         ),
         const SizedBox(height: 12,),
         SizedBox(
-          height: 145,
-          child: PageView.builder(
+          height: 146,
+          child: list.isNotEmpty ? PageView.builder(
             itemCount: list.length,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             onPageChanged: (value) async {
               setState(() {
                 currentPage = value;
@@ -208,10 +209,15 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   ],
                 ),
               );
-          },),
+          } ) :
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: textInfo("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",colors.black,14,"FontMedium",TextAlign.center,4),
+            ),
+          ),
         )
-      ],
-
+      ]
     );
   }
 
@@ -255,16 +261,25 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     );
   }
 
-  Widget notFoundBook() {
-    return Text(
-      "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",
-    );
-  }
-
-
-  Widget loadingBook() {
-    return Text(
-      "Kitaplar yükleniyor..."
+  Widget loadingBox() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichTextWidget(texts: ["Okuyorsun"," (...)"],
+                colors: [Theme.of(context).colorScheme.inversePrimary],
+                fontFamilies: ["FontBold","FontMedium"],
+                fontSize: 14),
+          ],
+        ),
+        const SizedBox(height: 64),
+        const SizedBox(height:32,width:32,child: CircularProgressIndicator()),
+        const SizedBox(height: 62,child: Text(
+            "Kitaplar yükleniyor..."
+        ),),
+      ],
     );
   }
 }

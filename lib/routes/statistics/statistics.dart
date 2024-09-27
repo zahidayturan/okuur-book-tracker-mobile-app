@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
+import 'package:okuur/routes/statistics/components/total_and_serial_info.dart';
 import 'package:okuur/ui/components/page_header.dart';
 
 class StatisticsPage extends StatefulWidget {
@@ -22,18 +22,21 @@ class _StatisticsPageState extends State<StatisticsPage> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: null,
         body: Padding(
-          padding: EdgeInsets.only(right: 12,left: 12),
+          padding: const EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 12,),
+                  const SizedBox(height: 12,),
                   PageHeaderTitle(
                       title: "İstatistiklerin",
                       pathName: "statistics",
                       subtitle: "Okumalarının analizini ve\ntakvimi görüntüle"
-                  ).getTitle(context)
+                  ).getTitle(context),
+                  const SizedBox(height: 16),
+                  totalAndSerialInfo(context,"484","42","9760","34","84"),
+                  const SizedBox(height: 12),
                 ],
               ),
             ),

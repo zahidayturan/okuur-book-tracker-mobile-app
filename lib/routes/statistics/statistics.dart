@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/statistics/components/monthly_reading_info.dart';
 import 'package:okuur/routes/statistics/components/total_and_serial_info.dart';
@@ -14,6 +16,13 @@ class StatisticsPage extends StatefulWidget {
 class _StatisticsPageState extends State<StatisticsPage> {
 
   AppColors colors = AppColors();
+  final StatisticsController controller = Get.put(StatisticsController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.resetToCurrentMonth();
+  }
 
   @override
   Widget build(BuildContext context) {

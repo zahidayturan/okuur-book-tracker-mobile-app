@@ -69,7 +69,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   int calculateRate(int page,int currentPage){
     if(page > 0 && (currentPage < page)){
       return ((currentPage / page)*100).toInt();
-    }else if(currentPage > page){
+    }else if(currentPage >= page){
       return 100;
     } else{
       return 0;

@@ -26,7 +26,8 @@ class AppTheme {
         onSurface: colors.green,
         tertiary: colors.greenDark,
         tertiaryContainer: colors.greenDark,
-        onTertiary: colors.grey
+        onTertiary: colors.grey,
+        secondaryContainer: colors.orange
     ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: colors.white,
@@ -61,6 +62,7 @@ class AppTheme {
         tertiary: colors.blue,//
         tertiaryContainer: colors.blackLight,//
         onTertiary: colors.greyMid,//
+        secondaryContainer: colors.blue,//
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: colors.black,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/statistics/components/monthly_reading_info.dart';
 import 'package:okuur/routes/statistics/components/total_and_serial_info.dart';
 import 'package:okuur/ui/components/page_header.dart';
 
@@ -36,6 +37,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   ).getTitle(context),
                   const SizedBox(height: 16),
                   totalAndSerialInfo(context,"484","42","9760","34","84"),
+                  const SizedBox(height: 12),
+                  MonthlyReadingInfo(finishedPage: 900,goalPage: 1200),
                   const SizedBox(height: 12),
                 ],
               ),

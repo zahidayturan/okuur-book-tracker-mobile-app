@@ -4,6 +4,7 @@ import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/statistics/components/monthly_reading_info.dart';
 import 'package:okuur/routes/statistics/components/total_and_serial_info.dart';
+import 'package:okuur/routes/statistics/components/weekly_reading_info.dart';
 import 'package:okuur/ui/components/page_header.dart';
 
 class StatisticsPage extends StatefulWidget {
@@ -47,7 +48,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const SizedBox(height: 16),
                   totalAndSerialInfo(context,"484","42","9760","34","84"),
                   const SizedBox(height: 12),
-                  MonthlyReadingInfo(finishedPage: 900,goalPage: 1200),
+                  const MonthlyReadingInfo(finishedPage: 900,goalPage: 1200),
+                  const SizedBox(height: 12),
+                  WeeklyReadingInfo(),
                   const SizedBox(height: 12),
                 ],
               ),

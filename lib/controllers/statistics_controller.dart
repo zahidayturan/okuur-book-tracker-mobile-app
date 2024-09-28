@@ -38,5 +38,7 @@ class StatisticsController extends GetxController {
   void resetToCurrentMonth() {
     setInitialMonth();
   }
+
+  var selectedWeeklyInfoType = "Sayfa".obs;
 }
 

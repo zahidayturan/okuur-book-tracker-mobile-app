@@ -94,7 +94,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
     showModalBottomSheet(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       barrierColor: colors.blackLight.withOpacity(0.8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))),
       context: context,
       builder: (context) {
         return Obx(() {
@@ -105,10 +105,10 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
                 Container(
                   decoration: BoxDecoration(
                     color: colors.greenDark,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15),bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5))
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15),bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5))
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 18),
-                  margin: EdgeInsets.all(6),
+                  margin: const EdgeInsets.all(6),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

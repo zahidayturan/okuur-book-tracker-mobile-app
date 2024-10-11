@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/ui/components/image_shower.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogNameInfo extends StatefulWidget {
@@ -115,25 +116,16 @@ class _LogNameInfoState extends State<LogNameInfo> {
                           offset: const Offset(0, 4),
                         ),
                       ],
-                      border: Border.all(color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : colors.grey,width: 2)
+                      border: Border.all(color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Colors.grey,width: 2)
                   ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(2)),
-                    child: selectedBookIndex == index || selectedBookIndex == null
-                        ? Image.network(
-                      data.imageLink,
-                      fit: BoxFit.cover,
-                    )
-                        : ColorFiltered(
-                      colorFilter: const ColorFilter.mode(
-                        Colors.grey,
-                        BlendMode.saturation,
-                      ),
-                      child: Image.network(
-                        data.imageLink,
-                        fit: BoxFit.cover,
-                      ),
+                  child: selectedBookIndex == index || selectedBookIndex == null
+                      ? imageShower(data.imageLink)
+                      : ColorFiltered(
+                    colorFilter:  const ColorFilter.mode(
+                      Colors.grey,
+                      BlendMode.saturation,
                     ),
+                    child: imageShower(data.imageLink)
                   ),
                 ),
                 AnimatedContainer(

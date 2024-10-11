@@ -6,6 +6,8 @@ import 'package:okuur/ui/components/star_rating.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
 
+import '../../../ui/components/image_shower.dart';
+
 AppColors colors = AppColors();
 
 
@@ -50,13 +52,7 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index,BuildContext contex
                       color: Theme.of(context).primaryColor,
                       borderRadius: const BorderRadius.all(Radius.circular(4)),
                     ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
-                      child: Image.network(
-                        bookInfo.imageLink,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    child: imageShower(bookInfo.imageLink)
                   ),
                   const SizedBox(width: 8,),
                   Expanded(

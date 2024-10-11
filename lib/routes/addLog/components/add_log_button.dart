@@ -27,22 +27,23 @@ class _AddLogButtonState extends State<AddLogButton> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        InkWell(
-          onTap: () {
+        Expanded(
+          child: InkWell(
+            onTap: () {
 
-          },
-          child: Obx(() => Container(
-            height: 42,
-            decoration: BoxDecoration(
-                color: controller.logAllValidate.value ? colors.blueMid : Theme.of(context).buttonTheme.colorScheme?.secondary,
-                borderRadius: const BorderRadius.all(Radius.circular(10))),
-            child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child:
-                  text( controller.logAllValidate.value ? "Okumayı Kaydet" : "Tüm Bilgileri Doldurun", colors.white, 15, "FontMedium",1),
-                )),
-          ),)
+            },
+            child: Obx(() => Container(
+              decoration: BoxDecoration(
+                  color: controller.logAllValidate.value ? colors.blueMid : Theme.of(context).buttonTheme.colorScheme?.secondary,
+                  borderRadius: const BorderRadius.all(Radius.circular(10))),
+              child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 14),
+                    child:
+                    text( controller.logAllValidate.value ? "Okumayı Kaydet" : "Tüm Bilgileri Doldurun", colors.white, 15, "FontMedium",1),
+                  )),
+            ),)
+          ),
         ),
       ],
     );

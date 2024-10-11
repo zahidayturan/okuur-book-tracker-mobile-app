@@ -169,24 +169,25 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                               int rate = calculateRate(list[index].pageCount,list[index].currentPage);
                               double innerContainerHeight = 90 * (rate/100);
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   textInfo("%${rate.toString()}", Theme.of(context).colorScheme.primary, 11, "FontMedium",TextAlign.center,1),
                                   const SizedBox(height: 2,),
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
+                                    borderRadius: BorderRadius.circular(20),
                                     child: Container(
-                                      width: 22,
+                                      width: 12,
                                       height: 90,
                                       decoration: BoxDecoration(
                                         color: Theme.of(context).primaryColor,
-                                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                                       ),
                                       child: Align(
                                         alignment: Alignment.bottomRight,
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 1000),
                                           curve: Curves.easeInOut,
-                                          width: 22,
+                                          width: 12,
                                           height: innerContainerHeight,
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).colorScheme.inversePrimary,
@@ -246,7 +247,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
       },
       child: Container(
         height: 11,
-        margin: const EdgeInsets.only(top: 4),
+        margin: const EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.inversePrimary,
           borderRadius: const BorderRadius.all(Radius.circular(50)),

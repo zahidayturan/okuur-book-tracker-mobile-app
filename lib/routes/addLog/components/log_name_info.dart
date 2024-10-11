@@ -110,23 +110,17 @@ class _LogNameInfoState extends State<LogNameInfo> {
                       color: Theme.of(context).primaryColor,
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).shadowColor.withOpacity(0.7),
+                          color: Theme.of(context).shadowColor.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 5,
                           offset: const Offset(0, 4),
                         ),
                       ],
-                      border: Border.all(color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Colors.grey,width: 2)
+                      border: Border.all(color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.onPrimaryContainer,width: 2)
                   ),
                   child: selectedBookIndex == index || selectedBookIndex == null
                       ? imageShower(data.imageLink)
-                      : ColorFiltered(
-                    colorFilter:  const ColorFilter.mode(
-                      Colors.grey,
-                      BlendMode.saturation,
-                    ),
-                    child: imageShower(data.imageLink)
-                  ),
+                      : imageShower(data.imageLink),
                 ),
                 AnimatedContainer(
                   curve: Curves.easeInOut,

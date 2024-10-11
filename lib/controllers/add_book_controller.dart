@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/ui/const/book_type_list.dart';
+import 'package:okuur/ui/utils/validator.dart';
 
 class AddBookController extends GetxController {
   var selectedImage = Rx<File?>(null);
@@ -190,6 +192,32 @@ class AddBookController extends GetxController {
     clearBookTypeValidate();
     clearStartedDateValidate();
     clearFinishedDateValidate();
+  }
+
+  var bookAllValidate = RxBool(false);
+  void setBookAllValidate(bool valid) {
+    bookAllValidate.value = valid;
+  }
+  void clearBookAllValidate() {
+    bookAllValidate.value = false;
+  }
+  void checkAllValidate(){
+    setBookNameValidate(OkuurValidator.basicValidate(bookNameController.text));
+    setBookAuthorValidate(OkuurValidator.basicValidate(bookAuthorController.text));
+    setBookPageValidate(OkuurValidator.basicValidate(bookPageController.text));
+    setBookPageValidate(OkuurValidator.rangeValidate(double.tryParse(bookPageController.text),1,10000));
+    setBookTypeValidate(OkuurValidator.compareValidate(bookTypeController.text,bookTypeList.first));
+    if(bookNameValidate.value == true &&
+        bookAuthorValidate.value == true &&
+        bookPageValidate.value == true &&
+        bookTypeValidate.value == true
+    ){
+      print("true");
+      setBookAllValidate(true);
+    }else{
+      print("false");
+      setBookAllValidate(false);
+    }
   }
 }
 

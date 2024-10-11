@@ -34,83 +34,75 @@ class _AddBookButtonState extends State<AddBookButton> {
 
   Widget addButton() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        InkWell(
-          onTap: () async {
-            setState(() {
-              controller.setBookNameValidate(OkuurValidator.basicValidate(controller.bookNameController.text));
-              controller.setBookAuthorValidate(OkuurValidator.basicValidate(controller.bookAuthorController.text));
-              controller.setBookPageValidate(OkuurValidator.basicValidate(controller.bookPageController.text));
-              controller.setBookPageValidate(OkuurValidator.rangeValidate(double.tryParse(controller.bookPageController.text),1,10000));
-              controller.setBookTypeValidate(OkuurValidator.compareValidate(controller.bookTypeController.text,bookTypeList.first));
-            });
-            if(controller.bookNameValidate.value == true &&
-                controller.bookAuthorValidate.value == true &&
-                controller.bookPageValidate.value == true &&
-                controller.bookTypeValidate.value == true){
+        Expanded(
+          child: InkWell(
+            onTap: () async {
+              setState(() {
+                controller.checkAllValidate();
+              });
+              if(controller.bookAllValidate.value){
+                String tempStartingDate = "startingDate";
+                String tempFinishingDate = "finishingDate";
+                int tempCurrentPage = 0;
+                int tempStatus = 1;
+                int tempReadingTime = 0;
+                double tempRating = 0;
+                String imageLink = "none";
 
-              String tempStartingDate = "startingDate";
-              String tempFinishingDate = "finishingDate";
-              int tempCurrentPage = 0;
-              int tempStatus = 1;
-              int tempReadingTime = 0;
-              double tempRating = 0;
-
-                if(controller.bookCurrentStatus.value != 2){
-
-                  if(controller.bookInit.value == 0){
-                    tempStartingDate = DateTime.now().toString();
+                  if(controller.bookCurrentStatus.value != 2){
+                    if(controller.bookInit.value == 0){
+                      tempStartingDate = DateTime.now().toString();
+                    }
+                    if(controller.bookCurrentStatus.value == 1){
+                      tempCurrentPage = controller.bookCurrentPage.value;
+                    }
+                    tempStatus = controller.bookInit.value == 0 ? 1 : 0;
+                  }else{
+                    tempStartingDate = DateFormat('dd.MM.yyyy').parse(controller.bookStartedDateController.text).toString();
+                    tempFinishingDate = DateFormat('dd.MM.yyyy').parse(controller.bookFinishedDateController.text).toString();
+                    tempCurrentPage = int.tryParse(controller.bookPageController.text)!;
+                    tempStatus = 2;
+                    tempReadingTime = (int.tryParse(controller.bookPageController.text)! *1.5).toInt();
+                    tempRating = controller.bookRating.value;
                   }
-                  if(controller.bookCurrentStatus.value == 1){
-                    tempCurrentPage = controller.bookCurrentPage.value;
-                  }
-                  tempStatus = controller.bookInit.value == 0 ? 1 : 0;
-                }else{
-                  tempStartingDate = DateFormat('dd.MM.yyyy').parse(controller.bookStartedDateController.text).toString();
-                  tempFinishingDate = DateFormat('dd.MM.yyyy').parse(controller.bookFinishedDateController.text).toString();
-                  tempCurrentPage = int.tryParse(controller.bookPageController.text)!;
-                  tempStatus = 2;
-                  tempReadingTime = (int.tryParse(controller.bookPageController.text)! *1.5).toInt();
-                  tempRating = controller.bookRating.value;
+
+                var bookInfo = OkuurBookInfo(
+                    name: controller.bookNameController.text,
+                    author: controller.bookAuthorController.text,
+                    pageCount: int.tryParse(controller.bookPageController.text)!,
+                    imageLink: imageLink,
+                    type: controller.bookTypeController.text,
+                    startingDate: tempStartingDate,
+                    finishingDate: tempFinishingDate,
+                    currentPage: tempCurrentPage,
+                    readingTime: tempReadingTime,
+                    status: tempStatus,
+                    logIds:"",
+                    rating: tempRating
+                );
+                await bookOperations.insertBookInfo(bookInfo);
+                await libraryController.fetchBooks();
+                Navigator.of(context).pop();
+              } else {
+                if(OkuurValidator.rangeValidate(double.tryParse(controller.bookPageController.text),1,9999) == false){
+                  showAlert("Uyarı","Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır");
+                }else {
+                  showAlert("Uyarı","Lütfen kitabın bilgilerini\neksiksiz ve doğru giriniz.");
                 }
-
-              var bookInfo = OkuurBookInfo(
-                  name: controller.bookNameController.text,
-                  author: controller.bookAuthorController.text,
-                  pageCount: int.tryParse(controller.bookPageController.text)!,
-                  imageLink: 'https://picsum.photos/250?image=8',
-                  type: controller.bookTypeController.text,
-                  startingDate: tempStartingDate,
-                  finishingDate: tempFinishingDate,
-                  currentPage: tempCurrentPage,
-                  readingTime: tempReadingTime,
-                  status: tempStatus,
-                  logIds:"",
-                  rating: tempRating
-              );
-              await bookOperations.insertBookInfo(bookInfo);
-              await libraryController.fetchBooks();
-              Navigator.of(context).pop();
-            } else {
-              if(OkuurValidator.rangeValidate(double.tryParse(controller.bookPageController.text),1,9999) == false){
-                showAlert("Uyarı","Kitabın sayfa sayısı 0'dan büyük ve 10000'den küçük olmalıdır");
-              }else {
-                showAlert("Uyarı","Lütfen kitabın bilgilerini\neksiksiz ve doğru giriniz.");
               }
-            }
-          },
-          child: Container(
-            height: 42,
-            decoration: BoxDecoration(
-                color: colors.orange,
-                borderRadius: const BorderRadius.all(Radius.circular(10))),
-            child: Center(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 36),
-              child:
-                  text("Kitabı Ekle", colors.white, 15, "FontMedium",1),
-            )),
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: colors.orange,
+                  borderRadius: const BorderRadius.all(Radius.circular(10))),
+              child: Center(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 14),
+                child:
+                    text("Kitabı Ekle", colors.white, 15, "FontMedium",1),
+              )),
+            ),
           ),
         ),
       ],

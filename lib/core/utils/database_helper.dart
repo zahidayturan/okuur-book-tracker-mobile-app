@@ -3,7 +3,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   factory DatabaseHelper() => _instance;
@@ -20,7 +19,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'okuur_database3.db');
+    String path = join(documentsDirectory.path, 'okuur_database.db');
     return await openDatabase(
       path,
       version: 1,
@@ -29,32 +28,7 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE logInfo (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        bookId INTEGER,
-        numberOfPages INTEGER,
-        timeRead INTEGER,
-        readingDate TEXT,
-        finishingTime TEXT
-      )
-    ''');
-    await db.execute('''
-      CREATE TABLE bookInfo (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        author TEXT,
-        pageCount INTEGER,
-        imageLink TEXT,
-        type TEXT,
-        startingDate TEXT,
-        finishingDate TEXT,
-        currentPage INTEGER,
-        readingTime INTEGER,
-        status INTEGER,
-        logIds TEXT,
-        rating REAL
-      )
-    ''');
+
   }
 }
+

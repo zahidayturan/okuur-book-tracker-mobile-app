@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 import 'package:okuur/routes/settings/components/reading_settings.dart';
 import 'package:okuur/routes/settings/components/account_settings.dart';
@@ -146,6 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text(_auth.currentUser != null ? _auth.currentUser!.uid : "uid"),
                   Text(_auth.currentUser != null ? _auth.currentUser!.emailVerified.toString() : "verified"),
                   Text(_auth.currentUser != null ? _auth.currentUser!.providerData.length ==  1 ? _auth.currentUser!.providerData[0].providerId : "${_auth.currentUser!.providerData[0].providerId} - ${_auth.currentUser!.providerData[1].providerId}" : "Hesap Türü"),
+                  Text(OkuurLocalStorage().getActiveUserUid() != null ? OkuurLocalStorage().getActiveUserUid()! : "aktif uid"),
                   SizedBox(height: 12,)
                 ],
               ),

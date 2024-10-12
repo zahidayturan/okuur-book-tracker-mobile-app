@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
+import 'package:okuur/controllers/db_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
@@ -30,6 +33,8 @@ class _LoginAccountState extends State<LoginAccount> {
   final _passwordKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
   bool passwordVisible = true;
+
+  final DbController dbController = Get.put(DbController());
 
   @override
   Widget build(BuildContext context) {
@@ -116,59 +121,62 @@ class _LoginAccountState extends State<LoginAccount> {
 
   Widget confirmButtons(String text,Color color){
     return InkWell(
-      onTap: () async{
-        setState(() {});
-          if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: colors.blue,
-                  ),
-                );
-              },
-              barrierDismissible: false,
-            );
-            String login = "" ;
-            try {
-              login = await FirebaseAuthOperation().signInWithEmailAndPassword(emailController.text.trim(),passwordController.text);
-            } finally {
-              Navigator.pop(context);
-              print("hata mesajı $login");
-              setState(() {
-                if(login == "user-not-found"){
-                  errorTextMail = "Böyle bir e-posta bulunamadı";
-                }
-                if(login == "wrong-password"){
-                  errorTextPassword = "Şifreyi hatalı girdiniz";
-                }
-                if(login != "Ok"){
-                  errorTextMail = "Hesap bulunamadı. Bilgileri kontrol ediniz";
-                }
-                if(login == "Ok"){
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    PageRouteBuilder(
-                      opaque: false,
-                      transitionDuration: const Duration(milliseconds: 300),
-                      pageBuilder: (context, animation, nextanim) => const OkuurApp(),
-                      reverseTransitionDuration: const Duration(milliseconds: 1),
-                      transitionsBuilder: (context, animation, nexttanim, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                        (Route<dynamic> route) => false,
-                  );
+      onTap: () async {
+        if(validateEmail(emailController.text) && validatePassword(passwordController.text)){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: colors.blue,
+                ),
+              );
+            },
+            barrierDismissible: false,
+          );
 
-                }
-              });
+          String login = "" ;
+          try {
+            login = await FirebaseAuthOperation().signInWithEmailAndPassword(emailController.text.trim(), passwordController.text);
+          } finally {
+            Navigator.pop(context);
+            print("hata mesajı $login");
+            setState(() {
+              if(login == "user-not-found"){
+                errorTextMail = "Böyle bir e-posta bulunamadı";
+              }
+              if(login == "wrong-password"){
+                errorTextPassword = "Şifreyi hatalı girdiniz";
+              }
+              if(login != "Ok"){
+                errorTextMail = "Hesap bulunamadı. Bilgileri kontrol ediniz";
+              }
+            });
+
+            if (login == "Ok") {
+              await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
+              await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  opaque: false,
+                  transitionDuration: const Duration(milliseconds: 300),
+                  pageBuilder: (context, animation, nextanim) => const OkuurApp(),
+                  reverseTransitionDuration: const Duration(milliseconds: 1),
+                  transitionsBuilder: (context, animation, nexttanim, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+                    (Route<dynamic> route) => false,
+              );
             }
-          }else{
           }
+        } else {
+        }
       },
       highlightColor: color,
       borderRadius: const BorderRadius.all(Radius.circular(4)),

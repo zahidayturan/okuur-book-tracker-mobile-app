@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
+import 'package:okuur/controllers/db_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
@@ -36,6 +39,8 @@ class _GoogleLoginState extends State<GoogleLogin> {
   final TextEditingController surnameController = TextEditingController();
   final _userNameKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
+
+  final DbController dbController = Get.put(DbController());
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +246,8 @@ class _GoogleLoginState extends State<GoogleLogin> {
                         creationTime: DateTime.now().toString()
                     )
                 );
+                await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
+                await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
               } finally {
                 Navigator.pop(context);
                 setState(() {
@@ -252,11 +259,14 @@ class _GoogleLoginState extends State<GoogleLogin> {
             } else {}
 
         } else if (onTapType == 3) {
+          await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
+          await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
+
           Navigator.pushAndRemoveUntil(
             context,
             PageRouteBuilder(
               opaque: false,
-              transitionDuration: const Duration(milliseconds: 400),
+              transitionDuration: const Duration(milliseconds: 300),
               pageBuilder: (context, animation, nextanim) => const OkuurApp(),
               reverseTransitionDuration: const Duration(milliseconds: 1),
               transitionsBuilder: (context, animation, nexttanim, child) {

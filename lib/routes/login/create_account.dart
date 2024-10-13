@@ -7,6 +7,7 @@ import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/data/services/operations/user_operations.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
 import 'package:okuur/routes/login/components/login_text.dart';
@@ -336,8 +337,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 setState(() {
                   if(register == "email-already-in-use"){
                     errorTextMail = "Bu hesap zaten var. Giriş yapmayı deneyin.";
-                  }
-                  if(_auth.currentUser != null){
+                  } else if(_auth.currentUser != null){
                     pageController.nextPage(duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
                     _startEmailVerificationCheckTimer();
                   }
@@ -368,16 +368,16 @@ class _CreateAccountState extends State<CreateAccount> {
               barrierDismissible: false,
             );
             try {
-              await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(
-                  OkuurUserInfo(
-                      id: _auth.currentUser!.uid,
-                      name: nameController.text,
-                      surname: surnameController.text,
-                      username: userNameController.text,
-                      email: _auth.currentUser!.email!,
-                      creationTime: DateTime.now().toString()
-                  )
+              OkuurUserInfo newUser =  OkuurUserInfo(
+                  id: _auth.currentUser!.uid,
+                  name: nameController.text,
+                  surname: surnameController.text,
+                  username: userNameController.text,
+                  email: _auth.currentUser!.email!,
+                  creationTime: DateTime.now().toString()
               );
+              await UserOperations().insertUserInfo(newUser);
+              await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(newUser);
               //tablo açma işlemleri
               await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
               await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
@@ -446,15 +446,31 @@ class _CreateAccountState extends State<CreateAccount> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () {
-            Navigator.of(context).pop();
-            setState(() {
-            if(_auth.currentUser != null){
-                _auth.signOut();
+          onTap: () async {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colors.blue,
+                  ),
+                );
+              },
+              barrierDismissible: false,
+            );
+            try {
+              await FirebaseAuthOperation().userDelete();
+            } finally {
+              Navigator.pop(context);
+              setState(() {
+                if(_auth.currentUser != null){
+                  _auth.signOut();
+                }
+                emailController.clear();
+                passwordController.clear();
+              });
+              Navigator.of(context).pop();
             }
-            emailController.clear();
-            passwordController.clear();
-            });
           },
           highlightColor: Theme.of(context).colorScheme.tertiaryContainer,
           borderRadius: const BorderRadius.all(Radius.circular(5)),

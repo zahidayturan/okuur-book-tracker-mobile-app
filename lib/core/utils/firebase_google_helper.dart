@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:okuur/core/utils/firebase_auth_helper.dart';
 
 
 class FirebaseGoogleOperation{
@@ -45,6 +46,11 @@ class FirebaseGoogleOperation{
       return true;
     } else {
       print('User has signed in before.');
+      //check firestore info
+      String userState = await FirebaseAuthOperation().checkUserInfoInFirestore();
+      if(userState == "no"){
+        return true;
+      }
       return false;
     }
   }
@@ -80,6 +86,20 @@ class FirebaseGoogleOperation{
       return creationTime;
     }
     return null;
+  }
+
+  Future<void> deleteAccountForGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+      await _googleSignIn.disconnect();
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await user.delete();
+      }
+      print("Kullanıcı hesabı başarıyla silindi.");
+    } catch (e) {
+      print("Hesap silinirken bir hata oluştu: $e");
+    }
   }
 
 }

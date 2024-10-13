@@ -8,6 +8,7 @@ import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/data/services/operations/user_operations.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
 import 'package:okuur/routes/login/components/login_text.dart';
@@ -236,16 +237,16 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 barrierDismissible: false,
               );
               try {
-                await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(
-                    OkuurUserInfo(
-                        id: _auth.currentUser!.uid,
-                        name: nameController.text,
-                        surname: surnameController.text,
-                        username: userNameController.text,
-                        email: _auth.currentUser!.email!,
-                        creationTime: DateTime.now().toString()
-                    )
+                OkuurUserInfo newUser =  OkuurUserInfo(
+                    id: _auth.currentUser!.uid,
+                    name: nameController.text,
+                    surname: surnameController.text,
+                    username: userNameController.text,
+                    email: _auth.currentUser!.email!,
+                    creationTime: DateTime.now().toString()
                 );
+                await UserOperations().insertUserInfo(newUser);
+                await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(newUser);
                 await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
                 await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
               } finally {

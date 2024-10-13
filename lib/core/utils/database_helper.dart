@@ -28,7 +28,16 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-
+    await db.execute(''' 
+      CREATE TABLE users ( 
+        id TEXT PRIMARY KEY, 
+        name TEXT, 
+        surname TEXT, 
+        username TEXT, 
+        email TEXT, 
+        creationTime TEXT 
+      ) 
+    ''');
   }
 }
 

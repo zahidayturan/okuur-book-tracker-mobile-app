@@ -17,6 +17,7 @@ class UserOperations implements UserService {
 
   @override
   Future<OkuurUserInfo?> getUserInfoByUId(String uid) async {
+    print(uid);
     final db = await DatabaseHelper().database;
 
     var result = await db.query(

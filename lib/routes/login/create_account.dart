@@ -389,6 +389,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                 }
               });
+              Navigator.pop(context);
             }
 
           }else if(onTapType == 3){

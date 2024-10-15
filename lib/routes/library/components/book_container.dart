@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/star_rating.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
@@ -9,6 +12,7 @@ import 'package:okuur/ui/utils/simple_calc.dart';
 import '../../../ui/components/image_shower.dart';
 
 AppColors colors = AppColors();
+final LibraryController libraryController = Get.find();
 
 
 Row bookContainerLibrary(OkuurBookInfo bookInfo,String index,BuildContext context){
@@ -79,7 +83,7 @@ Row bookContainerLibrary(OkuurBookInfo bookInfo,String index,BuildContext contex
                               text("Planlanmadı", Theme.of(context).colorScheme.secondary, 13, "FontMedium", 1, FontWeight.normal)
                                   :
                               text(isReading ? "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} / ${OkuurCalc.calcDaysBetween(bookInfo.startingDate, DateTime.now().toString())} gündür okuyorsun" : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate,bookInfo.finishingDate)} günde okudunuz", Theme.of(context).colorScheme.secondary, 11, "FontMedium", 1,FontWeight.normal),
-                              moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary,!isNotStarted,context)
+                              moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary,!isNotStarted,context,bookInfo)
                             ],
                           )
                         ],
@@ -113,7 +117,7 @@ Text text(String text,Color color,double size, String family,int maxLines,FontWe
   );
 }
 
-InkWell moreButton(Color color,bool rate,BuildContext context){
+InkWell moreButton(Color color,bool rate,BuildContext context,OkuurBookInfo bookInfo){
   return InkWell(
     onTapDown: (TapDownDetails details) {
       showOkuurPopupMenu(details.globalPosition, Theme.of(context).colorScheme.onPrimaryContainer,rate ? 36 : 12,[
@@ -123,7 +127,7 @@ InkWell moreButton(Color color,bool rate,BuildContext context){
           child: Row(
             children: [
               Icon(Icons.mode_edit_outline_rounded,color: Theme.of(context).colorScheme.primaryContainer,size: 16),
-              SizedBox(width: 6),
+              const SizedBox(width: 6),
               Text('Düzenle',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
             ],
           ),
@@ -135,7 +139,7 @@ InkWell moreButton(Color color,bool rate,BuildContext context){
           child: Row(
             children: [
               Icon(Icons.star_rate_rounded,color: Theme.of(context).colorScheme.primaryContainer,size: 16),
-              SizedBox(width: 6),
+              const SizedBox(width: 6),
               Text('Puanla',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
             ],
           ),
@@ -145,7 +149,7 @@ InkWell moreButton(Color color,bool rate,BuildContext context){
           child: Row(
             children: [
               Icon(Icons.chrome_reader_mode_rounded,color: Theme.of(context).colorScheme.surface,size: 16),
-              SizedBox(width: 6),
+              const SizedBox(width: 6),
               Text('Okumaya başla',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.surface),),
             ],
           ),
@@ -153,25 +157,93 @@ InkWell moreButton(Color color,bool rate,BuildContext context){
         PopupMenuItem(
           height: 32,
           padding: const EdgeInsets.symmetric(horizontal: 12),
+          value: 4,
           child: Row(
             children: [
               Icon(Icons.delete_outline_rounded,color: colors.red,size: 16),
-              SizedBox(width: 6),
+              const SizedBox(width: 6),
               Text('Sil',style: TextStyle(fontSize: 13,color: colors.red),),
             ],
           ),
         ),
-      ]);
+      ],(value) async {
+        switch (value) {
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            bool shouldDelete = await _showDeleteConfirmation(context, bookInfo.name);
+            if (shouldDelete) {
+              await BookOperations().deleteBookInfo(bookInfo.id!);
+              await libraryController.fetchBooks();
+            }
+            break;
+        }
+      },);
     },
     child: Container(
       height: 11,
-      margin: EdgeInsets.only(top: 4),
+      margin: const EdgeInsets.only(top: 4),
       decoration: BoxDecoration(
         color: color,
         borderRadius: const BorderRadius.all(Radius.circular(50)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 2.5,horizontal: 3),
       child: Image.asset("assets/icons/more.png",color: Theme.of(context).primaryColor,),
+    ),
+  );
+
+}
+
+
+Future<bool> _showDeleteConfirmation(BuildContext context,String bookName) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      content: Text(
+        "$bookName\nKitap ve kayıtları silinecek!\nEmin misiniz?",
+        textAlign: TextAlign.center,
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+      ),
+      actions: [
+        Row(
+          children: [
+            getAlertButton("Geri Dön", false, false, context),
+            const SizedBox(width: 8),
+            getAlertButton("Sil", true, true, context),
+          ],
+        ),
+      ],
+    ),
+  ) ??
+      false;
+}
+
+Expanded getAlertButton(String text, bool isPop, bool fill, BuildContext context) {
+  return Expanded(
+    child: InkWell(
+      onTap: () => Navigator.of(context).pop(isPop),
+      child: Container(
+        height: 36,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: fill ? colors.blue : null,
+          border: fill ? null : Border.all(color: colors.blue, width: 1),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: fill ? colors.white : colors.blue,
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }

@@ -243,7 +243,12 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
               ],
             ),
           ),
-        ]);
+        ],(value) async {
+          switch (value) {
+            case 1:
+              break;
+          }
+        },);
       },
       child: Container(
         height: 11,

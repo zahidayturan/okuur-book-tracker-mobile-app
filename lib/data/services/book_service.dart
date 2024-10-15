@@ -9,5 +9,7 @@ abstract class BookService {
 
   Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo();
 
+  Future<void> deleteBookInfo(String bookId);
+
   Future<void> deleteAllBookInfo();
 }

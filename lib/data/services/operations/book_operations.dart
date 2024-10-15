@@ -28,6 +28,11 @@ class BookOperations implements BookService {
     return result;
   }
 
+  @override
+  Future<void> deleteBookInfo(String bookId) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    await FirebaseFirestoreOperation().deleteBookInfo(uid!,bookId);
+  }
 
   @override
   Future<void> deleteAllBookInfo() async {

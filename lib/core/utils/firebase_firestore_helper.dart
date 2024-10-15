@@ -35,12 +35,19 @@ class FirebaseFirestoreOperation{
 
   Future<void> addBookInfoToFirestore(String uid, OkuurBookInfo book) async {
     try {
+      if (book.id == null || book.id!.isEmpty) {
+        book.id = _firestore.collection('users').doc(uid).collection('books').doc().id;
+      }
       Map<String, dynamic> bookData = book.toJson();
-      await _firestore.collection('users').doc(uid).collection('books').doc().set(bookData);
+
+      await _firestore.collection('users').doc(uid).collection('books').doc(book.id).set(bookData);
+
+      print('Book added with ID: ${book.id}');
     } catch (e) {
       print('Add Book Error: $e');
     }
   }
+
 
   Future<List<OkuurBookInfo>?> getBookInfo(String uid) async {
     try {
@@ -92,6 +99,20 @@ class FirebaseFirestoreOperation{
     } catch (e) {
       print('Error fetching currently read books: $e');
       return [];
+    }
+  }
+
+  Future<void> deleteBookInfo(String uid, String bookId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(bookId)
+          .delete();
+      print('Book with ID $bookId deleted successfully.');
+    } catch (e) {
+      print('Error deleting book with ID $bookId: $e');
     }
   }
 

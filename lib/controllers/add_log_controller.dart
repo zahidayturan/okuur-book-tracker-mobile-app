@@ -6,8 +6,8 @@ import 'package:okuur/data/services/operations/book_operations.dart';
 
 class AddLogController extends GetxController {
 
-  var logBookId = Rx<int?>(null);
-  void setLogBook(int id,int totalPage,int currentlyPage) {
+  var logBookId = Rx<String?>(null);
+  void setLogBook(String id,int totalPage,int currentlyPage) {
     logBookId.value = id;
     bookPageCount.value = 3;
     bookCurrentlyPage.value = 1;

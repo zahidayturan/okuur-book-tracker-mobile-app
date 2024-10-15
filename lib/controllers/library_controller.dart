@@ -21,7 +21,7 @@ class LibraryController extends GetxController {
 
   Future<void> fetchBooks() async {
     isLoading.value = true;
-    List<OkuurBookInfo> books = await bookOperations.getBookInfo();
+    List<OkuurBookInfo> books = await bookOperations.getBookInfo() ?? [];
     List<OkuurBookInfo> current = [];
     List<OkuurBookInfo> future = [];
     List<OkuurBookInfo> past = [];

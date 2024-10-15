@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 
 
@@ -32,5 +33,89 @@ class FirebaseFirestoreOperation{
       return null;
     }
   }
+
+  Future<void> addBookInfoToFirestore(String uid, OkuurBookInfo book) async {
+    try {
+      Map<String, dynamic> bookData = book.toJson();
+      await _firestore.collection('users').doc(uid).collection('books').doc().set(bookData);
+    } catch (e) {
+      print('Add Book Error: $e');
+    }
+  }
+
+  Future<List<OkuurBookInfo>?> getBookInfo(String uid) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection("books").get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.map((doc) => OkuurBookInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching book data: $e');
+      return null;
+    }
+  }
+
+  Future<OkuurBookInfo?> getSingleBookInfo(String uid, String bookId) async {
+    try {
+      DocumentSnapshot bookSnapshot = await _firestore.collection('users').doc(uid).collection("books").doc(bookId).get();
+
+      if (bookSnapshot.exists) {
+        Map<String, dynamic>? bookData = bookSnapshot.data() as Map<String, dynamic>?;
+        return bookData != null ? OkuurBookInfo.fromJson(bookData) : null;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching book data: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo(String uid) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .where('status', isEqualTo: 1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs
+            .map((doc) => OkuurBookInfo.fromJson(doc.data() as Map<String, dynamic>))
+            .toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print('Error fetching currently read books: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<void> deleteAllBookInfo(String uid) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .get();
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+      print('All books deleted successfully.');
+    } catch (e) {
+      print('Error deleting all books: $e');
+    }
+  }
+
+
+
+
 
 }

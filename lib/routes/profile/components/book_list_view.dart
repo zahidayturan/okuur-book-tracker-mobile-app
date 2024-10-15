@@ -33,7 +33,7 @@ class _BookListWidgetState extends State<BookListWidget> {
   }
 
   Future<void> _fetchBooks() async {
-    List<OkuurBookInfo> books = await bookOperations.getBookInfo();
+    List<OkuurBookInfo> books = await bookOperations.getBookInfo() ?? [];
     List<OkuurBookInfo> current = [];
     List<OkuurBookInfo> future = [];
 

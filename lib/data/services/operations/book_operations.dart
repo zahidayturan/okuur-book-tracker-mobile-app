@@ -10,7 +10,7 @@ class BookOperations implements BookService {
   @override
   Future<void> insertBookInfo(OkuurBookInfo bookInfo) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    FirebaseFirestoreOperation().addBookInfoToFirestore(uid!, bookInfo);
+    await FirebaseFirestoreOperation().addBookInfoToFirestore(uid!, bookInfo);
   }
 
 

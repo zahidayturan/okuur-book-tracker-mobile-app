@@ -1,3 +1,5 @@
+import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/data/services/user_service.dart';
 
@@ -5,27 +7,13 @@ class UserOperations implements UserService {
 
   @override
   Future<void> insertUserInfo(OkuurUserInfo okuurUserInfo) async {
-    /*final db = await DatabaseHelper().database;
-    await db.insert(
-      "users",
-      okuurUserInfo.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );*/
+    await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(okuurUserInfo);
   }
 
   @override
   Future<OkuurUserInfo?> getUserInfoByUId(String uid) async {
-    /*final db = await DatabaseHelper().database;
-
-    var result = await db.query(
-      "users",
-      where: "id = ?",
-      whereArgs: [uid],
-    );
-    if (result.isNotEmpty) {
-      return OkuurUserInfo.fromJson(result.first);
-    } else {
-      return null;
-    }*/
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    var user = await FirebaseFirestoreOperation().getUserInfo(uid!);
+    return user;
   }
 }

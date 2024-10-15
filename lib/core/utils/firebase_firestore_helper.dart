@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 
 
 class FirebaseFirestoreOperation{
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
@@ -74,7 +73,6 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  @override
   Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo(String uid) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -97,7 +95,6 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  @override
   Future<void> deleteAllBookInfo(String uid) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -115,7 +112,28 @@ class FirebaseFirestoreOperation{
   }
 
 
+  Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
+    try {
+      Map<String, dynamic> logData = log.toJson();
+      await _firestore.collection('users').doc(uid).collection('logs').doc().set(logData);
+    } catch (e) {
+      print('Add Log Error: $e');
+    }
+  }
 
+  Future<List<OkuurLogInfo>?> getLogInfo(String uid) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection("logs").get();
 
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.map((doc) => OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching log data: $e');
+      return null;
+    }
+  }
 
 }

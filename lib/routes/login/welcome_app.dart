@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
-import 'package:okuur/controllers/db_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
@@ -38,7 +37,6 @@ class _WelcomePageState extends State<WelcomePage> {
 
   AppColors colors = AppColors();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final DbController dbController = Get.put(DbController());
 
   @override
   Widget build(BuildContext context) {
@@ -297,7 +295,6 @@ class _WelcomePageState extends State<WelcomePage> {
           if (_auth.currentUser != null) {
             print('Successfully signed in with Google: ${_auth.currentUser!.displayName}');
             await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
-            await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
             Navigator.pushAndRemoveUntil(
               context,
               PageRouteBuilder(

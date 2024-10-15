@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
@@ -15,8 +14,6 @@ import 'package:okuur/routes/login/components/text_form_field.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'dart:async';
 import 'package:okuur/ui/components/snackbar.dart';
-
-import '../../controllers/db_controller.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -49,7 +46,6 @@ class _CreateAccountState extends State<CreateAccount> {
   final _userNameKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
 
-  final DbController dbController = Get.put(DbController());
 
 
   @override
@@ -380,7 +376,6 @@ class _CreateAccountState extends State<CreateAccount> {
               await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(newUser);
               //tablo açma işlemleri
               await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
-              await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
             } finally {
               setState(() {
                 if(validateName(nameController.text) && validateSurname(surnameController.text) && validateUsername(userNameController.text)){

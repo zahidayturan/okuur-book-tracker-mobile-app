@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
-import 'package:okuur/controllers/db_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
@@ -41,7 +39,6 @@ class _GoogleLoginState extends State<GoogleLogin> {
   final _userNameKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
 
-  final DbController dbController = Get.put(DbController());
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +245,6 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 await UserOperations().insertUserInfo(newUser);
                 await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(newUser);
                 await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
-                await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
               } finally {
                 Navigator.pop(context);
                 setState(() {
@@ -261,8 +257,6 @@ class _GoogleLoginState extends State<GoogleLogin> {
 
         } else if (onTapType == 3) {
           await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
-          await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
-
           Navigator.pushAndRemoveUntil(
             context,
             PageRouteBuilder(

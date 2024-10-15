@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -6,20 +7,18 @@ import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/theme/theme.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
-import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyApp extends StatelessWidget {
-  final OkuurUserInfo? localeUser;
+  final User? currentUser;
 
-  const MyApp({Key? key, this.localeUser}) : super(key: key);
+  const MyApp({Key? key, this.currentUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final OkuurController okuurController = Get.put(OkuurController());
     final OkuurLocalStorage storage = OkuurLocalStorage();
-    final FirebaseAuthOperation authOperation = FirebaseAuthOperation();
     final themeMode = okuurController.getTheme(storage.getTheme());
     final locale = okuurController.getLocale(storage.getLanguage());
     okuurController.setSystemNavBarColor(MediaQuery.of(context).platformBrightness == Brightness.dark);
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
         Locale('tr'),
       ],
       locale: locale,
-      home: localeUser != null ? const OkuurApp() : const WelcomePage(),
+      home: currentUser != null ? const OkuurApp() : const WelcomePage(),
     );
   }
 }

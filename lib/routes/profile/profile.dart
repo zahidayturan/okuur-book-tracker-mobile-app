@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 const SizedBox(height: 12,),
                 FutureBuilder<OkuurUserInfo?>(
-                  future: UserOperations().getUserInfoByUId(uid),
+                  future: FirebaseFirestoreOperation().getUserInfo(uid),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(

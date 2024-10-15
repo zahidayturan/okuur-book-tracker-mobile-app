@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
-import 'package:okuur/controllers/db_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
-import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
 import 'package:okuur/routes/login/components/login_text.dart';
@@ -34,7 +31,6 @@ class _LoginAccountState extends State<LoginAccount> {
   final TextEditingController passwordController = TextEditingController();
   bool passwordVisible = true;
 
-  final DbController dbController = Get.put(DbController());
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +151,6 @@ class _LoginAccountState extends State<LoginAccount> {
 
             if (login == "Ok") {
               await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
-              await dbController.checkOrCreateUserSpecificTables(_auth.currentUser!.uid);
-
               Navigator.pushAndRemoveUntil(
                 context,
                 PageRouteBuilder(

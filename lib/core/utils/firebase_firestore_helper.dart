@@ -135,16 +135,20 @@ class FirebaseFirestoreOperation{
 
   Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
+      if (log.id == null || log.id!.isEmpty) {
+        log.id = _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc().id;
+      }
       Map<String, dynamic> logData = log.toJson();
-      await _firestore.collection('users').doc(uid).collection('logs').doc().set(logData);
+
+      await _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc(log.id).set(logData);
     } catch (e) {
       print('Add Log Error: $e');
     }
   }
 
-  Future<List<OkuurLogInfo>?> getLogInfo(String uid) async {
+  Future<List<OkuurLogInfo>?> getLogInfo(String uid,String bookId) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection("logs").get();
+      QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection('books').doc(bookId).collection("logs").get();
 
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.map((doc) => OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();

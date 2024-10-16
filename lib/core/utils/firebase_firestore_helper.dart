@@ -48,6 +48,15 @@ class FirebaseFirestoreOperation{
     }
   }
 
+  Future<void> updateBookInfo(String uid, OkuurBookInfo book) async {
+    try {
+      Map<String, dynamic> bookData = book.toJson();
+      await _firestore.collection('users').doc(uid).collection('books').doc(book.id).update(bookData);
+      print('Book updated with ID: ${book.id}');
+    } catch (e) {
+      print('Update Book Error: $e');
+    }
+  }
 
   Future<List<OkuurBookInfo>?> getBookInfo(String uid) async {
     try {

@@ -40,6 +40,7 @@ class _AddLogButtonState extends State<AddLogButton> {
                     readingDate: controller.logReadingDate.value!,
                     finishingTime: controller.logFinishingHour.value!);
                 await LogOperations().insertLogInfo(logInfo);
+                await BookOperations().updateBookInfoAfterLog(logInfo);
                 Navigator.of(context).pop();
               }
             },

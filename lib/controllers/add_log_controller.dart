@@ -23,9 +23,9 @@ class AddLogController extends GetxController {
   void setLogNewCurrentPage(int page) {
     logNewCurrentPage.value = page;
     bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
-    setLogReadingTime(63);
+    setLogReadingTime(page*1.5.toInt());
     setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
-    setLogStartingHour("${DateTime.now().hour}:${DateTime.now().minute}");
+    setLogFinishingHour("${DateTime.now().hour}:${DateTime.now().minute}");
     checkAllValidate();
   }
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
@@ -45,10 +45,10 @@ class AddLogController extends GetxController {
   void clearLogReadingDate() {logReadingDate.value = null;}
   final TextEditingController logReadingDateController = TextEditingController();
 
-  var logStartingHour = Rx<String?>(null);
-  void setLogStartingHour(String hour) {logStartingHour.value = hour;}
-  void clearLogStartingHour() {logStartingHour.value = null;}
-  final TextEditingController logStartingHourController = TextEditingController();
+  var logFinishingHour = Rx<String?>(null);
+  void setLogFinishingHour(String hour) {logFinishingHour.value = hour;}
+  void clearLogFinishingHour() {logFinishingHour.value = null;}
+  final TextEditingController logFinishingHourController = TextEditingController();
 
 
   void clearAll(){
@@ -56,12 +56,12 @@ class AddLogController extends GetxController {
     clearLogNewCurrentPage();
     clearLogReadingTime();
     clearLogReadingDate();
-    clearLogStartingHour();
+    clearLogFinishingHour();
 
     logNewCurrentPageController.clear();
     logReadingTimeController.clear();
     logReadingDateController.clear();
-    logStartingHourController.clear();
+    logFinishingHourController.clear();
 
     bookPageCount.value = 3;
     bookCurrentlyPage.value = 1;
@@ -82,7 +82,7 @@ class AddLogController extends GetxController {
         && logNewCurrentPage.value != null
         && logReadingTime.value != null
         && logReadingDate.value != null
-        && logStartingHour.value != null
+        && logFinishingHour.value != null
     ){
       setLogAllValidate(true);
     }else{
@@ -95,7 +95,7 @@ class AddLogController extends GetxController {
         && logNewCurrentPage.value == null
         && logReadingTime.value == null
         && logReadingDate.value == null
-        && logStartingHour.value == null
+        && logFinishingHour.value == null
     ){
       return true;
     }else{

@@ -43,7 +43,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
               Text("Aylık Okuma",style: TextStyle(fontSize: 15,color: Theme.of(context).colorScheme.primaryContainer),),
               InkWell(
                 onTap: () {
-                  _showMonthPicker(context);
+                  //_showMonthPicker(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -107,17 +107,17 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
                     color: colors.greenDark,
                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15),bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5))
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 14),
                   margin: const EdgeInsets.all(6),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Listeden Ay Seçiniz",style: TextStyle(fontSize: 17,color: colors.grey,fontFamily: "FontBold"),),
+                      Text("Listeden Ay Seçiniz",style: TextStyle(fontSize: 15,color: colors.grey,fontFamily: "FontBold"),),
                       InkWell(
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Text("Kapat",style: TextStyle(fontSize: 16,color: colors.grey),)),
+                          child: Text("Kapat",style: TextStyle(fontSize: 15,color: colors.grey),)),
                     ],
                   ),
                 ),

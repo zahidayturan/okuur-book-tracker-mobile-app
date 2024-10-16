@@ -5,5 +5,5 @@ abstract class LogService {
 
   Future<void> insertLogInfo(OkuurLogInfo logInfo);
 
-  Future<List<OkuurLogInfo>> getLogInfo();
+  Future<List<OkuurLogInfo>?> getLogInfo(String bookId);
 }

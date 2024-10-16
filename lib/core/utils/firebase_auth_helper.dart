@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
+import 'package:okuur/data/services/operations/user_operations.dart';
 
 
 class FirebaseAuthOperation{
@@ -73,7 +75,15 @@ class FirebaseAuthOperation{
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-      return 'Ok';
+      if (user != null) {
+        if (!user.emailVerified) {
+          await userDelete();
+          return 'email-not-verified';
+        }
+        return 'Ok';
+      } else {
+        return 'user-not-found';
+      }
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       if (e.code == 'user-not-found') {
@@ -88,6 +98,7 @@ class FirebaseAuthOperation{
       return 'Error: ${e.toString()}';
     }
   }
+
 
   Future<bool> isEmailRegistered(String email,String password) async {
     try {
@@ -120,4 +131,31 @@ class FirebaseAuthOperation{
     }
     return "User Not Found";
   }
+
+  Future<String> checkUserInfoInFirestore() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      var userInfo = await FirebaseFirestoreOperation().getUserInfo(user.uid);
+      if (userInfo != null) {
+        return "ok";
+      } else {
+        return "no";
+      }
+    }
+    return "no";
+  }
+
+  Future<bool> checkUserInfoInLocal() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      var userInfo = await UserOperations().getUserInfoByUId(user.uid);
+      if (userInfo != null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
 }

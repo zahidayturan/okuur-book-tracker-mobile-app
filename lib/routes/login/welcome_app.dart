@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/login/create_account.dart';
 import 'package:okuur/routes/login/google_login.dart';
 import 'package:okuur/routes/login/login_account.dart';
@@ -36,6 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   AppColors colors = AppColors();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -292,6 +294,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Navigator.pop(context);
           if (_auth.currentUser != null) {
             print('Successfully signed in with Google: ${_auth.currentUser!.displayName}');
+            await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
             Navigator.pushAndRemoveUntil(
               context,
               PageRouteBuilder(

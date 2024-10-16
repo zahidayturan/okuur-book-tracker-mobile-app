@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/rich_text.dart';
@@ -122,7 +123,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           textInfo(list[index].name, Theme.of(context).colorScheme.secondary, 15, "FontBold",TextAlign.start,2),
-                          textInfo("J.R.R. Tolkien", Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,1),
+                          textInfo(list[index].author, Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,1),
                           const SizedBox(height: 8,),
                           SizedBox(
                             height: 96,
@@ -134,15 +135,10 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                                   height: 96,
                                   decoration: BoxDecoration(
                                       color: Theme.of(context).primaryColor,
-                                      borderRadius: const BorderRadius.all(Radius.circular(6))
+                                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(width: 1,color: Theme.of(context).scaffoldBackgroundColor)
                                   ),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                    child: Image.network(
-                                      list[index].imageLink,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                  child: imageShower(list[index].imageLink)
                                 ),
                                 const SizedBox(width: 12,),
                                 Container(
@@ -173,24 +169,25 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                               int rate = calculateRate(list[index].pageCount,list[index].currentPage);
                               double innerContainerHeight = 90 * (rate/100);
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   textInfo("%${rate.toString()}", Theme.of(context).colorScheme.primary, 11, "FontMedium",TextAlign.center,1),
                                   const SizedBox(height: 2,),
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
+                                    borderRadius: BorderRadius.circular(20),
                                     child: Container(
-                                      width: 22,
+                                      width: 12,
                                       height: 90,
                                       decoration: BoxDecoration(
                                         color: Theme.of(context).primaryColor,
-                                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                                       ),
                                       child: Align(
                                         alignment: Alignment.bottomRight,
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 1000),
                                           curve: Curves.easeInOut,
-                                          width: 22,
+                                          width: 12,
                                           height: innerContainerHeight,
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).colorScheme.inversePrimary,
@@ -213,7 +210,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: textInfo("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",colors.black,14,"FontMedium",TextAlign.center,4),
+              child: textInfo("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",Theme.of(context).colorScheme.secondary,14,"FontMedium",TextAlign.center,4),
             ),
           ),
         )
@@ -246,11 +243,16 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
               ],
             ),
           ),
-        ]);
+        ],(value) async {
+          switch (value) {
+            case 1:
+              break;
+          }
+        },);
       },
       child: Container(
         height: 11,
-        margin: const EdgeInsets.only(top: 4),
+        margin: const EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.inversePrimary,
           borderRadius: const BorderRadius.all(Radius.circular(50)),

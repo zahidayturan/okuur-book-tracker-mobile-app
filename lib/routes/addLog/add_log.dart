@@ -52,7 +52,7 @@ class _AddLogPageState extends State<AddLogPage> {
                   const LogPageInfo(),
                   const LogReadingTimeInfo(),
                   const LogReadingDateInfo(),
-                  const LogStartingHourInfo(),
+                  const LogFinishingHourInfo(),
                   const SizedBox(height: 12,),
                   const AddLogButton(),
                   const SizedBox(height: 12,),

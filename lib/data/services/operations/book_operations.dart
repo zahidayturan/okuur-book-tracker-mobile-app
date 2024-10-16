@@ -1,38 +1,72 @@
 import 'dart:async';
-import 'package:okuur/core/utils/database_helper.dart';
+import 'package:intl/intl.dart';
+import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/book_service.dart';
-import 'package:sqflite/sqflite.dart';
 
 
 class BookOperations implements BookService {
+
   @override
   Future<void> insertBookInfo(OkuurBookInfo bookInfo) async {
-    final db = await DatabaseHelper().database;
-    await db.insert(
-      'bookInfo',
-      bookInfo.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    print("Book added");
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    await FirebaseFirestoreOperation().addBookInfoToFirestore(uid!, bookInfo);
   }
 
 
-  Future<List<OkuurBookInfo>> getBookInfo() async {
-    final db = await DatabaseHelper().database;
-    var result = await db.query('bookInfo', orderBy: "id");
-    return result.map((book) => OkuurBookInfo.fromJson(book)).toList();
+  @override
+  Future<List<OkuurBookInfo>?> getBookInfo() async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    var result = await FirebaseFirestoreOperation().getBookInfo(uid!);
+    return result;
   }
 
+  @override
+  Future<OkuurBookInfo?> getBookInfoWithId(String bookId) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    var result = await FirebaseFirestoreOperation().getSingleBookInfo(uid!,bookId);
+    return result;
+  }
+
+  @override
   Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo() async {
-    final db = await DatabaseHelper().database;
-    var result = await db.query('bookInfo', orderBy: "id", where: "status % 2 = 1");
-    return result.map((book) => OkuurBookInfo.fromJson(book)).toList();
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    var result = await FirebaseFirestoreOperation().getCurrentlyReadBooksInfo(uid!);
+    return result;
   }
 
+  @override
+  Future<void> deleteBookInfo(String bookId) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    await FirebaseFirestoreOperation().deleteBookInfo(uid!,bookId);
+  }
 
+  @override
   Future<void> deleteAllBookInfo() async {
-    final db = await DatabaseHelper().database;
-    await db.delete('bookInfo');
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    await FirebaseFirestoreOperation().deleteAllBookInfo(uid!);
   }
+
+  @override
+  Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    OkuurBookInfo? book = await getBookInfoWithId(logInfo.bookId);
+    if (book == null) {
+      throw Exception('Book not found!');
+    }
+    var newCurrentPage = book.currentPage + logInfo.numberOfPages;
+    if (newCurrentPage >= book.pageCount) {
+      //book finished
+      book.currentPage = book.pageCount;
+      book.status += 1;
+      book.finishingDate = DateTime.now().toString();
+    } else {
+      book.currentPage = newCurrentPage;
+    }
+    book.readingTime += logInfo.timeRead;
+    await FirebaseFirestoreOperation().updateBookInfo(uid!, book);
+  }
+
 }

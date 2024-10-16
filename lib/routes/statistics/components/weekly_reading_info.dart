@@ -68,12 +68,12 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
           const SizedBox(height: 12,),
           RichTextWidget(
               texts: const ["Okunan ","310"," Sayfa"],
-              colors: [Theme.of(context).colorScheme.tertiary],
+              colors: [Theme.of(context).colorScheme.inversePrimary],
               fontFamilies: const ["FontMedium","FontBold","FontMedium"],
               align: TextAlign.center,
           ),
           const SizedBox(height: 12,),
-          Text("Günlük okuma hedefin 40 sayfa.",style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
+          Text("Günlük okuma hedefin 50 sayfa.",style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
         ],
       ),
     );

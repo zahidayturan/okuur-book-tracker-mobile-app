@@ -67,17 +67,14 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 RichTextWidget(
                     fontSize: 12,
                     texts: ["Günlük\n","${widget.dailyGoal} sayfa"],
-                    colors: [Theme.of(context).colorScheme.primary],
+                    colors: [Theme.of(context).colorScheme.secondary],
                     fontFamilies: ["FontMedium","FontBold"]
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  title("${widget.goalCount} tane", Theme.of(context).colorScheme.primary, 10, "FontMedium"),
-                  Spacer(),
+                  title("${widget.goalCount} tane", Theme.of(context).colorScheme.secondary, 10, "FontMedium"),
                   title("Göz at", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
-                  actionContainer()
                 ],)
               ],
             ),
@@ -110,14 +107,12 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 title("Başarımlar",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset("assets/icons/achievements_example.png",color: Theme.of(context).colorScheme.onSurface,),
+                  child: Image.asset("assets/icons/achievements_example.png",color: Theme.of(context).colorScheme.secondary,),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     title("Görüntüle", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
-                    actionContainer()
                   ],)
               ],
             ),
@@ -148,13 +143,11 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 title("Okumalar",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
-                title("Kaydettiğin bütün okumaların", Theme.of(context).colorScheme.primary, 12, "FontMedium"),
+                title("Kaydettiğin bütün okumaların", Theme.of(context).colorScheme.secondary, 12, "FontMedium"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     title("Listele", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
-                    actionContainer()
                   ],)
               ],
             ),
@@ -185,13 +178,11 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 title("Keşfet",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
-                title("Okuyacak yeni kitaplar bul", Theme.of(context).colorScheme.primary, 12, "FontMedium"),
+                title("Okuyacak yeni kitaplar bul", Theme.of(context).colorScheme.secondary, 12, "FontMedium"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     title("Keşfet", Theme.of(context).colorScheme.surface, 10, "FontMedium"),
-                    actionContainer()
                   ],)
               ],
             ),
@@ -201,35 +192,14 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
     );
   }
 
-  Text title(String text,Color color,double size, String family){
+  Text title(String text,Color color,double size, String family) {
     return Text(
-      text,style: TextStyle(
-      color: color,
-      fontFamily: family,
-      fontSize: size
+      text, style: TextStyle(
+        color: color,
+        fontFamily: family,
+        fontSize: size
     ),
     );
   }
 
-  Container actionContainer(){
-    return Container(
-      width: 5,
-      height: 12,
-      margin: EdgeInsets.only(left: 4),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.all(Radius.circular(20))
-      ),
-      child:Center(
-        child: Container(
-          width: 2,
-          height: 6,
-          decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-        ),
-      ),
-    );
-  }
 }

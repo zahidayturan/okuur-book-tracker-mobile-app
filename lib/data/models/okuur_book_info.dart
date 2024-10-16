@@ -1,5 +1,5 @@
 class OkuurBookInfo {
-  int? id;
+  String? id;
   String name;
   String author;
   int pageCount;

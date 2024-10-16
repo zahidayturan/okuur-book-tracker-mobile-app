@@ -4,7 +4,9 @@ import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/data/services/operations/user_operations.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
 import 'package:okuur/routes/login/components/login_text.dart';
@@ -36,6 +38,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
   final TextEditingController surnameController = TextEditingController();
   final _userNameKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -231,16 +234,17 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 barrierDismissible: false,
               );
               try {
-                await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(
-                    OkuurUserInfo(
-                        id: _auth.currentUser!.uid,
-                        name: nameController.text,
-                        surname: surnameController.text,
-                        username: userNameController.text,
-                        email: _auth.currentUser!.email!,
-                        creationTime: DateTime.now().toString()
-                    )
+                OkuurUserInfo newUser =  OkuurUserInfo(
+                    id: _auth.currentUser!.uid,
+                    name: nameController.text,
+                    surname: surnameController.text,
+                    username: userNameController.text,
+                    email: _auth.currentUser!.email!,
+                    creationTime: DateTime.now().toString()
                 );
+                await UserOperations().insertUserInfo(newUser);
+                await FirebaseFirestoreOperation().addOkuurUserInfoToFirestore(newUser);
+                await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
               } finally {
                 Navigator.pop(context);
                 setState(() {
@@ -252,11 +256,12 @@ class _GoogleLoginState extends State<GoogleLogin> {
             } else {}
 
         } else if (onTapType == 3) {
+          await OkuurLocalStorage().saveActiveUserUid(_auth.currentUser!.uid);
           Navigator.pushAndRemoveUntil(
             context,
             PageRouteBuilder(
               opaque: false,
-              transitionDuration: const Duration(milliseconds: 400),
+              transitionDuration: const Duration(milliseconds: 300),
               pageBuilder: (context, animation, nextanim) => const OkuurApp(),
               reverseTransitionDuration: const Duration(milliseconds: 1),
               transitionsBuilder: (context, animation, nexttanim, child) {

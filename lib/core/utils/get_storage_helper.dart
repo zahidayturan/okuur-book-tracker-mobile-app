@@ -18,6 +18,8 @@ class OkuurLocalStorage {
   final String _languageKey = 'language';
   final String _dailyGoalKey = 'dailyGoal';
 
+  final String _activeUserUidKey = 'activeUserUid';
+
 
   final int _defaultTheme = 2; // default theme (0=light, 1=dark, 2=system)
   final String _defaultLanguage = 'null'; // default language (tr,en)
@@ -60,6 +62,18 @@ class OkuurLocalStorage {
 
   Future<void> removeDailyGoal() async {
     await _storage.remove(_dailyGoalKey);
+  }
+
+  Future<void> saveActiveUserUid(String uid) async {
+    await _storage.write(_activeUserUidKey, uid);
+  }
+
+  String? getActiveUserUid() {
+    return _storage.read<String>(_activeUserUidKey);
+  }
+
+  Future<void> removeActiveUserUid() async {
+    await _storage.remove(_activeUserUidKey);
   }
 
 

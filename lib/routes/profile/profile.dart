@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/data/services/operations/user_operations.dart';
 import 'package:okuur/routes/profile/components/book_list_view.dart';
 import 'package:okuur/routes/profile/components/profile_data.dart';
 import 'package:okuur/routes/profile/components/user_info.dart';

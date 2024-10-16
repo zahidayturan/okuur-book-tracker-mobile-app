@@ -1,6 +1,6 @@
 class OkuurLogInfo {
-  int? id;
-  int bookId;
+  String? id;
+  String bookId;
   int numberOfPages;
   int timeRead;
   String readingDate;

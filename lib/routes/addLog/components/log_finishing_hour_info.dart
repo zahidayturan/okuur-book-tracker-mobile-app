@@ -4,14 +4,14 @@ import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import '../../../ui/components/rich_text.dart';
 
-class LogStartingHourInfo extends StatefulWidget {
-  const LogStartingHourInfo({Key? key,}) : super(key: key);
+class LogFinishingHourInfo extends StatefulWidget {
+  const LogFinishingHourInfo({Key? key,}) : super(key: key);
 
   @override
-  State<LogStartingHourInfo> createState() => _LogStartingHourInfoState();
+  State<LogFinishingHourInfo> createState() => _LogFinishingHourInfoState();
 }
 
-class _LogStartingHourInfoState extends State<LogStartingHourInfo> {
+class _LogFinishingHourInfoState extends State<LogFinishingHourInfo> {
   AppColors colors = AppColors();
 
 
@@ -77,8 +77,8 @@ class _LogStartingHourInfoState extends State<LogStartingHourInfo> {
         onTap: () {
           setState(() {
             selectedButtonIndex = index;
-            controller.logStartingHourController.clear();
-            controller.setLogStartingHour(hour);
+            controller.logFinishingHourController.clear();
+            controller.setLogFinishingHour(hour);
           });
         },
         child: AnimatedContainer(
@@ -109,11 +109,11 @@ class _LogStartingHourInfoState extends State<LogStartingHourInfo> {
           onTap: () {
             setState(() {
               selectedButtonIndex = index;
-              controller.clearLogStartingHour();
+              controller.clearLogFinishingHour();
             });
             _selectHour();
           },
-          controller: controller.logStartingHourController,
+          controller: controller.logFinishingHourController,
           readOnly: true,
           decoration: InputDecoration(
             hintText: "Saat Seç",
@@ -148,15 +148,15 @@ class _LogStartingHourInfoState extends State<LogStartingHourInfo> {
     if (pickedTime != null) {
       setState(() {
         String formattedTime = "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
-        controller.logStartingHourController.text = formattedTime;
-        controller.setLogStartingHour(formattedTime);
+        controller.logFinishingHourController.text = formattedTime;
+        controller.setLogFinishingHour(formattedTime);
       });
     } else {
       setState(() {
         String nowTime = "${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}";
-        controller.logStartingHourController.clear();
+        controller.logFinishingHourController.clear();
         selectedButtonIndex = 0;
-        controller.setLogStartingHour(nowTime);
+        controller.setLogFinishingHour(nowTime);
       });
     }
   }

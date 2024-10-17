@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/addLog/add_log.dart';
+import 'package:okuur/ui/components/loading_circular.dart';
 
 class OperationButtons extends StatefulWidget {
 
@@ -101,7 +102,16 @@ class _OperationButtonsState extends State<OperationButtons> {
   Widget recordForRead(){
     return Expanded(
       child: GestureDetector(
-        onTap: () {
+        onTap: () async{
+          LoadingDialog.showLoading(context, message: "Bekleyiniz");
+          try {
+            await Future.delayed(Duration(seconds: 3));
+            print("İşlem tamamlandı");
+          } catch (e) {
+            print("Bir hata oluştu: $e");
+          } finally {
+            LoadingDialog.hideLoading(context);
+          }
 
         },
         child: Container(

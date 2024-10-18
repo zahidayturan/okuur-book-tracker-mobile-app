@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
@@ -181,5 +182,17 @@ class FirebaseFirestoreOperation{
       print('Error fetching log data: $e');
       return null;
     }
+  }
+  Future<OkuurUserProfileInfo?> getUserProfileInfo(String uid) async {
+    OkuurUserProfileInfo userProfileInfo = OkuurUserProfileInfo(
+        follower: 0,
+        followed: 0,
+        totalBook: 0,
+        totalPage: 0,
+        activeSeries: 0,
+        bestSeries: 0,
+        point: 0,
+        achievement: 0);
+    return userProfileInfo;
   }
 }

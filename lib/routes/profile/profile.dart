@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   : Column(
                 children: [
                   const SizedBox(height: 12),
-                  UserInfoWidget(userData: controller.userInfo!),
+                  UserInfoWidget(userData: controller.userInfo!,userInfo: controller.userProfileInfo!),
                   const SizedBox(height: 18),
                   ProfileDataWidget(userInfo: controller.userProfileInfo!),
                   // Expanded(child: BookListWidget())
@@ -62,22 +62,17 @@ class _ProfilePageState extends State<ProfilePage> {
             ShimmerBox(
               width: 82,
               height: 82,
-              borderRadius: BorderRadius.all(Radius.circular(100)),
             ),
             SizedBox(width: 12),
             Expanded(
               child: Column(
                 children: [
                   ShimmerBox(
-                    width: double.infinity,
                     height: 10,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                   SizedBox(height: 12),
                   ShimmerBox(
-                    width: double.infinity,
                     height: 10,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                 ],
               ),
@@ -85,30 +80,28 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         SizedBox(height: 12),
+        ShimmerBox(height: 28),
+        SizedBox(height: 12,),
         Row(
           children: [
             ShimmerBox(
               width: 98,
               height: 58,
-              borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
             SizedBox(width: 12),
             ShimmerBox(
               width: 98,
               height: 58,
-              borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
           ],
         ),
         SizedBox(height: 12),
         ShimmerBox(
-          width: double.infinity,
           height: 112,
           borderRadius: BorderRadius.all(Radius.circular(14)),
         ),
         SizedBox(height: 12),
         ShimmerBox(
-          width: double.infinity,
           height: 112,
           borderRadius: BorderRadius.all(Radius.circular(14)),
         ),

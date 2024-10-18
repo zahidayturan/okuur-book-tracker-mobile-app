@@ -111,19 +111,32 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  Future<void> deleteBookInfo(String uid, String bookId) async {
+  Future<void> deleteBookAndLogInfo(String uid, String bookId) async {
     try {
+      var logsCollection = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(bookId)
+          .collection('logs')
+          .get();
+
+      for (var logDoc in logsCollection.docs) {
+        await logDoc.reference.delete();
+      }
+
       await _firestore
           .collection('users')
           .doc(uid)
           .collection('books')
           .doc(bookId)
           .delete();
-      print('Book with ID $bookId deleted successfully.');
+      print('Book with ID $bookId and its logs deleted successfully.');
     } catch (e) {
       print('Error deleting book with ID $bookId: $e');
     }
   }
+
 
   Future<void> deleteAllBookInfo(String uid) async {
     try {
@@ -169,5 +182,4 @@ class FirebaseFirestoreOperation{
       return null;
     }
   }
-
 }

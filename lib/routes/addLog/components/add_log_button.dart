@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
@@ -19,6 +20,7 @@ class _AddLogButtonState extends State<AddLogButton> {
   final AppColors colors = AppColors();
   final BookOperations bookOperations = BookOperations();
   final AddLogController controller = Get.find();
+  final HomeController homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class _AddLogButtonState extends State<AddLogButton> {
     try {
       await LogOperations().insertLogInfo(logInfo);
       await bookOperations.updateBookInfoAfterLog(logInfo);
+      await homeController.fetchCurrentlyReadBooks();
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {

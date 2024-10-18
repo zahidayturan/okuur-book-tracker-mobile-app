@@ -4,6 +4,7 @@ import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
+import 'package:okuur/data/services/operations/log_operations.dart';
 import 'package:okuur/ui/components/loading_circular.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/star_rating.dart';
@@ -226,7 +227,7 @@ Future<void> _handlePopupMenuAction(int? value, OkuurBookInfo bookInfo) async {
 
 Future<void> _deleteBook(OkuurBookInfo bookInfo) async {
   try {
-    await BookOperations().deleteBookInfo(bookInfo.id!);
+    await BookOperations().deleteBookAndLogInfo(bookInfo.id!);
     await libraryController.fetchBooks();
   } catch (e) {
     debugPrint("An error occurred: $e");

@@ -43,28 +43,25 @@ class _LibraryPageState extends State<LibraryPage> {
         body: Padding(
           padding: const EdgeInsets.only(right: 12, left: 12),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   PageHeaderTitle(
                       title: "Kitaplığın",
                       pathName: "library",
                       subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin",
                       otherWidget: true
                   ).getTitle(context),
-                  SizedBox(height: 16),
-                  Obx(() => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: OkuurSwitchButton(
-                      buttonCount: 2,
-                      buttonNames: ["Okuduklarınız", "Okuyacaklarınız"],
-                      onChanged: handleButtonChange,
-                      initValue: controller.pageCurrentMode.value,
-                    ),
+                  const SizedBox(height: 16),
+                  Obx(() => OkuurSwitchButton(
+                    buttonCount: 2,
+                    buttonNames: const ["Okuduklarınız", "Okuyacaklarınız"],
+                    onChanged: handleButtonChange,
+                    initValue: controller.pageCurrentMode.value,
                   ),),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -75,7 +72,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         child: Row(
                           children: [
                             OkuurActionButton(path: "sort", color: Theme.of(context).colorScheme.onPrimaryContainer, onChanged: (value) {}),
-                            SizedBox(width: 12),
+                            const SizedBox(width: 12),
                           ],
                         ),
                       )),
@@ -90,7 +87,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Obx(() {
                     if (controller.isLoading.value) {
                       return CircularProgressIndicator(color: colors.orange,);
@@ -103,7 +100,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       );
                     }
                   }),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                 ],
               ),
             ),

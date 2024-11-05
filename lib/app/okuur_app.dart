@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
+import 'package:okuur/controllers/profile_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/library/library.dart';
@@ -31,6 +32,7 @@ class _OkuurAppState extends State<OkuurApp> {
     Get.put(OkuurController());
     Get.put(LibraryController());
     Get.put(HomeController());
+    Get.put(ProfileController());
     controller = Get.find();
   }
 

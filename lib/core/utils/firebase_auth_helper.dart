@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
 import 'package:okuur/core/utils/firebase_google_helper.dart';
-import 'package:okuur/data/services/operations/user_operations.dart';
-
 
 class FirebaseAuthOperation{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,7 +9,7 @@ class FirebaseAuthOperation{
   Future<String> registerWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      User? user = result.user;
+      //User? user = result.user;
       await sendVerification();
       return 'Ok';
     } on FirebaseAuthException catch (e) {
@@ -110,6 +109,7 @@ class FirebaseAuthOperation{
         return false;
       }
     } on FirebaseAuthException catch (e) {
+      debugPrint(e.toString());
       return false;
     } catch (e) {
       return false;
@@ -143,19 +143,6 @@ class FirebaseAuthOperation{
       }
     }
     return "no";
-  }
-
-  Future<bool> checkUserInfoInLocal() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      var userInfo = await UserOperations().getUserInfoByUId(user.uid);
-      if (userInfo != null) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    return false;
   }
 
 }

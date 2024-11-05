@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
@@ -111,19 +112,32 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  Future<void> deleteBookInfo(String uid, String bookId) async {
+  Future<void> deleteBookAndLogInfo(String uid, String bookId) async {
     try {
+      var logsCollection = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(bookId)
+          .collection('logs')
+          .get();
+
+      for (var logDoc in logsCollection.docs) {
+        await logDoc.reference.delete();
+      }
+
       await _firestore
           .collection('users')
           .doc(uid)
           .collection('books')
           .doc(bookId)
           .delete();
-      print('Book with ID $bookId deleted successfully.');
+      print('Book with ID $bookId and its logs deleted successfully.');
     } catch (e) {
       print('Error deleting book with ID $bookId: $e');
     }
   }
+
 
   Future<void> deleteAllBookInfo(String uid) async {
     try {
@@ -169,5 +183,16 @@ class FirebaseFirestoreOperation{
       return null;
     }
   }
-
+  Future<OkuurUserProfileInfo?> getUserProfileInfo(String uid) async {
+    OkuurUserProfileInfo userProfileInfo = OkuurUserProfileInfo(
+        follower: 0,
+        followed: 0,
+        totalBook: 0,
+        totalPage: 0,
+        activeSeries: 0,
+        bestSeries: 0,
+        point: 0,
+        achievement: 0);
+    return userProfileInfo;
+  }
 }

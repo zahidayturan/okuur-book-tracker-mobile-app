@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/settings/settings.dart';
 
 class UserInfoWidget extends StatefulWidget {
 
   final OkuurUserInfo userData;
+  final OkuurUserProfileInfo userInfo;
 
   const UserInfoWidget({
     Key? key,
-    required this.userData
+    required this.userData,
+    required this.userInfo
   }) : super(key: key);
 
   @override
@@ -136,9 +139,9 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        userStarBox(Theme.of(context).colorScheme.surface,colors.green,"Yıldızladıkların",124),
+        userStarBox(Theme.of(context).colorScheme.surface,colors.green,"Yıldızladıkların",widget.userInfo.followed),
         SizedBox(width: 12,),
-        userStarBox(Theme.of(context).colorScheme.primaryContainer,colors.greenDark,"Yıldızlayanlar",1)
+        userStarBox(Theme.of(context).colorScheme.primaryContainer,colors.greenDark,"Yıldızlayanlar",widget.userInfo.follower)
       ],
     );
   }

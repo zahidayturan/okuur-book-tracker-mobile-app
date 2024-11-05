@@ -1,14 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/profile_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/core/utils/firebase_firestore_helper.dart';
-import 'package:okuur/data/models/okuur_user_info.dart';
-import 'package:okuur/data/services/operations/user_operations.dart';
-import 'package:okuur/routes/profile/components/book_list_view.dart';
 import 'package:okuur/routes/profile/components/profile_data.dart';
 import 'package:okuur/routes/profile/components/user_info.dart';
-import 'package:okuur/ui/components/circular_progress.dart';
-import 'package:okuur/ui/components/error_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,62 +15,97 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   AppColors colors = AppColors();
+  ProfileController controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final String? uid = _auth.currentUser?.uid;
-
-    if (uid == null) {
-      return Scaffold(
-        body: Center(
-          child: Text('No user is signed in.'),
-        ),
-      );
-    }
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: null,
         body: Padding(
-          padding: const EdgeInsets.only(right: 12, left: 12),
-          child: Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 12,),
-                FutureBuilder<OkuurUserInfo?>(
-                  future: FirebaseFirestoreOperation().getUserInfo(uid),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Container(
-                          height: 86,
-                        child: GetProgressIndicator().getCircular(30, colors.blue),
-                          );
-                    } else if (snapshot.hasError) {
-                      return SizedBox(
-                          height: 86,
-                          child: Center(child: ErrorText().error()));
-                    } else if (!snapshot.hasData || snapshot.data == null) {
-                      return SizedBox(
-                          height: 86,
-                          child: Center(child: ErrorText().userDataNotFound()));
-                    } else {
-                      OkuurUserInfo userData = snapshot.data!;
-                      return UserInfoWidget(userData: userData);
-                    }
-                  },
-                ),
-                const SizedBox(height: 18,),
-                ProfileDataWidget(),
-                //const SizedBox(height: 18,),
-                //Expanded(child: BookListWidget())
-              ],
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Center(
+              child: Obx(() => controller.profileLoading.value
+                  ? loadingBox()
+                  : Column(
+                children: [
+                  const SizedBox(height: 12),
+                  UserInfoWidget(userData: controller.userInfo!,userInfo: controller.userProfileInfo!),
+                  const SizedBox(height: 18),
+                  ProfileDataWidget(userInfo: controller.userProfileInfo!),
+                  // Expanded(child: BookListWidget())
+                ],
+              )),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget loadingBox() {
+    return const Column(
+      children: [
+        SizedBox(height: 12),
+        Row(
+          children: [
+            ShimmerBox(
+              width: 82,
+              height: 82,
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                children: [
+                  ShimmerBox(
+                    height: 10,
+                  ),
+                  SizedBox(height: 12),
+                  ShimmerBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        ShimmerBox(height: 28),
+        SizedBox(height: 12,),
+        Row(
+          children: [
+            ShimmerBox(
+              width: 98,
+              height: 58,
+            ),
+            SizedBox(width: 12),
+            ShimmerBox(
+              width: 98,
+              height: 58,
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        ShimmerBox(
+          height: 112,
+          borderRadius: BorderRadius.all(Radius.circular(14)),
+        ),
+        SizedBox(height: 12),
+        ShimmerBox(
+          height: 112,
+          borderRadius: BorderRadius.all(Radius.circular(14)),
+        ),
+      ],
     );
   }
 }

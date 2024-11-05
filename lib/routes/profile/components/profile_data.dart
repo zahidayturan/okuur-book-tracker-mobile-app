@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class ProfileDataWidget extends StatefulWidget {
-
+  final OkuurUserProfileInfo userInfo;
 
   const ProfileDataWidget({
     Key? key,
+    required this.userInfo,
   }) : super(key: key);
 
   @override
@@ -25,17 +27,17 @@ class _ProfileDataWidgetState extends State<ProfileDataWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          dataContainer("42","Kitap"),
+          dataContainer(widget.userInfo.totalBook.toString(),"Kitap"),
           SizedBox(width: 12,),
-          dataContainer("9760","Sayfa"),
+          dataContainer(widget.userInfo.totalPage.toString(),"Sayfa"),
           SizedBox(width: 12,),
-          dataContainer("34 Gün","Aktif Seri"),
+          dataContainer(widget.userInfo.activeSeries.toString(),"Aktif Seri"),
           SizedBox(width: 12,),
-          dataContainer("86 Gün","En İyi Seri"),
+          dataContainer(widget.userInfo.bestSeries.toString(),"En İyi Seri"),
           SizedBox(width: 12,),
-          dataContainer("4750","Puan"),
+          dataContainer(widget.userInfo.point.toString(),"Puan"),
           SizedBox(width: 12,),
-          dataContainer("9","Başarım"),
+          dataContainer(widget.userInfo.achievement.toString(),"Başarım"),
         ],
       ),
     );

@@ -4,186 +4,167 @@ import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
+import 'package:okuur/data/services/operations/log_operations.dart';
+import 'package:okuur/ui/components/loading_circular.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/star_rating.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
-
 import '../../../ui/components/image_shower.dart';
 
 AppColors colors = AppColors();
 final LibraryController libraryController = Get.find();
 
-
-Row bookContainerLibrary(OkuurBookInfo bookInfo,String index,BuildContext context){
+Row bookContainerLibrary(OkuurBookInfo bookInfo, String index, BuildContext context) {
   bool isNotStarted = bookInfo.status == 0;
-  bool isReading = bookInfo.status %2 == 1;
-  String percentage = OkuurCalc.calcPercentage(bookInfo.pageCount,bookInfo.currentPage);
+  bool isReading = bookInfo.status % 2 == 1;
+  String percentage = OkuurCalc.calcPercentage(bookInfo.pageCount, bookInfo.currentPage);
+
   return Row(
     children: [
-      Expanded(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-            borderRadius: const BorderRadius.all(Radius.circular(8))
-          ),
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              isNotStarted ?
-              const SizedBox()
-                  :
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                    text(index,isReading ? colors.orange : Theme.of(context).colorScheme.secondary,13,"FontBold",1,FontWeight.normal),
-                    Container(width: 4,height: 4,margin:const EdgeInsets.symmetric(horizontal: 4),decoration: BoxDecoration(shape: BoxShape.circle,color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary),),
-                    text(isReading ? "Şu an okuyorsun" : "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} - ${OkuurDateFormatter.convertDate(bookInfo.finishingDate)}", isReading ? colors.orange : Theme.of(context).colorScheme.secondary, 13, "FontMedium", 1,FontWeight.normal),
-                  ],),
-                  text(percentage == "100.0"? "Bitti" : "%$percentage", isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, 13, "FontMedium", 1,percentage == "100.0" ? FontWeight.normal : FontWeight.w700),
-                ],
-              ),
-              Visibility( visible:isNotStarted == false, child: const SizedBox(height: 8,)),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 58,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    ),
-                    child: imageShower(bookInfo.imageLink)
-                  ),
-                  const SizedBox(width: 8,),
-                  Expanded(
-                    child: SizedBox(
-                      height: 90,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment:  MainAxisAlignment.spaceBetween,
-                        children: [
-                          text(bookInfo.name, Theme.of(context).colorScheme.secondary, 15, "FontMedium", 2,FontWeight.bold),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              text(bookInfo.author, Theme.of(context).colorScheme.secondary, 13, "FontMedium", 1,FontWeight.normal),
-                              text("${bookInfo.type} - ${bookInfo.pageCount} sayfa", Theme.of(context).colorScheme.secondary, 12, "FontMedium", 1,FontWeight.normal),
-                              const SizedBox(height: 2,),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              isNotStarted ?
-                              text("Planlanmadı", Theme.of(context).colorScheme.secondary, 13, "FontMedium", 1, FontWeight.normal)
-                                  :
-                              text(isReading ? "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} / ${OkuurCalc.calcDaysBetween(bookInfo.startingDate, DateTime.now().toString())} gündür okuyorsun" : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate,bookInfo.finishingDate)} günde okudunuz", Theme.of(context).colorScheme.secondary, 11, "FontMedium", 1,FontWeight.normal),
-                              moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary,!isNotStarted,context,bookInfo)
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      Visibility(
-        visible: !isNotStarted && !isReading,
-        child: Container(
-            margin: const EdgeInsets.only(left: 4),
-            child: OkuurStarRating(rating: bookInfo.rating,filledStarColor:Theme.of(context).colorScheme.tertiary,unfilledStarColor: isReading ? colors.blueLight :colors.blue,text: isReading ? "" : bookInfo.rating.toString(),)),
-      )
+      Expanded(child: _bookDetails(bookInfo, index, context, isNotStarted, isReading, percentage)),
+      if (!isNotStarted && !isReading)
+        _bookRating(bookInfo, isReading, context),
     ],
   );
 }
 
-Text text(String text,Color color,double size, String family,int maxLines,FontWeight? weight){
-  return Text(
-    text,style: TextStyle(
-      color: color,
-      fontFamily: family,
-      fontWeight: weight,
-      fontSize: size,
-  ),overflow: TextOverflow.ellipsis,maxLines: maxLines,
+Widget _bookDetails(OkuurBookInfo bookInfo, String index, BuildContext context, bool isNotStarted, bool isReading, String percentage) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.onPrimaryContainer,
+      borderRadius: const BorderRadius.all(Radius.circular(8)),
+    ),
+    padding: const EdgeInsets.all(8),
+    child: Column(
+      children: [
+        if (!isNotStarted) _bookHeader(bookInfo, index, isReading, context, percentage),
+        const SizedBox(height: 8),
+        _bookContent(bookInfo, context, isNotStarted, isReading),
+      ],
+    ),
   );
 }
 
-InkWell moreButton(Color color,bool rate,BuildContext context,OkuurBookInfo bookInfo){
+Widget _bookHeader(OkuurBookInfo bookInfo, String index, bool isReading, BuildContext context, String percentage) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        children: [
+          _text(index, isReading ? colors.orange : Theme.of(context).colorScheme.secondary, 13, "FontBold", 1),
+          _statusDot(isReading, context),
+          _text(
+            isReading
+                ? "Şu an okuyorsun"
+                : "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} - ${OkuurDateFormatter.convertDate(bookInfo.finishingDate)}",
+            isReading ? colors.orange : Theme.of(context).colorScheme.secondary,
+            13,
+            "FontMedium",
+            1,
+          ),
+        ],
+      ),
+      _text(percentage == "100.0" ? "Bitti" : "%$percentage", isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, 13, "FontMedium", 1, FontWeight.w500),
+    ],
+  );
+}
+
+Widget _bookContent(OkuurBookInfo bookInfo, BuildContext context, bool isNotStarted, bool isReading) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _bookImage(bookInfo, context),
+      const SizedBox(width: 8),
+      Expanded(
+        child: SizedBox(
+          height: 90,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _text(bookInfo.name, Theme.of(context).colorScheme.secondary, 15, "FontMedium", 2, FontWeight.bold),
+              _bookInfoText(bookInfo, context),
+              _bookFooter(bookInfo, isNotStarted, isReading, context),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _bookImage(OkuurBookInfo bookInfo, BuildContext context) {
+  return Container(
+    width: 58,
+    height: 90,
+    decoration: BoxDecoration(
+      color: Theme.of(context).primaryColor,
+      borderRadius: const BorderRadius.all(Radius.circular(4)),
+    ),
+    child: imageShower(bookInfo.imageLink),
+  );
+}
+
+Widget _bookInfoText(OkuurBookInfo bookInfo, BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _text(bookInfo.author, Theme.of(context).colorScheme.secondary, 13, "FontMedium", 1),
+      _text("${bookInfo.type} - ${bookInfo.pageCount} sayfa", Theme.of(context).colorScheme.secondary, 12, "FontMedium", 1),
+      const SizedBox(height: 2),
+    ],
+  );
+}
+
+Widget _bookFooter(OkuurBookInfo bookInfo, bool isNotStarted, bool isReading, BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      _text(
+        isNotStarted
+            ? "Planlanmadı"
+            : isReading
+            ? "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} / ${OkuurCalc.calcDaysBetween(bookInfo.startingDate, DateTime.now().toString())} gündür okuyorsun"
+            : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate, bookInfo.finishingDate)} günde okudunuz",
+        Theme.of(context).colorScheme.secondary,
+        11,
+        "FontMedium",
+        1,
+      ),
+      moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, !isNotStarted, context, bookInfo),
+    ],
+  );
+}
+
+Widget _bookRating(OkuurBookInfo bookInfo, bool isReading, BuildContext context) {
+  return Container(
+    margin: const EdgeInsets.only(left: 4),
+    child: OkuurStarRating(
+      rating: bookInfo.rating,
+      filledStarColor: Theme.of(context).colorScheme.tertiary,
+      unfilledStarColor: isReading ? colors.blueLight : colors.blue,
+      text: isReading ? "" : bookInfo.rating.toString(),
+    ),
+  );
+}
+
+Widget _statusDot(bool isReading, BuildContext context) {
+  return Container(
+    width: 4,
+    height: 4,
+    margin: const EdgeInsets.symmetric(horizontal: 4),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary,
+    ),
+  );
+}
+
+InkWell moreButton(Color color, bool rate, BuildContext context, OkuurBookInfo bookInfo) {
   return InkWell(
-    onTapDown: (TapDownDetails details) {
-      showOkuurPopupMenu(details.globalPosition, Theme.of(context).colorScheme.onPrimaryContainer,rate ? 36 : 12,[
-        PopupMenuItem(
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            children: [
-              Icon(Icons.mode_edit_outline_rounded,color: Theme.of(context).colorScheme.primaryContainer,size: 16),
-              const SizedBox(width: 6),
-              Text('Düzenle',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
-            ],
-          ),
-        ),
-        rate ?
-        PopupMenuItem(
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            children: [
-              Icon(Icons.star_rate_rounded,color: Theme.of(context).colorScheme.primaryContainer,size: 16),
-              const SizedBox(width: 6),
-              Text('Puanla',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
-            ],
-          ),
-        ) : PopupMenuItem(
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            children: [
-              Icon(Icons.chrome_reader_mode_rounded,color: Theme.of(context).colorScheme.surface,size: 16),
-              const SizedBox(width: 6),
-              Text('Okumaya başla',style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.surface),),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          value: 4,
-          child: Row(
-            children: [
-              Icon(Icons.delete_outline_rounded,color: colors.red,size: 16),
-              const SizedBox(width: 6),
-              Text('Sil',style: TextStyle(fontSize: 13,color: colors.red),),
-            ],
-          ),
-        ),
-      ],(value) async {
-        switch (value) {
-          case 1:
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-          case 4:
-            bool shouldDelete = await _showDeleteConfirmation(context, bookInfo.name);
-            if (shouldDelete) {
-              await BookOperations().deleteBookInfo(bookInfo.id!);
-              await libraryController.fetchBooks();
-            }
-            break;
-        }
-      },);
-    },
+    onTapDown: (TapDownDetails details) => _showMoreMenu(details, color, rate, context, bookInfo),
     child: Container(
       height: 11,
       margin: const EdgeInsets.only(top: 4),
@@ -191,18 +172,71 @@ InkWell moreButton(Color color,bool rate,BuildContext context,OkuurBookInfo book
         color: color,
         borderRadius: const BorderRadius.all(Radius.circular(50)),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 2.5,horizontal: 3),
-      child: Image.asset("assets/icons/more.png",color: Theme.of(context).primaryColor,),
+      padding: const EdgeInsets.symmetric(vertical: 2.5, horizontal: 3),
+      child: Image.asset("assets/icons/more.png", color: Theme.of(context).primaryColor),
     ),
   );
-
 }
 
+void _showMoreMenu(TapDownDetails details, Color color, bool rate, BuildContext context, OkuurBookInfo bookInfo) {
+  showOkuurPopupMenu(
+    details.globalPosition,
+    Theme.of(context).colorScheme.onPrimaryContainer,
+    rate ? 36 : 12,
+    _popupMenuItems(context, rate),
+        (value) => _handlePopupMenuAction(value,bookInfo),
+  );
+}
 
-Future<bool> _showDeleteConfirmation(BuildContext context,String bookName) async {
-  return await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
+List<PopupMenuEntry<int>> _popupMenuItems(BuildContext context, bool rate) {
+  return [
+    _buildMenuItem(context, Icons.mode_edit_outline_rounded, "Düzenle", Theme.of(context).colorScheme.primaryContainer, 1),
+    if (rate) _buildMenuItem(context, Icons.star_rate_rounded, "Puanla", Theme.of(context).colorScheme.primaryContainer, 2),
+    if (!rate) _buildMenuItem(context, Icons.chrome_reader_mode_rounded, "Okumaya başla", Theme.of(context).colorScheme.surface, 3),
+    _buildMenuItem(context, Icons.delete_outline_rounded, "Sil", colors.red, 4),
+  ];
+}
+
+PopupMenuItem<int> _buildMenuItem(BuildContext context, IconData icon, String text, Color color, int value) {
+  return PopupMenuItem<int>(
+    value: value,  // Menü öğesinin döneceği değer
+    height: 32,
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    child: Row(
+      children: [
+        Icon(icon, color: color, size: 16),
+        const SizedBox(width: 6),
+        Text(text, style: TextStyle(fontSize: 13, color: color)),
+      ],
+    ),
+  );
+}
+
+Future<void> _handlePopupMenuAction(int? value, OkuurBookInfo bookInfo) async {
+  switch (value) {
+    case 4:
+      bool shouldDelete = await _showDeleteConfirmation(bookInfo.name);
+      if (shouldDelete) {
+        _showLoading("Kitap ve kayıtlar siliniyor");
+        await _deleteBook(bookInfo);
+        _hideLoading();
+      }
+      break;
+  }
+}
+
+Future<void> _deleteBook(OkuurBookInfo bookInfo) async {
+  try {
+    await BookOperations().deleteBookAndLogInfo(bookInfo.id!);
+    await libraryController.fetchBooks();
+  } catch (e) {
+    debugPrint("An error occurred: $e");
+  }
+}
+
+Future<bool> _showDeleteConfirmation(String bookName) async {
+  return await Get.dialog<bool>(
+    AlertDialog(
       content: Text(
         "$bookName\nKitap ve kayıtları silinecek!\nEmin misiniz?",
         textAlign: TextAlign.center,
@@ -213,9 +247,9 @@ Future<bool> _showDeleteConfirmation(BuildContext context,String bookName) async
       actions: [
         Row(
           children: [
-            getAlertButton("Geri Dön", false, false, context),
+            getAlertButton("Geri Dön", false, false),
             const SizedBox(width: 8),
-            getAlertButton("Sil", true, true, context),
+            getAlertButton("Sil", true, true),
           ],
         ),
       ],
@@ -224,10 +258,18 @@ Future<bool> _showDeleteConfirmation(BuildContext context,String bookName) async
       false;
 }
 
-Expanded getAlertButton(String text, bool isPop, bool fill, BuildContext context) {
+void _showLoading(String message) {
+  LoadingDialog.showLoading(Get.context!, message: message);
+}
+
+void _hideLoading() {
+  LoadingDialog.hideLoading(Get.context!);
+}
+
+Expanded getAlertButton(String text, bool isPop, bool fill) {
   return Expanded(
     child: InkWell(
-      onTap: () => Navigator.of(context).pop(isPop),
+      onTap: () => Get.back(result: isPop),
       child: Container(
         height: 36,
         decoration: BoxDecoration(
@@ -245,5 +287,19 @@ Expanded getAlertButton(String text, bool isPop, bool fill, BuildContext context
         ),
       ),
     ),
+  );
+}
+
+Text _text(String text, Color color, double size, String family, int maxLines, [FontWeight? weight = FontWeight.normal]) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: color,
+      fontFamily: family,
+      fontWeight: weight,
+      fontSize: size,
+    ),
+    overflow: TextOverflow.ellipsis,
+    maxLines: maxLines,
   );
 }

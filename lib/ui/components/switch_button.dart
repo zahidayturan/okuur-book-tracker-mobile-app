@@ -7,7 +7,7 @@ class OkuurSwitchButton extends StatefulWidget {
   final ValueChanged<int> onChanged;
   final int initValue;
 
-  OkuurSwitchButton({
+  const OkuurSwitchButton({
     super.key,
     required this.buttonCount,
     required this.buttonNames,
@@ -35,23 +35,24 @@ class _OkuurSwitchButtonState extends State<OkuurSwitchButton> {
         onTap: () {
           setState(() {
             currentButton = index;
-            widget.onChanged(currentButton); // currentButton değiştiğinde callback'i çağır
+            widget.onChanged(currentButton);
           });
         },
         child: AnimatedContainer(
-          height: 36,
-          duration: Duration(milliseconds: 300),
+          height: currentButton == index ? 28 : 36,
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          margin: currentButton == index ? const EdgeInsets.all(4) : EdgeInsets.zero,
           decoration: BoxDecoration(
-            color: currentButton == index ? Theme.of(context).buttonTheme.colorScheme?.primary : Theme.of(context).buttonTheme.colorScheme?.secondary,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: currentButton == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.onPrimaryContainer,
+            borderRadius: const BorderRadius.all(Radius.circular(6)),
           ),
           child: Center(
             child: Text(
               name,
               style: TextStyle(
-                color: Colors.white,
+                color: currentButton == index ? colors.grey : Theme.of(context).colorScheme.secondary,
                 fontSize: 15,
               ),
             ),
@@ -68,8 +69,8 @@ class _OkuurSwitchButtonState extends State<OkuurSwitchButton> {
         Container(
           height: 36,
           decoration: BoxDecoration(
-            color: Theme.of(context).buttonTheme.colorScheme?.secondary,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
           ),
         ),
         Row(

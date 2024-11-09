@@ -40,6 +40,14 @@ class AppTheme {
               secondary: colors.blueLight
           )
       ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colors.blue,
+          foregroundColor: colors.grey,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        ),
+      ),
       shadowColor: Colors.grey
   );
 
@@ -75,6 +83,14 @@ class AppTheme {
         secondary: colors.blackLight
       )
     ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colors.blue,
+          foregroundColor: colors.grey,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        ),
+      ),
     shadowColor: colors.black
   );
 }

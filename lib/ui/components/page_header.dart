@@ -33,23 +33,26 @@ class PageHeaderTitle {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            backButton == true ? backButtonWidget() : SizedBox(),
+            backButton == true ? backButtonWidget(context) : const SizedBox(),
             text(title,colorTitle,18,"FontBold",3),
-            Spacer(),
+            const Spacer(),
             otherWidget == true ? Row(
               children: [
                 addBookButton(),
-                SizedBox(width: 12,)
+                const SizedBox(width: 12,)
               ],
-            ) : SizedBox(),
+            ) : const SizedBox(),
             SizedBox(
                 height: 26,
                 child: Image.asset("assets/icons/$pathName.png",color: colorTitle,))
           ],
         ),
-        text(subtitle,colorText,12,"FontMedium",3)
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0),
+          child: text(subtitle,colorText,12,"FontMedium",3),
+        )
       ],
     );
   }
@@ -73,42 +76,39 @@ class PageHeaderTitle {
         );
       },
       highlightColor: colors.orange,
-      borderRadius: BorderRadius.all(Radius.circular(2)),
+      borderRadius: const BorderRadius.all(Radius.circular(2)),
       child: Container(
         decoration: BoxDecoration(
           color: colors.orange,
-          borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),bottomLeft: Radius.circular(15),topRight: Radius.circular(2),topLeft: Radius.circular(2))
+          borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15),bottomLeft: Radius.circular(15),topRight: Radius.circular(2),topLeft: Radius.circular(2))
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 10),
           child: RichTextWidget(
-              texts: ["+ Kitap ","Ekle"],
+              texts: const ["+ Kitap ","Ekle"],
               colors: [colors.white],
-              fontFamilies: ["FontMedium","FontBold"],
+              fontFamilies: const ["FontMedium","FontBold"],
               align: TextAlign.center),
         ),
       ),
     );
   }
 
-  Widget backButtonWidget(){
+  Widget backButtonWidget(BuildContext context){
     return Padding(
-      padding: EdgeInsets.only(right: 8,bottom: 4),
+      padding: const EdgeInsets.only(right: 8),
       child: InkWell(
         onTap: () {
           Get.back();
         },
-        highlightColor: colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(2)),
+        highlightColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Container(
           height: 28,
           width: 28,
-          padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-              color: colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(8))
-          ),
-          child: Image.asset("assets/icons/back_arrow.png",color: colors.greenDark,)
+          padding: const EdgeInsets.all(4),
+
+          child: Image.asset("assets/icons/back_arrow.png",color: Theme.of(context).colorScheme.secondary,)
         ),
       ),
     );

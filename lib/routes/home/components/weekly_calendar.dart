@@ -50,13 +50,10 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(height: 4,),
           weekdays(),
           const SizedBox(height: 12,),
-          title("Günlük Hedefe Ulaşıldı!", Theme.of(context).colorScheme.inversePrimary, 14, "FontMedium",1),
-          const SizedBox(height: 4,),
           dayInfo(),
-          const SizedBox(height: 8,),
+          const SizedBox(height: 12,),
           OkuurPageSwitcher(pageCount: tempData.length,currentPage: currentPage,)
         ],
       ),
@@ -65,14 +62,11 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   Widget weekdays(){
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        arrowContainer(0),
-        const SizedBox(width: 8,),
         dayContainer(initDate),
-        const SizedBox(width: 8,),
-        arrowContainer(1)
+        const SizedBox(width: 8),
+        title("Günlük Hedefe Ulaşıldı!", Theme.of(context).colorScheme.inversePrimary, 13, "FontMedium",1),
       ],
     );
   }
@@ -104,17 +98,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         });
       },
       child: Container(
-        constraints: const BoxConstraints(minWidth: 160),
+        constraints: const BoxConstraints(minWidth: 130),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(6),
-              topRight: Radius.circular(6),
-              bottomLeft: Radius.circular(14),
-              bottomRight: Radius.circular(14)),
+          borderRadius: const BorderRadius.all(Radius.circular(6)),
           color: Theme.of(context).primaryColor,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
@@ -127,38 +117,11 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               texts: ["${date.day.toString()} ${months[date.month]} ", dayInfo],
               colors: [Theme.of(context).colorScheme.secondary],
               fontFamilies: ["FontBold", "FontMedium"],
-              fontSize: 14,
+              fontSize: 13,
               key: ValueKey<int>(date.day),
               align: TextAlign.center,
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-
-  GestureDetector arrowContainer(int type) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          type == 0 ?
-          initDate = initDate.subtract(const Duration(days: 1))
-              :
-          initDate = initDate.add(const Duration(days: 1));
-        });
-      },
-      child: Container(
-        height: 28,
-        width: 28,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          shape: BoxShape.circle
-        ),
-        padding: const EdgeInsets.all(6),
-        child: RotatedBox(
-            quarterTurns: type == 0 ? 2 : 0,
-            child: Image.asset("assets/icons/arrow.png",color: Theme.of(context).colorScheme.secondary)
         ),
       ),
     );
@@ -188,7 +151,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   SizedBox dayInfo(){
     return SizedBox(
-      height: 90,
+      height: 98,
       child: PageView.builder(
           itemCount: tempData.length,
           physics: BouncingScrollPhysics(),
@@ -202,14 +165,15 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                title("${list[index]["bookName"]} kitabından", Theme.of(context).colorScheme.secondary, 13, "FontMedium",2),
+                title("Okunan", Theme.of(context).colorScheme.secondary, 10, "FontMedium", 1),
+                title("${list[index]["bookName"]}", Theme.of(context).colorScheme.secondary, 13, "FontBold",2),
                 const SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     iconAndText("assets/icons/page.png", "sayfa","${list[index]["page"]}"),
                     iconAndText("assets/icons/clock.png", "dakika","${list[index]["minute"]}"),
-                    iconAndText("assets/icons/point.png", "puan+","${list[index]["point"]}"),
+                    iconAndText("assets/icons/point.png", "puan","${list[index]["point"]}"),
                   ],),
                 const SizedBox(height: 8,),
                 RichTextWidget(

@@ -1,4 +1,4 @@
-package com.fezaitech.okuur
+package com.okuur.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -39,7 +39,6 @@ class _WeeklySeriesState extends State<WeeklySeries> {
             seriesInfo(widget.weeklySeries),
             seriesCountInfo(),
             iconButton()
-
           ],
         ),
       ),
@@ -102,7 +101,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
         const SizedBox(height: 2,),
         RichTextWidget(
           texts: ["${widget.currentSeries}\n","Günlük\nSeri"],
-          colors: [Theme.of(context).colorScheme.inversePrimary,Theme.of(context).colorScheme.primary],
+          colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary],
           fontFamilies: const ["FontBold","FontMedium"],
           fontSize: 13,
           align: TextAlign.center,
@@ -124,18 +123,9 @@ class _WeeklySeriesState extends State<WeeklySeries> {
     return Container(
       height: 40,
       width: 16,
-      decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(50),
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(20),
-              topRight: Radius.circular(20)
-          )
-      ),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Image.asset("assets/icons/arrow.png",color: Theme.of(context).colorScheme.primary),
+        child: Image.asset("assets/icons/arrow.png",color: Theme.of(context).colorScheme.secondary),
       ),
     );
   }

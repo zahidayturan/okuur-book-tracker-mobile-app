@@ -37,13 +37,16 @@ class _OkuurPageSwitcherState extends State<OkuurPageSwitcher> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 10,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(widget.pageCount, (index) {
-          return option(index);
-        }),
+    return Visibility(
+      visible: widget.pageCount > 1,
+      child: SizedBox(
+        height: 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(widget.pageCount, (index) {
+            return option(index);
+          }),
+        ),
       ),
     );
   }

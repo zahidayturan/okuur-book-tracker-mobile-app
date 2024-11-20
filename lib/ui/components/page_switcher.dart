@@ -28,7 +28,7 @@ class _OkuurPageSwitcherState extends State<OkuurPageSwitcher> {
         width: widget.currentPage == index ? 8 : 6,
         padding: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: widget.currentPage == index ? Theme.of(context).colorScheme.inversePrimary : colors.blueLight,
+          color: widget.currentPage == index ? Theme.of(context).colorScheme.secondary : colors.greyMid,
           borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
       ),

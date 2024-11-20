@@ -28,7 +28,7 @@ class _OkuurPageSwitcherState extends State<OkuurPageSwitcher> {
         width: widget.currentPage == index ? 8 : 6,
         padding: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: widget.currentPage == index ? Theme.of(context).colorScheme.inversePrimary : colors.blueLight,
+          color: widget.currentPage == index ? Theme.of(context).colorScheme.secondary : colors.greyMid,
           borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
       ),
@@ -37,13 +37,16 @@ class _OkuurPageSwitcherState extends State<OkuurPageSwitcher> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 10,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(widget.pageCount, (index) {
-          return option(index);
-        }),
+    return Visibility(
+      visible: widget.pageCount > 1,
+      child: SizedBox(
+        height: 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(widget.pageCount, (index) {
+            return option(index);
+          }),
+        ),
       ),
     );
   }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/routes/addBook/add_book.dart';
 import 'package:okuur/ui/components/regular_text.dart';
-import 'package:okuur/ui/components/rich_text.dart';
 
 class PageHeaderTitle {
 
@@ -12,7 +10,6 @@ class PageHeaderTitle {
   final String title;
   final String subtitle;
   final String pathName;
-  final bool? otherWidget;
   final bool? backButton;
 
   PageHeaderTitle({
@@ -20,7 +17,6 @@ class PageHeaderTitle {
     required this.pathName,
     required this.subtitle,
     this.backButton,
-    this.otherWidget,
   });
 
 
@@ -38,12 +34,6 @@ class PageHeaderTitle {
             backButton == true ? backButtonWidget(context) : const SizedBox(),
             text(title,colorTitle,18,"FontBold",3),
             const Spacer(),
-            otherWidget == true ? Row(
-              children: [
-                addBookButton(),
-                const SizedBox(width: 12,)
-              ],
-            ) : const SizedBox(),
             SizedBox(
                 height: 26,
                 child: Image.asset("assets/icons/$pathName.png",color: colorTitle,))
@@ -54,43 +44,6 @@ class PageHeaderTitle {
           child: text(subtitle,colorText,12,"FontMedium",3),
         )
       ],
-    );
-  }
-
-  Widget addBookButton(){
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          Get.context!,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 100),
-            pageBuilder: (context, animation, nextanim) => const AddBookPage(),
-            reverseTransitionDuration: const Duration(milliseconds: 1),
-            transitionsBuilder: (context, animation, nexttanim, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          ),
-        );
-      },
-      highlightColor: colors.orange,
-      borderRadius: const BorderRadius.all(Radius.circular(2)),
-      child: Container(
-        decoration: BoxDecoration(
-          color: colors.orange,
-          borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15),bottomLeft: Radius.circular(15),topRight: Radius.circular(2),topLeft: Radius.circular(2))
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 10),
-          child: RichTextWidget(
-              texts: const ["+ Kitap ","Ekle"],
-              colors: [colors.white],
-              fontFamilies: const ["FontMedium","FontBold"],
-              align: TextAlign.center),
-        ),
-      ),
     );
   }
 

@@ -31,7 +31,7 @@ class SettingBox {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              text(title,color,15,"FontBold",1),
+              RegularText(texts: title,size: 15,color: color,family: "FontBold",maxLines: 1),
               /*SizedBox(
                   height: 18,
                   child: Image.asset("assets/icons/star.png",color: color,))*/

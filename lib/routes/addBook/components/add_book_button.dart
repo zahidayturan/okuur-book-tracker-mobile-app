@@ -119,7 +119,7 @@ class _AddBookButtonState extends State<AddBookButton> {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                  child: text("Kitabı Ekle", colors.white, 15, "FontMedium", 1),
+                  child: RegularText(texts: "Kitabı Ekle",color: colors.white,size: 15,family: "FontMedium",maxLines: 1),
                 ),
               ),
             ),

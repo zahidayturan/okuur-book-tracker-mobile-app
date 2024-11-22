@@ -25,7 +25,7 @@ WillPopScope addBookAppBar(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        text("Yeni Kitap Ekle", Theme.of(context).colorScheme.primaryContainer, 18, "FontBold", 3),
+        RegularText(texts: "Yeni Kitap Ekle",color: Theme.of(context).colorScheme.primaryContainer,size: 18,family: "FontBold",maxLines: 3,),
         InkWell(
           onTap: () async {
             if (controller.bookNameController.text.isNotEmpty ||
@@ -41,11 +41,11 @@ WillPopScope addBookAppBar(BuildContext context) {
             }
           },
           highlightColor: Theme.of(context).colorScheme.tertiaryContainer,
-          borderRadius: BorderRadius.all(Radius.circular(6)),
+          borderRadius: const BorderRadius.all(Radius.circular(6)),
           child: Container(
             height: 32,
             width: 32,
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.tertiaryContainer,
               shape: BoxShape.circle,
@@ -65,7 +65,7 @@ Future<bool> _showExitConfirmation(BuildContext context) async {
   return await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      content: Text(
+      content: const Text(
         "Girdiğiniz bilgiler silinecektir.\nÇıkmak istiyor musunuz?",
         textAlign: TextAlign.center,
       ),
@@ -93,7 +93,7 @@ InkWell getAlertButton(
     child: Container(
       height: 36,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         color: fill ? colors.blue : null,
         border: fill ? null : Border.all(color: colors.blue, width: 1),
       ),

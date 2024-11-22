@@ -21,7 +21,7 @@ WillPopScope addLogAppBar(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        text("Okuma Kaydı Ekle", Theme.of(context).colorScheme.primaryContainer, 18, "FontBold", 3),
+        RegularText(texts: "Okuma Kaydı Ekle",color: Theme.of(context).colorScheme.primaryContainer,size: 18,family: "FontBold",maxLines: 3),
         InkWell(
           onTap: () async {
             if (!controller.checkAllInfoIsNull()) {

@@ -25,7 +25,7 @@ WillPopScope addBookAppBar(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RegularText(texts: "Yeni Kitap Ekle",color: Theme.of(context).colorScheme.primaryContainer,size: 18,family: "FontBold",maxLines: 3,),
+        RegularText(texts: "Yeni Kitap Ekle",color: Theme.of(context).colorScheme.primaryContainer,size: "xxl",family: "FontBold",maxLines: 3),
         InkWell(
           onTap: () async {
             if (controller.bookNameController.text.isNotEmpty ||

@@ -4,6 +4,7 @@ import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/ui/components/dropdown_menu.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
 import '../../../ui/components/rich_text.dart';
@@ -119,13 +120,12 @@ class _BookInfoState extends State<BookInfo> {
       padding: const EdgeInsets.only(right: 12),
       child: SizedBox(
         width: 48,
-        child: Text(
+        child: RegularText(texts:
           label,
-          textAlign: TextAlign.end,
-          style: TextStyle(
-            fontSize: 12,
-            color: validate == true ? colors.blue : colors.red,
-          ),
+          align: TextAlign.end,
+          size: "s",
+          maxLines: 3,
+          color: validate == true ? colors.blue : colors.red,
         ),
       ),
     );

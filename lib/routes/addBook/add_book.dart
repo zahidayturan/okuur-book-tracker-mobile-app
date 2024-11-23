@@ -49,43 +49,42 @@ class _AddBookPageState extends State<AddBookPage> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: null,
         body: Padding(
-          padding: EdgeInsets.only(right: 12,left: 12),
+          padding: const EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 12,),
+                  const SizedBox(height: 12,),
                   addBookAppBar(context),
-                  SizedBox(height: 16,),
-                  OkuurSwitchButton(buttonCount: 2,buttonNames: ["Kendin Ekle","Kitabı Ara"],onChanged:  handleButtonChange,),
-                  SizedBox(height: 12,),
+                  const SizedBox(height: 16,),
+                  OkuurSwitchButton(buttonCount: 2,buttonNames: const ["Kendin Ekle","Kitabı Ara"],onChanged:  handleButtonChange,),
+                  const SizedBox(height: 12,),
                   currentButtonIndex == 0 ?
                   Column(
                     children: [
-                      BookInfo(),
-                      SizedBox(height: 12,),
+                      const BookInfo(),
+                      const SizedBox(height: 12,),
                       addBookState(context),
-                      SizedBox(height: 12,),
+                      const SizedBox(height: 12,),
                       addBookCurrentPage(context),
                       addBookFinishDate(context),
                       addBookReadingTime(context),
                       //SizedBox(height: 12,),
                       addBookImage(context),
-                      SizedBox(height: 12,),
+                      const SizedBox(height: 12,),
                       addBookInit(context),
                       //SizedBox(height: 12,),
-                      AddBookButton(),
-                      SizedBox(height: 12,)
+                      const AddBookButton(),
+                      const SizedBox(height: 12,)
                     ],
                   ) : 
                   Column(
                     children: [
-                      SizedBox(height: 12,),
+                      const SizedBox(height: 12,),
                       RichTextWidget(
-                          texts: ["Bu özellik ","Okuur+ ","aboneliği gerektirir"],
+                          texts: const ["Bu özellik ","Okuur+ ","aboneliği gerektirir"],
                           colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.inversePrimary,Theme.of(context).colorScheme.secondary],
-                          fontFamilies: ["FontMedium","FontBold","FontMedium"],
+                          fontFamilies: const ["FontMedium","FontBold","FontMedium"],
                       )
                     ],
                   ),

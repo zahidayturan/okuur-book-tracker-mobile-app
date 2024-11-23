@@ -11,23 +11,23 @@ Container addBookState(BuildContext context){
   return Container(
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.onPrimaryContainer,
-      borderRadius: BorderRadius.all(Radius.circular(8)),
+      borderRadius: const BorderRadius.all(Radius.circular(8)),
     ),
-    padding: EdgeInsets.all(8),
+    padding: const EdgeInsets.all(8),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichTextWidget(
-            texts: ["Kitabın ","İlerleme Durumunu ","Seçiniz"],
+            texts: const ["Kitabın ","İlerleme Durumunu ","Seçiniz"],
             colors: [Theme.of(context).colorScheme.secondary],
-            fontFamilies: ["FontMedium","FontBold","FontMedium"],),
+            fontFamilies: const ["FontMedium","FontBold","FontMedium"],),
         OkuurSelectableQuestion(
             optionCount: 3,
             currentOption: controller.bookCurrentStatus.toInt(),
             onChanged: (value) {
               controller.setBookCurrentStatus(value);
             },
-            options: ["Kitaba daha başlamadım","Kitaptan biraz okudum","Kitabın hepsini okudum"]),
+            options: const ["Kitaba daha başlamadım","Kitaptan biraz okudum","Kitabın hepsini okudum"]),
       ],
     ),
 

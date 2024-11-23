@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/slider_form.dart';
-import 'package:okuur/ui/components/text_form_field.dart';
-import 'package:okuur/ui/utils/validator.dart';
-
 
 AppColors colors = AppColors();
 final AddBookController controller = Get.find();
@@ -26,13 +24,13 @@ Obx addBookReadingTime(BuildContext context){
           Row(
             children: [
               RichTextWidget(
-                texts: ["Kitap ","Değerlenirme Puanınız"],
+                texts: const ["Kitap ","Değerlenirme Puanınız"],
                 colors: [Theme.of(context).colorScheme.secondary],
-                fontFamilies: ["FontMedium","FontBold"],),
+                fontFamilies: const ["FontMedium","FontBold"],),
             ],
           ),
           const SizedBox(height: 4,),
-          Text("Kitaba 100 üzerinden bir puan verebilirsiniz.",style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
+          const RegularText(texts: "Kitaba 100 üzerinden bir puan verebilirsiniz.",size: "m",maxLines: 3),
           PageCountSelector(
             minValue: 0,maxValue: 100, currentValue: controller.bookRating.value,textController: controller.textControllerForSlider,onChanged: (int value) {
             controller.setBookRating(double.parse((value/20).toStringAsFixed(1)));

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/date_picker.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 AppColors colors = AppColors();
@@ -23,13 +24,13 @@ Obx addBookFinishDate(BuildContext context){
           Row(
             children: [
               RichTextWidget(
-                texts: ["Kitap ","Başlama ve Bitirme"," Tarihi"],
+                texts: const ["Kitap ","Başlama ve Bitirme"," Tarihi"],
                 colors: [Theme.of(context).colorScheme.secondary],
-                fontFamilies: ["FontMedium","FontBold","FontMedium"],),
+                fontFamilies: const ["FontMedium","FontBold","FontMedium"],),
             ],
           ),
           const SizedBox(height: 4,),
-          Text("Kitabı okuduğunuz tarih aralığını seçiniz",style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
+          const RegularText(texts:"Kitabı okuduğunuz tarih aralığını seçiniz",size: "m"),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -41,8 +42,8 @@ Obx addBookFinishDate(BuildContext context){
               formEndKey: controller.bookFinishedDateKey,
               label: "Başlangıç",
               isRangePicker: true,
-              initialDate: DateTime.now().subtract(Duration(days: 7)),
-              firstDate: DateTime.now().subtract(Duration(days: 365)),
+              initialDate: DateTime.now().subtract(const Duration(days: 7)),
+              firstDate: DateTime.now().subtract(const Duration(days: 365)),
               lastDate: DateTime.now(),
             )
           ],)

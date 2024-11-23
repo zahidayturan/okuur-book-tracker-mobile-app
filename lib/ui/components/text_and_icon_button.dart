@@ -38,7 +38,7 @@ class TextIconButton extends StatelessWidget {
         children: [
           Icon(icon,size: 16,color: iconColor ?? Theme.of(context).colorScheme.secondary,),
           const SizedBox(width: 8),
-          RegularText(texts: text,color: iconColor,size: 13,)
+          RegularText(texts: text,color: iconColor,size: "m")
         ],
       ),
     );

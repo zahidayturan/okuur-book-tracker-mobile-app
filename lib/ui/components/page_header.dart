@@ -36,7 +36,7 @@ class PageHeaderTitle {
               padding: const EdgeInsets.only(right: 8.0),
               child: popButton(context),
             ) : const SizedBox(),
-            RegularText(texts: title,size: 18,color: colorTitle,family: "FontBold",maxLines: 3),
+            RegularText(texts: title,size: "xxl",color: colorTitle,family: "FontBold",maxLines: 3),
             const Spacer(),
             SizedBox(
                 height: 26,
@@ -45,7 +45,7 @@ class PageHeaderTitle {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
-          child: RegularText(texts: subtitle,size: 12,color: colorText,family: "FontMedium",maxLines: 3),
+          child: RegularText(texts: subtitle,size: "s",color: colorText,maxLines: 3),
         )
       ],
     );

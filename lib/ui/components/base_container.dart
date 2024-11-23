@@ -24,7 +24,7 @@ class BaseContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      padding: EdgeInsets.all(padding ?? 6),
+      padding: EdgeInsets.all(padding ?? 8),
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.onPrimaryContainer,
         borderRadius: BorderRadius.all(Radius.circular(radius ?? 8)),

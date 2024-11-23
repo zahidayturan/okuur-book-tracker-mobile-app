@@ -28,7 +28,7 @@ class SettingRow {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          text(title,color,13,"FontMedium",1),
+          RegularText(texts: title,size: "m",color: color),
           widget
         ],
       ),

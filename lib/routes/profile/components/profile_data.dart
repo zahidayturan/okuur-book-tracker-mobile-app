@@ -23,7 +23,6 @@ class _ProfileDataWidgetState extends State<ProfileDataWidget> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      physics: BouncingScrollPhysics(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -154,7 +154,6 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       height: 98,
       child: PageView.builder(
           itemCount: tempData.length,
-          physics: BouncingScrollPhysics(),
           onPageChanged: (value) {
             setState(() {
               currentPage = value;

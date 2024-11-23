@@ -35,7 +35,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
         body: Padding(
           padding: const EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [

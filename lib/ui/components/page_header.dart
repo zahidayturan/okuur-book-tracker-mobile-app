@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 
 class PageHeaderTitle {
@@ -31,8 +32,11 @@ class PageHeaderTitle {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            backButton == true ? backButtonWidget(context) : const SizedBox(),
-            text(title,colorTitle,18,"FontBold",3),
+            backButton == true ? Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: popButton(context),
+            ) : const SizedBox(),
+            RegularText(texts: title,size: "xxl",color: colorTitle,family: "FontBold",maxLines: 3),
             const Spacer(),
             SizedBox(
                 height: 26,
@@ -41,29 +45,10 @@ class PageHeaderTitle {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
-          child: text(subtitle,colorText,12,"FontMedium",3),
+          child: RegularText(texts: subtitle,size: "s",color: colorText,maxLines: 3),
         )
       ],
     );
   }
 
-  Widget backButtonWidget(BuildContext context){
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: InkWell(
-        onTap: () {
-          Get.back();
-        },
-        highlightColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        child: Container(
-          height: 28,
-          width: 28,
-          padding: const EdgeInsets.all(4),
-
-          child: Image.asset("assets/icons/back_arrow.png",color: Theme.of(context).colorScheme.secondary,)
-        ),
-      ),
-    );
-  }
 }

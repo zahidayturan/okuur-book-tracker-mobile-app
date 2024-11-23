@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogReadingTimeInfo extends StatefulWidget {
@@ -66,15 +67,12 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
     );
   }
 
-
   Widget italicText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-          fontSize: 12,
-          fontStyle: FontStyle.italic,
-          color: Theme.of(context).colorScheme.secondary
-      ),
+    return RegularText(
+      texts: text,
+      size: "s",
+      style: FontStyle.italic,
+      maxLines: 3,
     );
   }
 

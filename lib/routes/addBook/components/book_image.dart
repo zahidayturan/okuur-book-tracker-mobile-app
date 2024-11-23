@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/image_picker.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 AppColors colors = AppColors();
@@ -43,10 +44,7 @@ Container addBookImage(BuildContext context) {
                   colors: [Theme.of(context).colorScheme.secondary],
                   fontFamilies: ["FontMedium","FontBold"],),
               const SizedBox(height: 4),
-              Text(
-                "İsterseniz kapak fotoğrafı yükleyebilirsiniz. Yüklemek için dokunun",
-                style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.secondary),
-              ),
+              const RegularText(texts: "İsterseniz kapak fotoğrafı yükleyebilirsiniz. Yüklemek için dokunun", size: "m",maxLines: 3,),
               Obx(() => Visibility(
                 visible: controller.selectedImage.value != null,
                 child: InkWell(

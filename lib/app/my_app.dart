@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Okuur',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: ScrollConfiguration.of(context).copyWith(
+        overscroll: false,
+      ),
       themeMode: themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

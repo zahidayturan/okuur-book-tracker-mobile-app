@@ -4,6 +4,7 @@ import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/ui/components/image_shower.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogNameInfo extends StatefulWidget {
@@ -137,7 +138,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
               ],
             ),
             const SizedBox(height: 8,),
-            Text(data.name,style: TextStyle(fontSize: 12,color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
+            RegularText(texts: data.name,size: "s",color: selectedBookIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.secondary,align: TextAlign.center,)
           ],
         ),
       ),
@@ -145,13 +146,11 @@ class _LogNameInfoState extends State<LogNameInfo> {
   }
 
   Widget italicText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 12,
-        fontStyle: FontStyle.italic,
-        color: Theme.of(context).colorScheme.secondary
-      ),
+    return RegularText(
+      texts: text,
+      size: "s",
+      style: FontStyle.italic,
+      maxLines: 3,
     );
   }
 
@@ -185,10 +184,12 @@ class _LogNameInfoState extends State<LogNameInfo> {
               SizedBox(height: 24, width: 24, child: child),
               const SizedBox(height: 8),
             ],
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: colors.blue),
+            RegularText(
+              texts: message,
+              align: TextAlign.center,
+              color: colors.blue,
+              size: "l",
+              maxLines: 5,
             ),
           ],
         ),

@@ -49,7 +49,6 @@ class _LibraryPageState extends State<LibraryPage> {
             child: Stack(
               children: [
                 SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
                   child: Center(
                     child: Column(
                       children: [

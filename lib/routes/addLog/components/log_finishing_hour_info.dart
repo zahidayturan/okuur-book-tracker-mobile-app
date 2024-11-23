@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogFinishingHourInfo extends StatefulWidget {
@@ -56,7 +57,7 @@ class _LogFinishingHourInfoState extends State<LogFinishingHourInfo> {
               SizedBox(height: 8,),
             ],
           ),
-          italicText("Şimdi bitirdiyseniz ${DateTime.now().hour}:${DateTime.now().minute} bitiş saati olarak kayıt edilecektir."),
+          italicText("Şimdi bitirdiyseniz ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')} bitiş saati olarak kayıt edilecektir."),
           const SizedBox(height: 12,),
           Row(
             children: [
@@ -89,7 +90,7 @@ class _LogFinishingHourInfoState extends State<LogFinishingHourInfo> {
               borderRadius: const BorderRadius.all(Radius.circular(100))
           ),
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 14),
-          child: Text("Şimdi Bitirdim",style: TextStyle(color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
+          child: RegularText(texts: "Şimdi Bitirdim",color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),
         )
     );
   }
@@ -163,13 +164,11 @@ class _LogFinishingHourInfoState extends State<LogFinishingHourInfo> {
 
 
   Widget italicText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-          fontSize: 12,
-          fontStyle: FontStyle.italic,
-          color: Theme.of(context).colorScheme.secondary
-      ),
+    return RegularText(
+      texts: text,
+      size: "s",
+      style: FontStyle.italic,
+      maxLines: 3,
     );
   }
 }

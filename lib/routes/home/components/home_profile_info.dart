@@ -36,15 +36,15 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichTextWidget(
-              texts: ['${context.translate.hello} ', '${widget.userName}'],
+              texts: ['${context.translate.hello} ', (widget.userName)],
               colors: [mainColor],
-              fontFamilies: ['FontMedium', 'FontBold'],
+              fontFamilies: const ['FontMedium', 'FontBold'],
             ),
             RichTextWidget(
               texts: ['Bu ay ', '${widget.pageCount} sayfa',' kitap okudun'],
               colors: [mainColor],
               fontSize: 13,
-              fontFamilies: ['FontMedium', 'FontBold','FontMedium'],
+              fontFamilies: const ['FontMedium', 'FontBold','FontMedium'],
             ),
           ],
         ),

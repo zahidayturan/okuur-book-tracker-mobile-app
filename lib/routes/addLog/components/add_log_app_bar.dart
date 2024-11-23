@@ -21,7 +21,7 @@ WillPopScope addLogAppBar(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RegularText(texts: "Okuma Kaydı Ekle",color: Theme.of(context).colorScheme.primaryContainer,size: 18,family: "FontBold",maxLines: 3),
+        RegularText(texts: "Okuma Kaydı Ekle",color: Theme.of(context).colorScheme.primaryContainer,size: "xxl",family: "FontBold",maxLines: 3),
         InkWell(
           onTap: () async {
             if (!controller.checkAllInfoIsNull()) {
@@ -58,9 +58,11 @@ Future<bool> _showExitConfirmation(BuildContext context) async {
   return await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      content: const Text(
-        "Girdiğiniz bilgiler silinecektir.\nÇıkmak istiyor musunuz?",
-        textAlign: TextAlign.center,
+      content: const RegularText(
+        texts: "Girdiğiniz bilgiler silinecektir.\nÇıkmak istiyor musunuz?",
+        align: TextAlign.center,
+        size: "l",
+        maxLines: 5,
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -92,11 +94,10 @@ Expanded getAlertButton(
           border: fill ? null : Border.all(color: colors.blue, width: 1),
         ),
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: fill ? colors.white : colors.blue,
-            ),
+          child: RegularText(
+            texts: text,
+            color: fill ? colors.white : colors.blue,
+            maxLines: 5,
           ),
         ),
       ),

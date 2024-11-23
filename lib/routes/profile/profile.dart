@@ -33,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Obx(() => controller.profileLoading.value
                   ? loadingBox()

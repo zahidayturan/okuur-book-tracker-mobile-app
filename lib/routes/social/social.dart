@@ -23,7 +23,6 @@ class _SocialPageState extends State<SocialPage> {
         body: Padding(
           padding: EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [

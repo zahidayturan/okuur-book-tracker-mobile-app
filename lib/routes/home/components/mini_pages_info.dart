@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
-import '../../../ui/components/rich_text.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class MiniPagesInfo extends StatefulWidget {
 
@@ -66,18 +66,17 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title("Hedefler",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
-                  RichTextWidget(
-                      fontSize: 12,
-                      texts: ["Günlük\n","${widget.dailyGoal} sayfa"],
-                      colors: [Theme.of(context).colorScheme.secondary],
-                      fontFamilies: const ["FontMedium","FontBold"]
+                  RegularText(texts: "Hedefler",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                  RegularText(
+                      size: "s",
+                      texts: "Günlük\n${widget.dailyGoal} sayfa",
+                    maxLines: 3,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                    title("${widget.goalCount} tane", Theme.of(context).colorScheme.secondary, 10, "FontMedium"),
-                    title("Göz at", Theme.of(context).colorScheme.secondary, 10, "FontMedium"),
+                    RegularText(texts:"${widget.goalCount} tane", size: "xs"),
+                    const RegularText(texts: "Göz at", size: "xs"),
                   ],)
                 ],
               ),
@@ -108,13 +107,9 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title("Başarımlar",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
+                  RegularText(texts:"Başarımlar",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
                   Center(child: Image.asset("assets/icons/achievements_example.png",color: Theme.of(context).colorScheme.secondary,height:52)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      title("Görüntüle", Theme.of(context).colorScheme.secondary, 10, "FontMedium"),
-                    ],)
+                  const Align(alignment: Alignment.centerRight,child: RegularText(texts:"Görüntüle",size: "xs",))
                 ],
               ),
             ),
@@ -144,13 +139,9 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title("Okumalar",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
-                  title("Kaydettiğin bütün okumaların", Theme.of(context).colorScheme.secondary, 12, "FontMedium"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      title("Listele", Theme.of(context).colorScheme.secondary, 10, "FontMedium"),
-                    ],)
+                  RegularText(texts:"Okumalar",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                  const RegularText(texts:"Kaydettiğin bütün okumaların",  size: "s",maxLines: 3),
+                  const Align(alignment:Alignment.centerRight,child: RegularText(texts:"Listele", size: "xs"))
                 ],
               ),
             ),
@@ -180,29 +171,15 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title("Keşfet",Theme.of(context).colorScheme.onSurface,14,"FontBold"),
-                  title("Okuyacak\nyeni kitaplar bul", Theme.of(context).colorScheme.secondary, 12, "FontMedium"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      title("Keşfet", Theme.of(context).colorScheme.secondary, 10, "FontMedium"),
-                    ],)
+                  RegularText(texts:"Keşfet",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                  const RegularText(texts:"Okuyacak\nyeni kitaplar bul",size:"s",maxLines: 3),
+                  const Align(alignment: Alignment.centerRight,child: RegularText(texts:"Keşfet", size: "xs"))
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Text title(String text,Color color,double size, String family) {
-    return Text(
-      text, style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),
     );
   }
 

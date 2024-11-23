@@ -31,10 +31,7 @@ class SettingBox {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RegularText(texts: title,size: 15,color: color,family: "FontBold",maxLines: 1),
-              /*SizedBox(
-                  height: 18,
-                  child: Image.asset("assets/icons/star.png",color: color,))*/
+              RegularText(texts: title,size: "l",color: color,family: "FontBold",maxLines: 1),
             ],
           ),
           widget

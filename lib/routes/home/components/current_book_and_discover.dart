@@ -6,6 +6,7 @@ import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/routes/bookDetail/book_detail.dart';
 import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class CurrentBookAndDiscover extends StatefulWidget {
@@ -135,7 +136,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         height: 104,
         child: list.isNotEmpty ? PageView.builder(
           itemCount: list.length,
-          physics: const BouncingScrollPhysics(),
           onPageChanged: (value) async {
             setState(() {
               currentPage = value;
@@ -181,13 +181,13 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  textInfo(list[index].name, Theme.of(context).colorScheme.secondary, 14, "FontBold",TextAlign.start,2),
-                                  textInfo(list[index].author, Theme.of(context).colorScheme.secondary, 12, "FontMedium",TextAlign.start,1),
+                                  RegularText(texts:list[index].name, family: "FontBold",maxLines: 2),
+                                  RegularText(texts:list[index].author, size: "s"),
                                   const Spacer(),
-                                  textInfo("${list[index].currentPage}.sayfadasın / ${list[index].pageCount} sayfa", Theme.of(context).colorScheme.secondary, 11, "FontMedium",TextAlign.start,2),
-                                  textInfo("Hedefin 12 günde bitirmek. 4/12", Theme.of(context).colorScheme.secondary, 11, "FontMedium",TextAlign.start,2),
+                                  RegularText(texts:"${list[index].currentPage}.sayfadasın / ${list[index].pageCount} sayfa", size: "xs", maxLines: 2),
+                                  const RegularText(texts:"Hedefin 12 günde bitirmek. 4/12", size: "xs", maxLines: 2),
                                   const Spacer(),
-                                  textInfo("Başl. 22.08.2024", Theme.of(context).colorScheme.secondary, 11, "FontMedium",TextAlign.end,1)
+                                  const RegularText(texts:"Başl. 22.08.2024", size: "xs", align:TextAlign.end)
                                 ],
                               ),
                             ),
@@ -209,7 +209,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                textInfo("%${rate.toString()}", Theme.of(context).colorScheme.primary, 11, "FontMedium",TextAlign.center,1),
+                                RegularText(texts:"%${rate.toString()}",  size: "xs", align:TextAlign.center),
                                 const SizedBox(height: 3,),
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
@@ -243,32 +243,22 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
               ),
             );
         } ) :
-        Center(
+        const Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: textInfo("Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",Theme.of(context).colorScheme.secondary,13,"FontMedium",TextAlign.center,4),
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: RegularText(texts: "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",size:"m",align:TextAlign.center,maxLines: 4),
           ),
         ),
       ),
     );
   }
 
-  Text textInfo(String text,Color color,double size, String family, TextAlign align,int maxLines){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),textAlign: align,overflow: TextOverflow.ellipsis,maxLines: maxLines,
-    );
-  }
+
 
   Widget loadingBox() {
     return const SizedBox(height: 104,
       child: Center(
-        child: Text(
-            "Kitaplar yükleniyor..."
-        ),
+        child: RegularText(texts: "Kitaplar yükleniyor...",size: "l",maxLines: 2),
     ),);
   }
 }

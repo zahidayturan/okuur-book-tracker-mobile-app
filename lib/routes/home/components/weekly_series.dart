@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class WeeklySeries extends StatefulWidget {
@@ -26,7 +27,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 66,
+      height: 72,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         color: Theme.of(context).colorScheme.onPrimaryContainer
@@ -35,6 +36,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             seriesInfo(widget.weeklySeries),
             seriesCountInfo(),
@@ -74,13 +76,10 @@ class _WeeklySeriesState extends State<WeeklySeries> {
               ),
             ),
             const SizedBox(height: 4),
-            Text(
-              days[i],
-              style: TextStyle(
-                fontSize: 10,
-                color: Theme.of(context).colorScheme.primary,
-                fontFamily: "FontMedium"
-              ),
+            RegularText(
+              texts:days[i],
+              size: "xs",
+              color: Theme.of(context).colorScheme.primary,
             ),
           ],
         ),
@@ -93,34 +92,19 @@ class _WeeklySeriesState extends State<WeeklySeries> {
       children: seriesContainer,
     );
   }
-  Column seriesCountInfo(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(height: 2,),
-        RichTextWidget(
-          texts: ["${widget.currentSeries}\n","Günlük\nSeri"],
-          colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary],
-          fontFamilies: const ["FontBold","FontMedium"],
-          fontSize: 13,
-          align: TextAlign.center,
-        ),
-        Container(
-          width: 54,
-          height: 6,
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10))
-          ),
-        )
-      ],
 
+  RichTextWidget seriesCountInfo(){
+    return RichTextWidget(
+      texts: ["${widget.currentSeries}\n","Günlük\nSeri"],
+      colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary],
+      fontFamilies: const ["FontBold","FontMedium"],
+      fontSize: 13,
+      align: TextAlign.center,
     );
   }
 
-  Container iconButton(){
-    return Container(
+  SizedBox iconButton(){
+    return SizedBox(
       height: 40,
       width: 16,
       child: Padding(
@@ -129,6 +113,5 @@ class _WeeklySeriesState extends State<WeeklySeries> {
       ),
     );
   }
-
 
 }

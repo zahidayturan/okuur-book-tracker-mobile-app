@@ -6,7 +6,6 @@ import 'package:okuur/ui/components/loading_circular.dart';
 
 class OperationButtons extends StatefulWidget {
 
-
   const OperationButtons({
     Key? key,
   }) : super(key: key);
@@ -21,22 +20,20 @@ class _OperationButtonsState extends State<OperationButtons> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          addForRead(),
-          SizedBox(width: 12,),
-          recordForRead(),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        addForRead(),
+        const SizedBox(width: 12,),
+        recordForRead(),
+      ],
     );
   }
 
   Widget addForRead(){
     return Expanded(
       child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         highlightColor: colors.orange,
         onTap: () {
           Navigator.push(
@@ -55,10 +52,10 @@ class _OperationButtonsState extends State<OperationButtons> {
           );
         },
         child: Container(
-          height: 60,
+          height: 72,
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onPrimaryContainer,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(50),
                 bottomRight: Radius.circular(50),
                 bottomLeft: Radius.circular(20),
@@ -66,7 +63,7 @@ class _OperationButtonsState extends State<OperationButtons> {
               )
           ),
           child: Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,20 +102,20 @@ class _OperationButtonsState extends State<OperationButtons> {
         onTap: () async{
           LoadingDialog.showLoading(context, message: "Bekleyiniz");
           try {
-            await Future.delayed(Duration(seconds: 3));
-            print("İşlem tamamlandı");
+            await Future.delayed(const Duration(seconds: 3));
+            debugPrint("İşlem tamamlandı");
           } catch (e) {
-            print("Bir hata oluştu: $e");
+            debugPrint("Bir hata oluştu: $e");
           } finally {
             LoadingDialog.hideLoading(context);
           }
 
         },
         child: Container(
-          height: 60,
+          height: 72,
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onPrimaryContainer,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                   bottomLeft: Radius.circular(50),
@@ -126,7 +123,7 @@ class _OperationButtonsState extends State<OperationButtons> {
               )
           ),
           child: Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,22 +155,12 @@ class _OperationButtonsState extends State<OperationButtons> {
     );
   }
 
-  Text title(String text,Color color,double size, String family){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),
-    );
-  }
-
   Container iconButton(String path,Color color,int type){
-    double radius1 = type == 0 ? 25 : 85;
-    double radius2 = type == 0 ? 85 : 25;
+    double radius1 = type == 0 ? 25 : 90;
+    double radius2 = type == 0 ? 90 : 25;
     return Container(
-      height: 46,
-      width: 28,
+      height: 52,
+      width: 32,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.only(

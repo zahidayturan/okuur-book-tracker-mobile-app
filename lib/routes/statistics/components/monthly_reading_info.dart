@@ -124,7 +124,6 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: controller.months.length,
-                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text("${controller.months[index]} ${DateTime.now().year}",style: TextStyle(color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,),

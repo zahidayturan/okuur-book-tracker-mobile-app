@@ -4,7 +4,6 @@ import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
-import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/text_and_icon_button.dart';
 
 class BookDetailPage extends StatefulWidget {
@@ -27,7 +26,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
         body: Padding(
           padding: const EdgeInsets.only(right: 12, left: 12),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
@@ -65,18 +63,16 @@ class _BookDetailPageState extends State<BookDetailPage> {
               const SizedBox(height: 8),
               const RegularText(
                   texts: "Kralın Dönüşü",
-                  size: 16,
+                  size: "xl",
                   maxLines: 2,
                   weight: FontWeight.w700),
               const RegularText(
                   texts: "J.R.R. Tolkien",
-                  size: 13,
-                  style: FontStyle.italic,
-                  maxLines: 1),
+                  size: "m",
+                  style: FontStyle.italic),
               const RegularText(
                 texts: "Roman - 360 sayfa",
-                size: 13,
-                maxLines: 1,
+                size: "m",
               ),
               const Spacer(),
               Row(
@@ -123,7 +119,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RegularText(texts: "Bu Kitabı Okuyorsun",style: FontStyle.italic),
-              RegularText(texts: "240. sayfadasın",size: 13)
+              RegularText(texts: "240. sayfadasın",size: "m")
             ],
           ),
           const SizedBox(height: 12),
@@ -160,7 +156,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  RegularText(texts:"%${rate.toString()}", color: Theme.of(context).colorScheme.inversePrimary,size: 13),
+                  RegularText(texts:"%${rate.toString()}", color: Theme.of(context).colorScheme.inversePrimary,size:"m"),
                 ],
               );
             },
@@ -180,7 +176,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RegularText(texts: "Bitirme Hedefin",style: FontStyle.italic),
-              RegularText(texts: "12 gün",size: 13)
+              RegularText(texts: "12 gün",size: "m")
             ],
           ),
           const SizedBox(height: 12),
@@ -218,8 +214,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const RegularText(texts: "Başlangıç 22.11.2024",size: 12),
-              RegularText(texts: "Kalan 8 gün",size: 13,color: colors.orange,)
+              const RegularText(texts: "Başlangıç 22.11.2024",size: "s"),
+              RegularText(texts: "Kalan 8 gün",size: "m",color: colors.orange,)
             ],
           ),
         ],
@@ -238,7 +234,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RegularText(texts: "Okumaların", style: FontStyle.italic),
-              RegularText(texts: "8 kayıt", size: 13),
+              RegularText(texts: "8 kayıt", size: "m"),
             ],
           ),
           const SizedBox(height: 12),
@@ -250,7 +246,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: lists.length,
-                  physics: BouncingScrollPhysics(),
                   separatorBuilder: (context, index) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     return Stack(
@@ -287,7 +282,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                               child: RegularText(
                                 texts: lists[index],
                                 align: TextAlign.center,
-                                size: 13,
+                                size: "m",
                               ),
                             ),
                           ),
@@ -322,7 +317,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RegularText(texts: "Toplam Okuma",style: FontStyle.italic),
+          const RegularText(texts: "Toplam Okuma",style: FontStyle.italic),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -356,8 +351,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RegularText(texts:count, color: Theme.of(context).colorScheme.secondary, size: 13),
-            RegularText(texts:text, color: Theme.of(context).colorScheme.secondary, size: 11),
+            RegularText(texts:count, color: Theme.of(context).colorScheme.secondary, size: "m"),
+            RegularText(texts:text, color: Theme.of(context).colorScheme.secondary, size: "xs"),
           ],
         )
       ],

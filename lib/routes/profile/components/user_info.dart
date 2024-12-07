@@ -3,6 +3,7 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/routes/settings/settings.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class UserInfoWidget extends StatefulWidget {
 
@@ -33,7 +34,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
             Row(
               children: [
                 profilePhoto("assets/icons/reads.png"),
-                SizedBox(width: 12,),
+                const SizedBox(width: 12,),
                 proileTexts()
               ],
             ),
@@ -62,7 +63,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                       );
                     },
                     highlightColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     child: iconContainer(36,36, Theme.of(context).colorScheme.onPrimaryContainer, "assets/icons/settings.png"),
                   ),
                 ],
@@ -70,7 +71,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
             )
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         userStarInfo()
       ],
     );
@@ -99,10 +100,10 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [text("${userData.name} ${userData.surname}", Theme.of(context).colorScheme.secondary, 12, "FontMedium",2),
-              text("@${userData.username}", Theme.of(context).colorScheme.secondary, 14, "FontBold",1),],
+            children: [RegularText(texts:"${userData.name} ${userData.surname}", maxLines: 2),
+              RegularText(texts: "@${userData.username}",  otherSize:14.0, family: "FontBold")],
           ),
-          text("Katıldın: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}", Theme.of(context).colorScheme.secondary, 12, "FontMedium",1),
+          RegularText(texts:"Katıldın: ${dateTime.day} ${months[dateTime.month]} ${dateTime.year}"),
         ],
       ),
     );
@@ -114,23 +115,12 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
       height: height,
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.all(Radius.circular(50))
+        borderRadius: const BorderRadius.all(Radius.circular(50))
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Image.asset(path,color: Theme.of(context).colorScheme.secondary,),
       ),
-    );
-  }
-
-
-  Text text(String text,Color color,double size, String family,int maxLines){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),overflow: TextOverflow.ellipsis,maxLines: maxLines,
     );
   }
 
@@ -140,7 +130,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         userStarBox(Theme.of(context).colorScheme.surface,colors.green,"Yıldızladıkların",widget.userInfo.followed),
-        SizedBox(width: 12,),
+        const SizedBox(width: 12,),
         userStarBox(Theme.of(context).colorScheme.primaryContainer,colors.greenDark,"Yıldızlayanlar",widget.userInfo.follower)
       ],
     );
@@ -149,18 +139,18 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
   Expanded userStarBox(Color textColor,Color boxColor,String text,int stars){
     return Expanded(
       child: Container(
-        constraints: BoxConstraints(maxWidth: 250,minHeight: 28),
+        constraints: const BoxConstraints(maxWidth: 250,minHeight: 28),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: Theme.of(context).colorScheme.onPrimaryContainer
         ),
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(child: Text(text,style: TextStyle(color: textColor,fontSize: 13),textAlign: TextAlign.center,)),
             Container(
-              constraints: BoxConstraints(minWidth: 30,minHeight: 20),
+              constraints: const BoxConstraints(minWidth: 30,minHeight: 20),
                 decoration: BoxDecoration(
                   color: boxColor,
                   borderRadius: BorderRadius.circular(50)

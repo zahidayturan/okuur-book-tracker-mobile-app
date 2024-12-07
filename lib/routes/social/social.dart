@@ -21,12 +21,12 @@ class _SocialPageState extends State<SocialPage> {
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: null,
         body: Padding(
-          padding: EdgeInsets.only(right: 12,left: 12),
+          padding: const EdgeInsets.only(right: 12,left: 12),
           child: SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 12,),
+                  const SizedBox(height: 12,),
                   PageHeaderTitle(
                       title: "Sosyal",
                       pathName: "social",
@@ -38,16 +38,6 @@ class _SocialPageState extends State<SocialPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Text text(String text,Color color,double size, String family,int maxLines){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),overflow: TextOverflow.ellipsis,maxLines: maxLines,
     );
   }
 }

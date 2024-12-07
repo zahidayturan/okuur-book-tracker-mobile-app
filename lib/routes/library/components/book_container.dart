@@ -4,9 +4,9 @@ import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
-import 'package:okuur/data/services/operations/log_operations.dart';
 import 'package:okuur/ui/components/loading_circular.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/star_rating.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
@@ -52,20 +52,18 @@ Widget _bookHeader(OkuurBookInfo bookInfo, String index, bool isReading, BuildCo
     children: [
       Row(
         children: [
-          _text(index, isReading ? colors.orange : Theme.of(context).colorScheme.secondary, 13, "FontBold", 1),
+          RegularText(texts:index, color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary, size:"m", family: "FontBold"),
           _statusDot(isReading, context),
-          _text(
+          RegularText(texts:
             isReading
                 ? "Şu an okuyorsun"
                 : "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} - ${OkuurDateFormatter.convertDate(bookInfo.finishingDate)}",
-            isReading ? colors.orange : Theme.of(context).colorScheme.secondary,
-            13,
-            "FontMedium",
-            1,
+            color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary,
+            size: "m",
           ),
         ],
       ),
-      _text(percentage == "100.0" ? "Bitti" : "%$percentage", isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, 13, "FontMedium", 1, FontWeight.w500),
+  RegularText(texts:percentage == "100.0" ? "Bitti" : "%$percentage", color: isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, size: "m"),
     ],
   );
 }
@@ -83,7 +81,7 @@ Widget _bookContent(OkuurBookInfo bookInfo, BuildContext context, bool isNotStar
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _text(bookInfo.name, Theme.of(context).colorScheme.secondary, 15, "FontMedium", 2, FontWeight.bold),
+              RegularText(texts:bookInfo.name, size: "l", maxLines: 2, family: "FontBold"),
               _bookInfoText(bookInfo, context),
               _bookFooter(bookInfo, isNotStarted, isReading, context),
             ],
@@ -110,8 +108,8 @@ Widget _bookInfoText(OkuurBookInfo bookInfo, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _text(bookInfo.author, Theme.of(context).colorScheme.secondary, 13, "FontMedium", 1),
-      _text("${bookInfo.type} - ${bookInfo.pageCount} sayfa", Theme.of(context).colorScheme.secondary, 12, "FontMedium", 1),
+      RegularText(texts:bookInfo.author, size:"m"),
+      RegularText(texts:"${bookInfo.type} - ${bookInfo.pageCount} sayfa"),
       const SizedBox(height: 2),
     ],
   );
@@ -122,16 +120,13 @@ Widget _bookFooter(OkuurBookInfo bookInfo, bool isNotStarted, bool isReading, Bu
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      _text(
+      RegularText(texts:
         isNotStarted
             ? "Planlanmadı"
             : isReading
             ? "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} / ${OkuurCalc.calcDaysBetween(bookInfo.startingDate, DateTime.now().toString())} gündür okuyorsun"
             : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate, bookInfo.finishingDate)} günde okudunuz",
-        Theme.of(context).colorScheme.secondary,
-        11,
-        "FontMedium",
-        1,
+        size: "xs"
       ),
       moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, !isNotStarted, context, bookInfo),
     ],
@@ -287,19 +282,5 @@ Expanded getAlertButton(String text, bool isPop, bool fill) {
         ),
       ),
     ),
-  );
-}
-
-Text _text(String text, Color color, double size, String family, int maxLines, [FontWeight? weight = FontWeight.normal]) {
-  return Text(
-    text,
-    style: TextStyle(
-      color: color,
-      fontFamily: family,
-      fontWeight: weight,
-      fontSize: size,
-    ),
-    overflow: TextOverflow.ellipsis,
-    maxLines: maxLines,
   );
 }

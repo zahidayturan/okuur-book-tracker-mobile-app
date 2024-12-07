@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class WeeklyCalendar extends StatefulWidget {
@@ -66,7 +67,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       children: [
         dayContainer(initDate),
         const SizedBox(width: 8),
-        title("Günlük Hedefe Ulaşıldı!", Theme.of(context).colorScheme.inversePrimary, 13, "FontMedium",1),
+        RegularText(texts:"Günlük Hedefe Ulaşıldı!", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
       ],
     );
   }
@@ -116,7 +117,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             child: RichTextWidget(
               texts: ["${date.day.toString()} ${months[date.month]} ", dayInfo],
               colors: [Theme.of(context).colorScheme.secondary],
-              fontFamilies: ["FontBold", "FontMedium"],
+              fontFamilies: const ["FontBold", "FontMedium"],
               fontSize: 13,
               key: ValueKey<int>(date.day),
               align: TextAlign.center,
@@ -164,8 +165,8 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                title("Okunan", Theme.of(context).colorScheme.secondary, 10, "FontMedium", 1),
-                title("${list[index]["bookName"]}", Theme.of(context).colorScheme.secondary, 13, "FontBold",2),
+                const RegularText(texts:"Okunan",otherSize: 10.0),
+                RegularText(texts:"${list[index]["bookName"]}", size:"m", family: "FontBold",maxLines: 2),
                 const SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -178,26 +179,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
                 RichTextWidget(
                     texts: infoList[int.tryParse(list[index]["info"]!) ?? 0],
                     colors: [Theme.of(context).colorScheme.secondary],
-                    fontFamilies: ["FontMedium","FontRegular","FontMedium"],
+                    fontFamilies: const ["FontMedium","FontRegular","FontMedium"],
                     fontSize: 11,
                     align: TextAlign.center),
               ],
             );
           },
       ),
-    );
-  }
-
-  Text title(String text,Color color,double size, String family,int maxLines){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size,
-        overflow: TextOverflow.ellipsis
-    ),
-      maxLines: maxLines,
-      textAlign: TextAlign.center,
     );
   }
   
@@ -220,8 +208,8 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            title(count, Theme.of(context).colorScheme.secondary, 13, "FontMedium",1),
-            title(text, Theme.of(context).colorScheme.secondary, 11, "FontMedium",1),
+            RegularText(texts:count, size: "m"),
+            RegularText(texts:text,  size: "xs"),
           ],
         )
       ],

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class BookListWidget extends StatefulWidget {
 
@@ -39,7 +40,7 @@ class _BookListWidgetState extends State<BookListWidget> {
 
     for (var book in books) {
       int readStatus = book.status;
-      print(readStatus % 2);
+      debugPrint((readStatus % 2).toString());
       if(readStatus != 0){
         if (readStatus % 2 == 1) {
           current.add(book);
@@ -64,7 +65,7 @@ class _BookListWidgetState extends State<BookListWidget> {
         Expanded(
           child: ListView(
             children: [
-              text("Şu An Okunanlar", colors.greenDark, 15, "FontBold", 1),
+              RegularText(texts: "Şu An Okunanlar", color: colors.greenDark, size: "l", family: "FontBold"),
               const SizedBox(height: 12,),
               ...currentBooks.map((item) => bookContainer(
                 currentBookText(
@@ -80,7 +81,7 @@ class _BookListWidgetState extends State<BookListWidget> {
                 "${currentBooks.indexOf(item) + 1}",
               )).toList(),
               const SizedBox(height: 12,),
-              text("Okunan Bütün Eserler", colors.greenDark, 15, "FontBold", 1),
+              RegularText(texts: "Okunan Bütün Eserler", color: colors.greenDark, size: "l", family: "FontBold"),
               const SizedBox(height: 12,),
               ...futureBooks.map((item) => bookContainer(
                 currentBookText(
@@ -115,7 +116,7 @@ class _BookListWidgetState extends State<BookListWidget> {
           ),
           child: RotatedBox(
               quarterTurns: 3,
-              child: Center(child: text(index,colors.white,13,"FontBold",1))),
+              child: Center(child: RegularText(texts:index,color:colors.white,size:"m", family: "FontBold"))),
         ),
         Container(
           height: 112,
@@ -137,7 +138,7 @@ class _BookListWidgetState extends State<BookListWidget> {
     try {
       formattedDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(startedDate);
     } catch (e) {
-      print("Başlangıç tarihi format hatası: $e");
+      debugPrint("Başlangıç tarihi format hatası: $e");
     }
 
     String finishingDate = "";
@@ -153,6 +154,7 @@ class _BookListWidgetState extends State<BookListWidget> {
       try {
         formattedFinishDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(finishedDate);
       } catch (e) {
+        debugPrint("err #157");
       }
 
       if (formattedFinishDate != null) {
@@ -206,24 +208,13 @@ class _BookListWidgetState extends State<BookListWidget> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            text(name, colors.black, 15, "FontMedium", 2),
-            text(author, colors.black, 13, "FontMedium", 1),
-            text("$type - $page sayfa", colors.black, 13, "FontMedium", 1),
-            formattedDate != null ? text("${formattedDate.day}.${formattedDate.month}.${formattedDate.year} / $finishingDate", colors.black, 13, "FontMedium", 1) : const Text("")
+            RegularText(texts:name, color: colors.black, size: "l",  maxLines: 2),
+            RegularText(texts:author, color: colors.black, size: "m",),
+            RegularText(texts:"$type - $page sayfa", color: colors.black, size: "m"),
+            formattedDate != null ? RegularText(texts:"${formattedDate.day}.${formattedDate.month}.${formattedDate.year} / $finishingDate", color: colors.black, size: "m") : const RegularText(texts:"")
           ],
         ),
       ],
-    );
-  }
-
-
-  Text text(String text,Color color,double size, String family,int maxLines){
-    return Text(
-      text,style: TextStyle(
-        color: color,
-        fontFamily: family,
-        fontSize: size
-    ),overflow: TextOverflow.ellipsis,maxLines: maxLines,
     );
   }
 

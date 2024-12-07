@@ -6,8 +6,8 @@ import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
-import 'package:okuur/routes/login/components/login_text.dart';
 import 'package:okuur/routes/login/components/text_form_field.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class LoginAccount extends StatefulWidget {
@@ -70,7 +70,7 @@ class _LoginAccountState extends State<LoginAccount> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(child: getTextFormField(passwordController, "Şifrenizi giriniz", 54, "", _passwordKey, errorTextPassword,passwordVisible,context)),
-                  SizedBox(width: 8,),
+                  const SizedBox(width: 8,),
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -108,9 +108,9 @@ class _LoginAccountState extends State<LoginAccount> {
         RichTextWidget(
             texts: [text,"Bilgileriniz"],
             colors: [color],
-            fontFamilies: ["FontBold","FontMedium"],
+            fontFamilies: const ["FontBold","FontMedium"],
             fontSize: 16),
-        loginText("Yardım", Theme.of(context).colorScheme.primaryContainer, 12, "FontMedium")
+        RegularText(texts: "Yardım", color: Theme.of(context).colorScheme.primaryContainer, size: "s")
       ],
     );
   }
@@ -136,7 +136,7 @@ class _LoginAccountState extends State<LoginAccount> {
             login = await FirebaseAuthOperation().signInWithEmailAndPassword(emailController.text.trim(), passwordController.text);
           } finally {
             Navigator.pop(context);
-            print("hata mesajı $login");
+            debugPrint("hata mesajı $login");
             setState(() {
               if(login == "user-not-found"){
                 errorTextMail = "Böyle bir e-posta bulunamadı";
@@ -192,11 +192,11 @@ class _LoginAccountState extends State<LoginAccount> {
               color: colors.greyDark.withOpacity(0.1),
               blurRadius: 5,
               spreadRadius: 2,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Center(child: loginText(text, colors.white, 16, "FontMedium")),
+        child: Center(child: RegularText(texts:text, color: colors.white, size: "xl")),
       ),
     );
   }
@@ -233,9 +233,9 @@ class _LoginAccountState extends State<LoginAccount> {
           ),
         ),
         RichTextWidget(
-            texts: ["Hesaba\n","Giriş\nYap"],
+            texts: const ["Hesaba\n","Giriş\nYap"],
             colors: [colors.blue],
-            fontFamilies: ["FontMedium","FontBold"],
+            fontFamilies: const ["FontMedium","FontBold"],
             fontSize: 19,
             align: TextAlign.end)
       ],

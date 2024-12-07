@@ -9,9 +9,9 @@ import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/data/services/operations/user_operations.dart';
 import 'package:okuur/routes/login/components/bottom_icon.dart';
 import 'package:okuur/routes/login/components/create_forms.dart';
-import 'package:okuur/routes/login/components/login_text.dart';
 import 'package:okuur/routes/login/components/text_form_field.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/snackbar.dart';
 
@@ -101,7 +101,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  loginText("@", colors.blue, 22, "FontBold"),
+                  RegularText(texts: "@", color: colors.blue, otherSize: 22.0, family: "FontBold"),
                   const SizedBox(
                     width: 8,
                   ),
@@ -124,11 +124,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
                               context: context,
                               backColor: colors.blue,
                               duration: 5,
-                              textWidget: loginText(
-                                  "Kullanıcı adınız diğer kullanıcılar tarafından görülecektir",
-                                  colors.grey,
-                                  14,
-                                  "FontMedium"))
+                              textWidget: RegularText(
+                                  texts: "Kullanıcı adınız diğer kullanıcılar tarafından görülecektir",
+                                  color: colors.grey))
                           .showQuestionDialog();
                     },
                     child: Container(
@@ -168,21 +166,20 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    loginText("Aramıza Hoş Geldin", colors.orange, 16, "FontBold"),
+                    RegularText(texts: "Aramıza Hoş Geldin", color: colors.orange, size: "xl", family: "FontBold"),
                   ],
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                loginText("@${userNameController.text}\n", colors.black, 15,
-                    "FontBold"),
-                RichTextWidget(texts: [
+                RegularText(texts: "@${userNameController.text}\n", color: colors.black, size: "l", family: "FontBold"),
+                RichTextWidget(texts: const [
                   "Okuma hedeflerini ekle, okumaya ve keşfetmeye başla, başarımlar kazan.\n",
                   " Okuur seni bekliyor"
                 ], colors: [
                   colors.black,
                   colors.greenDark
-                ], fontFamilies: [
+                ], fontFamilies: const [
                   "FontMedium",
                   "FontBold"
                 ], align: TextAlign.center)
@@ -207,9 +204,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
         RichTextWidget(
             texts: [text, "Bilgileriniz"],
             colors: [color],
-            fontFamilies: ["FontBold", "FontMedium"],
+            fontFamilies: const ["FontBold", "FontMedium"],
             fontSize: 16),
-        loginText("Yardım", colors.greenDark, 12, "FontMedium")
+        RegularText(texts: "Yardım", color: colors.greenDark, size: "s")
       ],
     );
   }
@@ -298,7 +295,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
             ),
           ],
         ),
-        child: Center(child: loginText(text, colors.white, 16, "FontMedium")),
+        child: Center(child: RegularText(texts:text, color: colors.white, size: "xl")),
       ),
     );
   }
@@ -362,9 +359,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
         ),
 
         RichTextWidget(
-            texts: ["Google ile\n", "Kayıt\nOl"],
+            texts: const ["Google ile\n", "Kayıt\nOl"],
             colors: [colors.blue],
-            fontFamilies: ["FontMedium", "FontBold"],
+            fontFamilies: const ["FontMedium", "FontBold"],
             fontSize: 19,
             align: TextAlign.end)
       ],

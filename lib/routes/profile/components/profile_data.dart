@@ -27,15 +27,15 @@ class _ProfileDataWidgetState extends State<ProfileDataWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           dataContainer(widget.userInfo.totalBook.toString(),"Kitap"),
-          SizedBox(width: 12,),
+          const SizedBox(width: 12,),
           dataContainer(widget.userInfo.totalPage.toString(),"Sayfa"),
-          SizedBox(width: 12,),
+          const SizedBox(width: 12,),
           dataContainer(widget.userInfo.activeSeries.toString(),"Aktif Seri"),
-          SizedBox(width: 12,),
+          const SizedBox(width: 12,),
           dataContainer(widget.userInfo.bestSeries.toString(),"En İyi Seri"),
-          SizedBox(width: 12,),
+          const SizedBox(width: 12,),
           dataContainer(widget.userInfo.point.toString(),"Puan"),
-          SizedBox(width: 12,),
+          const SizedBox(width: 12,),
           dataContainer(widget.userInfo.achievement.toString(),"Başarım"),
         ],
       ),
@@ -49,13 +49,13 @@ class _ProfileDataWidgetState extends State<ProfileDataWidget> {
       height: 58,
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onPrimaryContainer,
-          borderRadius: BorderRadius.all(Radius.circular(50))
+          borderRadius: const BorderRadius.all(Radius.circular(50))
       ),
       child: Center(
         child: RichTextWidget(
             texts: ["$textBold\n",textMedium],
             colors: [Theme.of(context).colorScheme.secondary],
-            fontFamilies: ["FontBold","FontMedium"],
+            fontFamilies: const ["FontBold","FontMedium"],
             fontSize: 14,
             align: TextAlign.center),
       ),

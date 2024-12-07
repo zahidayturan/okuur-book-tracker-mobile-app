@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class OkuurSwitchButton extends StatefulWidget {
   final int buttonCount;
@@ -49,17 +50,15 @@ class _OkuurSwitchButtonState extends State<OkuurSwitchButton> {
             borderRadius: const BorderRadius.all(Radius.circular(6)),
           ),
           child: Center(
-            child: Text(
-              name,
-              style: TextStyle(
-                color: currentButton == index ? colors.grey : Theme.of(context).colorScheme.secondary,
-                fontSize: 15,
+            child: RegularText(
+              texts: name,
+              color: currentButton == index ? colors.grey : Theme.of(context).colorScheme.secondary,
+              size: "l",
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   @override

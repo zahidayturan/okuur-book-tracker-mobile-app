@@ -24,8 +24,6 @@ class _OperationButtonsState extends State<OperationButtons> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         addForRead(),
-        const SizedBox(width: 12,),
-        recordForRead(),
       ],
     );
   }

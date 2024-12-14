@@ -36,8 +36,6 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 18,),
                   WeeklyCalendar(),
                   SizedBox(height: 18,),
-                  OperationButtons(),
-                  SizedBox(height: 18,),
                   CurrentBookAndDiscover(),
                   SizedBox(height: 18,),
                   WeeklySeries(weeklySeries: [1,1,1,1,0,0,0],currentSeries: 34),

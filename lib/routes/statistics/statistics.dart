@@ -41,7 +41,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const SizedBox(height: 12,),
                   PageHeaderTitle(
                       title: "İstatistiklerin",
-                      pathName: "statistics",
+                      pathName: "assets/icons/navbar/stat_d.png",
                       subtitle: "Okumalarının analizini ve\ntakvimi görüntüle"
                   ).getTitle(context),
                   const SizedBox(height: 16),
@@ -49,8 +49,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const SizedBox(height: 12),
                   const MonthlyReadingInfo(finishedPage: 900,goalPage: 1200),
                   const SizedBox(height: 12),
-                  WeeklyReadingInfo(),
-                  const SizedBox(height: 12),
+                  const WeeklyReadingInfo(),
+                  const SizedBox(height: 64,)
                 ],
               ),
             ),

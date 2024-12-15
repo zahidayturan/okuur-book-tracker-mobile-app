@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   PageHeaderTitle(
                       backButton: true,
                       title: "Ayarlar",
-                      pathName: "settings",
+                      pathName: "assets/icons/settings.png",
                       subtitle: "Uygulama içi tercihlerinizi ayarlayın"
                   ).getTitle(context),
                   const SizedBox(height: 24,),

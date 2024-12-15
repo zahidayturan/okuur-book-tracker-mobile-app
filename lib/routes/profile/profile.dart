@@ -43,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 18),
                   ProfileDataWidget(userInfo: controller.userProfileInfo!),
                   // Expanded(child: BookListWidget())
+                  const SizedBox(height: 64,)
                 ],
               )),
             ),
@@ -104,6 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
           height: 112,
           borderRadius: BorderRadius.all(Radius.circular(14)),
         ),
+        SizedBox(height: 64,)
       ],
     );
   }

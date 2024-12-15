@@ -197,48 +197,36 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                       ],
                     ),
                   ),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            //double outerContainerHeight = constraints.maxHeight;
-                            int rate = calculateRate(list[index].pageCount,list[index].currentPage);
-                            double innerContainerHeight = 80 * (rate/100);
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                RegularText(texts:"%${rate.toString()}",  size: "xs", align:TextAlign.center),
-                                const SizedBox(height: 3,),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    width: 12,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: AnimatedContainer(
-                                        duration: const Duration(milliseconds: 1000),
-                                        curve: Curves.easeInOut,
-                                        width: 12,
-                                        height: innerContainerHeight,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.inversePrimary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      //double outerContainerHeight = constraints.maxHeight;
+                      int rate = calculateRate(list[index].pageCount,list[index].currentPage);
+                      double innerContainerHeight = 96 * (rate/100);
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Container(
+                          width: 10,
+                          height: 96,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 1000),
+                              curve: Curves.easeInOut,
+                              width: 12,
+                              height: innerContainerHeight,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.inversePrimary,
+                              ),
+                            ),
+                          ),
                         ),
-                      ]),
+                      );
+                    },
+                  ),
                 ],
               ),
             );

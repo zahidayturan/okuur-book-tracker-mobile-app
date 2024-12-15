@@ -7,7 +7,6 @@ import 'package:okuur/controllers/profile_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/library/library.dart';
-import 'package:okuur/routes/others/others.dart';
 import 'package:okuur/routes/profile/profile.dart';
 import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
@@ -41,19 +40,17 @@ class _OkuurAppState extends State<OkuurApp> {
     Widget setWidget() {
       switch (controller.homePageCurrentMode.value) {
         case 0:
-          return HomePage();
+          return const HomePage();
         case 1:
-          return StatisticsPage();
+          return const StatisticsPage();
         case 2:
-          return SocialPage();
+          return const SocialPage();
         case 3:
-          return LibraryPage();
-        case 4:
-          return OtherPage();
+          return const LibraryPage();
         case 5:
-          return ProfilePage();
+          return const ProfilePage();
         default:
-          return HomePage();
+          return const HomePage();
       }
     }
 
@@ -69,9 +66,14 @@ class _OkuurAppState extends State<OkuurApp> {
       },
       child: SafeArea(
         child: Scaffold(
-          body: Obx(() => setWidget()),
+          body: Obx(() => Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                setWidget(),
+                const BottomNavBar()
+          ])),
+          extendBody: true,
           resizeToAvoidBottomInset: false,
-          bottomNavigationBar: BottomNavBar(),
         ),
       ),
     );
@@ -106,7 +108,7 @@ class _OkuurAppState extends State<OkuurApp> {
         child: Container(
             height: 36,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
                 color: fill ? colors.blue : null,
                 border: fill ? null : Border.all(color: colors.blue,width: 1)
             ),

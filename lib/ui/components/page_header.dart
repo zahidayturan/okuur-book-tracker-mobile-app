@@ -40,7 +40,7 @@ class PageHeaderTitle {
             const Spacer(),
             SizedBox(
                 height: 26,
-                child: Image.asset("assets/icons/$pathName.png",color: colorTitle,))
+                child: Image.asset(pathName,color: colorTitle,))
           ],
         ),
         Padding(

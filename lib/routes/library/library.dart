@@ -55,7 +55,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         const SizedBox(height: 12),
                         PageHeaderTitle(
                             title: "Kitaplığın",
-                            pathName: "library",
+                            pathName: "assets/icons/navbar/lib_d.png",
                             subtitle: "Kitaplarınızı görüntüleyin, düzenleyin\nve yenilerini ekleyin"
                         ).getTitle(context),
                         const SizedBox(height: 16),
@@ -104,12 +104,11 @@ class _LibraryPageState extends State<LibraryPage> {
                             );
                           }
                         }),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 64,)
                       ],
                     ),
                   ),
                 ),
-                addButton(),
               ],
             ),
           ),

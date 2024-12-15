@@ -16,7 +16,7 @@ void main() async {
       currentUser = FirebaseAuth.instance.currentUser;
     }
   } catch (e) {
-    print('Error initializing user: $e');
+    debugPrint('Error initializing user: $e');
   }
 
   runApp(MyApp(currentUser: currentUser));

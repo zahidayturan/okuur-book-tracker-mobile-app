@@ -38,7 +38,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                   PageHeaderTitle(
                           backButton: true,
                           title: "Hesap Ayarları",
-                          pathName: "settings",
+                          pathName: "assets/icons/settings.png",
                           subtitle: "")
                       .getTitle(context),
                   BaseContainer(

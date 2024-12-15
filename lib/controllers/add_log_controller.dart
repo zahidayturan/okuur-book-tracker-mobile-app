@@ -15,6 +15,7 @@ class AddLogController extends GetxController {
     bookPageCount.value = totalPage.toDouble();
     bookCurrentlyPage.value = currentlyPage.toDouble();
     sliderBookPageCount.value = (currentlyPage+1).toDouble();
+    checkAllValidate();
   }
   void clearLogBook() {logBookId.value = null;}
 

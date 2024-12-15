@@ -3,7 +3,6 @@ import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/components/current_book_and_discover.dart';
 import 'package:okuur/routes/home/components/home_profile_info.dart';
 import 'package:okuur/routes/home/components/mini_pages_info.dart';
-import 'package:okuur/routes/home/components/operation_buttons.dart';
 import 'package:okuur/routes/home/components/weekly_calendar.dart';
 import 'package:okuur/routes/home/components/weekly_series.dart';
 
@@ -36,14 +35,12 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 18,),
                   WeeklyCalendar(),
                   SizedBox(height: 18,),
-                  OperationButtons(),
-                  SizedBox(height: 18,),
                   CurrentBookAndDiscover(),
                   SizedBox(height: 18,),
                   WeeklySeries(weeklySeries: [1,1,1,1,0,0,0],currentSeries: 34),
                   SizedBox(height: 18,),
                   MiniPagesInfo(dailyGoal: 40,goalCount: 6,),
-                  SizedBox(height: 18,),
+                  SizedBox(height: 64,)
                 ],
               ),
             ),

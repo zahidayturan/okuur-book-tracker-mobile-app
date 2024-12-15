@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/routes/home/home.dart';
-import 'package:okuur/routes/library/library.dart';
-import 'package:okuur/routes/social/social.dart';
-import 'package:okuur/routes/statistics/statistics.dart';
+import 'package:okuur/routes/addBook/add_book.dart';
+import 'package:okuur/routes/addLog/add_log.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class BottomNavBar extends StatefulWidget {
   
@@ -29,10 +28,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   OkuurController controller = Get.find();
 
+  bool toButtonVisible = false;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 64,
+    return SizedBox(
+      height: 160,
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
@@ -45,26 +46,38 @@ class _BottomNavBarState extends State<BottomNavBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                getIconAndText(context, "assets/icons/navbar/home", "Ana Sayfa",0,const HomePage()),
-                getIconAndText(context, "assets/icons/navbar/stat", "İstatistik",1,const StatisticsPage()),
-                getIconAndText(context, "assets/icons/navbar/social", "Sosyal",2,const SocialPage()),
-                getIconAndText(context, "assets/icons/navbar/lib", "Kitaplık",3,const LibraryPage()),
-                SizedBox(width: 54)
+                getIconAndText(context, "assets/icons/navbar/home", "Ana Sayfa",0),
+                getIconAndText(context, "assets/icons/navbar/stat", "İstatistik",1),
+                getIconAndText(context, "assets/icons/navbar/social", "Sosyal",2),
+                getIconAndText(context, "assets/icons/navbar/lib", "Kitaplık",3),
+                const SizedBox(width: 54)
               ],
             ),
           ),
           Positioned(
               right: 16,
+              bottom: 120,
+              child: toButton(context,"Okuma Ekle",4,colors.blueMid,const AddLogPage())),
+          Positioned(
+              right: 16,
+              bottom: 70,
+              child: toButton(context,"Kitap Ekle",4,colors.green,const AddBookPage())),
+          Positioned(
+              right: 16,
+              bottom: 8,
               child: addButton(context,"Ekle",4))
         ],
       ),
     );
   }
 
-  Obx getIconAndText(BuildContext context,String path,String text,int mode,Widget pageName){
+  Obx getIconAndText(BuildContext context,String path,String text,int mode){
     return Obx(() => InkWell(
       onTap: () {
           controller.setHomePageCurrentMode(mode);
+          setState(() {
+            toButtonVisible = false;
+          });
       },
       child: SizedBox(
         height: 54,
@@ -104,27 +117,65 @@ class _BottomNavBarState extends State<BottomNavBar> {
   GestureDetector addButton(BuildContext context,String text,int mode){
     return GestureDetector(
       onTap: () {
-        //controller.setHomePageCurrentMode(0);
+        setState(() {
+          toButtonVisible = !toButtonVisible;
+        });
       },
       child: Container(
-        width: 54,
-        height: 54,
-        padding: EdgeInsets.all(3),
-        margin: EdgeInsets.only(bottom: 8),
+        width: 56,
+        height: 56,
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: colors.orange,
+            borderRadius: BorderRadius.circular(50),
+            color: toButtonVisible ? colors.greenDark : colors.orange,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: Icon(Icons.add_rounded,color: colors.grey,size: 28),
+            child: Icon(toButtonVisible ? Icons.close_rounded : Icons.add_rounded,color: colors.grey,size: 28),
           ),
         ),
+      ),
+    );
+  }
+
+  GestureDetector toButton(BuildContext context,String text,int mode,Color color,Widget pageName){
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          toButtonVisible = !toButtonVisible;
+        });
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 100),
+            pageBuilder: (context, animation, nextAnimation) {
+              return pageName;  // Dinamik olarak pageName'i buraya koyuyoruz
+            },
+            reverseTransitionDuration: const Duration(milliseconds: 1),
+            transitionsBuilder: (context, animation, nextAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        height: toButtonVisible ? 40 : 0,
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: color,
+        ),
+        child: Center(child: RegularText(texts: text,size: "m",color: colors.grey,)),
       ),
     );
   }

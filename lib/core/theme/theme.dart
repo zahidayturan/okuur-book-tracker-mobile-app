@@ -31,7 +31,7 @@ class AppTheme {
     ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: colors.white,
-          unselectedItemColor: colors.greenDark,
+          unselectedItemColor: Color(0XFF5A5A5A),
           selectedItemColor: colors.grey
       ),
       buttonTheme: ButtonThemeData(
@@ -74,7 +74,7 @@ class AppTheme {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: colors.black,
-        unselectedItemColor: colors.grey,
+        unselectedItemColor: Color(0XFFA1A1A1),
         selectedItemColor: colors.blackLight
     ),
     buttonTheme: ButtonThemeData(

@@ -29,7 +29,7 @@ class _OtherPageState extends State<OtherPage> {
                   SizedBox(height: 12,),
                   PageHeaderTitle(
                       title: "Diğer",
-                      pathName: "other",
+                      pathName: "assets/icons/navbar/lib_d.png",
                       subtitle: "Kolay işlem menüleri\nve seçenekler"
                   ).getTitle(context)
                 ],

@@ -29,9 +29,10 @@ class _SocialPageState extends State<SocialPage> {
                   const SizedBox(height: 12,),
                   PageHeaderTitle(
                       title: "Sosyal",
-                      pathName: "social",
+                      pathName: "assets/icons/navbar/social_d.png",
                       subtitle: ""
-                  ).getTitle(context)
+                  ).getTitle(context),
+                  const SizedBox(height: 64,)
                 ],
               ),
             ),

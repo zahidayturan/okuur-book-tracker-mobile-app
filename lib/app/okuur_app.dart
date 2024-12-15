@@ -7,7 +7,6 @@ import 'package:okuur/controllers/profile_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/home/home.dart';
 import 'package:okuur/routes/library/library.dart';
-import 'package:okuur/routes/others/others.dart';
 import 'package:okuur/routes/profile/profile.dart';
 import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';

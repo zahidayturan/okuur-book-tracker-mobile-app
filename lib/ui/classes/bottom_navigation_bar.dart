@@ -62,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   Obx getIconAndText(BuildContext context,String path,String text,int mode,Widget pageName){
-    return Obx(() => GestureDetector(
+    return Obx(() => InkWell(
       onTap: () {
           controller.setHomePageCurrentMode(mode);
       },
@@ -104,7 +104,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   GestureDetector addButton(BuildContext context,String text,int mode){
     return GestureDetector(
       onTap: () {
-        controller.setHomePageCurrentMode(0);
+        //controller.setHomePageCurrentMode(0);
       },
       child: Container(
         width: 54,
@@ -112,7 +112,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         padding: EdgeInsets.all(3),
         margin: EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(50),
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: Container(

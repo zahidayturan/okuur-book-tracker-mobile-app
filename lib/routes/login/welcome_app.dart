@@ -8,6 +8,7 @@ import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/login/create_account.dart';
 import 'package:okuur/routes/login/google_login.dart';
 import 'package:okuur/routes/login/login_account.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/screens/internet_connection.dart';
 import 'package:okuur/ui/utils/device_utils.dart';
@@ -254,7 +255,7 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text("veya",style: TextStyle(color: Theme.of(context).colorScheme.primaryContainer,fontSize: 14,fontFamily: "FontMedium"),),
+          child: RegularText(texts: "veya",color: Theme.of(context).colorScheme.primaryContainer),
         ),
         Expanded(
           child: Container(

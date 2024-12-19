@@ -148,7 +148,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: Text(text,style: TextStyle(color: textColor,fontSize: 13),textAlign: TextAlign.center,)),
+            Expanded(child: RegularText(texts: text,color: textColor,size: "m",align: TextAlign.center)),
             Container(
               constraints: const BoxConstraints(minWidth: 30,minHeight: 20),
                 decoration: BoxDecoration(
@@ -157,7 +157,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                 ),
                 child: Center(child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text(stars.toString(),style: TextStyle(color: colors.grey,fontSize: 13),),
+                  child: RegularText(texts:stars.toString(),color: colors.grey,size: "m"),
                 )))
           ],
         ),

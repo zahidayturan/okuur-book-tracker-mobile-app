@@ -11,6 +11,7 @@ import 'package:okuur/routes/profile/profile.dart';
 import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class OkuurApp extends StatefulWidget {
   const OkuurApp({
@@ -86,7 +87,7 @@ class _OkuurAppState extends State<OkuurApp> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12.0))
         ),
-        title: const Text('Uygulamadan çıkmak mı istiyorsunuz?',textAlign: TextAlign.center,style: TextStyle(fontSize: 16),),
+        title: const RegularText(texts: 'Uygulamadan çıkmak mı istiyorsunuz?',align: TextAlign.center,size: "xl"),
         actions: [
           Row(
             children: [
@@ -112,7 +113,7 @@ class _OkuurAppState extends State<OkuurApp> {
                 color: fill ? colors.blue : null,
                 border: fill ? null : Border.all(color: colors.blue,width: 1)
             ),
-            child: Center(child: Text(text,style: TextStyle(color: fill ? colors.white : colors.blue),))),
+            child: Center(child: RegularText(texts: text,color: fill ? colors.white : colors.blue))),
       ),
     );
   }

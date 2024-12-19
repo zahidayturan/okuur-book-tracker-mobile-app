@@ -46,11 +46,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                getIconAndText(context, "assets/icons/navbar/home", "Ana Sayfa",0),
-                getIconAndText(context, "assets/icons/navbar/stat", "İstatistik",1),
-                getIconAndText(context, "assets/icons/navbar/social", "Sosyal",2),
-                getIconAndText(context, "assets/icons/navbar/lib", "Kitaplık",3),
-                const SizedBox(width: 54)
+                Expanded(flex:1,child: getIconAndText(context, "assets/icons/navbar/home", "Ana Sayfa",0)),
+                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/stat", "İstatistik",1)),
+                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/social", "Sosyal",2)),
+                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/lib", "Kitaplık",3)),
+                Expanded(flex:1, child: SizedBox())
               ],
             ),
           ),
@@ -81,7 +81,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       },
       child: SizedBox(
         height: 54,
-        width: 54,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -101,13 +100,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
               height: mode == controller.homePageCurrentMode.value ? 0: 12,
-              child: Text(text,style: TextStyle(
-                  fontSize: 10,
-                  color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
-                  fontFamily: "FontMedium",
-                  overflow: TextOverflow.ellipsis
-              ),),
-            )
+              child: RegularText(texts: text,
+                  size: "xs",
+                  color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor
+              ),)
           ],
         ),
       ),
@@ -155,7 +151,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 100),
             pageBuilder: (context, animation, nextAnimation) {
-              return pageName;  // Dinamik olarak pageName'i buraya koyuyoruz
+              return pageName;
             },
             reverseTransitionDuration: const Duration(milliseconds: 1),
             transitionsBuilder: (context, animation, nextAnimation, child) {

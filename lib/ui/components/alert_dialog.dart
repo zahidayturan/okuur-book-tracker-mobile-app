@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 AppColors colors = AppColors();
 void showAlert(String title,String message){
   showDialog(
@@ -23,7 +24,7 @@ void showAlert(String title,String message){
                       color: colors.blue,
                       borderRadius: const BorderRadius.all(Radius.circular(8))
                     ),
-                    child: Center(child: Text("Tamam",style: TextStyle(color: colors.white),))))
+                    child: Center(child: RegularText(texts: "Tamam",color: colors.white))))
           ],
         );
       });

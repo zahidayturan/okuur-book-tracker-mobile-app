@@ -290,12 +290,31 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RegularText(texts: "Okuma Detayı",style: FontStyle.italic,size: "m",),
+                    const RegularText(texts: "Okuma Detayı",style: FontStyle.italic,size: "m",),
                     Icon(Icons.info_outline_rounded,size: 16,color: Theme.of(context).colorScheme.secondary)
                   ],
                 ),
-                SizedBox(height: 8),
-                RegularText(texts: "48 sayfa / 40 dakika / 40 puan"),
+                const SizedBox(height: 4),
+                RegularText(texts: lists[selectedItem]),
+                const RegularText(texts: "48 sayfa / 40 dakika / 40 puan"),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    opButton(
+                      "Düzenle",
+                      Icons.edit_rounded,
+                      Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    opButton(
+                        "Okuma Kaydını Sil",
+                        Icons.delete_outline_rounded,
+                        colors.red)
+                  ],
+                )
               ],
             ),
           ),
@@ -350,6 +369,21 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ],
         )
       ],
+    );
+  }
+
+  Widget opButton(String text,IconData icon,Color iconColor){
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
+      child: Row(
+        children: [
+          Icon(icon,size: 16,color: iconColor),
+          const SizedBox(width: 4),
+          RegularText(texts: text,color: iconColor,size: "m")
+        ],
+      ),
     );
   }
 }

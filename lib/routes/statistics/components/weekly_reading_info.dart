@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
 class WeeklyReadingInfo extends StatefulWidget {
@@ -34,7 +35,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Son 7 Gün",style: TextStyle(fontSize: 15,color: Theme.of(context).colorScheme.primaryContainer),),
+              RegularText(texts: "Son 7 Gün",size: "l",color: Theme.of(context).colorScheme.primaryContainer),
               InkWell(
                 onTap: () {
                 },
@@ -73,7 +74,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
               align: TextAlign.center,
           ),
           const SizedBox(height: 12,),
-          Text("Günlük okuma hedefin 50 sayfa.",style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
+          const RegularText(texts: "Günlük okuma hedefin 50 sayfa.",size: "s",align: TextAlign.center)
         ],
       ),
     );
@@ -88,7 +89,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
 
         return Column(
           children: [
-            Text(text, style: TextStyle(color: colors.blueLight,fontSize: 11)),
+            RegularText(texts: text, color: colors.blueLight,size: "xs"),
             const SizedBox(height: 4,),
             ClipRRect(
               borderRadius: BorderRadius.circular(100),
@@ -114,7 +115,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
               ),
             ),
             const SizedBox(height: 4,),
-            Text(current.toString(), style: TextStyle(color: Theme.of(context).colorScheme.primaryContainer,fontSize: 11)),
+            RegularText(texts: current.toString(), color: Theme.of(context).colorScheme.primaryContainer,size: "xs"),
           ],
         );
       },

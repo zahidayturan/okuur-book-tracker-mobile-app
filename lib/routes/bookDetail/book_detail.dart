@@ -32,13 +32,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   const SizedBox(height: 12),
                   bookMiniInfo(),
                   const SizedBox(height: 18),
+                  totalRead(),
+                  const SizedBox(height: 18,),
                   bookPageState(),
                   const SizedBox(height: 18,),
                   bookGoal(),
                   const SizedBox(height: 18,),
                   bookRecords(),
-                  const SizedBox(height: 18,),
-                  totalRead(),
                   const SizedBox(height: 18,)
                 ],
               ),
@@ -223,7 +223,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
   int selectedItem = 0;
-  List<String> lists = ["23.11\n2024\nCuma", "24.11\n2024\nCtsi", "25.11\n2024\nPzar","23.11\n2024\nCuma", "24.11\n2024\nCtsi", "25.11\n2024\nPzar"];
+  List<String> lists = [
+    "28.11\n2024", "27.11\n2024", "26.11\n2024",
+    "25.11\n2024", "24.11\n2024", "23.11\n2024"
+  ];
 
   Widget bookRecords() {
     return BaseContainer(
@@ -238,78 +241,88 @@ class _BookDetailPageState extends State<BookDetailPage> {
             ],
           ),
           const SizedBox(height: 12),
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              SizedBox(
-                height: 124,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: lists.length,
-                  separatorBuilder: (context, index) => const SizedBox(width: 10),
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        AnimatedContainer(
-                          curve: Curves.easeInOut,
-                          duration: const Duration(milliseconds: 400),
-                          height: 124,
-                          width: selectedItem == index ? 12 : 0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: BorderRadius.circular(50)
-                          ),
-                          ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedItem = index;
-                            });
-                          },
-                          child: AnimatedContainer(
-                            curve: Curves.easeInOut,
-                            duration: const Duration(milliseconds: 400),
-                            width: 58,
-                            height: 72,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: selectedItem == index ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).colorScheme.onPrimaryContainer,
-                              borderRadius: BorderRadius.circular(selectedItem == index ? 16 : 8),
-                              border: Border.all(width: 1,color: Theme.of(context).scaffoldBackgroundColor)
-                            ),
-                            child: Center(
-                              child: RegularText(
-                                texts: lists[index],
-                                align: TextAlign.center,
-                                size: "m",
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
+          SizedBox(
+            height: 60,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: lists.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 10),
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      selectedItem = index;
+                    });
                   },
+                  child: AnimatedContainer(
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 400),
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                    decoration: BoxDecoration(
+                      color: selectedItem == index
+                          ? Theme.of(context).scaffoldBackgroundColor
+                          : Theme.of(context).colorScheme.onPrimaryContainer,
+                      borderRadius: BorderRadius.circular(selectedItem == index ? 16 : 8),
+                      border: Border.all(
+                        width: 1,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                    ),
+                    child: Center(
+                      child: RegularText(
+                        texts: lists[index],
+                        align: TextAlign.center,
+                        size: "m",
+                        maxLines: 3,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 8),
+          BaseContainer(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const RegularText(texts: "Okuma Detayı",style: FontStyle.italic,size: "m",),
+                    Icon(Icons.info_outline_rounded,size: 16,color: Theme.of(context).colorScheme.secondary)
+                  ],
                 ),
-              ),
-              BaseContainer(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  height: 32,
-                  radius: 16,
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      RegularText(texts: "48 sayfa"),
-                      RegularText(texts: "40 dakika"),
-                      RegularText(texts: "40 puan")
-                    ],
-                  )),
-            ],
+                const SizedBox(height: 4),
+                RegularText(texts: lists[selectedItem]),
+                const RegularText(texts: "48 sayfa / 40 dakika / 40 puan"),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    opButton(
+                      "Düzenle",
+                      Icons.edit_rounded,
+                      Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    opButton(
+                        "Okuma Kaydını Sil",
+                        Icons.delete_outline_rounded,
+                        colors.red)
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),
     );
   }
+
 
   Widget totalRead(){
     return BaseContainer(
@@ -356,6 +369,21 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ],
         )
       ],
+    );
+  }
+
+  Widget opButton(String text,IconData icon,Color iconColor){
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
+      child: Row(
+        children: [
+          Icon(icon,size: 16,color: iconColor),
+          const SizedBox(width: 4),
+          RegularText(texts: text,color: iconColor,size: "m")
+        ],
+      ),
     );
   }
 }

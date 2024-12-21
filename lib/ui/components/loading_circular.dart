@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/ui/components/circular_progress.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 
 class LoadingDialog {
   static Future<void> showLoading(BuildContext context, {String? message}) async {
@@ -17,11 +18,11 @@ class LoadingDialog {
               children: [
                 GetProgressIndicator().getCircular(44, Theme.of(context).colorScheme.inversePrimary),
                 if (message != null) ...[
-                  SizedBox(height: 16),
-                  Text(
-                    message,
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
+                  const SizedBox(height: 16),
+                  RegularText(
+                    texts: message,
+                    color: Colors.white, size: "xl",
+                    align: TextAlign.center,
                   ),
                 ],
               ],

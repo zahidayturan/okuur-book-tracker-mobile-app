@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
@@ -26,6 +27,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   AppColors colors = AppColors();
   int currentPage = 0;
   HomeController controller = Get.find();
+  BookDetailController bookDetailController = Get.find();
 
 
   @override

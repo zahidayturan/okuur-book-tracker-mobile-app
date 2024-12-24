@@ -290,7 +290,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const RegularText(texts: "Okuma Detayı",style: FontStyle.italic,size: "m",),
+                    const RegularText(texts: "Seçili Okuma Detayı",style: FontStyle.italic,size: "m",),
                     Icon(Icons.info_outline_rounded,size: 16,color: Theme.of(context).colorScheme.secondary)
                   ],
                 ),

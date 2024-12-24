@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:okuur/app/okuur_app.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/theme/theme.dart';
-import 'package:okuur/core/utils/firebase_auth_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/login/welcome_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

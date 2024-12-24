@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
@@ -33,6 +34,7 @@ class _OkuurAppState extends State<OkuurApp> {
     Get.put(LibraryController());
     Get.put(HomeController());
     Get.put(ProfileController());
+    Get.put(BookDetailController());
     controller = Get.find();
   }
 

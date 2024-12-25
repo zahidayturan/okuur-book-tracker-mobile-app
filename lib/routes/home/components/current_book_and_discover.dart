@@ -9,6 +9,7 @@ import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/utils/simple_calc.dart';
 
 class CurrentBookAndDiscover extends StatefulWidget {
 
@@ -105,16 +106,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     );
   }
 
-  int calculateRate(int page,int currentPage){
-    if(page > 0 && (currentPage < page)){
-      return ((currentPage / page)*100).toInt();
-    }else if(currentPage >= page){
-      return 100;
-    } else{
-      return 0;
-    }
-  }
-
   Widget bookInfo(List<OkuurBookInfo> list){
     return SizedBox(
       height: 104,
@@ -203,7 +194,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       //double outerContainerHeight = constraints.maxHeight;
-                      int rate = calculateRate(list[index].pageCount,list[index].currentPage);
+                      int rate = OkuurCalc.calcPercentage(list[index].pageCount,list[index].currentPage).toInt();
                       double innerContainerHeight = 96 * (rate/100);
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(4),

@@ -9,6 +9,7 @@ import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_and_icon_button.dart';
+import 'package:okuur/ui/utils/simple_calc.dart';
 
 class BookDetailPage extends StatefulWidget {
   const BookDetailPage({super.key});
@@ -66,9 +67,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
         const SizedBox(height: 12),
         bookMiniInfo(controller.okuurBookInfo!),
         const SizedBox(height: 18),
-        totalRead(),
+        totalRead(controller.okuurBookInfo!),
         const SizedBox(height: 18,),
-        bookPageState(),
+        bookPageState(controller.okuurBookInfo!),
         const SizedBox(height: 18,),
         bookGoal(),
         const SizedBox(height: 18,),
@@ -139,23 +140,23 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
 
-  Widget bookPageState(){
+  Widget bookPageState(OkuurBookInfo okuurBookInfo){
+    int rate = OkuurCalc.calcPercentage(okuurBookInfo.pageCount,okuurBookInfo.currentPage).toInt();
     return BaseContainer(
       radius: 12,
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RegularText(texts: "Bu Kitabı Okuyorsun",style: FontStyle.italic),
-              RegularText(texts: "240. sayfadasın",size: "m")
+              const RegularText(texts: "Bu Kitabı Okuyorsun",style: FontStyle.italic),
+              RegularText(texts: "${okuurBookInfo.currentPage}. sayfadasın",size: "m")
             ],
           ),
           const SizedBox(height: 12),
           LayoutBuilder(
             builder: (context, constraints) {
               double outerContainerHeight = constraints.maxWidth;
-              int rate = 50;
               double innerContainerWidth = outerContainerHeight * (rate/100);
               return Row(
                 children: [
@@ -189,8 +190,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ],
               );
             },
-          ),
-
+          )
         ],
       ),
     );
@@ -205,14 +205,14 @@ class _BookDetailPageState extends State<BookDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RegularText(texts: "Bitirme Hedefin",style: FontStyle.italic),
-              RegularText(texts: "12 gün",size: "m")
+              RegularText(texts: "? gün",size: "m")
             ],
           ),
           const SizedBox(height: 12),
           LayoutBuilder(
             builder: (context, constraints) {
               double outerContainerHeight = constraints.maxWidth;
-              int rate = 33;
+              int rate = 0;
               double innerContainerWidth = outerContainerHeight * (rate/100);
               return ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -243,8 +243,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const RegularText(texts: "Başlangıç 22.11.2024",size: "s"),
-              RegularText(texts: "Kalan 8 gün",size: "m",color: colors.orange,)
+              const RegularText(texts: "Başlangıç ?",size: "s"),
+              RegularText(texts: "Kalan ? gün",size: "m",color: colors.orange,)
             ],
           ),
         ],
@@ -253,8 +253,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
   int selectedItem = 0;
   List<String> lists = [
-    "28.11\n2024", "27.11\n2024", "26.11\n2024",
-    "25.11\n2024", "24.11\n2024", "23.11\n2024"
+    "?"
   ];
 
   Widget bookRecords() {
@@ -266,7 +265,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RegularText(texts: "Okumaların", style: FontStyle.italic),
-              RegularText(texts: "8 kayıt", size: "m"),
+              RegularText(texts: "? kayıt", size: "m"),
             ],
           ),
           const SizedBox(height: 12),
@@ -325,7 +324,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ),
                 const SizedBox(height: 4),
                 RegularText(texts: lists[selectedItem]),
-                const RegularText(texts: "48 sayfa / 40 dakika / 40 puan"),
+                const RegularText(texts: "? sayfa / ? dakika / ? puan"),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -353,7 +352,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
 
-  Widget totalRead(){
+  Widget totalRead(OkuurBookInfo okuurBookInfo){
     return BaseContainer(
       radius: 12,
       child: Column(
@@ -364,9 +363,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              iconAndText("assets/icons/page.png", "sayfa","240"),
-              iconAndText("assets/icons/clock.png", "dakika","254"),
-              iconAndText("assets/icons/point.png", "puan","360"),
+              iconAndText("assets/icons/page.png", "sayfa",okuurBookInfo.currentPage.toString()),
+              iconAndText("assets/icons/clock.png", "dakika",okuurBookInfo.readingTime.toString()),
+              iconAndText("assets/icons/point.png", "puan","?"),
             ],),
           const SizedBox(height: 6),
         ],

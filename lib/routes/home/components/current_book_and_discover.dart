@@ -138,7 +138,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              bookDetailController.setBookId(list[index].name);
+              bookDetailController.setBookInfo(list[index]);
               Navigator.push(
                 context,
                 PageRouteBuilder(

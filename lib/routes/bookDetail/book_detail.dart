@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/image_shower.dart';
@@ -40,21 +41,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             child: Center(
               child: Obx(() => controller.detailLoading.value
                   ? bookDetailLoadingBox(context)
-                  : Column(
-                  children: [
-                    const SizedBox(height: 12),
-                    bookMiniInfo(),
-                    const SizedBox(height: 18),
-                    totalRead(),
-                    const SizedBox(height: 18,),
-                    bookPageState(),
-                    const SizedBox(height: 18,),
-                    bookGoal(),
-                    const SizedBox(height: 18,),
-                    bookRecords(),
-                    const SizedBox(height: 18,)
-                  ],
-                ),
+                  : bookDetail(),
               ),
             ),
           ),
@@ -63,7 +50,35 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
 
-  Widget bookMiniInfo() {
+  Widget bookDetail(){
+    return controller.okuurBookInfo == null
+        ? Column(
+      children: [
+        const SizedBox(height: 12),
+        Align(alignment:Alignment.topLeft,child: popButton(context)),
+        const SizedBox(height: 8),
+        const RegularText(texts: "Kitap bilgileri yüklenirken\nbir hata oluştu",maxLines: 6,size: "l",align: TextAlign.center,),
+        const SizedBox(height: 18),
+      ],
+    )
+      : Column(
+      children: [
+        const SizedBox(height: 12),
+        bookMiniInfo(controller.okuurBookInfo!),
+        const SizedBox(height: 18),
+        totalRead(),
+        const SizedBox(height: 18,),
+        bookPageState(),
+        const SizedBox(height: 18,),
+        bookGoal(),
+        const SizedBox(height: 18,),
+        bookRecords(),
+        const SizedBox(height: 18,)
+      ],
+    );
+  }
+
+  Widget bookMiniInfo(OkuurBookInfo okuurBookInfo) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,17 +90,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
             children: [
               popButton(context),
               const SizedBox(height: 8),
-              const RegularText(
-                  texts: "Kralın Dönüşü",
+              RegularText(
+                  texts: okuurBookInfo.name,
                   size: "xl",
                   maxLines: 2,
                   weight: FontWeight.w700),
-              const RegularText(
-                  texts: "J.R.R. Tolkien",
+              RegularText(
+                  texts: okuurBookInfo.author,
                   size: "m",
                   style: FontStyle.italic),
-              const RegularText(
-                texts: "Roman - 360 sayfa",
+              RegularText(
+                texts: "${okuurBookInfo.type} - ${okuurBookInfo.pageCount} sayfa",
                 size: "m",
               ),
               const Spacer(),
@@ -119,7 +134,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 border: Border.all(
                     width: 1,
                     color: Theme.of(context).colorScheme.onPrimaryContainer)),
-            child: imageShower("none")),
+            child: imageShower(okuurBookInfo.imageLink)),
       ],
     );
   }

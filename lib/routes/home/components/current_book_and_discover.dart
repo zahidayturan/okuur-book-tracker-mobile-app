@@ -116,45 +116,46 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   }
 
   Widget bookInfo(List<OkuurBookInfo> list){
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            opaque: false,
-            transitionDuration: const Duration(milliseconds: 200),
-            pageBuilder: (context, animation, nextanim) => const BookDetailPage(),
-            reverseTransitionDuration: const Duration(milliseconds: 1),
-            transitionsBuilder: (context, animation, nexttanim, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
+    return SizedBox(
+      height: 104,
+      child: list.isNotEmpty ? PageView.builder(
+        itemCount: list.length,
+        onPageChanged: (value) async {
+          setState(() {
+            currentPage = value;
+          });
+
+          int tempData0 = list[value].currentPage;
+          setState(() {
+            list[value].currentPage = 0;
+          });
+
+          await Future.delayed(const Duration(milliseconds: 1000));
+          setState(() {
+            list[value].currentPage = tempData0;
+          });
+        },
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              bookDetailController.setBookId(list[index].name);
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  opaque: false,
+                  transitionDuration: const Duration(milliseconds: 200),
+                  pageBuilder: (context, animation, nextanim) => const BookDetailPage(),
+                  reverseTransitionDuration: const Duration(milliseconds: 1),
+                  transitionsBuilder: (context, animation, nexttanim, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
               );
             },
-          ),
-        );
-      },
-      child: SizedBox(
-        height: 104,
-        child: list.isNotEmpty ? PageView.builder(
-          itemCount: list.length,
-          onPageChanged: (value) async {
-            setState(() {
-              currentPage = value;
-            });
-
-            int tempData0 = list[value].currentPage;
-            setState(() {
-              list[value].currentPage = 0;
-            });
-
-            await Future.delayed(const Duration(milliseconds: 1000));
-            setState(() {
-              list[value].currentPage = tempData0;
-            });
-          },
-          itemBuilder: (context, index) {
-            return Padding(
+            child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -231,13 +232,13 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   ),
                 ],
               ),
-            );
-        } ) :
-        const Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: RegularText(texts: "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",size:"m",align:TextAlign.center,maxLines: 4),
-          ),
+            ),
+          );
+      } ) :
+      const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: RegularText(texts: "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",size:"m",align:TextAlign.center,maxLines: 4),
         ),
       ),
     );

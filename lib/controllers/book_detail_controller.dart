@@ -12,4 +12,12 @@ class BookDetailController extends GetxController {
     bookId.value = null;
   }
 
+  var detailLoading = Rx<bool>(false);
+
+  Future<void> getBookDetail() async {
+    detailLoading.value = true;
+
+    detailLoading.value = false;
+  }
+
 }

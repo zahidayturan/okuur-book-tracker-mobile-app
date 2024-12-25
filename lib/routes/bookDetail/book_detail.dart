@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/pop_button.dart';
@@ -16,6 +19,14 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
   AppColors colors = AppColors();
 
+  BookDetailController controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getBookDetail();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,20 +38,23 @@ class _BookDetailPageState extends State<BookDetailPage> {
           padding: const EdgeInsets.only(right: 12, left: 12),
           child: SingleChildScrollView(
             child: Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 12),
-                  bookMiniInfo(),
-                  const SizedBox(height: 18),
-                  totalRead(),
-                  const SizedBox(height: 18,),
-                  bookPageState(),
-                  const SizedBox(height: 18,),
-                  bookGoal(),
-                  const SizedBox(height: 18,),
-                  bookRecords(),
-                  const SizedBox(height: 18,)
-                ],
+              child: Obx(() => controller.detailLoading.value
+                  ? bookDetailLoadingBox(context)
+                  : Column(
+                  children: [
+                    const SizedBox(height: 12),
+                    bookMiniInfo(),
+                    const SizedBox(height: 18),
+                    totalRead(),
+                    const SizedBox(height: 18,),
+                    bookPageState(),
+                    const SizedBox(height: 18,),
+                    bookGoal(),
+                    const SizedBox(height: 18,),
+                    bookRecords(),
+                    const SizedBox(height: 18,)
+                  ],
+                ),
               ),
             ),
           ),

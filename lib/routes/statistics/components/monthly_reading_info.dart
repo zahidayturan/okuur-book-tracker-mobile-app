@@ -84,7 +84,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
             ],
           ),
           const SizedBox(height: 12,),
-          Text("Hedefin için günde en az 50 sayfa okumalısın. ",style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
+          Text("Hedefin için günde en az ? sayfa okumalısın. ",style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
         ],
       ),
     );

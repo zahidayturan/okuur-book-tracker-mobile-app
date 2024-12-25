@@ -79,7 +79,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
             RegularText(
               texts:days[i],
               size: "xs",
-              color: Theme.of(context).colorScheme.primary,
+              color: series[i] == 0 ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
             ),
           ],
         ),

@@ -9,6 +9,7 @@ import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
 
 class CurrentBookAndDiscover extends StatefulWidget {
@@ -106,6 +107,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     );
   }
 
+  int tempData0 = 0;
   Widget bookInfo(List<OkuurBookInfo> list){
     return SizedBox(
       height: 104,
@@ -116,7 +118,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
             currentPage = value;
           });
 
-          int tempData0 = list[value].currentPage;
+          tempData0 = list[value].currentPage;
           setState(() {
             list[value].currentPage = 0;
           });
@@ -129,6 +131,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
+              list[index].currentPage = tempData0;
               bookDetailController.setBookInfo(list[index]);
               Navigator.push(
                 context,
@@ -179,9 +182,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                                   RegularText(texts:list[index].author, size: "s"),
                                   const Spacer(),
                                   RegularText(texts:"${list[index].currentPage}.sayfadasın / ${list[index].pageCount} sayfa", size: "xs", maxLines: 2),
-                                  const RegularText(texts:"Hedefin 12 günde bitirmek. 4/12", size: "xs", maxLines: 2),
+                                  const RegularText(texts:"Hedefin ? günde bitirmek. ?/?", size: "xs", maxLines: 2),
                                   const Spacer(),
-                                  const RegularText(texts:"Başl. 22.08.2024", size: "xs", align:TextAlign.end)
+                                  RegularText(texts:"Başl. ${OkuurDateFormatter.convertDate(list[index].startingDate)}", size: "xs", align:TextAlign.end)
                                 ],
                               ),
                             ),

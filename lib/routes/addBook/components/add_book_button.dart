@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
@@ -23,6 +24,7 @@ class _AddBookButtonState extends State<AddBookButton> {
   final BookOperations bookOperations = BookOperations();
   final AddBookController controller = Get.find();
   final LibraryController libraryController = Get.find();
+  final HomeController homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class _AddBookButtonState extends State<AddBookButton> {
     try {
       await bookOperations.insertBookInfo(bookInfo);
       await libraryController.fetchBooks();
+      await homeController.fetchCurrentlyReadBooks();
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {
@@ -65,6 +68,7 @@ class _AddBookButtonState extends State<AddBookButton> {
       }
       if (controller.bookCurrentStatus.value == 1) {
         currentPage = controller.bookCurrentPage.value;
+        readingTime = (currentPage*1.5).toInt();
       }
       status = controller.bookInit.value == 0 ? 1 : 0;
     } else {

@@ -45,7 +45,7 @@ class OkuurTextFormField {
             hintText: hint,
             counterText: "",
             labelText: label,
-            errorStyle: TextStyle(height: 0),
+            errorStyle: const TextStyle(height: 0),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             labelStyle: TextStyle(
                 color: colors.blue

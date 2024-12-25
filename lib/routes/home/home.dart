@@ -31,13 +31,13 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   SizedBox(height: 18,),
-                  HomeProfileInfo(userName: "Kullanıcı Adı",pageCount: 345),
+                  HomeProfileInfo(userName: "?",pageCount: 0),
                   SizedBox(height: 18,),
                   WeeklyCalendar(),
                   SizedBox(height: 18,),
                   CurrentBookAndDiscover(),
                   SizedBox(height: 18,),
-                  WeeklySeries(weeklySeries: [1,1,1,1,0,0,0],currentSeries: 34),
+                  WeeklySeries(weeklySeries: [0,0,0,0,0,0,0],currentSeries: 0),
                   SizedBox(height: 18,),
                   MiniPagesInfo(dailyGoal: 40,goalCount: 6,),
                   SizedBox(height: 64,)

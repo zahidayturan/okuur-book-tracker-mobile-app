@@ -18,7 +18,7 @@ final LibraryController libraryController = Get.find();
 Row bookContainerLibrary(OkuurBookInfo bookInfo, String index, BuildContext context) {
   bool isNotStarted = bookInfo.status == 0;
   bool isReading = bookInfo.status % 2 == 1;
-  String percentage = OkuurCalc.calcPercentage(bookInfo.pageCount, bookInfo.currentPage);
+  String percentage = OkuurCalc.calcPercentage(bookInfo.pageCount, bookInfo.currentPage).toStringAsFixed(1);
 
   return Row(
     children: [

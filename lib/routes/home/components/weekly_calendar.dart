@@ -130,17 +130,17 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   List<Map<String,String>> tempData = [
     {
-      "bookName":"Kralın Dönüşü",
-      "page" : "46",
-      "minute": "54",
-      "point": "40",
+      "bookName":"?",
+      "page" : "?",
+      "minute": "?",
+      "point": "?",
       "info":"1"
     },
     {
-      "bookName":"İki Kule",
-      "page" : "40",
-      "minute": "60",
-      "point": "32",
+      "bookName":"?",
+      "page" : "?",
+      "minute": "?",
+      "point": "?",
       "info":"0"
     }
   ];

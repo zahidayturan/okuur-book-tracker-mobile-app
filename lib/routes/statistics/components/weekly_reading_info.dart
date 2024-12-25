@@ -57,24 +57,24 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              infoBar("Pt", 50, 42),
-              infoBar("Sa", 50, 24),
-              infoBar("Ça", 50, 64),
-              infoBar("Pe", 50, 12),
-              infoBar("Cu", 50, 36),
-              infoBar("Ct", 50, 50),
-              infoBar("Pa", 50, 4)
+              infoBar("Pt", 50, 0),
+              infoBar("Sa", 50, 0),
+              infoBar("Ça", 50, 0),
+              infoBar("Pe", 50, 0),
+              infoBar("Cu", 50, 0),
+              infoBar("Ct", 50, 0),
+              infoBar("Pa", 50, 0)
             ],
           ),
           const SizedBox(height: 12,),
           RichTextWidget(
-              texts: const ["Okunan ","310"," Sayfa"],
+              texts: const ["Okunan ","?"," Sayfa"],
               colors: [Theme.of(context).colorScheme.inversePrimary],
               fontFamilies: const ["FontMedium","FontBold","FontMedium"],
               align: TextAlign.center,
           ),
           const SizedBox(height: 12,),
-          const RegularText(texts: "Günlük okuma hedefin 50 sayfa.",size: "s",align: TextAlign.center)
+          const RegularText(texts: "Günlük okuma hedefin ? sayfa.",size: "s",align: TextAlign.center)
         ],
       ),
     );

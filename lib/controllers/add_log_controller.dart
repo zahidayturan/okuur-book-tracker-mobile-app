@@ -11,7 +11,6 @@ class AddLogController extends GetxController {
     logBookId.value = id;
     bookPageCount.value = 3;
     bookCurrentlyPage.value = 1;
-    sliderBookPageCount.value = 2;
     bookPageCount.value = totalPage.toDouble();
     bookCurrentlyPage.value = currentlyPage.toDouble();
     sliderBookPageCount.value = (currentlyPage+1).toDouble();
@@ -24,7 +23,7 @@ class AddLogController extends GetxController {
   void setLogNewCurrentPage(int page) {
     logNewCurrentPage.value = page;
     bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
-    setLogReadingTime(page*1.5.toInt());
+    setLogReadingTime((bookReadingPageCount.value*1.5).toInt());
     setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
     setLogFinishingHour("${DateTime.now().hour}:${DateTime.now().minute}");
     checkAllValidate();

@@ -30,12 +30,16 @@ class CircularProgressBarState extends State<OkuurCircularProgressBar>
   @override
   void initState() {
     super.initState();
+
+    // NaN kontrolü yap ve geçerli değerleri kullan
+    final validPercentage = widget.percentage.isNaN ? 0.0 : widget.percentage;
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
 
-    _animation = Tween<double>(begin: 0.0, end: widget.percentage).animate(
+    _animation = Tween<double>(begin: 0.0, end: validPercentage).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
@@ -56,15 +60,17 @@ class CircularProgressBarState extends State<OkuurCircularProgressBar>
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
+          final animatedValue = _animation.value.isNaN ? 0.0 : _animation.value;
+
           return CustomPaint(
             painter: _CircularProgressPainter(
-              percentage: _animation.value,
+              percentage: animatedValue,
               inSideColor: widget.inSideColor,
               outSideColor: widget.outSideColor,
             ),
             child: Center(
               child: Text(
-                '${(_animation.value * 100).toStringAsFixed(1)}%',
+                '${(animatedValue * 100).toStringAsFixed(1)}%',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: widget.textColor),
               ),
@@ -109,7 +115,9 @@ class _CircularProgressPainter extends CustomPainter {
       backgroundPaint,
     );
 
-    double sweepAngle = 2 * pi * percentage;
+    final validPercentage = percentage.isNaN ? 0.0 : percentage;
+
+    double sweepAngle = 2 * pi * validPercentage;
     canvas.drawArc(
       Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),

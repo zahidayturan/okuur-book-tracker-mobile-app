@@ -9,6 +9,8 @@ import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
+import 'package:okuur/ui/utils/simple_calc.dart';
 
 class CurrentBookAndDiscover extends StatefulWidget {
 
@@ -105,56 +107,49 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     );
   }
 
-  int calculateRate(int page,int currentPage){
-    if(page > 0 && (currentPage < page)){
-      return ((currentPage / page)*100).toInt();
-    }else if(currentPage >= page){
-      return 100;
-    } else{
-      return 0;
-    }
-  }
-
+  int tempData0 = 0;
   Widget bookInfo(List<OkuurBookInfo> list){
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            opaque: false,
-            transitionDuration: const Duration(milliseconds: 200),
-            pageBuilder: (context, animation, nextanim) => const BookDetailPage(),
-            reverseTransitionDuration: const Duration(milliseconds: 1),
-            transitionsBuilder: (context, animation, nexttanim, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
+    return SizedBox(
+      height: 104,
+      child: list.isNotEmpty ? PageView.builder(
+        itemCount: list.length,
+        onPageChanged: (value) async {
+          setState(() {
+            currentPage = value;
+          });
+
+          tempData0 = list[value].currentPage;
+          setState(() {
+            list[value].currentPage = 0;
+          });
+
+          await Future.delayed(const Duration(milliseconds: 1000));
+          setState(() {
+            list[value].currentPage = tempData0;
+          });
+        },
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              list[index].currentPage = tempData0;
+              bookDetailController.setBookInfo(list[index]);
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  opaque: false,
+                  transitionDuration: const Duration(milliseconds: 200),
+                  pageBuilder: (context, animation, nextanim) => const BookDetailPage(),
+                  reverseTransitionDuration: const Duration(milliseconds: 1),
+                  transitionsBuilder: (context, animation, nexttanim, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
               );
             },
-          ),
-        );
-      },
-      child: SizedBox(
-        height: 104,
-        child: list.isNotEmpty ? PageView.builder(
-          itemCount: list.length,
-          onPageChanged: (value) async {
-            setState(() {
-              currentPage = value;
-            });
-
-            int tempData0 = list[value].currentPage;
-            setState(() {
-              list[value].currentPage = 0;
-            });
-
-            await Future.delayed(const Duration(milliseconds: 1000));
-            setState(() {
-              list[value].currentPage = tempData0;
-            });
-          },
-          itemBuilder: (context, index) {
-            return Padding(
+            child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -187,9 +182,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                                   RegularText(texts:list[index].author, size: "s"),
                                   const Spacer(),
                                   RegularText(texts:"${list[index].currentPage}.sayfadasın / ${list[index].pageCount} sayfa", size: "xs", maxLines: 2),
-                                  const RegularText(texts:"Hedefin 12 günde bitirmek. 4/12", size: "xs", maxLines: 2),
+                                  const RegularText(texts:"Hedefin ? günde bitirmek. ?/?", size: "xs", maxLines: 2),
                                   const Spacer(),
-                                  const RegularText(texts:"Başl. 22.08.2024", size: "xs", align:TextAlign.end)
+                                  RegularText(texts:"Başl. ${OkuurDateFormatter.convertDate(list[index].startingDate)}", size: "xs", align:TextAlign.end)
                                 ],
                               ),
                             ),
@@ -202,7 +197,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       //double outerContainerHeight = constraints.maxHeight;
-                      int rate = calculateRate(list[index].pageCount,list[index].currentPage);
+                      int rate = OkuurCalc.calcPercentage(list[index].pageCount,list[index].currentPage).toInt();
                       double innerContainerHeight = 96 * (rate/100);
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(4),
@@ -231,13 +226,13 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   ),
                 ],
               ),
-            );
-        } ) :
-        const Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: RegularText(texts: "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",size:"m",align:TextAlign.center,maxLines: 4),
-          ),
+            ),
+          );
+      } ) :
+      const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: RegularText(texts: "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",size:"m",align:TextAlign.center,maxLines: 4),
         ),
       ),
     );

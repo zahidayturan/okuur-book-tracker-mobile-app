@@ -183,6 +183,37 @@ class FirebaseFirestoreOperation{
       return null;
     }
   }
+
+  Future<List<OkuurLogInfo>?> getLogInfoForDate(String date, String uid) async {
+    try {
+      print(date);
+      print(uid);
+      QuerySnapshot booksSnapshot = await _firestore.collection('users')
+          .doc(uid)
+          .collection('books')
+          .get();
+
+      List<OkuurLogInfo> logs = [];
+
+      for (var bookDoc in booksSnapshot.docs) {
+        QuerySnapshot logsSnapshot = await bookDoc.reference
+            .collection('logs')
+            .where('readingDate', isEqualTo: date)
+            .get();
+
+        if (logsSnapshot.docs.isNotEmpty) {
+          logs.addAll(logsSnapshot.docs.map((doc) =>
+              OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList());
+        }
+      }
+
+      return logs.isNotEmpty ? logs : null;
+    } catch (e) {
+      print('Error fetching log data: $e');
+      return null;
+    }
+  }
+
   Future<OkuurUserProfileInfo?> getUserProfileInfo(String uid) async {
     OkuurUserProfileInfo userProfileInfo = OkuurUserProfileInfo(
         follower: 0,

@@ -31,7 +31,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   HomeController controller = Get.find();
   BookDetailController bookDetailController = Get.find();
 
-
   @override
   void initState() {
     super.initState();
@@ -131,7 +130,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              list[index].currentPage = tempData0;
+              if(tempData0 != 0){
+                list[index].currentPage = tempData0;
+              }
               bookDetailController.setBookInfo(list[index]);
               Navigator.push(
                 context,

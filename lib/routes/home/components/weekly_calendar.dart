@@ -59,15 +59,15 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       ),
       padding: const EdgeInsets.all(8),
       child: Obx(() => controller.logsLoading.value ? 
-          ShimmerBox(height: 160,borderRadius: BorderRadius.all(Radius.circular(8)))
+          const ShimmerBox(height: 150,borderRadius: BorderRadius.all(Radius.circular(8)))
           : Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           weekdays(),
           const SizedBox(height: 12,),
-          dayInfo(controller.logForDate!),
+          dayInfo(controller.logForDate),
           const SizedBox(height: 12,),
-          OkuurPageSwitcher(pageCount: controller.logForDate!.length,currentPage: currentPage,)
+          OkuurPageSwitcher(pageCount: controller.logForDate.length,currentPage: currentPage,)
         ],
       ),
       ),
@@ -103,12 +103,14 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         if (selectedDate != null && selectedDate != initDate) {
           setState(() {
             initDate = selectedDate;
+            controller.fetchLogForDate(initDate);
           });
         }
       },
       onLongPress: () {
         setState(() {
           initDate = DateTime.now();
+          controller.fetchLogForDate(initDate);
         });
       },
       child: Container(
@@ -149,7 +151,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   SizedBox dayInfo(List<OkuurLogInfo> logForDate){
     return SizedBox(
       height: 98,
-      child: PageView.builder(
+      child: logForDate.isEmpty
+          ? const Center(child: RegularText(texts: "Güne ait okuma\nbulunamadı",maxLines: 4,align: TextAlign.center))
+          : PageView.builder(
           itemCount: logForDate.length,
           onPageChanged: (value) {
             setState(() {
@@ -161,7 +165,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const RegularText(texts:"Okunan",otherSize: 10.0),
-                RegularText(texts:"${logForDate[index].bookId}", size:"m", family: "FontBold",maxLines: 2),
+                RegularText(texts:logForDate[index].bookId, size:"m", family: "FontBold",maxLines: 2),
                 const SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

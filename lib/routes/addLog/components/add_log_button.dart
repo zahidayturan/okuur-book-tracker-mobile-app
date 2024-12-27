@@ -74,7 +74,7 @@ class _AddLogButtonState extends State<AddLogButton> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
                     child: RegularText(texts:  controller.logAllValidate.value
-                        ? "Okumayı Kaydet ${controller.logReadingTime.value!}"
+                        ? "Okumayı Kaydet"
                         : "Tüm Bilgileri Doldurun",color: colors.white,size: "l"),
                   ),
                 ),

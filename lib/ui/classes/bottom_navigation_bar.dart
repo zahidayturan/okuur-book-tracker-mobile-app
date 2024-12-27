@@ -33,15 +33,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 160,
+      height: 170,
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
           Container(
-            height: 54,
+            height: 60,
             decoration: BoxDecoration(
                 color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-                border: Border(top: BorderSide(width: 1,color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3)))
+                border: Border(top: BorderSide(width: 2,color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3)))
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -50,21 +50,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/stat", "İstatistik",1)),
                 Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/social", "Sosyal",2)),
                 Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/lib", "Kitaplık",3)),
-                Expanded(flex:1, child: SizedBox())
+                const Expanded(flex:1, child: SizedBox())
               ],
             ),
           ),
           Positioned(
               right: 16,
-              bottom: 120,
+              bottom: 124,
               child: toButton(context,"Okuma Ekle",4,colors.blueMid,const AddLogPage())),
           Positioned(
               right: 16,
-              bottom: 70,
+              bottom: 74,
               child: toButton(context,"Kitap Ekle",4,colors.green,const AddBookPage())),
           Positioned(
               right: 16,
-              bottom: 8,
+              bottom: 12,
               child: addButton(context,"Ekle",4))
         ],
       ),
@@ -80,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           });
       },
       child: SizedBox(
-        height: 54,
+        height: 60,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -92,7 +92,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 width: mode == controller.homePageCurrentMode.value ? 24: 20,
                 child:Image.asset(
                   mode== controller.homePageCurrentMode.value ? "${path}_a.png" : "${path}_d.png",
-                  color:mode == controller.homePageCurrentMode.value ? Theme.of(context).colorScheme.secondary: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,),
+                  color:mode == controller.homePageCurrentMode.value ? Theme.of(context).colorScheme.secondary: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor),
               ),
             ),
             const SizedBox(height: 4,),
@@ -120,10 +120,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
       child: Container(
         width: 56,
         height: 56,
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3),
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),

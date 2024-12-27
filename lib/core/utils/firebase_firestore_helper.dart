@@ -155,15 +155,24 @@ class FirebaseFirestoreOperation{
     }
   }
 
-
   Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
       if (log.id == null || log.id!.isEmpty) {
-        log.id = _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc().id;
+        log.id = _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc(log.readingDate).collection('entries').doc().id;
       }
       Map<String, dynamic> logData = log.toJson();
 
-      await _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc(log.id).set(logData);
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(log.bookId)
+          .collection('logs')
+          .doc(log.readingDate)
+          .collection('entries')
+          .doc(log.id)
+          .set(logData);
+
     } catch (e) {
       print('Add Log Error: $e');
     }
@@ -184,10 +193,8 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  Future<List<OkuurLogInfo>?> getLogInfoForDate(String date, String uid) async {
+  Future<List<OkuurLogInfo>> getLogInfoForDate(String date, String uid) async {
     try {
-      print(date);
-      print(uid);
       QuerySnapshot booksSnapshot = await _firestore.collection('users')
           .doc(uid)
           .collection('books')
@@ -198,7 +205,8 @@ class FirebaseFirestoreOperation{
       for (var bookDoc in booksSnapshot.docs) {
         QuerySnapshot logsSnapshot = await bookDoc.reference
             .collection('logs')
-            .where('readingDate', isEqualTo: date)
+            .doc(date)
+            .collection('entries')
             .get();
 
         if (logsSnapshot.docs.isNotEmpty) {
@@ -207,10 +215,10 @@ class FirebaseFirestoreOperation{
         }
       }
 
-      return logs.isNotEmpty ? logs : null;
+      return logs.isNotEmpty ? logs : [];
     } catch (e) {
       print('Error fetching log data: $e');
-      return null;
+      return [];
     }
   }
 

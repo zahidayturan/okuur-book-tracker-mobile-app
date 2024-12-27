@@ -22,7 +22,7 @@ class LogOperations implements LogService {
   }
 
   @override
-  Future<List<OkuurLogInfo>?> getAllLogForDate(DateTime dateTime) async {
+  Future<List<OkuurLogInfo>> getAllLogForDate(DateTime dateTime) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     String date = OkuurDateFormatter.formatDate(dateTime);
     var result = await FirebaseFirestoreOperation().getLogInfoForDate(date,uid!);

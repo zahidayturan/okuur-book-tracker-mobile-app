@@ -7,7 +7,7 @@ import 'package:okuur/data/services/operations/log_operations.dart';
 class HomeController extends GetxController {
 
   List<OkuurBookInfo> currentlyReadBooks = [];
-  List<OkuurLogInfo>? logForDate = [];
+  List<OkuurLogInfo> logForDate = [];
 
   BookOperations bookOperations = BookOperations();
   LogOperations logOperations = LogOperations();

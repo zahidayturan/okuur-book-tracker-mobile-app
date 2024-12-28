@@ -104,7 +104,7 @@ class _LibraryPageState extends State<LibraryPage> {
                             );
                           }
                         }),
-                        const SizedBox(height: 64,)
+                        const SizedBox(height: 70)
                       ],
                     ),
                   ),

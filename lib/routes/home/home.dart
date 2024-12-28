@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                   WeeklySeries(weeklySeries: [0,0,0,0,0,0,0],currentSeries: 0),
                   SizedBox(height: 18,),
                   MiniPagesInfo(dailyGoal: 40,goalCount: 6,),
-                  SizedBox(height: 64,)
+                  SizedBox(height: 70)
                 ],
               ),
             ),

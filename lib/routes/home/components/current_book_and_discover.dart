@@ -9,12 +9,11 @@ import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
 
 class CurrentBookAndDiscover extends StatefulWidget {
-
-  //get BookInfo
 
   const CurrentBookAndDiscover({
     Key? key,
@@ -30,7 +29,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   int currentPage = 0;
   HomeController controller = Get.find();
   BookDetailController bookDetailController = Get.find();
-
 
   @override
   void initState() {
@@ -110,7 +108,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   int tempData0 = 0;
   Widget bookInfo(List<OkuurBookInfo> list){
     return SizedBox(
-      height: 104,
+      height: 110,
       child: list.isNotEmpty ? PageView.builder(
         itemCount: list.length,
         onPageChanged: (value) async {
@@ -131,7 +129,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              list[index].currentPage = tempData0;
+              if(tempData0 != 0){
+                list[index].currentPage = tempData0;
+              }
               bookDetailController.setBookInfo(list[index]);
               Navigator.push(
                 context,
@@ -162,8 +162,8 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              width: 68,
-                              height: 96,
+                              width: 70,
+                              height: 102,
                               decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
                                   borderRadius: const BorderRadius.all(Radius.circular(6)),
@@ -203,7 +203,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                         borderRadius: BorderRadius.circular(4),
                         child: Container(
                           width: 10,
-                          height: 96,
+                          height: 102,
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -241,9 +241,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
 
 
   Widget loadingBox() {
-    return const SizedBox(height: 104,
-      child: Center(
-        child: RegularText(texts: "Kitaplar yükleniyor...",size: "l",maxLines: 2),
-    ),);
+    return const ShimmerBox(height: 110,borderRadius: BorderRadius.all(Radius.circular(8)));
   }
 }

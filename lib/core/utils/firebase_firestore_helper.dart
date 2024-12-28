@@ -155,15 +155,24 @@ class FirebaseFirestoreOperation{
     }
   }
 
-
   Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
       if (log.id == null || log.id!.isEmpty) {
-        log.id = _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc().id;
+        log.id = _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc(log.readingDate).collection('entries').doc().id;
       }
       Map<String, dynamic> logData = log.toJson();
 
-      await _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc(log.id).set(logData);
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(log.bookId)
+          .collection('logs')
+          .doc(log.readingDate)
+          .collection('entries')
+          .doc(log.id)
+          .set(logData);
+
     } catch (e) {
       print('Add Log Error: $e');
     }
@@ -183,6 +192,36 @@ class FirebaseFirestoreOperation{
       return null;
     }
   }
+
+  Future<List<OkuurLogInfo>> getLogInfoForDate(String date, String uid) async {
+    try {
+      QuerySnapshot booksSnapshot = await _firestore.collection('users')
+          .doc(uid)
+          .collection('books')
+          .get();
+
+      List<OkuurLogInfo> logs = [];
+
+      for (var bookDoc in booksSnapshot.docs) {
+        QuerySnapshot logsSnapshot = await bookDoc.reference
+            .collection('logs')
+            .doc(date)
+            .collection('entries')
+            .get();
+
+        if (logsSnapshot.docs.isNotEmpty) {
+          logs.addAll(logsSnapshot.docs.map((doc) =>
+              OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList());
+        }
+      }
+
+      return logs.isNotEmpty ? logs : [];
+    } catch (e) {
+      print('Error fetching log data: $e');
+      return [];
+    }
+  }
+
   Future<OkuurUserProfileInfo?> getUserProfileInfo(String uid) async {
     OkuurUserProfileInfo userProfileInfo = OkuurUserProfileInfo(
         follower: 0,

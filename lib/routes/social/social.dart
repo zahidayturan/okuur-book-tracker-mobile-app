@@ -32,7 +32,7 @@ class _SocialPageState extends State<SocialPage> {
                       pathName: "assets/icons/navbar/social_d.png",
                       subtitle: ""
                   ).getTitle(context),
-                  const SizedBox(height: 64,)
+                  const SizedBox(height: 70)
                 ],
               ),
             ),

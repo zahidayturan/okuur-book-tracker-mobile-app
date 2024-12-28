@@ -50,7 +50,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const MonthlyReadingInfo(finishedPage: 0,goalPage: 0),
                   const SizedBox(height: 12),
                   const WeeklyReadingInfo(),
-                  const SizedBox(height: 64,)
+                  const SizedBox(height: 70)
                 ],
               ),
             ),

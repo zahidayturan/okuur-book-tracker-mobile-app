@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 18),
                   ProfileDataWidget(userInfo: controller.userProfileInfo!),
                   // Expanded(child: BookListWidget())
-                  const SizedBox(height: 64,)
+                  const SizedBox(height: 70)
                 ],
               )),
             ),

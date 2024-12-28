@@ -37,6 +37,7 @@ class _AddLogButtonState extends State<AddLogButton> {
       await LogOperations().insertLogInfo(logInfo);
       await bookOperations.updateBookInfoAfterLog(logInfo);
       await homeController.fetchCurrentlyReadBooks();
+      await homeController.fetchLogForDate(DateTime.now());
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {
@@ -48,7 +49,7 @@ class _AddLogButtonState extends State<AddLogButton> {
   OkuurLogInfo _createLogInfo() {
     return OkuurLogInfo(
       bookId: controller.logBookId.value!,
-      numberOfPages: controller.logNewCurrentPage.value!,
+      numberOfPages: controller.bookReadingPageCount.value,
       timeRead: controller.logReadingTime.value!,
       readingDate: controller.logReadingDate.value!,
       finishingTime: controller.logFinishingHour.value!,
@@ -74,7 +75,7 @@ class _AddLogButtonState extends State<AddLogButton> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
                     child: RegularText(texts:  controller.logAllValidate.value
-                        ? "Okumayı Kaydet ${controller.logReadingTime.value!}"
+                        ? "Okumayı Kaydet"
                         : "Tüm Bilgileri Doldurun",color: colors.white,size: "l"),
                   ),
                 ),

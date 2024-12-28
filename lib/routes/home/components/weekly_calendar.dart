@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 class WeeklyCalendar extends StatefulWidget {
 
@@ -19,8 +23,14 @@ class WeeklyCalendar extends StatefulWidget {
 class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   AppColors colors = AppColors();
-
+  HomeController controller = Get.find();
   DateTime initDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchLogForDate(initDate);
+  }
 
   List<String> months = [
     "",
@@ -48,15 +58,18 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           color: Theme.of(context).colorScheme.onPrimaryContainer
       ),
       padding: const EdgeInsets.all(8),
-      child: Column(
+      child: Obx(() => controller.logsLoading.value ? 
+          const ShimmerBox(height: 150,borderRadius: BorderRadius.all(Radius.circular(8)))
+          : Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           weekdays(),
           const SizedBox(height: 12,),
-          dayInfo(),
+          dayInfo(controller.logForDate),
           const SizedBox(height: 12,),
-          OkuurPageSwitcher(pageCount: tempData.length,currentPage: currentPage,)
+          OkuurPageSwitcher(pageCount: controller.logForDate.length,currentPage: currentPage,)
         ],
+      ),
       ),
     );
   }
@@ -90,12 +103,14 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         if (selectedDate != null && selectedDate != initDate) {
           setState(() {
             initDate = selectedDate;
+            controller.fetchLogForDate(initDate);
           });
         }
       },
       onLongPress: () {
         setState(() {
           initDate = DateTime.now();
+          controller.fetchLogForDate(initDate);
         });
       },
       child: Container(
@@ -128,56 +143,40 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     );
   }
 
-  List<Map<String,String>> tempData = [
-    {
-      "bookName":"?",
-      "page" : "?",
-      "minute": "?",
-      "point": "?",
-      "info":"1"
-    },
-    {
-      "bookName":"?",
-      "page" : "?",
-      "minute": "?",
-      "point": "?",
-      "info":"0"
-    }
-  ];
-
   List<List<String>> infoList = [
     ["Bu ","haftanın en uzun okumasını"," yaptın."],
     ["Bu ","haftanın en iyi okumasını"," yaptın."]
   ];
 
-  SizedBox dayInfo(){
+  SizedBox dayInfo(List<OkuurLogInfo> logForDate){
     return SizedBox(
       height: 98,
-      child: PageView.builder(
-          itemCount: tempData.length,
+      child: logForDate.isEmpty
+          ? const Center(child: RegularText(texts: "Güne ait okuma\nbulunamadı",maxLines: 4,align: TextAlign.center))
+          : PageView.builder(
+          itemCount: logForDate.length,
           onPageChanged: (value) {
             setState(() {
               currentPage = value;
             });
           },
           itemBuilder: (context, index) {
-            var list = tempData;
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const RegularText(texts:"Okunan",otherSize: 10.0),
-                RegularText(texts:"${list[index]["bookName"]}", size:"m", family: "FontBold",maxLines: 2),
+                RegularText(texts:logForDate[index].bookId, size:"m", family: "FontBold",maxLines: 2),
                 const SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    iconAndText("assets/icons/page.png", "sayfa","${list[index]["page"]}"),
-                    iconAndText("assets/icons/clock.png", "dakika","${list[index]["minute"]}"),
-                    iconAndText("assets/icons/point.png", "puan","${list[index]["point"]}"),
+                    iconAndText("assets/icons/page.png", "sayfa","${logForDate[index].numberOfPages}"),
+                    iconAndText("assets/icons/clock.png", "dakika","${logForDate[index].timeRead}"),
+                    iconAndText("assets/icons/point.png", "puan","?"),
                   ],),
                 const SizedBox(height: 8,),
                 RichTextWidget(
-                    texts: infoList[int.tryParse(list[index]["info"]!) ?? 0],
+                    texts: infoList[0],
                     colors: [Theme.of(context).colorScheme.secondary],
                     fontFamilies: const ["FontMedium","FontRegular","FontMedium"],
                     fontSize: 11,

@@ -178,18 +178,18 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  Future<List<OkuurLogInfo>?> getLogInfo(String uid,String bookId) async {
+  Future<List<OkuurLogInfo>> getLogInfo(String uid,String bookId) async {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection('books').doc(bookId).collection("logs").get();
 
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.map((doc) => OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
       } else {
-        return null;
+        return [];
       }
     } catch (e) {
       print('Error fetching log data: $e');
-      return null;
+      return [];
     }
   }
 

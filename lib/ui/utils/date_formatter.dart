@@ -16,4 +16,20 @@ class OkuurDateFormatter {
     return "${format.day}.${format.month}.${format.year}";
   }
 
+  static String dateFormatToDb(String date){
+    DateFormat inputFormat = DateFormat('dd.MM.yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+    String formattedDate = outputFormat.format(parsedDate);
+    return formattedDate;
+  }
+
+  static String dateFormatFromDb(String date){
+    DateFormat inputFormat = DateFormat('yyyy-MM-dd');
+    DateTime parsedDate = inputFormat.parse(date);
+    DateFormat outputFormat = DateFormat('dd.MM.yyyy');
+    String formattedDate = outputFormat.format(parsedDate);
+    return formattedDate;
+  }
+
 }

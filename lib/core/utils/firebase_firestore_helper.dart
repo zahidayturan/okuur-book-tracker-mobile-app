@@ -157,9 +157,24 @@ class FirebaseFirestoreOperation{
 
   Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
-      if (log.id == null || log.id!.isEmpty) {
-        log.id = _firestore.collection('users').doc(uid).collection('books').doc(log.bookId).collection('logs').doc(log.readingDate).collection('entries').doc().id;
+      List<String> dateParts = log.readingDate.split('.');
+      String monthYear = '${dateParts[1]}-${dateParts[2]}';
+
+      DocumentReference logDocRef = _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(log.bookId)
+          .collection('logs')
+          .doc(monthYear);
+
+      DocumentSnapshot docSnapshot = await logDocRef.get();
+      if (!docSnapshot.exists) {
+        await logDocRef.set({
+          'createdAt': FieldValue.serverTimestamp(),
+        });
       }
+
       Map<String, dynamic> logData = log.toJson();
 
       await _firestore
@@ -168,9 +183,9 @@ class FirebaseFirestoreOperation{
           .collection('books')
           .doc(log.bookId)
           .collection('logs')
-          .doc(log.readingDate)
+          .doc(monthYear)
           .collection('entries')
-          .doc(log.id)
+          .doc()
           .set(logData);
 
     } catch (e) {
@@ -178,18 +193,33 @@ class FirebaseFirestoreOperation{
     }
   }
 
-  Future<List<OkuurLogInfo>?> getLogInfo(String uid,String bookId) async {
+  Future<List<OkuurLogInfo>> getLogInfo(String uid, String bookId) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection('books').doc(bookId).collection("logs").get();
+      QuerySnapshot logsSnapshot = await _firestore.collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(bookId)
+          .collection("logs")
+          .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.map((doc) => OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
-      } else {
-        return null;
+      List<OkuurLogInfo> logs = [];
+
+      for (var logDoc in logsSnapshot.docs) {
+        QuerySnapshot entriesSnapshot = await logDoc.reference
+            .collection("entries")
+            .get();
+
+        if (entriesSnapshot.docs.isNotEmpty) {
+          logs.addAll(entriesSnapshot.docs.map((doc) {
+            return OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>);
+          }).toList());
+        }
       }
+
+      return logs.isNotEmpty ? logs : [];
     } catch (e) {
       print('Error fetching log data: $e');
-      return null;
+      return [];
     }
   }
 
@@ -200,13 +230,16 @@ class FirebaseFirestoreOperation{
           .collection('books')
           .get();
 
+      List<String> dateParts = date.split('.');
+      String monthYear = '${dateParts[1]}-${dateParts[2]}';
       List<OkuurLogInfo> logs = [];
 
       for (var bookDoc in booksSnapshot.docs) {
         QuerySnapshot logsSnapshot = await bookDoc.reference
             .collection('logs')
-            .doc(date)
+            .doc(monthYear)
             .collection('entries')
+            .where('readingDate', isEqualTo: date)
             .get();
 
         if (logsSnapshot.docs.isNotEmpty) {

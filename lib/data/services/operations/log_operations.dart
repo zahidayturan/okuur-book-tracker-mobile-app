@@ -15,7 +15,7 @@ class LogOperations implements LogService {
   }
 
   @override
-  Future<List<OkuurLogInfo>?> getLogInfo(String bookId) async {
+  Future<List<OkuurLogInfo>> getLogInfo(String bookId) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     var result = await FirebaseFirestoreOperation().getLogInfo(uid!,bookId);
     return result;

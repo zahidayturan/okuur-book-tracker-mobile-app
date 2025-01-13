@@ -63,7 +63,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           : Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          weekdays(),
+          weekdays(controller.logForDate.isNotEmpty),
           const SizedBox(height: 12,),
           dayInfo(controller.logForDate),
           const SizedBox(height: 12,),
@@ -74,13 +74,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     );
   }
 
-  Widget weekdays(){
+  Widget weekdays(bool isData){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         dayContainer(initDate),
         const SizedBox(width: 8),
-        RegularText(texts:"Günlük Hedefe Ulaşıldı!", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
+        RegularText(texts:isData ? "Günlük Hedefe Ulaşıldı!" : "", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
       ],
     );
   }

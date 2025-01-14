@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/image_shower.dart';
@@ -73,7 +74,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
         const SizedBox(height: 18,),
         bookGoal(),
         const SizedBox(height: 18,),
-        bookRecords(),
+        bookRecords(controller.logs),
         const SizedBox(height: 18,)
       ],
     );
@@ -252,20 +253,24 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
   int selectedItem = 0;
-  List<String> lists = [
-    "?"
-  ];
 
-  Widget bookRecords() {
-    return BaseContainer(
+  Widget bookRecords(List<OkuurLogInfo> logs) {
+    String parsedDate = "?";
+
+    if(logs.isNotEmpty){
+      List<String> dateParts = logs[selectedItem].readingDate.split('.');
+      parsedDate = '${dateParts[0]}\n${dateParts[1]}';
+    }
+
+    return logs.isNotEmpty ? BaseContainer(
       radius: 12,
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RegularText(texts: "Okumaların", style: FontStyle.italic),
-              RegularText(texts: "? kayıt", size: "m"),
+              const RegularText(texts: "Okumaların", style: FontStyle.italic),
+              RegularText(texts: "${logs.length} kayıt", size: "m"),
             ],
           ),
           const SizedBox(height: 12),
@@ -273,7 +278,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             height: 60,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: lists.length,
+              itemCount: logs.length,
               separatorBuilder: (context, index) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -299,7 +304,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     child: Center(
                       child: RegularText(
-                        texts: lists[index],
+                        texts: parsedDate,
                         align: TextAlign.center,
                         size: "m",
                         maxLines: 3,
@@ -323,8 +328,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 4),
-                RegularText(texts: lists[selectedItem]),
-                const RegularText(texts: "? sayfa / ? dakika / ? puan"),
+                RegularText(texts: logs[selectedItem].readingDate),
+                RegularText(texts: "${logs[selectedItem].numberOfPages} sayfa / ${logs[selectedItem].timeRead} dakika / ? puan"),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -348,7 +353,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
         ],
       ),
-    );
+    ) : const SizedBox();
   }
 
 

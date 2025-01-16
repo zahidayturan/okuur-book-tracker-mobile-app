@@ -6,6 +6,7 @@ import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/ui/components/base_container.dart';
+import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
@@ -345,11 +346,14 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       width: 8,
                     ),
                     InkWell(
-                      onTap: () {
-                          controller.deleteLogInfo(context, logs[selectedItem]);
+                      onTap: () async {
+                        bool shouldExit = await _showCustomDialog();
+                        if (shouldExit) {
+                          controller.deleteLogInfo(logs[selectedItem]);
                           setState(() {
                             isLogChanged = true;
                           });
+                        }
                       },
                       child: opButton(
                           "Okuma Kaydını Sil",
@@ -428,5 +432,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
         ],
       ),
     );
+  }
+
+  Future<bool> _showCustomDialog() async {
+    bool? result = await OkuurAlertDialog.show(
+      context: context,
+      contentText: "Okuma kaydı silinecektir.\nOnaylıyor musunuz?",
+      buttons: [
+        AlertButton(text: "Geri Dön", fill: false, returnValue: false),
+        AlertButton(text: "Sil", fill: true, returnValue: true),
+      ],
+    );
+    return result ?? false;
   }
 }

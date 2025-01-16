@@ -35,8 +35,8 @@ class BookDetailController extends GetxController {
     }
   }
 
-  Future<void> deleteLogInfo(BuildContext context,OkuurLogInfo okuurLogInfo) async {
-    LoadingDialog.showLoading(context, message: "Kayıt siliniyor");
+  Future<void> deleteLogInfo(OkuurLogInfo okuurLogInfo) async {
+    LoadingDialog.showLoading(message: "Kayıt siliniyor");
     try {
       await logOperations.deleteLogInfo(okuurLogInfo);
       await bookOperations.updateBookInfoAfterLog(okuurLogInfo,false);
@@ -45,7 +45,7 @@ class BookDetailController extends GetxController {
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {
-      LoadingDialog.hideLoading(context);
+      LoadingDialog.hideLoading();
     }
   }
 

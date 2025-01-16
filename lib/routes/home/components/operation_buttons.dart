@@ -98,14 +98,14 @@ class _OperationButtonsState extends State<OperationButtons> {
     return Expanded(
       child: GestureDetector(
         onTap: () async{
-          LoadingDialog.showLoading(context, message: "Bekleyiniz");
+          LoadingDialog.showLoading(message: "Bekleyiniz");
           try {
             await Future.delayed(const Duration(seconds: 3));
             debugPrint("İşlem tamamlandı");
           } catch (e) {
             debugPrint("Bir hata oluştu: $e");
           } finally {
-            LoadingDialog.hideLoading(context);
+            LoadingDialog.hideLoading();
           }
 
         },

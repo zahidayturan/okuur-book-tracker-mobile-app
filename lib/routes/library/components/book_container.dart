@@ -254,11 +254,11 @@ Future<bool> _showDeleteConfirmation(String bookName) async {
 }
 
 void _showLoading(String message) {
-  LoadingDialog.showLoading(Get.context!, message: message);
+  LoadingDialog.showLoading(message: message);
 }
 
 void _hideLoading() {
-  LoadingDialog.hideLoading(Get.context!);
+  LoadingDialog.hideLoading();
 }
 
 Expanded getAlertButton(String text, bool isPop, bool fill) {

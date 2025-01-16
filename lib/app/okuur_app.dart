@@ -12,7 +12,7 @@ import 'package:okuur/routes/profile/profile.dart';
 import 'package:okuur/routes/social/social.dart';
 import 'package:okuur/routes/statistics/statistics.dart';
 import 'package:okuur/ui/classes/bottom_navigation_bar.dart';
-import 'package:okuur/ui/components/regular_text.dart';
+import 'package:okuur/ui/components/functional_alert_dialog.dart';
 
 class OkuurApp extends StatefulWidget {
   const OkuurApp({
@@ -63,7 +63,7 @@ class _OkuurAppState extends State<OkuurApp> {
           controller.homePageCurrentMode.value = 0;
           return false;
         } else {
-          bool shouldExit = await _showExitConfirmation(context);
+          bool shouldExit = await _showCustomDialog(context);
           return shouldExit;
         }
       },
@@ -82,41 +82,15 @@ class _OkuurAppState extends State<OkuurApp> {
     );
   }
 
-  Future<bool> _showExitConfirmation(BuildContext context) async {
-    return await showDialog(
+  Future<bool> _showCustomDialog(BuildContext context) async {
+    bool? result = await OkuurAlertDialog.show(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12.0))
-        ),
-        title: const RegularText(texts: 'Uygulamadan çıkmak mı istiyorsunuz?',align: TextAlign.center,size: "xl"),
-        actions: [
-          Row(
-            children: [
-              getAlertButton("Hayır",false,false),
-              const SizedBox(width: 8,),
-              getAlertButton("Evet",true,true),
-            ],
-          )
-        ],
-      ),
-    ) ??
-        false;
-  }
-
-  Expanded getAlertButton(String text,bool isPop,bool fill){
-    return Expanded(
-      child: InkWell(
-        onTap: () => Navigator.of(context).pop(isPop),
-        child: Container(
-            height: 36,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: fill ? colors.blue : null,
-                border: fill ? null : Border.all(color: colors.blue,width: 1)
-            ),
-            child: Center(child: RegularText(texts: text,color: fill ? colors.white : colors.blue))),
-      ),
+      contentText: "Uygulamadan çıkmak mı istiyorsunuz?",
+      buttons: [
+        AlertButton(text: "Hayır", fill: false, returnValue: false),
+        AlertButton(text: "Evet", fill: true, returnValue: true),
+      ],
     );
+    return result ?? false;
   }
 }

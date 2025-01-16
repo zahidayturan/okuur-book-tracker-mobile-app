@@ -39,7 +39,7 @@ class _AddBookButtonState extends State<AddBookButton> {
     }
 
     final bookInfo = _createBookInfo();
-    LoadingDialog.showLoading(context, message: "Kitap ekleniyor");
+    LoadingDialog.showLoading(message: "Kitap ekleniyor");
 
     try {
       await bookOperations.insertBookInfo(bookInfo);
@@ -48,7 +48,7 @@ class _AddBookButtonState extends State<AddBookButton> {
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {
-      LoadingDialog.hideLoading(context);
+      LoadingDialog.hideLoading();
       Navigator.of(context).pop();
     }
   }

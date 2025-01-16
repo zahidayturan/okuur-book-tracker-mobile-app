@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_book_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/const/book_type_list.dart';
 
@@ -15,7 +16,7 @@ WillPopScope addBookAppBar(BuildContext context) {
           controller.bookAuthorController.text.isNotEmpty ||
           controller.bookPageController.text.isNotEmpty ||
           controller.bookTypeController.text != bookTypeList.first) {
-        bool shouldExit = await _showExitConfirmation(context);
+        bool shouldExit = await _showCustomDialog(context);
         return shouldExit;
       } else {
         return true;
@@ -32,7 +33,7 @@ WillPopScope addBookAppBar(BuildContext context) {
                 controller.bookAuthorController.text.isNotEmpty ||
                 controller.bookPageController.text.isNotEmpty ||
                 controller.bookTypeController.text != bookTypeList.first) {
-              bool shouldExit = await _showExitConfirmation(context);
+              bool shouldExit = await _showCustomDialog(context);
               if (shouldExit) {
                 Get.back();
               }
@@ -61,50 +62,14 @@ WillPopScope addBookAppBar(BuildContext context) {
   );
 }
 
-Future<bool> _showExitConfirmation(BuildContext context) async {
-  return await showDialog<bool>(
+Future<bool> _showCustomDialog(BuildContext context) async {
+  bool? result = await OkuurAlertDialog.show(
     context: context,
-    builder: (context) => AlertDialog(
-      content: const Text(
-        "Girdiğiniz bilgiler silinecektir.\nÇıkmak istiyor musunuz?",
-        textAlign: TextAlign.center,
-      ),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-      ),
-      actions: [
-        Column(
-          children: [
-            getAlertButton("Geri Dön", false, false, context),
-            const SizedBox(height: 8),
-            getAlertButton("Çık", true, true, context),
-          ],
-        ),
-      ],
-    ),
-  ) ??
-      false;
-}
-
-InkWell getAlertButton(
-    String text, bool isPop, bool fill, BuildContext context) {
-  return InkWell(
-    onTap: () => Navigator.of(context).pop(isPop),
-    child: Container(
-      height: 36,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: fill ? colors.blue : null,
-        border: fill ? null : Border.all(color: colors.blue, width: 1),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            color: fill ? colors.white : colors.blue,
-          ),
-        ),
-      ),
-    ),
+    contentText: "Girdiğiniz bilgiler silinecektir.\nÇıkmak istiyor musunuz?",
+    buttons: [
+      AlertButton(text: "Geri Dön", fill: false, returnValue: false),
+      AlertButton(text: "Çık", fill: true, returnValue: true),
+    ],
   );
+  return result ?? false;
 }

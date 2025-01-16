@@ -175,6 +175,10 @@ class FirebaseFirestoreOperation{
         });
       }
 
+      if (log.id == null || log.id!.isEmpty) {
+        log.id = logDocRef.collection('entries').doc().id;
+      }
+
       Map<String, dynamic> logData = log.toJson();
 
       await _firestore
@@ -185,7 +189,7 @@ class FirebaseFirestoreOperation{
           .collection('logs')
           .doc(monthYear)
           .collection('entries')
-          .doc()
+          .doc(log.id)
           .set(logData);
 
     } catch (e) {
@@ -252,6 +256,27 @@ class FirebaseFirestoreOperation{
     } catch (e) {
       print('Error fetching log data: $e');
       return [];
+    }
+  }
+
+  Future<void> deleteLogInfo(String uid, OkuurLogInfo logInfo) async {
+    List<String> dateParts = logInfo.readingDate.split('.');
+    String monthYear = '${dateParts[1]}-${dateParts[2]}';
+    try {
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(logInfo.bookId)
+          .collection('logs')
+          .doc(monthYear)
+          .collection('entries')
+          .doc(logInfo.id)
+          .delete();
+
+      print('Book log deleted successfully.');
+    } catch (e) {
+      print('Error deleting book log: $e');
     }
   }
 

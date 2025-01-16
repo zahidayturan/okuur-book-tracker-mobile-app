@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/ui/components/circular_progress.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 
 class LoadingDialog {
-  static Future<void> showLoading(BuildContext context, {String? message}) async {
+  static Future<void> showLoading({String? message}) async {
     return showDialog<void>(
-      context: context,
+      context: Get.context!,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return WillPopScope(
@@ -33,7 +34,7 @@ class LoadingDialog {
     );
   }
 
-  static Future<void> hideLoading(BuildContext context) async {
-    Navigator.of(context, rootNavigator: true).pop();
+  static Future<void> hideLoading() async {
+    Navigator.of(Get.context!, rootNavigator: true).pop();
   }
 }

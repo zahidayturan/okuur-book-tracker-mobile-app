@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/ui/components/base_container.dart';
+import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
@@ -28,6 +30,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
     super.initState();
     controller.getBookDetail();
   }
+
+  bool isLogChanged = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +77,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
         const SizedBox(height: 18,),
         bookGoal(),
         const SizedBox(height: 18,),
-        bookRecords(),
+        bookRecords(controller.logs),
         const SizedBox(height: 18,)
       ],
     );
@@ -89,7 +93,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              popButton(context),
+              popButton(context,isLogChanged),
               const SizedBox(height: 8),
               RegularText(
                   texts: okuurBookInfo.name,
@@ -116,10 +120,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   const SizedBox(
                     width: 12,
                   ),
-                  TextIconButton(
-                      text: "Sil",
-                      icon: Icons.delete_outline_rounded,
-                      iconColor: colors.red)
+                  InkWell(
+                    onTap: () async {
+                      bool shouldExit = await _showCustomDialog("Kitap ve kayıtları silinecek!\nEmin misiniz?");
+                      if (shouldExit) {
+                        controller.deleteBook(okuurBookInfo);
+                      }
+                    },
+                    child: TextIconButton(
+                        text: "Sil",
+                        icon: Icons.delete_outline_rounded,
+                        iconColor: colors.red),
+                  )
                 ],
               )
             ],
@@ -252,20 +264,24 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
   int selectedItem = 0;
-  List<String> lists = [
-    "?"
-  ];
 
-  Widget bookRecords() {
-    return BaseContainer(
+  Widget bookRecords(List<OkuurLogInfo> logs) {
+    String parsedDate = "?";
+
+    if(logs.isNotEmpty){
+      List<String> dateParts = logs[selectedItem].readingDate.split('.');
+      parsedDate = '${dateParts[0]}\n${dateParts[1]}';
+    }
+
+    return logs.isNotEmpty ? BaseContainer(
       radius: 12,
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RegularText(texts: "Okumaların", style: FontStyle.italic),
-              RegularText(texts: "? kayıt", size: "m"),
+              const RegularText(texts: "Okumaların", style: FontStyle.italic),
+              RegularText(texts: "${logs.length} kayıt", size: "m"),
             ],
           ),
           const SizedBox(height: 12),
@@ -273,7 +289,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             height: 60,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: lists.length,
+              itemCount: logs.length,
               separatorBuilder: (context, index) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -299,7 +315,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     child: Center(
                       child: RegularText(
-                        texts: lists[index],
+                        texts: parsedDate,
                         align: TextAlign.center,
                         size: "m",
                         maxLines: 3,
@@ -323,8 +339,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 4),
-                RegularText(texts: lists[selectedItem]),
-                const RegularText(texts: "? sayfa / ? dakika / ? puan"),
+                RegularText(texts: logs[selectedItem].readingDate),
+                RegularText(texts: "${logs[selectedItem].numberOfPages} sayfa / ${logs[selectedItem].timeRead} dakika / ? puan"),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,10 +353,21 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     const SizedBox(
                       width: 8,
                     ),
-                    opButton(
-                        "Okuma Kaydını Sil",
-                        Icons.delete_outline_rounded,
-                        colors.red)
+                    InkWell(
+                      onTap: () async {
+                        bool shouldExit = await _showCustomDialog("Okuma kaydı silinecektir.\nOnaylıyor musunuz?");
+                        if (shouldExit) {
+                          controller.deleteLogInfo(logs[selectedItem]);
+                          setState(() {
+                            isLogChanged = true;
+                          });
+                        }
+                      },
+                      child: opButton(
+                          "Okuma Kaydını Sil",
+                          Icons.delete_outline_rounded,
+                          colors.red),
+                    )
                   ],
                 )
               ],
@@ -348,7 +375,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
         ],
       ),
-    );
+    ) : const SizedBox();
   }
 
 
@@ -413,5 +440,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
         ],
       ),
     );
+  }
+
+  Future<bool> _showCustomDialog(String text) async {
+    bool? result = await OkuurAlertDialog.show(
+      context: context,
+      contentText: text,
+      buttons: [
+        AlertButton(text: "Geri Dön", fill: false, returnValue: false),
+        AlertButton(text: "Sil", fill: true, returnValue: true),
+      ],
+    );
+    return result ?? false;
   }
 }

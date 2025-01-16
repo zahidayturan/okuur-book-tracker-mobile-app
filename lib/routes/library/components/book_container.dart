@@ -4,6 +4,7 @@ import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
+import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/loading_circular.dart';
 import 'package:okuur/ui/components/popup_operation_menu.dart';
 import 'package:okuur/ui/components/regular_text.dart';
@@ -210,7 +211,7 @@ PopupMenuItem<int> _buildMenuItem(BuildContext context, IconData icon, String te
 Future<void> _handlePopupMenuAction(int? value, OkuurBookInfo bookInfo) async {
   switch (value) {
     case 4:
-      bool shouldDelete = await _showDeleteConfirmation(bookInfo.name);
+      bool shouldDelete = await _showCustomDialog(bookInfo.name);
       if (shouldDelete) {
         _showLoading("Kitap ve kayıtlar siliniyor");
         await _deleteBook(bookInfo);
@@ -229,29 +230,18 @@ Future<void> _deleteBook(OkuurBookInfo bookInfo) async {
   }
 }
 
-Future<bool> _showDeleteConfirmation(String bookName) async {
-  return await Get.dialog<bool>(
-    AlertDialog(
-      content: Text(
-        "$bookName\nKitap ve kayıtları silinecek!\nEmin misiniz?",
-        textAlign: TextAlign.center,
-      ),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-      ),
-      actions: [
-        Row(
-          children: [
-            getAlertButton("Geri Dön", false, false),
-            const SizedBox(width: 8),
-            getAlertButton("Sil", true, true),
-          ],
-        ),
-      ],
-    ),
-  ) ??
-      false;
+Future<bool> _showCustomDialog(String bookName) async {
+  bool? result = await OkuurAlertDialog.show(
+    context: Get.context!,
+    contentText: "$bookName ve kayıtları silinecek!\nEmin misiniz?",
+    buttons: [
+      AlertButton(text: "Geri Dön", fill: false, returnValue: false),
+      AlertButton(text: "Sil", fill: true, returnValue: true),
+    ],
+  );
+  return result ?? false;
 }
+
 
 void _showLoading(String message) {
   LoadingDialog.showLoading(message: message);
@@ -259,28 +249,4 @@ void _showLoading(String message) {
 
 void _hideLoading() {
   LoadingDialog.hideLoading();
-}
-
-Expanded getAlertButton(String text, bool isPop, bool fill) {
-  return Expanded(
-    child: InkWell(
-      onTap: () => Get.back(result: isPop),
-      child: Container(
-        height: 36,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: fill ? colors.blue : null,
-          border: fill ? null : Border.all(color: colors.blue, width: 1),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: fill ? colors.white : colors.blue,
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }

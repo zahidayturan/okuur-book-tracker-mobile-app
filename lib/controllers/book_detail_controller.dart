@@ -49,4 +49,17 @@ class BookDetailController extends GetxController {
     }
   }
 
+  Future<void> deleteBook(OkuurBookInfo bookInfo) async {
+    LoadingDialog.showLoading(message: "Kitap siliniyor");
+    try {
+      await bookOperations.deleteBookAndLogInfo(bookInfo.id!);
+    } catch (e) {
+      debugPrint("An error occurred: $e");
+    } finally {
+      LoadingDialog.hideLoading();
+      Navigator.pop(Get.context!, true);
+    }
+  }
+
+
 }

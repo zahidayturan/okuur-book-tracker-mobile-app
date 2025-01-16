@@ -120,10 +120,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   const SizedBox(
                     width: 12,
                   ),
-                  TextIconButton(
-                      text: "Sil",
-                      icon: Icons.delete_outline_rounded,
-                      iconColor: colors.red)
+                  InkWell(
+                    onTap: () async {
+                      bool shouldExit = await _showCustomDialog("Kitap ve kayıtları silinecek!\nEmin misiniz?");
+                      if (shouldExit) {
+                        controller.deleteBook(okuurBookInfo);
+                      }
+                    },
+                    child: TextIconButton(
+                        text: "Sil",
+                        icon: Icons.delete_outline_rounded,
+                        iconColor: colors.red),
+                  )
                 ],
               )
             ],
@@ -347,7 +355,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     InkWell(
                       onTap: () async {
-                        bool shouldExit = await _showCustomDialog();
+                        bool shouldExit = await _showCustomDialog("Okuma kaydı silinecektir.\nOnaylıyor musunuz?");
                         if (shouldExit) {
                           controller.deleteLogInfo(logs[selectedItem]);
                           setState(() {
@@ -434,10 +442,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
 
-  Future<bool> _showCustomDialog() async {
+  Future<bool> _showCustomDialog(String text) async {
     bool? result = await OkuurAlertDialog.show(
       context: context,
-      contentText: "Okuma kaydı silinecektir.\nOnaylıyor musunuz?",
+      contentText: text,
       buttons: [
         AlertButton(text: "Geri Dön", fill: false, returnValue: false),
         AlertButton(text: "Sil", fill: true, returnValue: true),

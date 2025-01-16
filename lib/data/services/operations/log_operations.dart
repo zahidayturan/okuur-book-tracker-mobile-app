@@ -29,5 +29,11 @@ class LogOperations implements LogService {
     return result;
   }
 
+  @override
+  Future<void> deleteLogInfo(OkuurLogInfo logInfo) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    await FirebaseFirestoreOperation().deleteLogInfo(uid!,logInfo);
+  }
+
 
 }

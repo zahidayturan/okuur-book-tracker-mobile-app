@@ -50,22 +50,35 @@ class BookOperations implements BookService {
   }
 
   @override
-  Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo) async {
+  Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo,bool isAdd) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     OkuurBookInfo? book = await getBookInfoWithId(logInfo.bookId);
     if (book == null) {
       throw Exception('Book not found!');
     }
-    var newCurrentPage = book.currentPage + logInfo.numberOfPages;
-    if (newCurrentPage >= book.pageCount) {
-      //book finished
-      book.currentPage = book.pageCount;
-      book.status += 1;
-      book.finishingDate = DateTime.now().toString();
-    } else {
-      book.currentPage = newCurrentPage;
+    if(isAdd){
+      var newCurrentPage = book.currentPage + logInfo.numberOfPages;
+      if (newCurrentPage >= book.pageCount) {
+        //book finished
+        book.currentPage = book.pageCount;
+        book.status += 1;
+        book.finishingDate = DateTime.now().toString();
+      } else {
+        book.currentPage = newCurrentPage;
+      }
+      book.readingTime += logInfo.timeRead;
+    }else{
+      var newCurrentPage = book.currentPage - logInfo.numberOfPages;
+      if (newCurrentPage <= 0) {
+        //book not started
+        book.currentPage = 0;
+        book.finishingDate = "finishingDate";
+      } else {
+        book.currentPage = newCurrentPage;
+      }
+      book.readingTime -= logInfo.timeRead;
     }
-    book.readingTime += logInfo.timeRead;
+
     await FirebaseFirestoreOperation().updateBookInfo(uid!, book);
   }
 

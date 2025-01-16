@@ -16,5 +16,5 @@ abstract class BookService {
 
   Future<void> deleteAllBookInfo();
 
-  Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo);
+  Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo,bool isAdd);
 }

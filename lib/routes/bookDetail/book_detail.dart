@@ -30,6 +30,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
     controller.getBookDetail();
   }
 
+  bool isLogChanged = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -90,7 +92,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              popButton(context),
+              popButton(context,isLogChanged),
               const SizedBox(height: 8),
               RegularText(
                   texts: okuurBookInfo.name,
@@ -342,10 +344,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     const SizedBox(
                       width: 8,
                     ),
-                    opButton(
-                        "Okuma Kaydını Sil",
-                        Icons.delete_outline_rounded,
-                        colors.red)
+                    InkWell(
+                      onTap: () {
+                          controller.deleteLogInfo(context, logs[selectedItem]);
+                          setState(() {
+                            isLogChanged = true;
+                          });
+                      },
+                      child: opButton(
+                          "Okuma Kaydını Sil",
+                          Icons.delete_outline_rounded,
+                          colors.red),
+                    )
                   ],
                 )
               ],

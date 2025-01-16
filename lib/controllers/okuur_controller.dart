@@ -8,6 +8,7 @@ class OkuurController extends GetxController {
   var homePageCurrentMode = RxInt(0);
 
   void setHomePageCurrentMode(int pageCount) {
+    print("new $pageCount");
     homePageCurrentMode.value = pageCount;
   }
 

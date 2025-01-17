@@ -40,7 +40,7 @@ class _BookListWidgetState extends State<BookListWidget> {
 
     for (var book in books) {
       int readStatus = book.status;
-      debugPrint((readStatus % 2).toString());
+      debugPrint("blist status ${(readStatus % 2).toString()}");
       if(readStatus != 0){
         if (readStatus % 2 == 1) {
           current.add(book);

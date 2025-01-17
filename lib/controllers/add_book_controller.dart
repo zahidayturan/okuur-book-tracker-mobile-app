@@ -212,10 +212,10 @@ class AddBookController extends GetxController {
         bookPageValidate.value == true &&
         bookTypeValidate.value == true
     ){
-      print("true");
+      debugPrint("true bd");
       setBookAllValidate(true);
     }else{
-      print("false");
+      debugPrint("false bd");
       setBookAllValidate(false);
     }
   }

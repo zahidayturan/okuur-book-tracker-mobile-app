@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 
@@ -41,7 +40,7 @@ class AddLogController extends GetxController {
   var bookReadingPageCount = Rx<int>(1);
 
   var logReadingDate = Rx<String?>(null);
-  void setLogReadingDate(DateTime date) {logReadingDate.value = DateFormat('dd.MM.yyyy').format(date);}
+  void setLogReadingDate(DateTime date) {logReadingDate.value = date.toString();}
   void clearLogReadingDate() {logReadingDate.value = null;}
   final TextEditingController logReadingDateController = TextEditingController();
 

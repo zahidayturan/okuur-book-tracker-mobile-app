@@ -3,6 +3,7 @@ import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 
 
 class FirebaseFirestoreOperation{
@@ -157,8 +158,8 @@ class FirebaseFirestoreOperation{
 
   Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
-      List<String> dateParts = log.readingDate.split('.');
-      String monthYear = '${dateParts[1]}-${dateParts[2]}';
+      DateTime logDate = OkuurDateFormatter.stringToDateTime(log.readingDate);
+      String monthYear = '${logDate.month}-${logDate.year}';
 
       DocumentReference logDocRef = _firestore
           .collection('users')
@@ -234,8 +235,8 @@ class FirebaseFirestoreOperation{
           .collection('books')
           .get();
 
-      List<String> dateParts = date.split('.');
-      String monthYear = '${dateParts[1]}-${dateParts[2]}';
+      DateTime logDate = OkuurDateFormatter.stringToDateTime(date);
+      String monthYear = '${logDate.month}-${logDate.year}';
       List<OkuurLogInfo> logs = [];
 
       for (var bookDoc in booksSnapshot.docs) {
@@ -260,8 +261,8 @@ class FirebaseFirestoreOperation{
   }
 
   Future<void> deleteLogInfo(String uid, OkuurLogInfo logInfo) async {
-    List<String> dateParts = logInfo.readingDate.split('.');
-    String monthYear = '${dateParts[1]}-${dateParts[2]}';
+    DateTime logDate = OkuurDateFormatter.stringToDateTime(logInfo.readingDate);
+    String monthYear = '${logDate.month}-${logDate.year}';
     try {
       await _firestore
           .collection('users')

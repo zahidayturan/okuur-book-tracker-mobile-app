@@ -11,6 +11,7 @@ import 'package:okuur/ui/components/image_shower.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_and_icon_button.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
 
 class BookDetailPage extends StatefulWidget {
@@ -266,8 +267,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
   int selectedItem = 0;
   
   String getParsedDate(String date){
-    List<String> dateParts = date.split('.');
-    return '${dateParts[0]}\n${dateParts[1]}';
+    DateTime fDate = OkuurDateFormatter.stringToDateTime(date);
+    return '${fDate.day}\n${fDate.month}';
   }
 
   Widget bookRecords(List<OkuurLogInfo> logs) {
@@ -337,7 +338,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 4),
-                RegularText(texts: logs[selectedItem].readingDate),
+                RegularText(texts: OkuurDateFormatter.convertDate(logs[selectedItem].readingDate)),
                 RegularText(texts: "${logs[selectedItem].numberOfPages} sayfa / ${logs[selectedItem].timeRead} dakika / ? puan"),
                 const SizedBox(height: 12),
                 Row(

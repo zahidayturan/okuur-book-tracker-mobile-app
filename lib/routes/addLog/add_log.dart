@@ -54,7 +54,7 @@ class _AddLogPageState extends State<AddLogPage> {
                   const LogFinishingHourInfo(),
                   const SizedBox(height: 12,),
                   const AddLogButton(),
-                  const SizedBox(height: 12,),
+                  const SizedBox(height: 12,)
                 ],),
             ),
           ),

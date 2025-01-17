@@ -24,7 +24,7 @@ class AddLogController extends GetxController {
     logNewCurrentPage.value = page;
     bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
     setLogReadingTime((bookReadingPageCount.value*1.5).toInt());
-    setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
+    setLogReadingDate(DateTime.now());
     setLogFinishingHour("${DateTime.now().hour}:${DateTime.now().minute}");
     checkAllValidate();
   }
@@ -41,7 +41,7 @@ class AddLogController extends GetxController {
   var bookReadingPageCount = Rx<int>(1);
 
   var logReadingDate = Rx<String?>(null);
-  void setLogReadingDate(String date) {logReadingDate.value = date;}
+  void setLogReadingDate(DateTime date) {logReadingDate.value = DateFormat('dd.MM.yyyy').format(date);}
   void clearLogReadingDate() {logReadingDate.value = null;}
   final TextEditingController logReadingDateController = TextEditingController();
 

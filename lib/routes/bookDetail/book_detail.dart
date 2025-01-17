@@ -264,15 +264,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
   int selectedItem = 0;
+  
+  String getParsedDate(String date){
+    List<String> dateParts = date.split('.');
+    return '${dateParts[0]}\n${dateParts[1]}';
+  }
 
   Widget bookRecords(List<OkuurLogInfo> logs) {
-    String parsedDate = "?";
-
-    if(logs.isNotEmpty){
-      List<String> dateParts = logs[selectedItem].readingDate.split('.');
-      parsedDate = '${dateParts[0]}\n${dateParts[1]}';
-    }
-
     return logs.isNotEmpty ? BaseContainer(
       radius: 12,
       child: Column(
@@ -315,10 +313,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     child: Center(
                       child: RegularText(
-                        texts: parsedDate,
+                        texts: getParsedDate(logs[index].readingDate),
                         align: TextAlign.center,
                         size: "m",
-                        maxLines: 3,
+                        maxLines: 2,
                       ),
                     ),
                   ),

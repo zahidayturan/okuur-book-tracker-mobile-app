@@ -55,7 +55,6 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
           ),
           italicText("Önceki kayıtlarınıza göre bir sayfayı ortalama 1.5 dakikada okumuşsunuz. (${controller.bookReadingPageCount.value} sayfa için ${(controller.bookReadingPageCount.value*1.5).toInt()} dakika)"),
           const SizedBox(height: 12,),
-          Text(controller.logReadingTime.toString()),
           Row(
             children: [
               alreadyButton(0,(controller.bookReadingPageCount.value*1.5).toInt()),

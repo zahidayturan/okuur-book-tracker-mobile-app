@@ -111,6 +111,7 @@ class AddLogController extends GetxController {
   Future<void> fetchCurrentlyReadBooks() async {
     booksLoading.value = true;
     currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
+    currentlyReadBooks.sort((a, b) => a.startingDate.compareTo(b.startingDate));
     booksLoading.value = false;
   }
 }

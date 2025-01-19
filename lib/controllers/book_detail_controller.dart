@@ -16,6 +16,8 @@ class BookDetailController extends GetxController {
   OkuurBookDetailInfo? okuurBookDetailInfo;
   List<OkuurLogInfo> logs= [];
 
+  var isLogChanged = Rx<bool>(false);
+
   var bookId = Rx<String?>(null);
 
   void setBookInfo(OkuurBookInfo? okuurBookInfo) {
@@ -26,12 +28,18 @@ class BookDetailController extends GetxController {
   var detailLoading = Rx<bool>(false);
 
   Future<void> getBookDetail() async {
-    if(bookId.value != null){
-      detailLoading.value = true;
-      logs = await logOperations.getLogInfo(bookId.value!);
-      detailLoading.value = false;
-    }else{
-      debugPrint("else detail controller");
+    if (bookId.value != null) {
+      try {
+        detailLoading.value = true;
+        logs = await logOperations.getLogInfo(bookId.value!);
+        logs.sort((a, b) => b.readingDate.compareTo(a.readingDate));
+        detailLoading.value = false;
+      } catch (error) {
+        detailLoading.value = false;
+        debugPrint("Error fetching log info: $error");
+      }
+    } else {
+      debugPrint("bookId is null, unable to fetch book details");
     }
   }
 

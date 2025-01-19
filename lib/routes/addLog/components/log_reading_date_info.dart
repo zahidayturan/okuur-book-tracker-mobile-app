@@ -55,9 +55,9 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
           const SizedBox(height: 12,),
           Row(
             children: [
-              alreadyButton(0,"Bugün",DateTime.now().toString()),
+              alreadyButton(0,"Bugün",DateTime.now()),
               const SizedBox(width: 12,),
-              alreadyButton(1,"Dün",DateTime.now().subtract(const Duration(days: 1)).toString()),
+              alreadyButton(1,"Dün",DateTime.now().subtract(const Duration(days: 1))),
               const SizedBox(width: 12,),
               optionalButton(2)
             ],
@@ -69,7 +69,7 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
 
   int selectedButtonIndex = 0;
 
-  Widget alreadyButton(int index,String text,String date){
+  Widget alreadyButton(int index,String text,DateTime date){
     return GestureDetector(
         onTap: () {
           setState(() {
@@ -148,13 +148,13 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
       if (pickedDate != null) {
         setState(() {
           controller.logReadingDateController.text = DateFormat('dd.MM.yyyy').format(pickedDate);
-          controller.setLogReadingDate(controller.logReadingTimeController.text);
+          controller.setLogReadingDate(pickedDate);
         });
       }else{
         setState(() {
           selectedButtonIndex = 0;
           controller.logReadingDateController.clear();
-          controller.setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
+          controller.setLogReadingDate(DateTime.now());
         });
       }
 

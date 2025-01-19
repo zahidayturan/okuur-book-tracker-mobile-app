@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 
@@ -24,7 +23,7 @@ class AddLogController extends GetxController {
     logNewCurrentPage.value = page;
     bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
     setLogReadingTime((bookReadingPageCount.value*1.5).toInt());
-    setLogReadingDate(DateFormat('dd.MM.yyyy').format(DateTime.now()).toString());
+    setLogReadingDate(DateTime.now());
     setLogFinishingHour("${DateTime.now().hour}:${DateTime.now().minute}");
     checkAllValidate();
   }
@@ -41,7 +40,7 @@ class AddLogController extends GetxController {
   var bookReadingPageCount = Rx<int>(1);
 
   var logReadingDate = Rx<String?>(null);
-  void setLogReadingDate(String date) {logReadingDate.value = date;}
+  void setLogReadingDate(DateTime date) {logReadingDate.value = date.toString();}
   void clearLogReadingDate() {logReadingDate.value = null;}
   final TextEditingController logReadingDateController = TextEditingController();
 
@@ -112,6 +111,7 @@ class AddLogController extends GetxController {
   Future<void> fetchCurrentlyReadBooks() async {
     booksLoading.value = true;
     currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
+    currentlyReadBooks.sort((a, b) => a.startingDate.compareTo(b.startingDate));
     booksLoading.value = false;
   }
 }

@@ -115,7 +115,7 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
           onTap: () {
             setState(() {
               selectedButtonIndex = index;
-              controller.clearLogReadingTime();
+              //controller.clearLogReadingTime();
             });
           },
           maxLength: 4,
@@ -141,15 +141,25 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
             color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
           ),
           onChanged: (value) {
-            if(value.isNotEmpty){
+            if(value.isNotEmpty && int.parse(value) > 0){
+              selectedButtonIndex = 1;
                 controller.setLogReadingTime(int.parse(value));
             }else{
               selectedButtonIndex = 0;
-              controller.setLogReadingTime(63);
+              controller.setLogReadingTime((controller.bookReadingPageCount.value*1.5).toInt()); //bug
+              controller.logReadingTimeController.clear();
             }
             setState(() {});
           },
         onFieldSubmitted: (value) {
+          if(value.isNotEmpty && int.parse(value) > 0){
+            selectedButtonIndex = 1;
+            controller.setLogReadingTime(int.parse(value));
+          }else{
+            selectedButtonIndex = 0;
+            controller.setLogReadingTime((controller.bookReadingPageCount.value*1.5).toInt()); //bug
+            controller.logReadingTimeController.clear();
+          }
           setState(() {});
         },
       )

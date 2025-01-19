@@ -37,7 +37,7 @@ class _AddLogButtonState extends State<AddLogButton> {
       await LogOperations().insertLogInfo(logInfo);
       await bookOperations.updateBookInfoAfterLog(logInfo,true);
       await homeController.fetchCurrentlyReadBooks();
-      await homeController.fetchLogForDate(DateTime.now());
+      await homeController.fetchLogForDate();
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {

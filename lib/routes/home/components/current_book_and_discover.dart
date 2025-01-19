@@ -150,6 +150,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
               ).then((result) {
                 if (result == true) {
                   controller.fetchCurrentlyReadBooks().then((value) => initAsync());
+                  controller.fetchLogForDate();
                 }
               });
             },

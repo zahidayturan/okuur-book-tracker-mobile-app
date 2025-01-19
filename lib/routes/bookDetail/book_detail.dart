@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
-import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
+import 'package:okuur/routes/bookDetail/components/book_records_detail.dart';
 import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/image_shower.dart';
@@ -30,8 +30,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
     super.initState();
     controller.getBookDetail();
   }
-
-  bool isLogChanged = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +75,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
         const SizedBox(height: 18,),
         bookGoal(),
         const SizedBox(height: 18,),
-        bookRecords(controller.logs),
+        const BookRecordsDetail(),
         const SizedBox(height: 18,)
       ],
     );
@@ -93,7 +91,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              popButton(context,isLogChanged),
+              popButton(context,controller.isLogChanged.value),
               const SizedBox(height: 8),
               RegularText(
                   texts: okuurBookInfo.name,
@@ -263,121 +261,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
       ),
     );
   }
-  int selectedItem = 0;
-
-  Widget bookRecords(List<OkuurLogInfo> logs) {
-    String parsedDate = "?";
-
-    if(logs.isNotEmpty){
-      List<String> dateParts = logs[selectedItem].readingDate.split('.');
-      parsedDate = '${dateParts[0]}\n${dateParts[1]}';
-    }
-
-    return logs.isNotEmpty ? BaseContainer(
-      radius: 12,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const RegularText(texts: "Okumaların", style: FontStyle.italic),
-              RegularText(texts: "${logs.length} kayıt", size: "m"),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 60,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: logs.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 10),
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      selectedItem = index;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    curve: Curves.easeInOut,
-                    duration: const Duration(milliseconds: 400),
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
-                    decoration: BoxDecoration(
-                      color: selectedItem == index
-                          ? Theme.of(context).scaffoldBackgroundColor
-                          : Theme.of(context).colorScheme.onPrimaryContainer,
-                      borderRadius: BorderRadius.circular(selectedItem == index ? 16 : 8),
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                    ),
-                    child: Center(
-                      child: RegularText(
-                        texts: parsedDate,
-                        align: TextAlign.center,
-                        size: "m",
-                        maxLines: 3,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 8),
-          BaseContainer(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const RegularText(texts: "Seçili Okuma Detayı",style: FontStyle.italic,size: "m",),
-                    Icon(Icons.info_outline_rounded,size: 16,color: Theme.of(context).colorScheme.secondary)
-                  ],
-                ),
-                const SizedBox(height: 4),
-                RegularText(texts: logs[selectedItem].readingDate),
-                RegularText(texts: "${logs[selectedItem].numberOfPages} sayfa / ${logs[selectedItem].timeRead} dakika / ? puan"),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    opButton(
-                      "Düzenle",
-                      Icons.edit_rounded,
-                      Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        bool shouldExit = await _showCustomDialog("Okuma kaydı silinecektir.\nOnaylıyor musunuz?");
-                        if (shouldExit) {
-                          controller.deleteLogInfo(logs[selectedItem]);
-                          setState(() {
-                            isLogChanged = true;
-                          });
-                        }
-                      },
-                      child: opButton(
-                          "Okuma Kaydını Sil",
-                          Icons.delete_outline_rounded,
-                          colors.red),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    ) : const SizedBox();
-  }
-
 
   Widget totalRead(OkuurBookInfo okuurBookInfo){
     return BaseContainer(

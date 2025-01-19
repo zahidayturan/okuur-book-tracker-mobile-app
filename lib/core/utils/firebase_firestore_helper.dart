@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 
 
 class FirebaseFirestoreOperation{
@@ -14,7 +16,7 @@ class FirebaseFirestoreOperation{
       Map<String, dynamic> userData = user.toJson();
       await _firestore.collection('users').doc(user.id).set(userData);
     } catch (e) {
-      print('Add User Error: $e');
+      debugPrint('Add User Error: $e');
     }
   }
 
@@ -29,7 +31,7 @@ class FirebaseFirestoreOperation{
         return null;
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      debugPrint('Error fetching user data: $e');
       return null;
     }
   }
@@ -43,9 +45,9 @@ class FirebaseFirestoreOperation{
 
       await _firestore.collection('users').doc(uid).collection('books').doc(book.id).set(bookData);
 
-      print('Book added with ID: ${book.id}');
+      debugPrint('Book added with ID: ${book.id}');
     } catch (e) {
-      print('Add Book Error: $e');
+      debugPrint('Add Book Error: $e');
     }
   }
 
@@ -53,9 +55,9 @@ class FirebaseFirestoreOperation{
     try {
       Map<String, dynamic> bookData = book.toJson();
       await _firestore.collection('users').doc(uid).collection('books').doc(book.id).update(bookData);
-      print('Book updated with ID: ${book.id}');
+      debugPrint('Book updated with ID: ${book.id}');
     } catch (e) {
-      print('Update Book Error: $e');
+      debugPrint('Update Book Error: $e');
     }
   }
 
@@ -69,7 +71,7 @@ class FirebaseFirestoreOperation{
         return null;
       }
     } catch (e) {
-      print('Error fetching book data: $e');
+      debugPrint('Error fetching book data: $e');
       return null;
     }
   }
@@ -85,7 +87,7 @@ class FirebaseFirestoreOperation{
         return null;
       }
     } catch (e) {
-      print('Error fetching book data: $e');
+      debugPrint('Error fetching book data: $e');
       return null;
     }
   }
@@ -107,7 +109,7 @@ class FirebaseFirestoreOperation{
         return [];
       }
     } catch (e) {
-      print('Error fetching currently read books: $e');
+      debugPrint('Error fetching currently read books: $e');
       return [];
     }
   }
@@ -132,9 +134,9 @@ class FirebaseFirestoreOperation{
           .collection('books')
           .doc(bookId)
           .delete();
-      print('Book with ID $bookId and its logs deleted successfully.');
+      debugPrint('Book with ID $bookId and its logs deleted successfully.');
     } catch (e) {
-      print('Error deleting book with ID $bookId: $e');
+      debugPrint('Error deleting book with ID $bookId: $e');
     }
   }
 
@@ -149,16 +151,16 @@ class FirebaseFirestoreOperation{
       for (var doc in querySnapshot.docs) {
         await doc.reference.delete();
       }
-      print('All books deleted successfully.');
+      debugPrint('All books deleted successfully.');
     } catch (e) {
-      print('Error deleting all books: $e');
+      debugPrint('Error deleting all books: $e');
     }
   }
 
   Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
-      List<String> dateParts = log.readingDate.split('.');
-      String monthYear = '${dateParts[1]}-${dateParts[2]}';
+      DateTime logDate = OkuurDateFormatter.stringToDateTime(log.readingDate);
+      String monthYear = '${logDate.month}-${logDate.year}';
 
       DocumentReference logDocRef = _firestore
           .collection('users')
@@ -193,7 +195,7 @@ class FirebaseFirestoreOperation{
           .set(logData);
 
     } catch (e) {
-      print('Add Log Error: $e');
+      debugPrint('Add Log Error: $e');
     }
   }
 
@@ -222,20 +224,23 @@ class FirebaseFirestoreOperation{
 
       return logs.isNotEmpty ? logs : [];
     } catch (e) {
-      print('Error fetching log data: $e');
+      debugPrint('Error fetching log data: $e');
       return [];
     }
   }
 
-  Future<List<OkuurLogInfo>> getLogInfoForDate(String date, String uid) async {
+  Future<List<OkuurLogInfo>> getLogInfoForDate(DateTime dateTime, String uid) async {
     try {
-      QuerySnapshot booksSnapshot = await _firestore.collection('users')
+      QuerySnapshot booksSnapshot = await _firestore
+          .collection('users')
           .doc(uid)
           .collection('books')
           .get();
 
-      List<String> dateParts = date.split('.');
-      String monthYear = '${dateParts[1]}-${dateParts[2]}';
+      DateTime startOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day);
+      DateTime endOfDay = startOfDay.add(const Duration(days: 1));
+
+      String monthYear = '${dateTime.month}-${dateTime.year}';
       List<OkuurLogInfo> logs = [];
 
       for (var bookDoc in booksSnapshot.docs) {
@@ -243,7 +248,8 @@ class FirebaseFirestoreOperation{
             .collection('logs')
             .doc(monthYear)
             .collection('entries')
-            .where('readingDate', isEqualTo: date)
+            .where('readingDate', isGreaterThanOrEqualTo: startOfDay.toString())
+            .where('readingDate', isLessThan: endOfDay.toString())
             .get();
 
         if (logsSnapshot.docs.isNotEmpty) {
@@ -254,14 +260,14 @@ class FirebaseFirestoreOperation{
 
       return logs.isNotEmpty ? logs : [];
     } catch (e) {
-      print('Error fetching log data: $e');
+      debugPrint('Error fetching log data: $e');
       return [];
     }
   }
 
   Future<void> deleteLogInfo(String uid, OkuurLogInfo logInfo) async {
-    List<String> dateParts = logInfo.readingDate.split('.');
-    String monthYear = '${dateParts[1]}-${dateParts[2]}';
+    DateTime logDate = OkuurDateFormatter.stringToDateTime(logInfo.readingDate);
+    String monthYear = '${logDate.month}-${logDate.year}';
     try {
       await _firestore
           .collection('users')
@@ -274,9 +280,9 @@ class FirebaseFirestoreOperation{
           .doc(logInfo.id)
           .delete();
 
-      print('Book log deleted successfully.');
+      debugPrint('Book log deleted successfully.');
     } catch (e) {
-      print('Error deleting book log: $e');
+      debugPrint('Error deleting book log: $e');
     }
   }
 

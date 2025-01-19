@@ -24,12 +24,10 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   AppColors colors = AppColors();
   HomeController controller = Get.find();
-  DateTime initDate = DateTime.now();
-
   @override
   void initState() {
     super.initState();
-    controller.fetchLogForDate(initDate);
+    controller.fetchLogForDate();
   }
 
   List<String> months = [
@@ -78,39 +76,39 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        dayContainer(initDate),
+        dayContainer(),
         const SizedBox(width: 8),
         RegularText(texts:isData ? "Günlük Hedefe Ulaşıldı!" : "", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
       ],
     );
   }
 
-  Widget dayContainer(DateTime date) {
+  Widget dayContainer() {
     String dayInfo = "";
     bool isSameDay(DateTime date1, DateTime date2) {
       return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
     }
-    dayInfo = isSameDay(date, DateTime.now()) ? "Bugün" : "${date.year}";
+    dayInfo = isSameDay(controller.initDate, DateTime.now()) ? "Bugün" : "${controller.initDate.year}";
 
     return GestureDetector(
       onTap: () async {
         DateTime? selectedDate = await showDatePicker(
           context: context,
-          initialDate: initDate,
+          initialDate: controller.initDate,
           firstDate: DateTime(2000),
           lastDate: DateTime(2100),
         );
-        if (selectedDate != null && selectedDate != initDate) {
+        if (selectedDate != null && selectedDate != controller.initDate) {
           setState(() {
-            initDate = selectedDate;
-            controller.fetchLogForDate(initDate);
+            controller.initDate = selectedDate;
+            controller.fetchLogForDate();
           });
         }
       },
       onLongPress: () {
         setState(() {
-          initDate = DateTime.now();
-          controller.fetchLogForDate(initDate);
+          controller.initDate = DateTime.now();
+          controller.fetchLogForDate();
         });
       },
       child: Container(
@@ -130,11 +128,11 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               );
             },
             child: RichTextWidget(
-              texts: ["${date.day.toString()} ${months[date.month]} ", dayInfo],
+              texts: ["${controller.initDate.day.toString()} ${months[controller.initDate.month]} ", dayInfo],
               colors: [Theme.of(context).colorScheme.secondary],
               fontFamilies: const ["FontBold", "FontMedium"],
               fontSize: 13,
-              key: ValueKey<int>(date.day),
+              key: ValueKey<int>(controller.initDate.day),
               align: TextAlign.center,
             ),
           ),

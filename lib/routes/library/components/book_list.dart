@@ -70,7 +70,7 @@ class _BookListLibraryState extends State<BookListLibrary> {
                       child: RichTextWidget(
                       texts: [text,boldText],
                       colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.onSurface],
-                      fontFamilies: ["FontMedium","FontBold"],
+                      fontFamilies: const ["FontMedium","FontBold"],
                       fontSize: 14,
                       align: TextAlign.center),
                     ),

@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
+import 'dart:io';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+// import 'package:okuur/core/utils/firebase_storage_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
@@ -10,8 +11,10 @@ import 'package:okuur/data/services/book_service.dart';
 class BookOperations implements BookService {
 
   @override
-  Future<void> insertBookInfo(OkuurBookInfo bookInfo) async {
+  Future<void> insertBookInfo(OkuurBookInfo bookInfo,File? image) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
+    //String imageId = await FirebaseStorageOperation().uploadBookCoverImage(image);
+    //bookInfo.imageLink = imageId;
     await FirebaseFirestoreOperation().addBookInfoToFirestore(uid!, bookInfo);
   }
 

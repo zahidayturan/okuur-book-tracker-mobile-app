@@ -42,7 +42,7 @@ class _AddBookButtonState extends State<AddBookButton> {
     LoadingDialog.showLoading(message: "Kitap ekleniyor");
 
     try {
-      await bookOperations.insertBookInfo(bookInfo);
+      await bookOperations.insertBookInfo(bookInfo,controller.selectedImage.value);
       await libraryController.fetchBooks();
       await homeController.fetchCurrentlyReadBooks();
     } catch (e) {

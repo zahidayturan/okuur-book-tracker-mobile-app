@@ -3,18 +3,17 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
-import 'package:okuur/data/services/operations/book_operations.dart';
-import 'package:okuur/ui/components/functional_alert_dialog.dart';
-import 'package:okuur/ui/components/loading_circular.dart';
-import 'package:okuur/ui/components/popup_operation_menu.dart';
+import 'package:okuur/routes/bookDetail/book_detail.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/star_rating.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 import 'package:okuur/ui/utils/simple_calc.dart';
+import '../../../controllers/book_detail_controller.dart';
 import '../../../ui/components/image_shower.dart';
 
 AppColors colors = AppColors();
 final LibraryController libraryController = Get.find();
+final BookDetailController bookDetailController = Get.find();
 
 Row bookContainerLibrary(OkuurBookInfo bookInfo, String index, BuildContext context) {
   bool isNotStarted = bookInfo.status == 0;
@@ -36,13 +35,45 @@ Widget _bookDetails(OkuurBookInfo bookInfo, String index, BuildContext context, 
       color: Theme.of(context).colorScheme.onPrimaryContainer,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
     ),
-    padding: const EdgeInsets.all(8),
-    child: Column(
-      children: [
-        if (!isNotStarted) _bookHeader(bookInfo, index, isReading, context, percentage),
-        const SizedBox(height: 8),
-        _bookContent(bookInfo, context, isNotStarted, isReading),
-      ],
+
+    child: Material(
+      type: MaterialType.transparency,
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: () {
+          bookDetailController.setBookInfo(bookInfo);
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              opaque: false,
+              transitionDuration: const Duration(milliseconds: 200),
+              pageBuilder: (context, animation, nextanim) => const BookDetailPage(),
+              reverseTransitionDuration: const Duration(milliseconds: 1),
+              transitionsBuilder: (context, animation, nexttanim, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          ).then((result) {
+            if (result == true) {
+              libraryController.fetchBooks();
+            }
+          });
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              if (!isNotStarted) _bookHeader(bookInfo, index, isReading, context, percentage),
+              const SizedBox(height: 8),
+              _bookContent(bookInfo, context, isNotStarted, isReading),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 }
@@ -129,7 +160,7 @@ Widget _bookFooter(OkuurBookInfo bookInfo, bool isNotStarted, bool isReading, Bu
             : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate, bookInfo.finishingDate)} günde okudunuz",
         size: "xs"
       ),
-      moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, !isNotStarted, context, bookInfo),
+      moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, context, bookInfo),
     ],
   );
 }
@@ -158,95 +189,9 @@ Widget _statusDot(bool isReading, BuildContext context) {
   );
 }
 
-InkWell moreButton(Color color, bool rate, BuildContext context, OkuurBookInfo bookInfo) {
-  return InkWell(
-    onTapDown: (TapDownDetails details) => _showMoreMenu(details, color, rate, context, bookInfo),
-    child: Container(
-      height: 11,
-      margin: const EdgeInsets.only(top: 4),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: const BorderRadius.all(Radius.circular(50)),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 2.5, horizontal: 3),
-      child: Image.asset("assets/icons/more.png", color: Theme.of(context).primaryColor),
-    ),
+SizedBox moreButton(Color color, BuildContext context, OkuurBookInfo bookInfo) {
+  return SizedBox(
+    height: 11,
+    child: Image.asset("assets/icons/arrow.png", color: color),
   );
-}
-
-void _showMoreMenu(TapDownDetails details, Color color, bool rate, BuildContext context, OkuurBookInfo bookInfo) {
-  showOkuurPopupMenu(
-    details.globalPosition,
-    Theme.of(context).colorScheme.onPrimaryContainer,
-    rate ? 36 : 12,
-    _popupMenuItems(context, rate),
-        (value) => _handlePopupMenuAction(value,bookInfo),
-  );
-}
-
-List<PopupMenuEntry<int>> _popupMenuItems(BuildContext context, bool rate) {
-  return [
-    _buildMenuItem(context, Icons.mode_edit_outline_rounded, "Düzenle", Theme.of(context).colorScheme.primaryContainer, 1),
-    if (rate) _buildMenuItem(context, Icons.star_rate_rounded, "Puanla", Theme.of(context).colorScheme.primaryContainer, 2),
-    if (!rate) _buildMenuItem(context, Icons.chrome_reader_mode_rounded, "Okumaya başla", Theme.of(context).colorScheme.surface, 3),
-    _buildMenuItem(context, Icons.delete_outline_rounded, "Sil", colors.red, 4),
-  ];
-}
-
-PopupMenuItem<int> _buildMenuItem(BuildContext context, IconData icon, String text, Color color, int value) {
-  return PopupMenuItem<int>(
-    value: value,  // Menü öğesinin döneceği değer
-    height: 32,
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: Row(
-      children: [
-        Icon(icon, color: color, size: 16),
-        const SizedBox(width: 6),
-        Text(text, style: TextStyle(fontSize: 13, color: color)),
-      ],
-    ),
-  );
-}
-
-Future<void> _handlePopupMenuAction(int? value, OkuurBookInfo bookInfo) async {
-  switch (value) {
-    case 4:
-      bool shouldDelete = await _showCustomDialog(bookInfo.name);
-      if (shouldDelete) {
-        _showLoading("Kitap ve kayıtlar siliniyor");
-        await _deleteBook(bookInfo);
-        _hideLoading();
-      }
-      break;
-  }
-}
-
-Future<void> _deleteBook(OkuurBookInfo bookInfo) async {
-  try {
-    await BookOperations().deleteBookAndLogInfo(bookInfo.id!);
-    await libraryController.fetchBooks();
-  } catch (e) {
-    debugPrint("An error occurred: $e");
-  }
-}
-
-Future<bool> _showCustomDialog(String bookName) async {
-  bool? result = await OkuurAlertDialog.show(
-    context: Get.context!,
-    contentText: "$bookName ve kayıtları silinecek!\nEmin misiniz?",
-    buttons: [
-      AlertButton(text: "Geri Dön", fill: false, returnValue: false),
-      AlertButton(text: "Sil", fill: true, returnValue: true),
-    ],
-  );
-  return result ?? false;
-}
-
-
-void _showLoading(String message) {
-  LoadingDialog.showLoading(message: message);
-}
-
-void _hideLoading() {
-  LoadingDialog.hideLoading();
 }

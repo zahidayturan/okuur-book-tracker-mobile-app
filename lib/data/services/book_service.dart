@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 
 abstract class BookService {
 
-  Future<void> insertBookInfo(OkuurBookInfo bookInfo);
+  Future<void> insertBookInfo(OkuurBookInfo bookInfo,File? image);
 
   Future<List<OkuurBookInfo>?> getBookInfo();
 

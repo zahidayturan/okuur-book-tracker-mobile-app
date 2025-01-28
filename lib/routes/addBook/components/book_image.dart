@@ -12,7 +12,7 @@ AppColors colors = AppColors();
 Container addBookImage(BuildContext context) {
   final AddBookController controller = Get.find();
 
-  Future<void> _pickImage() async {
+  Future<void> pickImage() async {
     try {
       final pickerService = OkuurImagePicker(context: Get.context!);
       final File? selectedImage = await pickerService.pickImageFromCamera();
@@ -21,7 +21,7 @@ Container addBookImage(BuildContext context) {
         controller.setImage(selectedImage); // Update the image in the controller
       }
     } catch (e) {
-      print("Image picking failed: $e");
+      debugPrint("Image picking failed: $e");
     }
   }
 
@@ -40,9 +40,9 @@ Container addBookImage(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RichTextWidget(
-                  texts: ["Kitabın ","Kapak Fotoğrafı"],
+                  texts: const ["Kitabın ","Kapak Fotoğrafı"],
                   colors: [Theme.of(context).colorScheme.secondary],
-                  fontFamilies: ["FontMedium","FontBold"],),
+                  fontFamilies: const ["FontMedium","FontBold"],),
               const SizedBox(height: 4),
               const RegularText(texts: "İsterseniz kapak fotoğrafı yükleyebilirsiniz. Yüklemek için dokunun", size: "m",maxLines: 3,),
               Obx(() => Visibility(
@@ -53,9 +53,10 @@ Container addBookImage(BuildContext context) {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      "Yükleneni kaldır",
-                      style: TextStyle(color: colors.red),
+                    child: RegularText(
+                      texts: "Yükleneni kaldır",
+                      color: colors.red,
+                      size: "s",
                     ),
                   ),
                 ),
@@ -66,7 +67,7 @@ Container addBookImage(BuildContext context) {
         Obx(() {
           return InkWell(
             onTap: () {
-              _pickImage();
+              pickImage();
             },
             child: Container(
               width: 58,

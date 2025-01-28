@@ -68,6 +68,83 @@ class BookDetailController extends GetxController {
       Navigator.pop(Get.context!, true);
     }
   }
+  /*
+  EDIT
+   */
 
+  void editInit(OkuurBookInfo okuurBookInfo) {
+    bookNameController.text = okuurBookInfo.name;
+    bookAuthorController.text = okuurBookInfo.author;
+    bookPageController.text = okuurBookInfo.pageCount.toString();
+    bookTypeController.text = okuurBookInfo.type;
+    isAllChanged.value = false;
+  }
+
+  final bookNameKey = GlobalKey<FormState>();
+  final TextEditingController bookNameController = TextEditingController();
+
+  final bookAuthorKey = GlobalKey<FormState>();
+  final TextEditingController bookAuthorController = TextEditingController();
+
+  final bookPageKey = GlobalKey<FormState>();
+  final TextEditingController bookPageController = TextEditingController();
+
+  final bookTypeKey = GlobalKey<FormState>();
+  final TextEditingController bookTypeController = TextEditingController();
+
+  var isAllChanged = Rx<bool>(false);
+
+  void editChangeDetect() {
+    bool areFieldsNotEmpty = bookNameController.text.isNotEmpty &&
+        bookAuthorController.text.isNotEmpty &&
+        bookPageController.text.isNotEmpty;
+
+    bool isAnyFieldChanged = bookNameController.text != okuurBookInfo!.name ||
+        bookAuthorController.text != okuurBookInfo!.author ||
+        bookPageController.text != okuurBookInfo!.pageCount.toString() ||
+        bookTypeController.text != okuurBookInfo!.type;
+
+    if (areFieldsNotEmpty && isAnyFieldChanged) {
+      isAllChanged.value = true;
+    } else {
+      isAllChanged.value = false;
+    }
+  }
+
+  Future<void> updateBookInfo() async {
+    LoadingDialog.showLoading(message: "Kitap bilgileri güncelleniyor");
+    OkuurBookInfo updatedBookInfo = okuurBookInfo!;
+    try {
+      if(bookNameController.text != okuurBookInfo!.name){
+        updatedBookInfo.name = bookNameController.text;
+      }
+      if(bookAuthorController.text != okuurBookInfo!.author){
+        updatedBookInfo.author = bookAuthorController.text;
+      }
+      if(bookPageController.text != okuurBookInfo!.pageCount.toString()){
+        updatedBookInfo.pageCount = int.parse(bookPageController.text);
+      }
+      if(bookTypeController.text != okuurBookInfo!.type){
+        updatedBookInfo.type = bookTypeController.text;
+      }
+      if(updatedBookInfo.pageCount <= updatedBookInfo.currentPage){
+        updatedBookInfo.status += 1;
+        updatedBookInfo.finishingDate = DateTime.now().toString();
+      }else{
+        if(updatedBookInfo.status != 0 && updatedBookInfo.status % 2 == 0){
+          updatedBookInfo.status -= 1;
+        }
+      }
+      await bookOperations.updateBookInfo(updatedBookInfo);
+    } catch (e) {
+      debugPrint("An error occurred: $e");
+    } finally {
+      LoadingDialog.hideLoading();
+      setBookInfo(updatedBookInfo);
+      getBookDetail();
+      isLogChanged.value = true;
+      Navigator.pop(Get.context!);
+    }
+  }
 
 }

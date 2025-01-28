@@ -9,6 +9,8 @@ abstract class BookService {
 
   Future<List<OkuurBookInfo>?> getBookInfo();
 
+  Future<void> updateBookInfo(OkuurBookInfo okuurBookInfo);
+
   Future<OkuurBookInfo?> getBookInfoWithId(String bookId);
 
   Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo();

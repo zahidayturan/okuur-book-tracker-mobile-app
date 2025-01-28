@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/series/series.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 
@@ -26,22 +27,41 @@ class _WeeklySeriesState extends State<WeeklySeries> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 72,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: Theme.of(context).colorScheme.onPrimaryContainer
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            seriesInfo(widget.weeklySeries),
-            seriesCountInfo(),
-            iconButton()
-          ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            opaque: false,
+            transitionDuration: const Duration(milliseconds: 200),
+            pageBuilder: (context, animation, nextanim) => const ReadingSeriesPage(),
+            reverseTransitionDuration: const Duration(milliseconds: 1),
+            transitionsBuilder: (context, animation, nexttanim, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
+      },
+      child: Container(
+        height: 72,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: Theme.of(context).colorScheme.onPrimaryContainer
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              seriesInfo(widget.weeklySeries),
+              seriesCountInfo(),
+              iconButton()
+            ],
+          ),
         ),
       ),
     );

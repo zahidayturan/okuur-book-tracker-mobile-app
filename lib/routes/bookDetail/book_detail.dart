@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/routes/bookDetail/components/book_detail_edit.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/routes/bookDetail/components/book_records_detail.dart';
 import 'package:okuur/ui/components/base_container.dart';
@@ -101,7 +102,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               RegularText(
                   texts: okuurBookInfo.author,
                   size: "m",
-                  style: FontStyle.italic),
+              ),
               RegularText(
                 texts: "${okuurBookInfo.type} - ${okuurBookInfo.pageCount} sayfa",
                 size: "m",
@@ -109,11 +110,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
               const Spacer(),
               Row(
                 children: [
-                  TextIconButton(
-                    text: "Düzenle",
-                    icon: Icons.edit_rounded,
-                    backColor: Theme.of(context).colorScheme.secondary,
-                    iconColor: Theme.of(context).primaryColor,
+                  InkWell(
+                    onTap: () {
+                      controller.editInit(okuurBookInfo);
+                      showBookDetailEditDialog(context,okuurBookInfo);
+                    },
+                    child: TextIconButton(
+                      text: "Düzenle",
+                      icon: Icons.edit_rounded,
+                      backColor: Theme.of(context).colorScheme.secondary,
+                      iconColor: Theme.of(context).primaryColor,
+                    ),
                   ),
                   const SizedBox(
                     width: 12,
@@ -159,8 +166,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const RegularText(texts: "Bu Kitabı Okuyorsun",style: FontStyle.italic),
-              RegularText(texts: "${okuurBookInfo.currentPage}. sayfadasın",size: "m")
+              RegularText(texts: rate < 100 ? "Bu Kitabı Okuyorsun" : "Bu Kitabı Okudun",style: FontStyle.italic),
+              RegularText(texts: rate < 100 ? "${okuurBookInfo.currentPage}. sayfadasın" : "Bitti",size: "m")
             ],
           ),
           const SizedBox(height: 12),

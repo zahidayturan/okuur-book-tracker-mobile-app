@@ -27,6 +27,12 @@ class BookOperations implements BookService {
   }
 
   @override
+  Future<void> updateBookInfo(OkuurBookInfo okuurBookInfo) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    await FirebaseFirestoreOperation().updateBookInfo(uid!,okuurBookInfo);
+  }
+
+  @override
   Future<OkuurBookInfo?> getBookInfoWithId(String bookId) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     var result = await FirebaseFirestoreOperation().getSingleBookInfo(uid!,bookId);

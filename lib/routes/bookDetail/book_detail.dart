@@ -102,7 +102,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               RegularText(
                   texts: okuurBookInfo.author,
                   size: "m",
-                  style: FontStyle.italic),
+              ),
               RegularText(
                 texts: "${okuurBookInfo.type} - ${okuurBookInfo.pageCount} sayfa",
                 size: "m",
@@ -166,8 +166,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const RegularText(texts: "Bu Kitabı Okuyorsun",style: FontStyle.italic),
-              RegularText(texts: "${okuurBookInfo.currentPage}. sayfadasın",size: "m")
+              RegularText(texts: rate < 100 ? "Bu Kitabı Okuyorsun" : "Bu Kitabı Okudun",style: FontStyle.italic),
+              RegularText(texts: rate < 100 ? "${okuurBookInfo.currentPage}. sayfadasın" : "Bitti",size: "m")
             ],
           ),
           const SizedBox(height: 12),

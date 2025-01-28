@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/ui/components/dropdown_menu.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
+import 'package:okuur/ui/const/book_type_list.dart';
 
 AppColors colors = AppColors();
 BookDetailController controller = Get.find();
@@ -28,6 +30,7 @@ void showBookDetailEditDialog(BuildContext context,OkuurBookInfo okuurBookInfo) 
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
@@ -45,6 +48,24 @@ void showBookDetailEditDialog(BuildContext context,OkuurBookInfo okuurBookInfo) 
                     controller.editChangeDetect();
                   },
                   TextInputType.text),
+              const SizedBox(height: 12,),
+              form(context,"Kitabın Yazarı","Yazarını yazınız",
+                  controller.bookAuthorController.text.isNotEmpty,
+                  controller.bookAuthorController, controller.bookAuthorKey,
+                  (author) {
+                    controller.editChangeDetect();
+                  },
+                  TextInputType.text),
+              const SizedBox(height: 12,),
+              form(context,"Sayfa Sayısı","Sayfa sayısını yazınız",
+                  (int.tryParse(controller.bookPageController.text) != 0 && controller.bookPageController.text.isNotEmpty),
+                  controller.bookPageController, controller.bookPageKey,
+                  (page) {
+                    controller.editChangeDetect();
+                  },
+                  TextInputType.number),
+              const SizedBox(height: 12,),
+              typeForm(context),
               const SizedBox(height: 12,),
               addButton(context)
             ],
@@ -64,6 +85,47 @@ Widget form(BuildContext context,String label,String hint,validate,controller,ke
       keyboardType: keyboardType,
       onFieldSubmitted: onFieldSubmitted
   ).getTextFormFieldForPage(context);
+}
+
+Widget typeForm(BuildContext context) {
+  bookTypeList.remove("Türünü seçiniz");
+  List<String> updatedBookTypeList = List.from(bookTypeList);
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      labelText("Kitabın Türü", true),
+      Row(
+        children: [
+          SizedBox(
+            height: 32,
+            child: OkuurDropdownMenu(
+              controller: controller.bookTypeController,
+              key: controller.bookTypeKey,
+              list: updatedBookTypeList,
+              dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+              textColor: Theme.of(context).colorScheme.secondary,
+              padding: 0,
+              fontSize: 14,
+              initialIndex: bookTypeList.indexWhere((element) => element == controller.bookTypeController.text),
+              onChanged: (value) {
+                controller.editChangeDetect();
+              },
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+RegularText labelText(String label,bool validate) {
+  return RegularText(texts:
+  label,
+    align: TextAlign.end,
+    size: "s",
+    maxLines: 2,
+    color: validate == true ? colors.blue : colors.red,
+  );
 }
 
 Widget addButton(BuildContext context) {

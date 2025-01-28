@@ -40,7 +40,7 @@ class _OkuurDropdownMenuState extends State<OkuurDropdownMenu> {
       padding: EdgeInsets.symmetric(horizontal: widget.padding),
       decoration: BoxDecoration(
           color: widget.dropdownColor,
-          borderRadius: BorderRadius.all(Radius.circular(30))),
+          borderRadius: const BorderRadius.all(Radius.circular(30))),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: widget.controller.text,

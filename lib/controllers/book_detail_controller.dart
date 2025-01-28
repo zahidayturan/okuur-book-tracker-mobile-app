@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:okuur/data/models/dto/book_detail_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
@@ -76,11 +75,23 @@ class BookDetailController extends GetxController {
   final bookNameKey = GlobalKey<FormState>();
   final TextEditingController bookNameController = TextEditingController();
 
+  final bookAuthorKey = GlobalKey<FormState>();
+  final TextEditingController bookAuthorController = TextEditingController();
+
+  final bookPageKey = GlobalKey<FormState>();
+  final TextEditingController bookPageController = TextEditingController();
+
+  final bookTypeKey = GlobalKey<FormState>();
+  final TextEditingController bookTypeController = TextEditingController();
+
   var isAllChanged = Rx<bool>(false);
   void editChangeDetect() {
-    if(bookNameController.text != okuurBookInfo!.name && bookNameController.text.isNotEmpty){
+    if(
+    (bookNameController.text.isNotEmpty && bookAuthorController.text.isNotEmpty && bookPageController.text.isNotEmpty) &&
+    (bookNameController.text != okuurBookInfo!.name || bookAuthorController.text != okuurBookInfo!.author || bookPageController.text != okuurBookInfo!.pageCount.toString() || bookTypeController.text != okuurBookInfo!.type)
+    )
+    {
       isAllChanged.value = true;
-      print("change ");
     }else{
       isAllChanged.value = false;
     }

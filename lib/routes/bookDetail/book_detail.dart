@@ -113,6 +113,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   InkWell(
                     onTap: () {
                       controller.bookNameController.text = okuurBookInfo.name;
+                      controller.bookAuthorController.text = okuurBookInfo.author;
+                      controller.bookPageController.text = okuurBookInfo.pageCount.toString();
+                      controller.bookTypeController.text = okuurBookInfo.type;
                       controller.isAllChanged.value = false;
                       showBookDetailEditDialog(context,okuurBookInfo);
                     },

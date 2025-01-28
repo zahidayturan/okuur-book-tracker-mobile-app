@@ -4,6 +4,7 @@ import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/ui/components/dropdown_menu.dart';
+import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/pop_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/text_form_field.dart';
@@ -28,47 +29,49 @@ void showBookDetailEditDialog(BuildContext context,OkuurBookInfo okuurBookInfo) 
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  popButton(context,false),
-                  const RegularText(texts: "Kitap Bilgilerini Düzenle",size: "xl",)
-                ],
-              ),
-              const SizedBox(height: 12),
-              form(context, "Kitabın Adı", "Adını yazınız",
-                  controller.bookNameController.text.isNotEmpty,
-                  controller.bookNameController, controller.bookNameKey,
-                  (name) {
-                    controller.editChangeDetect();
-                  },
-                  TextInputType.text),
-              const SizedBox(height: 12,),
-              form(context,"Kitabın Yazarı","Yazarını yazınız",
-                  controller.bookAuthorController.text.isNotEmpty,
-                  controller.bookAuthorController, controller.bookAuthorKey,
-                  (author) {
-                    controller.editChangeDetect();
-                  },
-                  TextInputType.text),
-              const SizedBox(height: 12,),
-              form(context,"Sayfa Sayısı","Sayfa sayısını yazınız",
-                  (int.tryParse(controller.bookPageController.text) != 0 && controller.bookPageController.text.isNotEmpty),
-                  controller.bookPageController, controller.bookPageKey,
-                  (page) {
-                    controller.editChangeDetect();
-                  },
-                  TextInputType.number),
-              const SizedBox(height: 12,),
-              typeForm(context),
-              const SizedBox(height: 12,),
-              addButton(context)
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    popButton(context,false),
+                    const RegularText(texts: "Kitap Bilgilerini Düzenle",size: "xl",)
+                  ],
+                ),
+                const SizedBox(height: 12),
+                form(context, "Kitabın Adı", "Adını yazınız",
+                    controller.bookNameController.text.isNotEmpty,
+                    controller.bookNameController, controller.bookNameKey,
+                    (name) {
+                      controller.editChangeDetect();
+                    },
+                    TextInputType.text),
+                const SizedBox(height: 12,),
+                form(context,"Kitabın Yazarı","Yazarını yazınız",
+                    controller.bookAuthorController.text.isNotEmpty,
+                    controller.bookAuthorController, controller.bookAuthorKey,
+                        (author) {
+                      controller.editChangeDetect();
+                    },
+                    TextInputType.text),
+                const SizedBox(height: 12,),
+                form(context,"Sayfa Sayısı","Sayfa sayısını yazınız",
+                    (int.tryParse(controller.bookPageController.text) != 0 && controller.bookPageController.text.isNotEmpty),
+                    controller.bookPageController, controller.bookPageKey,
+                        (page) {
+                      controller.editChangeDetect();
+                    },
+                    TextInputType.number),
+                const SizedBox(height: 12,),
+                typeForm(context),
+                const SizedBox(height: 12,),
+                addButton(context, okuurBookInfo)
+              ],
+            ),
           ),
         ),
       );},
@@ -128,19 +131,26 @@ RegularText labelText(String label,bool validate) {
   );
 }
 
-Widget addButton(BuildContext context) {
+Widget addButton(BuildContext context,OkuurBookInfo okuurBookInfo) {
   return Obx(() => Row(
     children: [
       Expanded(
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             if(controller.isAllChanged.value){
-              Navigator.of(context).pop();
+              if(int.parse(controller.bookPageController.text) > okuurBookInfo.currentPage){
+                controller.updateBookInfo();
+              }else{
+                bool shouldExit = await _showCustomDialog("Yeni sayfa sayısını okumakta olduğunuz sayfa sayısından küçük girdiniz. İşleme devam etmeniz durumunda kitabı bitirmiş sayılacaksınız.\nOnaylıyor musunuz?",context);
+                if (shouldExit) {
+                  controller.updateBookInfo();
+                }
+              }
             }
           },
           child: Container(
             decoration: BoxDecoration(
-              color: controller.isAllChanged.value ? Theme.of(context).colorScheme.onPrimaryContainer :colors.grey,
+              color: controller.isAllChanged.value ? colors.blue : Theme.of(context).scaffoldBackgroundColor,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
             child: Center(
@@ -148,7 +158,7 @@ Widget addButton(BuildContext context) {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: RegularText(
                     texts: controller.isAllChanged.value ? "Değişiklikleri Kaydet" : "Bilgileri Düzenleyin",
-                    color: controller.isAllChanged.value ? Theme.of(context).colorScheme.secondary : colors.greyMid,size: "l"),
+                    color: controller.isAllChanged.value ? colors.grey : colors.greyMid,size: "l"),
               ),
             ),
           ),
@@ -158,4 +168,14 @@ Widget addButton(BuildContext context) {
   ));
 }
 
-
+Future<bool> _showCustomDialog(String text,BuildContext context) async {
+  bool? result = await OkuurAlertDialog.show(
+    context: context,
+    contentText: text,
+    buttons: [
+      AlertButton(text: "Geri Dön", fill: false, returnValue: false),
+      AlertButton(text: "Devam Et", fill: true, returnValue: true),
+    ],
+  );
+  return result ?? false;
+}

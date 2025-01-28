@@ -21,6 +21,7 @@ class OkuurAlertDialog {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
+        contentPadding: const EdgeInsets.only(top: 16,bottom: 6),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

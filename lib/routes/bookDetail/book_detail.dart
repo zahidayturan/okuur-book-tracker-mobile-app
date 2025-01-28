@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/routes/bookDetail/components/book_detail_edit.dart';
 import 'package:okuur/routes/bookDetail/components/book_detail_loading.dart';
 import 'package:okuur/routes/bookDetail/components/book_records_detail.dart';
 import 'package:okuur/ui/components/base_container.dart';
@@ -109,11 +110,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
               const Spacer(),
               Row(
                 children: [
-                  TextIconButton(
-                    text: "Düzenle",
-                    icon: Icons.edit_rounded,
-                    backColor: Theme.of(context).colorScheme.secondary,
-                    iconColor: Theme.of(context).primaryColor,
+                  InkWell(
+                    onTap: () {
+                      controller.bookNameController.text = okuurBookInfo.name;
+                      controller.isAllChanged.value = false;
+                      showBookDetailEditDialog(context,okuurBookInfo);
+                    },
+                    child: TextIconButton(
+                      text: "Düzenle",
+                      icon: Icons.edit_rounded,
+                      backColor: Theme.of(context).colorScheme.secondary,
+                      iconColor: Theme.of(context).primaryColor,
+                    ),
                   ),
                   const SizedBox(
                     width: 12,

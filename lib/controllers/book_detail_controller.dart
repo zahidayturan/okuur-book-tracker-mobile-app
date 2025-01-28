@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:okuur/data/models/dto/book_detail_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
@@ -66,6 +67,22 @@ class BookDetailController extends GetxController {
     } finally {
       LoadingDialog.hideLoading();
       Navigator.pop(Get.context!, true);
+    }
+  }
+  /*
+  EDIT
+   */
+
+  final bookNameKey = GlobalKey<FormState>();
+  final TextEditingController bookNameController = TextEditingController();
+
+  var isAllChanged = Rx<bool>(false);
+  void editChangeDetect() {
+    if(bookNameController.text != okuurBookInfo!.name && bookNameController.text.isNotEmpty){
+      isAllChanged.value = true;
+      print("change ");
+    }else{
+      isAllChanged.value = false;
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 class OkuurTextFormField {
   final String? label;
+  final Color? labelColor;
   final String hint;
   final TextEditingController? controller;
   final Key key;
@@ -15,6 +16,7 @@ class OkuurTextFormField {
 
   OkuurTextFormField({
     this.label,
+    this.labelColor,
     required this.hint,
     required this.controller,
     required this.key,
@@ -48,7 +50,7 @@ class OkuurTextFormField {
             errorStyle: const TextStyle(height: 0),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             labelStyle: TextStyle(
-                color: colors.blue
+                color: labelColor ?? colors.blue
             ),
             hintStyle: TextStyle(
               color: Theme.of(context).colorScheme.secondary,

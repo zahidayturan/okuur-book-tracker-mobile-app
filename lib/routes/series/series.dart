@@ -93,9 +93,71 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                           ),
                         ],
                       ),
+                      BaseContainer(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(child: Center(child: RegularText(texts: "Pzt",color: colors.greyLight))),
+                                  Expanded(child: Center(child: RegularText(texts: "Sal",color: colors.greyLight))),
+                                  Expanded(child: Center(child: RegularText(texts: "Çar",color: colors.greyLight))),
+                                  Expanded(child: Center(child: RegularText(texts: "Per",color: colors.greyLight))),
+                                  Expanded(child: Center(child: RegularText(texts: "Cum",color: colors.greyLight))),
+                                  Expanded(child: Center(child: RegularText(texts: "Cmt",color: colors.greyLight))),
+                                  Expanded(child: Center(child: RegularText(texts: "Pzr",color: colors.greyLight)))
+                                ],
+                              ),
+                              Obx(() => SizedBox(
+                                height: 220,
+                                child: ListView.builder(
+                                  itemCount: controller.getDaysInMonth().keys.length,
+                                  itemBuilder: (context, weekIndex) {
+                                    int week = weekIndex + 1;
+                                    List<Map<String, dynamic>> weekDays = controller.getDaysInMonth()[week]!;
+                                    return Row(
+                                      children: weekDays.asMap().entries.map((entry) {
+                                        int index = entry.key;
+                                        Map<String, dynamic> dayMap = entry.value;
 
+                                        bool isFirst = index == 0;
+                                        bool isLast = index == weekDays.length - 1;
+
+                                        return Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 4),
+                                            child: Container(
+                                              height: 28,
+                                              decoration: BoxDecoration(
+                                                color: dayMap['series'] == true
+                                                    ? Theme.of(context).colorScheme.secondaryContainer
+                                                    : null,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: isFirst ? const Radius.circular(50) : Radius.zero,
+                                                  topRight: isLast ? const Radius.circular(50) : Radius.zero,
+                                                  bottomLeft: isFirst ? const Radius.circular(50) : Radius.zero,
+                                                  bottomRight: isLast ? const Radius.circular(50) : Radius.zero,
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: RegularText(
+                                                  texts: dayMap['day'],
+                                                  color: colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    );
+                                  },
+                                ),
+                              )),
+
+                            ],
+                          ))
                     ],
-                  ))
+                  )),
+
                 ],
               ),
             ),

@@ -7,6 +7,7 @@ import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/shimmer_box.dart';
+import 'package:okuur/ui/const/month_name_list.dart';
 
 class WeeklyCalendar extends StatefulWidget {
 
@@ -30,21 +31,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     controller.fetchLogForDate();
   }
 
-  List<String> months = [
-    "",
-    "Ocak",
-    "Şubat",
-    "Mart",
-    "Nisan",
-    "Mayıs",
-    "Haziran",
-    "Temmuz",
-    "Ağustos",
-    "Eylül",
-    "Ekim",
-    "Kasım",
-    "Aralık"
-  ];
+
 
   int currentPage = 0;
 

@@ -30,4 +30,19 @@ class HomeController extends GetxController {
     booksLoading.value = false;
   }
 
+  var seriesMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
+
+  void incrementMonth() {
+    seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1);
+  }
+
+  void decrementMonth() {
+    seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month - 1);
+  }
+
+  void resetMonth() {
+    seriesMonth.value = DateTime(DateTime.now().year, DateTime.now().month,);
+  }
+
+
 }

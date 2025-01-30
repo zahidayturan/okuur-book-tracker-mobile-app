@@ -27,40 +27,45 @@ class _WeeklySeriesState extends State<WeeklySeries> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            opaque: false,
-            transitionDuration: const Duration(milliseconds: 200),
-            pageBuilder: (context, animation, nextanim) => const ReadingSeriesPage(),
-            reverseTransitionDuration: const Duration(milliseconds: 1),
-            transitionsBuilder: (context, animation, nexttanim, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          ),
-        );
-      },
-      child: Container(
-        height: 72,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: Theme.of(context).colorScheme.onPrimaryContainer
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              seriesInfo(widget.weeklySeries),
-              seriesCountInfo(),
-              iconButton()
-            ],
+    return Container(
+      height: 72,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                opaque: false,
+                transitionDuration: const Duration(milliseconds: 200),
+                pageBuilder: (context, animation, nextanim) => const ReadingSeriesPage(),
+                reverseTransitionDuration: const Duration(milliseconds: 1),
+                transitionsBuilder: (context, animation, nexttanim, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                seriesInfo(widget.weeklySeries),
+                seriesCountInfo(),
+                iconButton()
+              ],
+            ),
           ),
         ),
       ),

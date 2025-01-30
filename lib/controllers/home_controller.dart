@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
+import 'package:okuur/data/models/okuur_series_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
+import 'package:okuur/data/services/operations/series_operations.dart';
 
 class HomeController extends GetxController {
 
@@ -11,6 +13,7 @@ class HomeController extends GetxController {
 
   BookOperations bookOperations = BookOperations();
   LogOperations logOperations = LogOperations();
+  SeriesOperations seriesOperations = SeriesOperations();
 
   var logsLoading = Rx<bool>(false);
   var booksLoading = Rx<bool>(false);
@@ -29,5 +32,75 @@ class HomeController extends GetxController {
     currentlyReadBooks.sort((a, b) => a.startingDate.compareTo(b.startingDate));
     booksLoading.value = false;
   }
+
+  /*
+  SERIES PAGE
+   */
+
+  var seriesLoading = Rx<bool>(false);
+  OkuurSeriesInfo? activeSeriesInfo;
+
+  Future<void> fetchSeries() async {
+    seriesLoading.value = true;
+    activeSeriesInfo = await seriesOperations.getActiveSeriesInfo();
+    seriesLoading.value = false;
+  }
+
+  var seriesMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
+
+  void incrementMonth() {
+    seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1);
+  }
+
+  void decrementMonth() {
+    seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month - 1);
+  }
+
+  void resetMonth() {
+    seriesMonth.value = DateTime(DateTime.now().year, DateTime.now().month,);
+  }
+
+  Map<int, List<Map<String, dynamic>>> getDaysInMonth() {
+    Map<int, List<Map<String, dynamic>>> monthMap = {};
+    DateTime firstDayOfMonth = DateTime(seriesMonth.value.year, seriesMonth.value.month, 1);
+    DateTime lastDayOfMonth = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1, 0);
+
+    int totalDaysInMonth = lastDayOfMonth.day;
+    int startWeekday = (firstDayOfMonth.weekday + 6) % 7;
+
+    List<Map<String, dynamic>> week = [];
+    int currentWeek = 1;
+
+    for (int i = 0; i < startWeekday; i++) {
+      week.add({'date': null, 'series': false, 'isFirst': false,'isLast': false});
+    }
+
+    for (int day = 1; day <= totalDaysInMonth; day++) {
+      DateTime currentDate = DateTime(seriesMonth.value.year, seriesMonth.value.month, day);
+
+      bool isFirst = currentDate.weekday == 1 || day == 1; //haftanın ilk günü veya ayın ilk günü
+      bool isLast = currentDate.weekday == 7 || day == totalDaysInMonth; //haftanın son günü veya ayın son günü
+
+      week.add({'date': currentDate, 'series': false, 'isFirst': isFirst,'isLast': isLast});
+
+      if (week.length == 7) {
+        monthMap[currentWeek] = List.from(week);
+        week.clear();
+        currentWeek++;
+      }
+    }
+
+    while (week.length < 7) {
+      week.add({'date': null, 'series': false, 'isFirst': false,'isLast': false});
+    }
+
+    if (week.isNotEmpty) {
+      monthMap[currentWeek] = List.from(week);
+    }
+
+    return monthMap;
+  }
+
+
 
 }

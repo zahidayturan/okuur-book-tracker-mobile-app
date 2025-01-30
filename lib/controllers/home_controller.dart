@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
+import 'package:okuur/data/models/okuur_series_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
+import 'package:okuur/data/services/operations/series_operations.dart';
 
 class HomeController extends GetxController {
 
@@ -11,6 +13,7 @@ class HomeController extends GetxController {
 
   BookOperations bookOperations = BookOperations();
   LogOperations logOperations = LogOperations();
+  SeriesOperations seriesOperations = SeriesOperations();
 
   var logsLoading = Rx<bool>(false);
   var booksLoading = Rx<bool>(false);
@@ -28,6 +31,19 @@ class HomeController extends GetxController {
     currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
     currentlyReadBooks.sort((a, b) => a.startingDate.compareTo(b.startingDate));
     booksLoading.value = false;
+  }
+
+  /*
+  SERIES PAGE
+   */
+
+  var seriesLoading = Rx<bool>(false);
+  OkuurSeriesInfo? activeSeriesInfo;
+
+  Future<void> fetchSeries() async {
+    seriesLoading.value = true;
+    activeSeriesInfo = await seriesOperations.getActiveSeriesInfo();
+    seriesLoading.value = false;
   }
 
   var seriesMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
@@ -65,7 +81,7 @@ class HomeController extends GetxController {
       bool isFirst = currentDate.weekday == 1 || day == 1; //haftanın ilk günü veya ayın ilk günü
       bool isLast = currentDate.weekday == 7 || day == totalDaysInMonth; //haftanın son günü veya ayın son günü
 
-      week.add({'date': currentDate, 'series': true, 'isFirst': isFirst,'isLast': isLast});
+      week.add({'date': currentDate, 'series': false, 'isFirst': isFirst,'isLast': isLast});
 
       if (week.length == 7) {
         monthMap[currentWeek] = List.from(week);

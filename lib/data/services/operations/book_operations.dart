@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:okuur/core/utils/firebase_firestore_helper.dart';
+import 'package:okuur/core/utils/firestore_book_helper.dart';
 // import 'package:okuur/core/utils/firebase_storage_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
@@ -15,47 +16,47 @@ class BookOperations implements BookService {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     //String imageId = await FirebaseStorageOperation().uploadBookCoverImage(image);
     //bookInfo.imageLink = imageId;
-    await FirebaseFirestoreOperation().addBookInfoToFirestore(uid!, bookInfo);
+    await FirestoreBookOperation().addBookInfoToFirestore(uid!, bookInfo);
   }
 
 
   @override
   Future<List<OkuurBookInfo>?> getBookInfo() async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    var result = await FirebaseFirestoreOperation().getBookInfo(uid!);
+    var result = await FirestoreBookOperation().getBookInfo(uid!);
     return result;
   }
 
   @override
   Future<void> updateBookInfo(OkuurBookInfo okuurBookInfo) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    await FirebaseFirestoreOperation().updateBookInfo(uid!,okuurBookInfo);
+    await FirestoreBookOperation().updateBookInfo(uid!,okuurBookInfo);
   }
 
   @override
   Future<OkuurBookInfo?> getBookInfoWithId(String bookId) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    var result = await FirebaseFirestoreOperation().getSingleBookInfo(uid!,bookId);
+    var result = await FirestoreBookOperation().getSingleBookInfo(uid!,bookId);
     return result;
   }
 
   @override
   Future<List<OkuurBookInfo>> getCurrentlyReadBooksInfo() async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    var result = await FirebaseFirestoreOperation().getCurrentlyReadBooksInfo(uid!);
+    var result = await FirestoreBookOperation().getCurrentlyReadBooksInfo(uid!);
     return result;
   }
 
   @override
   Future<void> deleteBookAndLogInfo(String bookId) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    await FirebaseFirestoreOperation().deleteBookAndLogInfo(uid!,bookId);
+    await FirestoreBookOperation().deleteBookAndLogInfo(uid!,bookId);
   }
 
   @override
   Future<void> deleteAllBookInfo() async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    await FirebaseFirestoreOperation().deleteAllBookInfo(uid!);
+    await FirestoreBookOperation().deleteAllBookInfo(uid!);
   }
 
   @override
@@ -88,7 +89,7 @@ class BookOperations implements BookService {
       book.readingTime -= logInfo.timeRead;
     }
 
-    await FirebaseFirestoreOperation().updateBookInfo(uid!, book);
+    await FirestoreBookOperation().updateBookInfo(uid!, book);
   }
 
 }

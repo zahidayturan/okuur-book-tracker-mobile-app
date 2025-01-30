@@ -172,11 +172,13 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                   )),
                   const SizedBox(height: 12),
                   BaseContainer(
+                    height: 72,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             RegularText(texts: "24 Ocak 2025",weight: FontWeight.bold),
                             RegularText(texts: "Bugün bir okuma kaydederek\nserini uzat!",maxLines: 3,),
@@ -231,7 +233,8 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                         ),
                       ),)
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 12)
                 ],
               ),
             ),

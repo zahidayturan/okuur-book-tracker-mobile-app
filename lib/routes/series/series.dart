@@ -119,9 +119,20 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                                       children: weekDays.asMap().entries.map((entry) {
                                         Map<String, dynamic> dayMap = entry.value;
 
+
                                         String dayText = '';
+                                        bool isCurrentDay = false;
                                         if (dayMap['date'] != null) {
                                           dayText = DateFormat('d').format(dayMap['date']);
+
+                                          if(dayMap['series'] != true){
+                                            DateTime currentDate = DateTime.now();
+                                            DateTime currentDayOnly = DateTime(currentDate.year, currentDate.month, currentDate.day);
+                                            DateTime mapDate = dayMap['date'];
+                                            DateTime mapDayOnly = DateTime(mapDate.year, mapDate.month, mapDate.day);
+                                            isCurrentDay = currentDayOnly.isAtSameMomentAs(mapDayOnly);
+                                          }
+
                                         }
 
                                         return Expanded(
@@ -132,7 +143,7 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                                               decoration: BoxDecoration(
                                                 color: dayMap['series'] == true
                                                     ? Theme.of(context).colorScheme.secondaryContainer
-                                                    : null,
+                                                    : isCurrentDay ? Theme.of(context).scaffoldBackgroundColor : null,
                                                 borderRadius: BorderRadius.only(
                                                   topLeft: dayMap['isFirst'] == true ? const Radius.circular(50) : Radius.zero,
                                                   topRight: dayMap['isLast'] == true ? const Radius.circular(50) : Radius.zero,
@@ -143,7 +154,7 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                                               child: Center(
                                                 child: RegularText(
                                                   texts: dayText,
-                                                  color: colors.grey,
+                                                  color: dayMap['series'] == true ? colors.grey : colors.greyLight,
                                                 ),
                                               ),
                                             ),
@@ -159,7 +170,68 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                           ))
                     ],
                   )),
-
+                  const SizedBox(height: 12),
+                  BaseContainer(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RegularText(texts: "24 Ocak 2025",weight: FontWeight.bold),
+                            RegularText(texts: "Bugün bir okuma kaydederek\nserini uzat!",maxLines: 3,),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 32,
+                          child: Image.asset("assets/icons/clock.png",color: Theme.of(context).colorScheme.secondary,),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: BaseContainer(
+                        height: 72,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const RegularText(texts: "En İyi\nSerin",maxLines: 2,size: "l"),
+                            BaseContainer(
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                child: const Center(child: Column(
+                                  children: [
+                                    RegularText(texts: "184",size: "l",weight: FontWeight.bold,),
+                                    SizedBox(height: 4,),
+                                    RegularText(texts: "Gün",size: "m")
+                                  ],
+                                )))
+                          ],
+                        ),
+                      )),
+                      const SizedBox(width: 12,),
+                      Expanded(child: BaseContainer(
+                        height: 72,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Icon(Icons.ios_share_rounded,color: Theme.of(context).scaffoldBackgroundColor,size: 36,),
+                            ),
+                            const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                RegularText(texts: "Serini Paylaş",weight: FontWeight.bold),
+                                RegularText(texts: "Okuma serini\narkadaşlarınla paylaş",maxLines: 3,size: "s",)
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),)
+                    ],
+                  )
                 ],
               ),
             ),

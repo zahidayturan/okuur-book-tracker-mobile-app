@@ -81,7 +81,6 @@ class HomeController extends GetxController {
     if (week.isNotEmpty) {
       monthMap[currentWeek] = List.from(week);
     }
-    print(monthMap);
 
     return monthMap;
   }

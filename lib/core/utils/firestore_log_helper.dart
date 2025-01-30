@@ -6,7 +6,7 @@ import 'package:okuur/ui/utils/date_formatter.dart';
 class FirestoreLogOperation{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
+  Future<String> addLogInfoToFirestore(String uid, OkuurLogInfo log) async {
     try {
       DateTime logDate = OkuurDateFormatter.stringToDateTime(log.readingDate);
       String monthYear = '${logDate.month}-${logDate.year}';
@@ -43,8 +43,10 @@ class FirestoreLogOperation{
           .doc(log.id)
           .set(logData);
 
+      return "ok";
     } catch (e) {
       debugPrint('Add Log Error: $e');
+      return "err";
     }
   }
 

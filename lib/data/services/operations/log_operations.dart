@@ -3,13 +3,17 @@ import 'package:okuur/core/utils/firestore_log_helper.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/log_service.dart';
+import 'package:okuur/data/services/operations/series_operations.dart';
 
 class LogOperations implements LogService {
 
   @override
   Future<void> insertLogInfo(OkuurLogInfo logInfo) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
-    await FirestoreLogOperation().addLogInfoToFirestore(uid!, logInfo);
+    String status= await FirestoreLogOperation().addLogInfoToFirestore(uid!, logInfo);
+    if(status == "ok"){
+      await SeriesOperations().newSeriesInfo(logInfo.readingDate);
+    }
   }
 
   @override

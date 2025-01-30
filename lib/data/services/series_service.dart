@@ -5,5 +5,7 @@ abstract class SeriesService {
 
   Future<void> insertSeriesInfo(OkuurSeriesInfo seriesInfo);
 
-  Future<void> deleteSeriesInfo(String id);
+  Future<void> deleteSeriesInfo(String seriesId);
+
+  Future<void> updateSeriesInfo(OkuurSeriesInfo seriesInfo);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/base_container.dart';
@@ -116,11 +117,12 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                                     List<Map<String, dynamic>> weekDays = controller.getDaysInMonth()[week]!;
                                     return Row(
                                       children: weekDays.asMap().entries.map((entry) {
-                                        int index = entry.key;
                                         Map<String, dynamic> dayMap = entry.value;
 
-                                        bool isFirst = index == 0;
-                                        bool isLast = index == weekDays.length - 1;
+                                        String dayText = '';
+                                        if (dayMap['date'] != null) {
+                                          dayText = DateFormat('d').format(dayMap['date']);
+                                        }
 
                                         return Expanded(
                                           child: Padding(
@@ -132,15 +134,15 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                                                     ? Theme.of(context).colorScheme.secondaryContainer
                                                     : null,
                                                 borderRadius: BorderRadius.only(
-                                                  topLeft: isFirst ? const Radius.circular(50) : Radius.zero,
-                                                  topRight: isLast ? const Radius.circular(50) : Radius.zero,
-                                                  bottomLeft: isFirst ? const Radius.circular(50) : Radius.zero,
-                                                  bottomRight: isLast ? const Radius.circular(50) : Radius.zero,
+                                                  topLeft: dayMap['isFirst'] == true ? const Radius.circular(50) : Radius.zero,
+                                                  topRight: dayMap['isLast'] == true ? const Radius.circular(50) : Radius.zero,
+                                                  bottomLeft: dayMap['isFirst'] == true ? const Radius.circular(50) : Radius.zero,
+                                                  bottomRight: dayMap['isLast'] == true ? const Radius.circular(50) : Radius.zero,
                                                 ),
                                               ),
                                               child: Center(
                                                 child: RegularText(
-                                                  texts: dayMap['day'],
+                                                  texts: dayText,
                                                   color: colors.grey,
                                                 ),
                                               ),

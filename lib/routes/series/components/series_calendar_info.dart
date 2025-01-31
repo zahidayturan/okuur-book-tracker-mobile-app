@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/regular_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 import 'package:okuur/ui/const/month_name_list.dart';
 
 HomeController controller = Get.find();
@@ -38,7 +39,9 @@ Widget seriesCalendarInfo(){
           ),
         ],
       ),
-      BaseContainer(
+      Obx(() => controller.seriesCalendarLoading.value
+          ? ShimmerBox(height: 253,borderRadius: BorderRadius.circular(8))
+          : BaseContainer(
           child: Column(
             children: [
               Row(
@@ -52,17 +55,16 @@ Widget seriesCalendarInfo(){
                   Expanded(child: Center(child: RegularText(texts: "Pzr",color: colors.greyLight)))
                 ],
               ),
-              Obx(() => SizedBox(
+              SizedBox(
                 height: 220,
                 child: ListView.builder(
-                  itemCount: controller.getDaysInMonth().keys.length,
+                  itemCount: controller.monthlySeriesInfo!.length,
                   itemBuilder: (context, weekIndex) {
                     int week = weekIndex + 1;
-                    List<Map<String, dynamic>> weekDays = controller.getDaysInMonth()[week]!;
+                    List<Map<String, dynamic>> weekDays = controller.monthlySeriesInfo![week]!;
                     return Row(
                       children: weekDays.asMap().entries.map((entry) {
                         Map<String, dynamic> dayMap = entry.value;
-
 
                         String dayText = '';
                         bool isCurrentDay = false;
@@ -76,9 +78,7 @@ Widget seriesCalendarInfo(){
                             DateTime mapDayOnly = DateTime(mapDate.year, mapDate.month, mapDate.day);
                             isCurrentDay = currentDayOnly.isAtSameMomentAs(mapDayOnly);
                           }
-
                         }
-
                         return Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
@@ -108,10 +108,10 @@ Widget seriesCalendarInfo(){
                     );
                   },
                 ),
-              )),
+              ),
 
             ],
-          ))
+          )))
     ],
   ));
 }

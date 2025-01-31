@@ -98,4 +98,42 @@ class FirestoreSeriesOperation {
     return null;
   }
 
+  Future<List<DateTime>> getAllSeriesInfo(String uid, DateTime startedDate, DateTime finishedDate) async {
+    List<DateTime> seriesDates = [];
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('series')
+          .get();
+
+        for (var doc in querySnapshot.docs) {
+          String sDate = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>).startingDate;
+          DateTime docSDate = OkuurDateFormatter.stringToDateTime(sDate);
+
+          String fDate = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>).finishingDate;
+          DateTime docFDate = OkuurDateFormatter.stringToDateTime(fDate);
+
+          // Eğer belgenin tarih aralığı belirtilen aralıkla çakışıyorsa
+          if ((docSDate.isBefore(finishedDate) && docFDate.isAfter(startedDate))) {
+            DateTime currentDate = docSDate;
+
+            while (currentDate.isBefore(docFDate) || currentDate.isAtSameMomentAs(docFDate)) {
+              if (currentDate.isAfter(startedDate) && currentDate.isBefore(finishedDate) ||
+                  currentDate.isAtSameMomentAs(startedDate) || currentDate.isAtSameMomentAs(finishedDate)) {
+                seriesDates.add(currentDate); // Bu gün aralığa dahil, listeye ekle
+              }
+              currentDate = currentDate.add(const Duration(days: 1));
+            }
+          }
+        }
+
+    } catch (e) {
+      debugPrint('Get Monthly Series Error: $e');
+    }
+
+    return seriesDates;
+  }
+
+
 }

@@ -39,6 +39,8 @@ class HomeController extends GetxController {
 
   var seriesLoading = Rx<bool>(false);
   OkuurSeriesInfo? activeSeriesInfo;
+  Map<int, List<Map<String, dynamic>>>? monthlySeriesInfo;
+  var seriesCalendarLoading = Rx<bool>(false);
 
   Future<void> fetchSeries() async {
     seriesLoading.value = true;
@@ -46,24 +48,35 @@ class HomeController extends GetxController {
     seriesLoading.value = false;
   }
 
+  Future<void> fetchSeriesCalendar() async {
+    seriesCalendarLoading.value = true;
+    monthlySeriesInfo = await getDaysInMonth();
+    seriesCalendarLoading.value = false;
+  }
+
   var seriesMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
 
   void incrementMonth() {
     seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1);
+    fetchSeriesCalendar();
   }
 
   void decrementMonth() {
     seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month - 1);
+    fetchSeriesCalendar();
   }
 
   void resetMonth() {
-    seriesMonth.value = DateTime(DateTime.now().year, DateTime.now().month,);
+    seriesMonth.value = DateTime(DateTime.now().year, DateTime.now().month);
+    fetchSeriesCalendar();
   }
 
-  Map<int, List<Map<String, dynamic>>> getDaysInMonth() {
+  Future<Map<int, List<Map<String, dynamic>>>> getDaysInMonth() async {
     Map<int, List<Map<String, dynamic>>> monthMap = {};
     DateTime firstDayOfMonth = DateTime(seriesMonth.value.year, seriesMonth.value.month, 1);
     DateTime lastDayOfMonth = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1, 0);
+
+    List<DateTime> monthlySeries = await seriesOperations.getSeriesInfoForMonth(firstDayOfMonth, lastDayOfMonth);
 
     int totalDaysInMonth = lastDayOfMonth.day;
     int startWeekday = (firstDayOfMonth.weekday + 6) % 7;
@@ -72,16 +85,30 @@ class HomeController extends GetxController {
     int currentWeek = 1;
 
     for (int i = 0; i < startWeekday; i++) {
-      week.add({'date': null, 'series': false, 'isFirst': false,'isLast': false});
+      week.add({'date': null, 'series': false, 'isFirst': false, 'isLast': false});
     }
 
     for (int day = 1; day <= totalDaysInMonth; day++) {
       DateTime currentDate = DateTime(seriesMonth.value.year, seriesMonth.value.month, day);
 
-      bool isFirst = currentDate.weekday == 1 || day == 1; //haftanın ilk günü veya ayın ilk günü
-      bool isLast = currentDate.weekday == 7 || day == totalDaysInMonth; //haftanın son günü veya ayın son günü
+      bool isSeries = monthlySeries.contains(currentDate);
 
-      week.add({'date': currentDate, 'series': false, 'isFirst': isFirst,'isLast': isLast});
+      // Önceki günün series değeri false ise, isFirst true olmalı
+      bool isFirst = (day == 1 || currentDate.weekday == 1) ||
+          (day > 1 && !monthlySeries.contains(DateTime(seriesMonth.value.year, seriesMonth.value.month, day - 1)) && isSeries);
+
+      // Sonraki günün series değeri false ise, isLast true olmalı
+      bool isLast = (day == totalDaysInMonth || currentDate.weekday == 7) ||
+          (day < totalDaysInMonth &&
+              !monthlySeries.contains(DateTime(seriesMonth.value.year, seriesMonth.value.month, day + 1)) &&
+              isSeries);
+
+      week.add({
+        'date': currentDate,
+        'series': isSeries,
+        'isFirst': isFirst,
+        'isLast': isLast
+      });
 
       if (week.length == 7) {
         monthMap[currentWeek] = List.from(week);
@@ -90,8 +117,9 @@ class HomeController extends GetxController {
       }
     }
 
+    // Son hafta için eksik alanları doldur
     while (week.length < 7) {
-      week.add({'date': null, 'series': false, 'isFirst': false,'isLast': false});
+      week.add({'date': null, 'series': false, 'isFirst': false, 'isLast': false});
     }
 
     if (week.isNotEmpty) {
@@ -100,6 +128,7 @@ class HomeController extends GetxController {
 
     return monthMap;
   }
+
 
 
 

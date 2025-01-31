@@ -12,4 +12,6 @@ abstract class SeriesService {
   Future<void> updateSeriesInfo(OkuurSeriesInfo seriesInfo);
 
   Future<OkuurSeriesInfo?> getActiveSeriesInfo();
+
+  Future<List<DateTime>> getSeriesInfoForMonth(DateTime startingDate, DateTime finishedDate);
 }

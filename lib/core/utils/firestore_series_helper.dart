@@ -98,8 +98,10 @@ class FirestoreSeriesOperation {
     return null;
   }
 
-  Future<List<DateTime>> getAllSeriesInfo(String uid, DateTime startedDate, DateTime finishedDate) async {
+  Future<Map<String, dynamic>> getAllSeriesInfo(String uid, DateTime startedDate, DateTime finishedDate) async {
     List<DateTime> seriesDates = [];
+    int bestSeries = 0;
+
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
@@ -107,33 +109,40 @@ class FirestoreSeriesOperation {
           .collection('series')
           .get();
 
-        for (var doc in querySnapshot.docs) {
-          String sDate = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>).startingDate;
-          DateTime docSDate = OkuurDateFormatter.stringToDateTime(sDate);
+      for (var doc in querySnapshot.docs) {
+        OkuurSeriesInfo seriesInfo = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>);
 
-          String fDate = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>).finishingDate;
-          DateTime docFDate = OkuurDateFormatter.stringToDateTime(fDate);
+        String sDate = seriesInfo.startingDate;
+        DateTime docSDate = OkuurDateFormatter.stringToDateTime(sDate);
 
-          // Eğer belgenin tarih aralığı belirtilen aralıkla çakışıyorsa
-          if ((docSDate.isBefore(finishedDate) && docFDate.isAfter(startedDate))) {
-            DateTime currentDate = docSDate;
+        String fDate = seriesInfo.finishingDate;
+        DateTime docFDate = OkuurDateFormatter.stringToDateTime(fDate);
 
-            while (currentDate.isBefore(docFDate) || currentDate.isAtSameMomentAs(docFDate)) {
-              if (currentDate.isAfter(startedDate) && currentDate.isBefore(finishedDate) ||
-                  currentDate.isAtSameMomentAs(startedDate) || currentDate.isAtSameMomentAs(finishedDate)) {
-                seriesDates.add(currentDate); // Bu gün aralığa dahil, listeye ekle
-              }
-              currentDate = currentDate.add(const Duration(days: 1));
+        bestSeries = seriesInfo.dayCount > bestSeries ? seriesInfo.dayCount : bestSeries;
+
+        // Eğer belgenin tarih aralığı belirtilen aralıkla çakışıyorsa
+        if (docSDate.isBefore(finishedDate) && (docFDate.isAfter(startedDate) || docFDate.isAtSameMomentAs(startedDate))) {
+          DateTime currentDate = docSDate;
+
+          while (currentDate.isBefore(docFDate) || currentDate.isAtSameMomentAs(docFDate)) {
+            if ((currentDate.isAfter(startedDate) && currentDate.isBefore(finishedDate)) ||
+                currentDate.isAtSameMomentAs(startedDate) || currentDate.isAtSameMomentAs(finishedDate)) {
+              seriesDates.add(currentDate); // Bu gün aralığa dahil, listeye ekle
             }
+            currentDate = currentDate.add(const Duration(days: 1));
           }
         }
-
+      }
     } catch (e) {
       debugPrint('Get Monthly Series Error: $e');
     }
 
-    return seriesDates;
+    return {
+      'seriesDates': seriesDates,
+      'bestSeries': bestSeries
+    };
   }
+
 
 
 }

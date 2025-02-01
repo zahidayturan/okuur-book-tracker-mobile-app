@@ -5,6 +5,7 @@ import 'package:okuur/data/models/okuur_series_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
 import 'package:okuur/data/services/operations/series_operations.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 
 class HomeController extends GetxController {
 
@@ -39,12 +40,15 @@ class HomeController extends GetxController {
 
   var seriesLoading = Rx<bool>(false);
   OkuurSeriesInfo? activeSeriesInfo;
+  int? bestSeriesInfo;
+  bool dailySeries = false;
   Map<int, List<Map<String, dynamic>>>? monthlySeriesInfo;
   var seriesCalendarLoading = Rx<bool>(false);
 
   Future<void> fetchSeries() async {
     seriesLoading.value = true;
     activeSeriesInfo = await seriesOperations.getActiveSeriesInfo();
+    dailySeries = dailySeriesInfo(activeSeriesInfo!.finishingDate);
     seriesLoading.value = false;
   }
 
@@ -53,6 +57,15 @@ class HomeController extends GetxController {
     monthlySeriesInfo = await getDaysInMonth();
     seriesCalendarLoading.value = false;
   }
+
+  bool dailySeriesInfo(String? finishedDate){
+    if(finishedDate != null){
+      DateTime toDate = OkuurDateFormatter.stringToDateTime(finishedDate);
+      DateTime now = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return now.isAtSameMomentAs(toDate) == false;
+    }
+    return false;
+}
 
   var seriesMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
 
@@ -76,7 +89,9 @@ class HomeController extends GetxController {
     DateTime firstDayOfMonth = DateTime(seriesMonth.value.year, seriesMonth.value.month, 1);
     DateTime lastDayOfMonth = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1, 0);
 
-    List<DateTime> monthlySeries = await seriesOperations.getSeriesInfoForMonth(firstDayOfMonth, lastDayOfMonth);
+    var result = await seriesOperations.getSeriesInfoForMonth(firstDayOfMonth, lastDayOfMonth);
+    List<DateTime> monthlySeries = result['seriesDates'];
+    bestSeriesInfo = result['bestSeries'];
 
     int totalDaysInMonth = lastDayOfMonth.day;
     int startWeekday = (firstDayOfMonth.weekday + 6) % 7;
@@ -90,25 +105,19 @@ class HomeController extends GetxController {
 
     for (int day = 1; day <= totalDaysInMonth; day++) {
       DateTime currentDate = DateTime(seriesMonth.value.year, seriesMonth.value.month, day);
-
       bool isSeries = monthlySeries.contains(currentDate);
 
-      // Önceki günün series değeri false ise, isFirst true olmalı
+      // Önceki günün series değeri false ise, ayın veya haftanın ilk günü ise, isFirst true olmalı
       bool isFirst = (day == 1 || currentDate.weekday == 1) ||
           (day > 1 && !monthlySeries.contains(DateTime(seriesMonth.value.year, seriesMonth.value.month, day - 1)) && isSeries);
 
-      // Sonraki günün series değeri false ise, isLast true olmalı
+      // Sonraki günün series değeri false ise, ayın veya heftanın son günü ise, isLast true olmalı
       bool isLast = (day == totalDaysInMonth || currentDate.weekday == 7) ||
           (day < totalDaysInMonth &&
               !monthlySeries.contains(DateTime(seriesMonth.value.year, seriesMonth.value.month, day + 1)) &&
               isSeries);
 
-      week.add({
-        'date': currentDate,
-        'series': isSeries,
-        'isFirst': isFirst,
-        'isLast': isLast
-      });
+      week.add({'date': currentDate, 'series': isSeries, 'isFirst': isFirst, 'isLast': isLast});
 
       if (week.length == 7) {
         monthMap[currentWeek] = List.from(week);

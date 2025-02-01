@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:okuur/ui/const/month_name_list.dart';
 
 class OkuurDateFormatter {
 
@@ -9,6 +10,11 @@ class OkuurDateFormatter {
 
   static DateTime getDateNow(){
     return DateTime.now();
+  }
+
+  static String getDateNowFormat(){
+    DateTime date = DateTime.now();
+    return "${date.day} ${months[date.month]} ${date.year}";
   }
 
   static DateTime stringToDateTime(String date){

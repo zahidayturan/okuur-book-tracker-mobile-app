@@ -13,14 +13,14 @@ Widget dailySeriesInfo(BuildContext context, bool dailySeries){
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            RegularText(texts: OkuurDateFormatter.getDateNowFormat(), weight: FontWeight.bold),
+            RegularText(texts: OkuurDateFormatter.getDateNowFormat(), weight: FontWeight.bold ,color: !dailySeries ? colors.green : null,),
             RegularText(texts: dailySeries ? "Bugün bir okuma kaydederek\nserini uzat!"
               : "Bugün bir okuma kaydederek\nserini devam ettirdin.",maxLines: 3),
           ],
         ),
         SizedBox(
           width: 32,
-          child: Image.asset(dailySeries ?"assets/icons/clock.png" : "assets/icons/reads.png",color: Theme.of(context).colorScheme.secondary,),
+          child: Image.asset(dailySeries ?"assets/icons/clock.png" : "assets/icons/reads.png",color: dailySeries ? Theme.of(context).colorScheme.secondary : colors.green,),
         ),
       ],
     ),

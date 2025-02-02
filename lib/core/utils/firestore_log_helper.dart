@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:okuur/data/models/dto/home_log_info.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 
@@ -80,8 +82,10 @@ class FirestoreLogOperation{
     }
   }
 
-  Future<List<OkuurLogInfo>> getLogInfoForDate(DateTime dateTime, String uid) async {
+  Future<List<OkuurHomeLogInfo>> getLogInfoForDate(DateTime dateTime, String uid) async {
     try {
+      List<OkuurHomeLogInfo> homeLogInfo = [];
+
       QuerySnapshot booksSnapshot = await _firestore
           .collection('users')
           .doc(uid)
@@ -92,7 +96,6 @@ class FirestoreLogOperation{
       DateTime endOfDay = startOfDay.add(const Duration(days: 1));
 
       String monthYear = '${dateTime.month}-${dateTime.year}';
-      List<OkuurLogInfo> logs = [];
 
       for (var bookDoc in booksSnapshot.docs) {
         QuerySnapshot logsSnapshot = await bookDoc.reference
@@ -103,18 +106,25 @@ class FirestoreLogOperation{
             .where('readingDate', isLessThan: endOfDay.toString())
             .get();
 
+        OkuurBookInfo bookInfo = OkuurBookInfo.fromJson(bookDoc.data() as Map<String, dynamic>);
+
         if (logsSnapshot.docs.isNotEmpty) {
-          logs.addAll(logsSnapshot.docs.map((doc) =>
-              OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList());
+          List<OkuurLogInfo> logs = logsSnapshot.docs.map((doc) =>
+              OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+          for (var log in logs) {
+            homeLogInfo.add(OkuurHomeLogInfo(bookInfo: bookInfo, okuurLogInfo: log));
+          }
         }
       }
 
-      return logs.isNotEmpty ? logs : [];
+      return homeLogInfo.isNotEmpty ? homeLogInfo : [];
     } catch (e) {
       debugPrint('Error fetching log data: $e');
       return [];
     }
   }
+
 
   Future<void> deleteLogInfo(String uid, OkuurLogInfo logInfo) async {
     DateTime logDate = OkuurDateFormatter.stringToDateTime(logInfo.readingDate);

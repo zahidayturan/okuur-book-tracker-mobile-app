@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
+import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
-import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/models/okuur_series_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
@@ -10,7 +10,7 @@ import 'package:okuur/ui/utils/date_formatter.dart';
 class HomeController extends GetxController {
 
   List<OkuurBookInfo> currentlyReadBooks = [];
-  List<OkuurLogInfo> logForDate = [];
+  List<OkuurHomeLogInfo> logForDate = [];
 
   BookOperations bookOperations = BookOperations();
   LogOperations logOperations = LogOperations();

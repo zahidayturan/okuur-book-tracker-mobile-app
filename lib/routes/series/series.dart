@@ -24,7 +24,7 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
   @override
   void initState() {
     controller.resetMonth();
-    controller.fetchSeries();
+    //controller.fetchSeries();
     super.initState();
   }
 

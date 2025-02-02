@@ -43,12 +43,16 @@ class HomeController extends GetxController {
   int? bestSeriesInfo;
   bool dailySeries = false;
   Map<int, List<Map<String, dynamic>>>? monthlySeriesInfo;
+  List<Map<String, dynamic>> currentWeekInfo = [];
   var seriesCalendarLoading = Rx<bool>(false);
 
   Future<void> fetchSeries() async {
     seriesLoading.value = true;
     activeSeriesInfo = await seriesOperations.getActiveSeriesInfo();
     dailySeries = dailySeriesInfo(activeSeriesInfo!.finishingDate);
+    if(monthlySeriesInfo == null){
+      await getDaysInMonth();
+    }
     seriesLoading.value = false;
   }
 
@@ -65,7 +69,7 @@ class HomeController extends GetxController {
       return now.isAtSameMomentAs(toDate) == false;
     }
     return false;
-}
+  }
 
   var seriesMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
 
@@ -103,6 +107,7 @@ class HomeController extends GetxController {
 
     List<Map<String, dynamic>> week = [];
     int currentWeek = 1;
+    int nowWeekForReturn = 1;
 
     DateTime previousMonthLastDay = firstDayOfMonth.subtract(const Duration(days: 1));
     int previousMonthTotalDays = previousMonthLastDay.day;
@@ -125,6 +130,9 @@ class HomeController extends GetxController {
 
       week.add({'date': currentDate, 'series': isSeries, 'isFirst': isFirst, 'isLast': isLast, 'isCur': true});
 
+      if(currentDate == DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day)){
+        nowWeekForReturn = currentWeek;
+      }
       if (week.length == 7) {
         monthMap[currentWeek] = List.from(week);
         week.clear();
@@ -144,6 +152,9 @@ class HomeController extends GetxController {
         currentWeek++;
       }
     }
+
+    currentWeekInfo = monthMap[nowWeekForReturn]!;
+
     return monthMap;
   }
 

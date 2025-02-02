@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
-import 'package:okuur/data/models/okuur_log_info.dart';
+import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/ui/components/page_switcher.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
@@ -10,8 +10,6 @@ import 'package:okuur/ui/components/shimmer_box.dart';
 import 'package:okuur/ui/const/month_name_list.dart';
 
 class WeeklyCalendar extends StatefulWidget {
-
-  //get BookInfo
 
   const WeeklyCalendar({
     Key? key,
@@ -31,8 +29,6 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     controller.fetchLogForDate();
   }
 
-
-
   int currentPage = 0;
 
   @override
@@ -48,24 +44,25 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           : Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          weekdays(controller.logForDate.isNotEmpty),
-          const SizedBox(height: 12,),
-          dayInfo(controller.logForDate),
-          const SizedBox(height: 12,),
-          OkuurPageSwitcher(pageCount: controller.logForDate.length,currentPage: currentPage,)
+          weekdays(), //28
+          const SizedBox(height: 8),
+          dayInfo(controller.logForDate), //90
+          const SizedBox(height: 8), //16
+          RegularText(texts:controller.logForDate.isNotEmpty ? "Günlük Hedefe Ulaşıldı!" : "...", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
         ],
       ),
       ),
     );
   }
 
-  Widget weekdays(bool isData){
+  Widget weekdays(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         dayContainer(),
         const SizedBox(width: 8),
-        RegularText(texts:isData ? "Günlük Hedefe Ulaşıldı!" : "", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
+        OkuurPageSwitcher(pageCount: controller.logForDate.length,currentPage: currentPage,)
       ],
     );
   }
@@ -133,9 +130,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     ["Bu ","haftanın en iyi okumasını"," yaptın."]
   ];
 
-  SizedBox dayInfo(List<OkuurLogInfo> logForDate){
+  SizedBox dayInfo(List<OkuurHomeLogInfo> logForDate){
     return SizedBox(
-      height: 98,
+      height: 90,
       child: logForDate.isEmpty
           ? const Center(child: RegularText(texts: "Güne ait okuma\nbulunamadı",maxLines: 4,align: TextAlign.center))
           : PageView.builder(
@@ -150,22 +147,15 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const RegularText(texts:"Okunan",otherSize: 10.0),
-                RegularText(texts:logForDate[index].bookId, size:"m", family: "FontBold",maxLines: 2),
+                RegularText(texts:logForDate[index].bookInfo.name, size:"m", family: "FontBold",maxLines: 2),
                 const SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    iconAndText("assets/icons/page.png", "sayfa","${logForDate[index].numberOfPages}"),
-                    iconAndText("assets/icons/clock.png", "dakika","${logForDate[index].timeRead}"),
+                    iconAndText("assets/icons/page.png", "sayfa","${logForDate[index].okuurLogInfo.numberOfPages}"),
+                    iconAndText("assets/icons/clock.png", "dakika","${logForDate[index].okuurLogInfo.timeRead}"),
                     iconAndText("assets/icons/point.png", "puan","?"),
                   ],),
-                const SizedBox(height: 8,),
-                RichTextWidget(
-                    texts: infoList[0],
-                    colors: [Theme.of(context).colorScheme.secondary],
-                    fontFamilies: const ["FontMedium","FontRegular","FontMedium"],
-                    fontSize: 11,
-                    align: TextAlign.center),
               ],
             );
           },

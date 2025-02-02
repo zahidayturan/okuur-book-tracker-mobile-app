@@ -24,7 +24,7 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
   @override
   void initState() {
     controller.resetMonth();
-    controller.fetchSeries();
+    //controller.fetchSeries();
     super.initState();
   }
 
@@ -61,9 +61,9 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                       const SizedBox(height: 12),
                       seriesCalendarInfo(),
                       const SizedBox(height: 12),
-                      dailySeriesInfo(context),
+                      dailySeriesInfo(context,controller.dailySeries),
                       const SizedBox(height: 12),
-                      bestSeriesInfo(context, 184),
+                      bestSeriesInfo(context, controller.bestSeriesInfo ?? 0),
                     ],
                   )),
                   const SizedBox(height: 12)

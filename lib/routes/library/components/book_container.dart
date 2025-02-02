@@ -160,7 +160,7 @@ Widget _bookFooter(OkuurBookInfo bookInfo, bool isNotStarted, bool isReading, Bu
             : "${OkuurCalc.calcDaysBetween(bookInfo.startingDate, bookInfo.finishingDate)} günde okudunuz",
         size: "xs"
       ),
-      moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, context, bookInfo),
+      moreButton(isReading ? colors.orange : Theme.of(context).colorScheme.tertiary),
     ],
   );
 }
@@ -189,7 +189,7 @@ Widget _statusDot(bool isReading, BuildContext context) {
   );
 }
 
-SizedBox moreButton(Color color, BuildContext context, OkuurBookInfo bookInfo) {
+SizedBox moreButton(Color color) {
   return SizedBox(
     height: 11,
     child: Image.asset("assets/icons/arrow.png", color: color),

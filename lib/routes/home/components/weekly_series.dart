@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/routes/series/series.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 class WeeklySeries extends StatefulWidget {
 
-
-  final List<int> weeklySeries;
-  final int currentSeries;
-
-
   const WeeklySeries({
-    Key? key,
-    required this.weeklySeries,
-    required this.currentSeries
+    Key? key
   }) : super(key: key);
 
   @override
@@ -24,9 +20,22 @@ class WeeklySeries extends StatefulWidget {
 class _WeeklySeriesState extends State<WeeklySeries> {
 
   AppColors colors = AppColors();
+  HomeController controller = Get.find();
+
+  @override
+  void initState() {
+    controller.fetchSeries();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() => controller.seriesLoading.value
+        ? ShimmerBox(height: 72, borderRadius: BorderRadius.circular(8))
+        : seriesInfoWidget());
+  }
+
+  Container seriesInfoWidget(){
     return Container(
       height: 72,
       decoration: BoxDecoration(
@@ -61,7 +70,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                seriesInfo(widget.weeklySeries),
+                seriesInfo(controller.currentWeekInfo),
                 seriesCountInfo(),
                 iconButton()
               ],
@@ -72,11 +81,11 @@ class _WeeklySeriesState extends State<WeeklySeries> {
     );
   }
 
-  Row seriesInfo(List<int> series) {
+  Row seriesInfo(List<Map<String, dynamic>> series) {
     List<Widget> seriesContainer = [];
     List<String> days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 
-    seriesContainer.add(const SizedBox(width: 12,));
+    seriesContainer.add(const SizedBox(width: 12));
 
     for (int i = 0; i < series.length; i++) {
       seriesContainer.add(
@@ -95,7 +104,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: series[i] == 0 ? Theme.of(context).colorScheme.onPrimaryContainer : Theme.of(context).colorScheme.inversePrimary
+                    color: series[i]['series'] == false ? Theme.of(context).colorScheme.onPrimaryContainer : Theme.of(context).colorScheme.inversePrimary
                   ),
                 ),
               ),
@@ -104,7 +113,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
             RegularText(
               texts:days[i],
               size: "xs",
-              color: series[i] == 0 ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
+              color: series[i]['series'] == false ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
             ),
           ],
         ),
@@ -120,7 +129,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
 
   RichTextWidget seriesCountInfo(){
     return RichTextWidget(
-      texts: ["${widget.currentSeries}\n","Günlük\nSeri"],
+      texts: ["${controller.activeSeriesInfo!.dayCount}\n","Günlük\nSeri"],
       colors: [Theme.of(context).colorScheme.secondary,Theme.of(context).colorScheme.secondary],
       fontFamilies: const ["FontBold","FontMedium"],
       fontSize: 13,

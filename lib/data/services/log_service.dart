@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 
 abstract class LogService {
@@ -7,7 +8,7 @@ abstract class LogService {
 
   Future<List<OkuurLogInfo>?> getLogInfo(String bookId);
 
-  Future<List<OkuurLogInfo>?> getAllLogForDate(DateTime dateTime);
+  Future<List<OkuurHomeLogInfo>> getAllLogForDate(DateTime dateTime);
 
   Future<void> deleteLogInfo(OkuurLogInfo logInfo);
 }

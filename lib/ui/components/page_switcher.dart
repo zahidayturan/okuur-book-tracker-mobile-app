@@ -35,18 +35,77 @@ class _OkuurPageSwitcherState extends State<OkuurPageSwitcher> {
     );
   }
 
+  Widget dots({int dotCount = 2}) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: Row(
+        children: List.generate(dotCount, (index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Container(
+              width: 2,
+              height: 2,
+              decoration: BoxDecoration(
+                color: colors.greyMid,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+
+  Widget buildDotsAndOptions() {
+    if (widget.pageCount <= 7) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(widget.pageCount, (index) {
+          return option(index);
+        }),
+      );
+    } else {
+      if (widget.currentPage <= 4) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...List.generate(5, (index) => option(index)),
+            dots(),
+            ...List.generate(2, (index) => option(widget.pageCount - 2 + index)),
+          ],
+        );
+      } else if (widget.currentPage > 3 && widget.currentPage < widget.pageCount - 3) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...List.generate(2, (index) => option(index)),
+            dots(),
+            ...List.generate(3, (index) => option(widget.currentPage - 1 + index)),
+            dots(),
+            ...List.generate(2, (index) => option(widget.pageCount - 2 + index)),
+          ],
+        );
+      } else {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...List.generate(2, (index) => option(index)),
+            dots(),
+            ...List.generate(5, (index) => option(widget.pageCount - 5 + index)),
+          ],
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: widget.pageCount > 1,
       child: SizedBox(
         height: 10,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(widget.pageCount, (index) {
-            return option(index);
-          }),
-        ),
+        child: buildDotsAndOptions(),
       ),
     );
   }

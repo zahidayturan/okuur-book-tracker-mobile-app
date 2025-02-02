@@ -98,4 +98,51 @@ class FirestoreSeriesOperation {
     return null;
   }
 
+  Future<Map<String, dynamic>> getAllSeriesInfo(String uid, DateTime startedDate, DateTime finishedDate) async {
+    List<DateTime> seriesDates = [];
+    int bestSeries = 0;
+
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('series')
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        OkuurSeriesInfo seriesInfo = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>);
+
+        String sDate = seriesInfo.startingDate;
+        DateTime docSDate = OkuurDateFormatter.stringToDateTime(sDate);
+
+        String fDate = seriesInfo.finishingDate;
+        DateTime docFDate = OkuurDateFormatter.stringToDateTime(fDate);
+
+        bestSeries = seriesInfo.dayCount > bestSeries ? seriesInfo.dayCount : bestSeries;
+
+        // Eğer belgenin tarih aralığı belirtilen aralıkla çakışıyorsa
+        if (docSDate.isBefore(finishedDate) && (docFDate.isAfter(startedDate) || docFDate.isAtSameMomentAs(startedDate))) {
+          DateTime currentDate = docSDate;
+
+          while (currentDate.isBefore(docFDate) || currentDate.isAtSameMomentAs(docFDate)) {
+            if ((currentDate.isAfter(startedDate) && currentDate.isBefore(finishedDate)) ||
+                currentDate.isAtSameMomentAs(startedDate) || currentDate.isAtSameMomentAs(finishedDate)) {
+              seriesDates.add(currentDate); // Bu gün aralığa dahil, listeye ekle
+            }
+            currentDate = currentDate.add(const Duration(days: 1));
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Get Monthly Series Error: $e');
+    }
+
+    return {
+      'seriesDates': seriesDates,
+      'bestSeries': bestSeries
+    };
+  }
+
+
+
 }

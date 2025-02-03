@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/reads/reads.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 
 class MiniPagesInfo extends StatefulWidget {
@@ -137,7 +138,21 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
   Widget reads(){
     return getBox(InkWell(
       onTap: () {
-
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            opaque: false,
+            transitionDuration: const Duration(milliseconds: 200),
+            pageBuilder: (context, animation, nextanim) => const AllReadsPage(),
+            reverseTransitionDuration: const Duration(milliseconds: 1),
+            transitionsBuilder: (context, animation, nexttanim, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
       },
       borderRadius: BorderRadius.circular(8),
       child: Stack(

@@ -11,4 +11,6 @@ abstract class LogService {
   Future<List<OkuurHomeLogInfo>> getAllLogForDate(DateTime dateTime);
 
   Future<void> deleteLogInfo(OkuurLogInfo logInfo);
+
+  Future<List<OkuurHomeLogInfo>> getMonthlyLogInfo(DateTime dateTime);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/services/operations/log_operations.dart';
 import 'package:okuur/ui/components/page_header.dart';
 
 class AllReadsPage extends StatefulWidget {
@@ -12,6 +13,14 @@ class AllReadsPage extends StatefulWidget {
 class _AllReadsPageState extends State<AllReadsPage> {
 
   AppColors colors = AppColors();
+  LogOperations logOperations = LogOperations();
+
+  @override
+  void initState() {
+    DateTime date = DateTime(DateTime.now().year,DateTime.now().month);
+    logOperations.getMonthlyLogInfo(date);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,20 +1,17 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/localizations/l10n_extension.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 import '../../../ui/components/rich_text.dart';
 
 class HomeProfileInfo extends StatefulWidget {
 
-  final String userName;
-  final int pageCount;
-
-
   const HomeProfileInfo({
     Key? key,
-    required this.userName,
-    required this.pageCount,
   }) : super(key: key);
 
   @override
@@ -25,6 +22,32 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
 
   AppColors colors = AppColors();
   final OkuurController controller = Get.find();
+  final HomeController homeController = Get.find();
+
+  @override
+  void initState() {
+    homeController.fetchProfile();
+    _selectRandomText();
+    super.initState();
+  }
+
+  List<List<String>> plusTexts = [
+    ['Kitap okuma', ' maceran', ' heyecan verici'],
+    ['Yeni bir dünya', ' keşfetmek', ' harika'],
+    ['Okumak seni', ' yeni yerlerde', ' keşfe çıkarır'],
+    ['Kitaplar seni', '  başka hayatlara', ' götürür'],
+    ['Yeni bir', ' kitap', ' yeni bir dünya'],
+  ];
+
+  List<String> selectedText = [];
+
+  void _selectRandomText() {
+    final random = Random();
+    final randomIndex = random.nextInt(plusTexts.length);
+    setState(() {
+      selectedText = plusTexts[randomIndex];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +55,32 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
+        Obx(() => homeController.homeProfileLoading.value
+            ? const ShimmerBox(height: 32,width: 140,borderRadius: BorderRadius.all(Radius.circular(8)),)
+            : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichTextWidget(
-              texts: ['${context.translate.hello} ', (widget.userName)],
+              texts: ['${context.translate.hello} ', (homeController.userInfo!.name)],
               colors: [mainColor],
               fontFamilies: const ['FontMedium', 'FontBold'],
             ),
             RichTextWidget(
-              texts: ['Bu ay ', '${widget.pageCount} sayfa',' kitap okudun'],
+              texts: homeController.totalReadsInfo["page"] != null
+              ? ['Bu ay ', '${homeController.totalReadsInfo["page"]} sayfa',' kitap okudun']
+              : selectedText,
               colors: [mainColor],
               fontSize: 13,
               fontFamilies: const ['FontMedium', 'FontBold','FontMedium'],
             ),
           ],
-        ),
+        )),
         InkWell(
           onTap: () {
             controller.setHomePageCurrentMode(5);
           },
           highlightColor: mainColor,
-          borderRadius: BorderRadius.all(Radius.circular(6)),
+          borderRadius: const BorderRadius.all(Radius.circular(6)),
           child: Container(
             width: 36,
             decoration: BoxDecoration(

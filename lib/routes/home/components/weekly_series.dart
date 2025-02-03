@@ -86,8 +86,18 @@ class _WeeklySeriesState extends State<WeeklySeries> {
     List<String> days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 
     seriesContainer.add(const SizedBox(width: 12));
-
+    bool isCurrentDay = false;
     for (int i = 0; i < series.length; i++) {
+      if (series[i]['date'] != null) {
+        if(series[i]['series'] != true){
+          DateTime currentDate = DateTime.now();
+          DateTime currentDayOnly = DateTime(currentDate.year, currentDate.month, currentDate.day);
+          DateTime mapDate = series[i]['date'];
+          DateTime mapDayOnly = DateTime(mapDate.year, mapDate.month, mapDate.day);
+          isCurrentDay = currentDayOnly.isAtSameMomentAs(mapDayOnly);
+        }
+      }
+      
       seriesContainer.add(
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -106,6 +116,9 @@ class _WeeklySeriesState extends State<WeeklySeries> {
                     shape: BoxShape.circle,
                     color: series[i]['series'] == false ? Theme.of(context).colorScheme.onPrimaryContainer : Theme.of(context).colorScheme.inversePrimary
                   ),
+                  child: Visibility(
+                      visible: isCurrentDay && series[i]['series'] == false,
+                      child: const Icon(Icons.query_builder_rounded,size: 16)),
                 ),
               ),
             ),

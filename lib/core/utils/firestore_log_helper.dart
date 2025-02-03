@@ -125,7 +125,6 @@ class FirestoreLogOperation{
     }
   }
 
-
   Future<void> deleteLogInfo(String uid, OkuurLogInfo logInfo) async {
     DateTime logDate = OkuurDateFormatter.stringToDateTime(logInfo.readingDate);
     String monthYear = '${logDate.month}-${logDate.year}';
@@ -147,4 +146,47 @@ class FirestoreLogOperation{
     }
   }
 
+  Future<List<OkuurHomeLogInfo>> getMonthlyLogInfo(String uid,DateTime dateTime) async {
+    try {
+      List<OkuurHomeLogInfo> homeLogInfo = [];
+
+      QuerySnapshot booksSnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .get();
+
+      String monthYear = '${dateTime.month}-${dateTime.year}';
+
+      for (var bookDoc in booksSnapshot.docs) {
+        QuerySnapshot logsSnapshot = await bookDoc.reference
+            .collection('logs')
+            .doc(monthYear)
+            .collection('entries')
+            .get();
+
+        OkuurBookInfo bookInfo = OkuurBookInfo.fromJson(bookDoc.data() as Map<String, dynamic>);
+
+        if (logsSnapshot.docs.isNotEmpty) {
+          List<OkuurLogInfo> logs = logsSnapshot.docs.map((doc) =>
+              OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+          for (var log in logs) {
+            homeLogInfo.add(OkuurHomeLogInfo(bookInfo: bookInfo, okuurLogInfo: log));
+          }
+        }
+      }
+
+      homeLogInfo.sort((a, b) {
+        DateTime dateA = DateTime.parse(a.okuurLogInfo.readingDate);
+        DateTime dateB = DateTime.parse(b.okuurLogInfo.readingDate);
+        return dateB.compareTo(dateA);
+      });
+
+      return homeLogInfo.isNotEmpty ? homeLogInfo : [];
+    } catch (e) {
+      debugPrint('Error fetching log data: $e');
+      return [];
+    }
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/routes/reads/reads.dart';
 import 'package:okuur/ui/components/regular_text.dart';
+import 'package:okuur/ui/components/snackbar.dart';
 
 class MiniPagesInfo extends StatefulWidget {
 
@@ -29,7 +31,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
       children: [
         Row(
           children: [
-            goals(),
+            reads(),
             const SizedBox(width: 18),
             achievements(),
           ],
@@ -37,7 +39,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
         const SizedBox(height: 18),
         Row(
           children: [
-            reads(),
+            goals(),
             const SizedBox(width: 18),
             discover()
           ],
@@ -67,7 +69,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
     return getBox(
         InkWell(
           onTap: () {
-
+            SnackBarWidget(context: context,duration: 3,backColor: colors.blackLight,textWidget: RegularText(texts: 'Okuur+\nAboneliği Gerektirir',maxLines: 2,color: colors.grey,align: TextAlign.center,)).showQuestionDialog();
           },
           borderRadius: BorderRadius.circular(8),
           child: Stack(
@@ -107,7 +109,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
     return getBox(
         InkWell(
           onTap: () {
-
+            SnackBarWidget(context: context,duration: 3,backColor: colors.blackLight,textWidget: RegularText(texts: 'Okuur+\nAboneliği Gerektirir',maxLines: 2,color: colors.grey,align: TextAlign.center,)).showQuestionDialog();
           },
           borderRadius: BorderRadius.circular(8),
           child: Stack(
@@ -137,7 +139,21 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
   Widget reads(){
     return getBox(InkWell(
       onTap: () {
-
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            opaque: false,
+            transitionDuration: const Duration(milliseconds: 200),
+            pageBuilder: (context, animation, nextanim) => const AllReadsPage(),
+            reverseTransitionDuration: const Duration(milliseconds: 1),
+            transitionsBuilder: (context, animation, nexttanim, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
       },
       borderRadius: BorderRadius.circular(8),
       child: Stack(
@@ -166,7 +182,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
   Widget discover(){
     return getBox(InkWell(
       onTap: () {
-
+        SnackBarWidget(context: context,duration: 3,backColor: colors.blackLight,textWidget: RegularText(texts: 'Okuur+\nAboneliği Gerektirir',maxLines: 2,color: colors.grey,align: TextAlign.center,)).showQuestionDialog();
       },
       borderRadius: BorderRadius.circular(8),
       child: Stack(

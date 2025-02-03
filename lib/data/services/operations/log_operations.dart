@@ -37,4 +37,11 @@ class LogOperations implements LogService {
     await FirestoreLogOperation().deleteLogInfo(uid!,logInfo);
   }
 
+  @override
+  Future<List<OkuurHomeLogInfo>> getMonthlyLogInfo(DateTime dateTime) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    var result = await FirestoreLogOperation().getMonthlyLogInfo(uid!,dateTime);
+    return result;
+  }
+
 }

@@ -48,7 +48,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           const SizedBox(height: 8),
           dayInfo(controller.logForDate), //90
           const SizedBox(height: 8), //16
-          RegularText(texts:controller.logForDate.isNotEmpty ? "Günlük Hedefe Ulaşıldı!" : "...", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
+          RegularText(texts:controller.logForDate.isNotEmpty ? "Günlük Hedefe Ulaşıldı!" : "", color: Theme.of(context).colorScheme.inversePrimary, size:"m"),
         ],
       ),
       ),
@@ -134,7 +134,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     return SizedBox(
       height: 90,
       child: logForDate.isEmpty
-          ? const Center(child: RegularText(texts: "Güne ait okuma\nbulunamadı",maxLines: 4,align: TextAlign.center))
+          ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Center(child: RegularText(texts: "Güne ait okuma\nbulunamadı",maxLines: 4)),
+              Image.asset("assets/icons/calendar.png",color: Theme.of(context).scaffoldBackgroundColor,height: 64,),
+            ],
+          )
           : PageView.builder(
           itemCount: logForDate.length,
           onPageChanged: (value) {

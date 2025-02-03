@@ -30,16 +30,16 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 18,),
-                  HomeProfileInfo(userName: "?",pageCount: 0),
-                  SizedBox(height: 18,),
+                  SizedBox(height: 18),
+                  HomeProfileInfo(),
+                  SizedBox(height: 18),
                   WeeklyCalendar(),
-                  SizedBox(height: 18,),
+                  SizedBox(height: 18),
                   CurrentBookAndDiscover(),
-                  SizedBox(height: 18,),
+                  SizedBox(height: 18),
                   WeeklySeries(),
-                  SizedBox(height: 18,),
-                  MiniPagesInfo(dailyGoal: 40,goalCount: 6,),
+                  SizedBox(height: 18),
+                  MiniPagesInfo(dailyGoal: 50,goalCount: 1),
                   SizedBox(height: 70)
                 ],
               ),

@@ -53,6 +53,11 @@ class _ReadingSeriesPageState extends State<ReadingSeriesPage> {
                     children: [
                       ShimmerBox(height: 72,borderRadius: BorderRadius.all(Radius.circular(8))),
                       SizedBox(height: 12),
+                      ShimmerBox(height: 326,borderRadius: BorderRadius.all(Radius.circular(8))),
+                      SizedBox(height: 12),
+                      ShimmerBox(height: 72,borderRadius: BorderRadius.all(Radius.circular(8))),
+                      SizedBox(height: 12),
+                      ShimmerBox(height: 72,borderRadius: BorderRadius.all(Radius.circular(8))),
                     ],
                   )
                       : Column(

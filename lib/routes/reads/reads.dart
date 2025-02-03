@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
+import 'package:okuur/routes/reads/components/reads_month_select.dart';
 import 'package:okuur/ui/components/page_header.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 class AllReadsPage extends StatefulWidget {
   const AllReadsPage({super.key});
@@ -17,8 +20,7 @@ class _AllReadsPageState extends State<AllReadsPage> {
 
   @override
   void initState() {
-    DateTime date = DateTime(DateTime.now().year,DateTime.now().month);
-    logOperations.getMonthlyLogInfo(date);
+    controller.resetMonth();
     super.initState();
   }
 
@@ -35,14 +37,17 @@ class _AllReadsPageState extends State<AllReadsPage> {
             child: Center(
               child: Column(
                 children: [
-                  const SizedBox(height: 12,),
+                  const SizedBox(height: 12),
                   PageHeaderTitle(
                       title: "Okumaların",
                       pathName: "assets/icons/reads.png",
                       subtitle: "",
                       backButton: true
                   ).getTitle(context),
-                  const SizedBox(height: 70)
+                  Obx(() => controller.readsLoading.value
+                      ? const ShimmerBox(height: 52,borderRadius: BorderRadius.all(Radius.circular(8)))
+                      : readsMonthSelect()),
+                  const SizedBox(height: 12,),
                 ],
               ),
             ),

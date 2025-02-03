@@ -158,4 +158,36 @@ class HomeController extends GetxController {
     return monthMap;
   }
 
+
+/*
+  READS PAGE
+   */
+
+  List<OkuurHomeLogInfo> readsLogInfo = [];
+  var readsLoading = Rx<bool>(false);
+
+
+  Future<void> fetchReadsPage() async {
+    readsLoading.value = true;
+    readsLogInfo = await logOperations.getMonthlyLogInfo(readsMonth.value);
+    readsLoading.value = false;
+  }
+
+  var readsMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
+
+  void readsIncrementMonth() {
+    readsMonth.value = DateTime(readsMonth.value.year, readsMonth.value.month + 1);
+    fetchReadsPage();
+  }
+
+  void readsDecrementMonth() {
+    readsMonth.value = DateTime(readsMonth.value.year, readsMonth.value.month - 1);
+    fetchReadsPage();
+  }
+
+  void readsResetMonth() {
+    readsMonth.value = DateTime(DateTime.now().year, DateTime.now().month);
+    fetchReadsPage();
+  }
+
 }

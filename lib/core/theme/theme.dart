@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:okuur/core/theme/theme_colors.dart';
+import 'package:okuur/core/constants/colors.dart';
+
+AppColors colors = AppColors();
 
 @immutable
 class AppTheme {
-  static const colors = ThemeColors();
 
   const AppTheme._();
-
 
   static ThemeData lightTheme = ThemeData(
     primaryColor: colors.grey,
     useMaterial3: false,
     fontFamily: "FontMedium",
-    scaffoldBackgroundColor: colors.backLight,
+    scaffoldBackgroundColor: colors.grey,
     colorScheme: const ColorScheme.light().copyWith(
         primary: colors.blue,
         secondary: colors.black,
@@ -31,7 +31,7 @@ class AppTheme {
     ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: colors.white,
-          unselectedItemColor: Color(0XFF5A5A5A),
+          unselectedItemColor: const Color(0XFF5A5A5A),
           selectedItemColor: colors.grey
       ),
       buttonTheme: ButtonThemeData(
@@ -55,7 +55,7 @@ class AppTheme {
     primaryColor: colors.black, //
     useMaterial3: false,
     fontFamily: "FontMedium",
-    scaffoldBackgroundColor: colors.backDark,
+    scaffoldBackgroundColor: colors.black,
     colorScheme: const ColorScheme.dark().copyWith(
         primary: colors.grey, //
         secondary: colors.grey,//
@@ -74,7 +74,7 @@ class AppTheme {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: colors.black,
-        unselectedItemColor: Color(0XFFA1A1A1),
+        unselectedItemColor: const Color(0XFFA1A1A1),
         selectedItemColor: colors.blackLight
     ),
     buttonTheme: ButtonThemeData(

@@ -158,8 +158,6 @@ class FirestoreLogOperation{
 
       String monthYear = '${dateTime.month}-${dateTime.year}';
 
-      print(monthYear);
-
       for (var bookDoc in booksSnapshot.docs) {
         QuerySnapshot logsSnapshot = await bookDoc.reference
             .collection('logs')
@@ -178,6 +176,12 @@ class FirestoreLogOperation{
           }
         }
       }
+
+      homeLogInfo.sort((a, b) {
+        DateTime dateA = DateTime.parse(a.okuurLogInfo.readingDate);
+        DateTime dateB = DateTime.parse(b.okuurLogInfo.readingDate);
+        return dateB.compareTo(dateA);
+      });
 
       return homeLogInfo.isNotEmpty ? homeLogInfo : [];
     } catch (e) {

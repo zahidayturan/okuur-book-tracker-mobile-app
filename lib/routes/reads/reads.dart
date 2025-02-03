@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
 import 'package:okuur/routes/reads/components/reads_month_select.dart';
+import 'package:okuur/routes/reads/components/reads_monthly_info.dart';
+import 'package:okuur/routes/reads/components/reads_total_info.dart';
 import 'package:okuur/ui/components/page_header.dart';
 import 'package:okuur/ui/components/shimmer_box.dart';
 
@@ -17,10 +20,11 @@ class _AllReadsPageState extends State<AllReadsPage> {
 
   AppColors colors = AppColors();
   LogOperations logOperations = LogOperations();
+  HomeController controller = Get.find();
 
   @override
   void initState() {
-    controller.resetMonth();
+    controller.readsResetMonth();
     super.initState();
   }
 
@@ -46,7 +50,15 @@ class _AllReadsPageState extends State<AllReadsPage> {
                   ).getTitle(context),
                   Obx(() => controller.readsLoading.value
                       ? const ShimmerBox(height: 52,borderRadius: BorderRadius.all(Radius.circular(8)))
-                      : readsMonthSelect()),
+                      : Column(
+                        children: [
+                          readsMonthSelect(),
+                          const SizedBox(height: 12),
+                          readsMonthlyInfo(controller.readsLogInfo,context),
+                          const SizedBox(height: 12),
+                          readsTotalInfo(context, controller.totalReadsInfo)
+                        ],
+                      )),
                   const SizedBox(height: 12,),
                 ],
               ),
@@ -56,4 +68,5 @@ class _AllReadsPageState extends State<AllReadsPage> {
       ),
     );
   }
+
 }

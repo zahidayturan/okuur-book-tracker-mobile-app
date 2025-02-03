@@ -166,11 +166,23 @@ class HomeController extends GetxController {
   List<OkuurHomeLogInfo> readsLogInfo = [];
   var readsLoading = Rx<bool>(false);
 
+  Map<String, dynamic> totalReadsInfo = {};
+
 
   Future<void> fetchReadsPage() async {
     readsLoading.value = true;
     readsLogInfo = await logOperations.getMonthlyLogInfo(readsMonth.value);
+    calculateReadsInfo(readsLogInfo);
     readsLoading.value = false;
+  }
+
+  void calculateReadsInfo(List<OkuurHomeLogInfo> readsLogInfo) {
+    int page = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.numberOfPages);
+    int time = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.timeRead);
+
+    totalReadsInfo["page"] = page;
+    totalReadsInfo["time"] = time;
+    totalReadsInfo["point"] = (time/(page+1)*page).toStringAsFixed(0);
   }
 
   var readsMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));

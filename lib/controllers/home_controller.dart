@@ -2,12 +2,31 @@ import 'package:get/get.dart';
 import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_series_info.dart';
+import 'package:okuur/data/models/okuur_user_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
 import 'package:okuur/data/services/operations/series_operations.dart';
+import 'package:okuur/data/services/operations/user_operations.dart';
 import 'package:okuur/ui/utils/date_formatter.dart';
 
 class HomeController extends GetxController {
+
+  /*
+  PROFILE
+   */
+  OkuurUserInfo? userInfo;
+  var homeProfileLoading = Rx<bool>(false);
+
+  Future<void> fetchProfile() async {
+    homeProfileLoading.value = true;
+    userInfo = await UserOperations().getActiveUserInfoByUId();
+    homeProfileLoading.value = false;
+  }
+
+  /*
+  CURRENTLY BOOKS
+   */
+
 
   List<OkuurBookInfo> currentlyReadBooks = [];
   List<OkuurHomeLogInfo> logForDate = [];

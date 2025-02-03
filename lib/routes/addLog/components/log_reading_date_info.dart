@@ -146,17 +146,28 @@ class _LogReadingDateInfoState extends State<LogReadingDateInfo> {
       );
 
       if (pickedDate != null) {
+        pickedDate = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          DateTime.now().hour,
+          DateTime.now().minute,
+          DateTime.now().second,
+        );
+
         setState(() {
-          controller.logReadingDateController.text = DateFormat('dd.MM.yyyy').format(pickedDate);
+          controller.logReadingDateController.text = DateFormat('dd.MM.yyyy').format(pickedDate!);
           controller.setLogReadingDate(pickedDate);
         });
-      }else{
+        print(pickedDate);
+      } else {
         setState(() {
           selectedButtonIndex = 0;
           controller.logReadingDateController.clear();
           controller.setLogReadingDate(DateTime.now());
         });
       }
+
 
   }
 }

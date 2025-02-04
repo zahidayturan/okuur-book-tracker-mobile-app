@@ -8,7 +8,7 @@ import 'package:okuur/ui/components/shimmer_box.dart';
 AppColors colors = AppColors();
 StatisticsController controller = Get.find();
 
-Widget totalAndSerialInfo(BuildContext context,String totalDate,String pageCount,String currentlySerial,String maxSerial){
+Widget totalAndSerialInfo(BuildContext context,String currentlySerial,String maxSerial){
   return Obx(() => controller.statisticsTotalInfoLoading.value
       ? const ShimmerBox(height: 92,borderRadius: BorderRadius.all(Radius.circular(8)),)
       : SizedBox(

@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 
 class StatisticsController extends GetxController {
 
@@ -25,12 +27,11 @@ class StatisticsController extends GetxController {
   }
 
   /*
-  Monthly and Weekly
+  Monthly Info
    */
   var statisticsMonthlyLoading = Rx<bool>(false);
   Map<String,dynamic>? monthlyInfo;
   List<OkuurHomeLogInfo> monthlyLogInfo = [];
-  List<OkuurLogInfo> lastSevenDayLogInfo = [];
 
   Future<void> fetchMonthlyStatistics(bool fetch) async {
     if (fetch || monthlyInfo == null) {
@@ -48,20 +49,7 @@ class StatisticsController extends GetxController {
       monthlyInfo!["day"] = lastDayOfMonth.day;
       monthlyInfo!["currentMonth"] = today.month == lastDayOfMonth.month;
       monthlyInfo!["remaining"] = today.month == lastDayOfMonth.month ? remainingDays : 0;
-      /*
-      List<DateTime> lastSevenDays = List.generate(7, (i) {
-        return today.subtract(Duration(days: i));
-      }).toList();
 
-      lastSevenDayLogInfo.clear();
-
-      for (var log in monthlyLogInfo) {
-        DateTime logDate = OkuurDateFormatter.stringToDateTime(log.okuurLogInfo.readingDate);
-
-        if (lastSevenDays.contains(logDate)) {
-          lastSevenDayLogInfo.add(log.okuurLogInfo);
-        }
-      }*/
       statisticsMonthlyLoading.value = false;
     }
   }
@@ -78,6 +66,47 @@ class StatisticsController extends GetxController {
     fetchMonthlyStatistics(true);
   }
 
-  var selectedWeeklyInfoType = "Sayfa".obs;
+  /*
+  Weekly Info
+  */
+
+  var statisticsWeeklyLoading = Rx<bool>(false);
+  List<Map<String, dynamic>> lastSevenDayLogInfo = [];
+  int sevenDayTotalRead = 0;
+
+  Future<void> fetchWeeklyStatistics(bool fetch) async {
+    if (fetch || lastSevenDayLogInfo.isEmpty) {
+      statisticsWeeklyLoading.value = true;
+
+      DateTime today = DateTime.now();
+      List<DateTime> lastSevenDays = List.generate(7, (i) => today.subtract(Duration(days: i)));
+      lastSevenDays = lastSevenDays.reversed.toList();
+
+      try {
+        List<Future<Map<String, dynamic>>> fetchLogs = lastSevenDays.map((day) async {
+          List<OkuurLogInfo> dayList = await logOperations.getDailyLogInfo(day);
+          int dayTotalRead = dayList.fold(0, (total, inDay) => total + inDay.numberOfPages);
+
+          return {
+            'totalRead': dayTotalRead,
+            'day': day,
+          };
+        }).toList();
+
+        lastSevenDayLogInfo = await Future.wait(fetchLogs);
+
+        sevenDayTotalRead = lastSevenDayLogInfo.fold(0, (total, item) {
+          int dayTotalRead = item["totalRead"] ?? 0;
+          return total + dayTotalRead;
+        });
+
+      } catch (e) {
+        debugPrint('Veri alınırken hata oluştu fetchW: $e');
+      } finally {
+        statisticsWeeklyLoading.value = false;
+      }
+    }
+  }
+
 }
 

@@ -155,7 +155,7 @@ class FirestoreBookOperation{
         info["totalReadingDay"] = 0;
       }
       info["totalReading"] = totalReading;
-      
+
       return info;
     } catch (e) {
       debugPrint('Error fetching book data: $e');

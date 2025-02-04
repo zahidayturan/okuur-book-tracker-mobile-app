@@ -270,6 +270,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   Widget totalRead(OkuurBookInfo okuurBookInfo){
+    String points = (okuurBookInfo.readingTime/(okuurBookInfo.currentPage+1)*okuurBookInfo.currentPage).toStringAsFixed(0);
     return BaseContainer(
       radius: 12,
       child: Column(
@@ -282,7 +283,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             children: [
               iconAndText("assets/icons/page.png", "sayfa",okuurBookInfo.currentPage.toString()),
               iconAndText("assets/icons/clock.png", "dakika",okuurBookInfo.readingTime.toString()),
-              iconAndText("assets/icons/point.png", "puan","?"),
+              iconAndText("assets/icons/point.png", "puan",points),
             ],),
           const SizedBox(height: 6),
         ],

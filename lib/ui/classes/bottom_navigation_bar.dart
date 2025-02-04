@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/localizations/l10n_extension.dart';
 import 'package:okuur/routes/addBook/add_book.dart';
 import 'package:okuur/routes/addLog/add_log.dart';
 import 'package:okuur/ui/components/regular_text.dart';
@@ -46,10 +47,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Expanded(flex:1,child: getIconAndText(context, "assets/icons/navbar/home", "Ana Sayfa",0)),
-                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/stat", "İstatistik",1)),
-                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/social", "Sosyal",2)),
-                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/lib", "Kitaplık",3)),
+                Expanded(flex:1,child: getIconAndText(context, "assets/icons/navbar/home", context.translate.home_page,0)),
+                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/stat", context.translate.statistics,1)),
+                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/social", context.translate.social,2)),
+                Expanded(flex:1, child: getIconAndText(context, "assets/icons/navbar/lib", context.translate.library,3)),
                 const Expanded(flex:1, child: SizedBox())
               ],
             ),
@@ -57,11 +58,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Positioned(
               right: 16,
               bottom: 124,
-              child: toButton(context,"Okuma Ekle",4,colors.blueMid,const AddLogPage())),
+              child: toButton(context,context.translate.add_reading,4,colors.blueMid,const AddLogPage())),
           Positioned(
               right: 16,
               bottom: 74,
-              child: toButton(context,"Kitap Ekle",4,colors.green,const AddBookPage())),
+              child: toButton(context,context.translate.add_book,4,colors.green,const AddBookPage())),
           Positioned(
               right: 16,
               bottom: 12,

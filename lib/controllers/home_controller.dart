@@ -219,8 +219,6 @@ class HomeController extends GetxController {
 
     if(DateTime.now().month == firstLogDate.month && DateTime.now().year == firstLogDate.year){
       totalMonthlyReads = page;
-    }else {
-      totalMonthlyReads = null;
     }
 
     totalReadsInfo["page"] = page;

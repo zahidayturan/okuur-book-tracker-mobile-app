@@ -2,5 +2,52 @@
   "@@locale" : "tr",
   "welcome": "Hoş Geldiniz",
   "hello": "Merhaba",
-  "app_title": "Okuur"
+  "app_title": "Okuur",
+
+   "home_page": "Ana Sayfa",
+   "statistics": "İstatistikler",
+   "social": "Sosyal",
+   "library": "Kitaplık",
+   "add_reading": "Okuma Ekle",
+   "add_book": "Kitap Ekle",
+
+   "january": "Ocak",
+   "february": "Şubat",
+   "march": "Mart",
+   "april": "Nisan",
+   "may": "Mayıs",
+   "june": "Haziran",
+   "july": "Temmuz",
+   "august": "Ağustos",
+   "september": "Eylül",
+   "october": "Ekim",
+   "november": "Kasım",
+   "december": "Aralık",
+
+   "monday": "Pazartesi",
+   "tuesday": "Salı",
+   "wednesday": "Çarşamba",
+   "thursday": "Perşembe",
+   "friday": "Cuma",
+   "saturday": "Cumartesi",
+   "sunday": "Pazar",
+
+   "readings": "Okumalar",
+   "goals": "Hedefler",
+   "achievements": "Başarımlar",
+   "explore": "Keşfet",
+
+   "settings": "Ayarlar",
+   "settings_sub": "Uygulama içi tercihlerinizi ayarlayın",
+   "settings_search": "Ayarlar içerisinde arama yapın",
+   "language": "Dil",
+   "app_language": "Uygulama dili",
+   "appearance": "Görünüm",
+   "app_theme": "Uygulama teması",
+   "light_theme": "Aydınlık Tema",
+   "dark_theme": "Karanlık Tema",
+   "system_theme": "Sistem Teması",
+   "account": "Hesap",
+   "account_sub": "Hesap ayarlarını değiştir"
+
 }

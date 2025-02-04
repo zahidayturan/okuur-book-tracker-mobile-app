@@ -211,19 +211,26 @@ class HomeController extends GetxController {
     }
   }
 
-  void calculateReadsInfo(List<OkuurHomeLogInfo> readsLogInfo) {
-    DateTime firstLogDate = OkuurDateFormatter.stringToDateTime(readsLogInfo.first.okuurLogInfo.readingDate);
+  Map<String, dynamic> calculateReadsInfo(List<OkuurHomeLogInfo> readsLogInfo) {
+    if(readsLogInfo.isNotEmpty){
+      DateTime firstLogDate = OkuurDateFormatter.stringToDateTime(readsLogInfo.first.okuurLogInfo.readingDate);
 
-    int page = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.numberOfPages);
-    int time = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.timeRead);
+      int page = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.numberOfPages);
+      int time = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.timeRead);
 
-    if(DateTime.now().month == firstLogDate.month && DateTime.now().year == firstLogDate.year){
-      totalMonthlyReads = page;
+      if(DateTime.now().month == firstLogDate.month && DateTime.now().year == firstLogDate.year){
+        totalMonthlyReads = page;
+      }
+
+      totalReadsInfo["page"] = page;
+      totalReadsInfo["time"] = time;
+      totalReadsInfo["point"] = (time/(page+1)*page).toStringAsFixed(0);
+    }else{
+      totalReadsInfo["page"] = 0;
+      totalReadsInfo["time"] = 0;
+      totalReadsInfo["point"] = 0;
     }
-
-    totalReadsInfo["page"] = page;
-    totalReadsInfo["time"] = time;
-    totalReadsInfo["point"] = (time/(page+1)*page).toStringAsFixed(0);
+    return totalReadsInfo;
   }
 
   var readsMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));

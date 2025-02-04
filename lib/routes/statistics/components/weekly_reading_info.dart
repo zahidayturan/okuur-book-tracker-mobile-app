@@ -57,13 +57,13 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              infoBar("Pt", 50, 0),
-              infoBar("Sa", 50, 0),
-              infoBar("Ça", 50, 0),
-              infoBar("Pe", 50, 0),
-              infoBar("Cu", 50, 0),
-              infoBar("Ct", 50, 0),
-              infoBar("Pa", 50, 0)
+              infoBar("Pt", 50, 15),
+              infoBar("Sa", 50, 40),
+              infoBar("Ça", 50, 25),
+              infoBar("Pe", 50, 25),
+              infoBar("Cu", 50, 50),
+              infoBar("Ct", 50, 50),
+              infoBar("Pa", 50, 50)
             ],
           ),
           const SizedBox(height: 12,),

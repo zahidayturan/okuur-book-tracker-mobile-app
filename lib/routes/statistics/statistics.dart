@@ -20,12 +20,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
   final StatisticsController controller = Get.put(StatisticsController());
 
   @override
-  void initState() {
-    super.initState();
-    controller.resetToCurrentMonth();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -45,11 +39,15 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       subtitle: "Okumalarının analizini ve\ntakvimi görüntüle"
                   ).getTitle(context),
                   const SizedBox(height: 16),
-                  totalAndSerialInfo(context,"?","?","?","?","?"),
-                  const SizedBox(height: 12),
-                  const MonthlyReadingInfo(finishedPage: 0,goalPage: 0),
-                  const SizedBox(height: 12),
-                  const WeeklyReadingInfo(),
+                  Column(
+                    children: [
+                      totalAndSerialInfo(context,"?","?","?","?","?"),
+                      const SizedBox(height: 12),
+                      const MonthlyReadingInfo(),
+                      const SizedBox(height: 12),
+                      const WeeklyReadingInfo(),
+                    ],
+                  ),
                   const SizedBox(height: 70)
                 ],
               ),

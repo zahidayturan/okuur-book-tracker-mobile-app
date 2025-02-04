@@ -16,7 +16,7 @@ class SeriesOperations implements SeriesService {
 
     if(isCurrentDay){
       OkuurSeriesInfo? activeSeriesInfo = await getActiveSeriesInfo();
-      if(activeSeriesInfo != null){
+      if(activeSeriesInfo != null && activeSeriesInfo.active){
         // Aktif seri var
         DateTime seriesFinishingDate = OkuurDateFormatter.stringToDateTime(activeSeriesInfo.finishingDate);
 

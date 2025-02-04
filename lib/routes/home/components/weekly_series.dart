@@ -24,7 +24,7 @@ class _WeeklySeriesState extends State<WeeklySeries> {
 
   @override
   void initState() {
-    controller.fetchSeries();
+    controller.fetchSeries(false);
     super.initState();
   }
 

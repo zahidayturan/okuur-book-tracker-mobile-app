@@ -26,7 +26,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   @override
   void initState() {
     super.initState();
-    controller.fetchLogForDate();
+    controller.fetchLogForDate(false);
   }
 
   int currentPage = 0;
@@ -85,14 +85,14 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         if (selectedDate != null && selectedDate != controller.initDate) {
           setState(() {
             controller.initDate = selectedDate;
-            controller.fetchLogForDate();
+            controller.fetchLogForDate(true);
           });
         }
       },
       onLongPress: () {
         setState(() {
           controller.initDate = DateTime.now();
-          controller.fetchLogForDate();
+          controller.fetchLogForDate(true);
         });
       },
       child: Container(

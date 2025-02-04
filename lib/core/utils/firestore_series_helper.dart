@@ -59,7 +59,11 @@ class FirestoreSeriesOperation {
     }
   }
 
-  Future<OkuurSeriesInfo?> getActiveSeriesInfo(String uid) async {
+  Future<OkuurSeriesInfo> getActiveSeriesInfo(String uid) async {
+    DateTime currentDate = DateTime.now();
+    DateTime currentDayOnly = DateTime(currentDate.year, currentDate.month, currentDate.day);
+    OkuurSeriesInfo tempInfo = OkuurSeriesInfo(active: false, dayCount: 0, startingDate: currentDate.toString(), finishingDate: currentDate.toString());
+
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
@@ -74,28 +78,48 @@ class FirestoreSeriesOperation {
           OkuurSeriesInfo? closestSeries;
 
           for (var doc in querySnapshot.docs) {
-            String date = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>).startingDate;
-            DateTime toDate = OkuurDateFormatter.stringToDateTime(date);
+            OkuurSeriesInfo okuurSeriesInfo = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>);
+            DateTime toStartingDate = OkuurDateFormatter.stringToDateTime(okuurSeriesInfo.startingDate);
+            DateTime toFinishingDate = OkuurDateFormatter.stringToDateTime(okuurSeriesInfo.finishingDate);
 
-            if (closestDate == null || toDate.isBefore(closestDate)) {
-              closestDate = toDate;
-              closestSeries = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>);
+            if (closestDate == null || toStartingDate.isBefore(closestDate)) {
+              closestDate = toStartingDate;
+
+              Duration difference = currentDayOnly.difference(toFinishingDate);
+              if (difference.inDays > 1) {
+                // Bugün ile serinin bitiş tarihi arasındaki fark 1 günden fazla
+                okuurSeriesInfo.active = false;
+                await updateSeriesInfo(uid, okuurSeriesInfo);
+                return tempInfo;
+              }
+
+              closestSeries = okuurSeriesInfo;
             }
           }
 
           if (closestSeries != null) {return closestSeries;}
         }
         else {
-          return OkuurSeriesInfo.fromJson(querySnapshot.docs.first.data() as Map<String, dynamic>);
+          OkuurSeriesInfo firstSeriesInfo = OkuurSeriesInfo.fromJson(querySnapshot.docs.first.data() as Map<String, dynamic>);
+          DateTime toFinishingDate = OkuurDateFormatter.stringToDateTime(firstSeriesInfo.finishingDate);
+
+          Duration difference = currentDayOnly.difference(toFinishingDate);
+          if (difference.inDays > 1) {
+            // Bugün ile serinin bitiş tarihi arasındaki fark 1 günden fazla
+            firstSeriesInfo.active = false;
+            await updateSeriesInfo(uid, firstSeriesInfo);
+            return tempInfo;
+          }
+          return firstSeriesInfo;
         }
       } else {
-        return null;
+        return OkuurSeriesInfo(active: false, dayCount: 0, startingDate: currentDate.toString(), finishingDate: currentDate.toString());
       }
     } catch (e) {
       debugPrint('Get Active Series Error: $e');
-      return null;
+      return tempInfo;
     }
-    return null;
+    return tempInfo;
   }
 
   Future<Map<String, dynamic>> getAllSeriesInfo(String uid, DateTime startedDate, DateTime finishedDate) async {

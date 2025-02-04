@@ -5,23 +5,27 @@ import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
-import 'package:okuur/ui/utils/date_formatter.dart';
+import 'package:okuur/data/services/operations/series_operations.dart';
 
 class StatisticsController extends GetxController {
 
   HomeController homeController = Get.put(HomeController());
   LogOperations logOperations = LogOperations();
   BookOperations bookOperations = BookOperations();
+  SeriesOperations seriesOperations = SeriesOperations();
   /*
   Total Info
    */
 
   var statisticsTotalInfoLoading = Rx<bool>(false);
   Map<String,dynamic>? totalInfo;
+  Map<String,dynamic>? seriesInfo;
   Future<void> fetchTotalStatistics(bool fetch) async {
     if (fetch || totalInfo == null) {
       statisticsTotalInfoLoading.value = true;
       totalInfo = await bookOperations.getTotalBookAndPage();
+      seriesInfo = await seriesOperations.getBestAndActiveSeriesInfo();
+      print(seriesInfo);
       statisticsTotalInfoLoading.value = false;
     }
   }

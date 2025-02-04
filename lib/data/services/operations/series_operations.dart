@@ -81,4 +81,10 @@ class SeriesOperations implements SeriesService {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     return await FirestoreSeriesOperation().getAllSeriesInfo(uid!,startingDate,finishedDate);
   }
+
+  @override
+  Future<Map<String,dynamic>> getBestAndActiveSeriesInfo()async{
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    return await FirestoreSeriesOperation().getBestAndActiveSeries(uid!);
+  }
 }

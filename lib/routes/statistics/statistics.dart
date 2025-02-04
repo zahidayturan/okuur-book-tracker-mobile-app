@@ -47,7 +47,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const SizedBox(height: 16),
                   Column(
                     children: [
-                      totalAndSerialInfo(context,"?","?"),
+                      totalAndSerialInfo(context),
                       const SizedBox(height: 12),
                       const MonthlyReadingInfo(),
                       const SizedBox(height: 12),

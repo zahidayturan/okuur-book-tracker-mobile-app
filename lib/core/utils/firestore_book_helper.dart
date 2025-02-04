@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
+import 'package:okuur/ui/utils/date_formatter.dart';
 
 class FirestoreBookOperation{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -109,7 +110,6 @@ class FirestoreBookOperation{
     }
   }
 
-
   Future<void> deleteAllBookInfo(String uid) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -125,4 +125,42 @@ class FirestoreBookOperation{
       debugPrint('Error deleting all books: $e');
     }
   }
+
+  Future<Map<String, dynamic>> getTotalBookAndPageInfo(String uid) async {
+    Map<String, dynamic> info = {};
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('users').doc(uid).collection("books").get();
+      info["book"] = querySnapshot.size;
+
+      int totalReading = 0;
+      DateTime? firstReading;
+
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var doc in querySnapshot.docs) {
+          OkuurBookInfo bookInfo = OkuurBookInfo.fromJson(doc.data() as Map<String, dynamic>);
+
+          DateTime bookStartingDate = OkuurDateFormatter.stringToDateTime(bookInfo.startingDate);
+          if (firstReading == null || bookStartingDate.isBefore(firstReading)) {
+            firstReading = bookStartingDate;
+          }
+
+          totalReading += bookInfo.currentPage;
+        }
+      }
+
+      if (firstReading != null) {
+        int totalReadingDay = DateTime.now().difference(firstReading).inDays;
+        info["totalReadingDay"] = totalReadingDay;
+      } else {
+        info["totalReadingDay"] = 0;
+      }
+      info["totalReading"] = totalReading;
+      
+      return info;
+    } catch (e) {
+      debugPrint('Error fetching book data: $e');
+      return {};
+    }
+  }
+
 }

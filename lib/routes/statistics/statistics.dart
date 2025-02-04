@@ -20,6 +20,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
   final StatisticsController controller = Get.put(StatisticsController());
 
   @override
+  void initState() {
+    controller.fetchTotalStatistics(true);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -41,7 +47,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const SizedBox(height: 16),
                   Column(
                     children: [
-                      totalAndSerialInfo(context,"?","?","?","?","?"),
+                      totalAndSerialInfo(context,"?","?","?","?"),
                       const SizedBox(height: 12),
                       const MonthlyReadingInfo(),
                       const SizedBox(height: 12),

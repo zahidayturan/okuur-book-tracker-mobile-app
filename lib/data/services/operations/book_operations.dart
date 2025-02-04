@@ -91,4 +91,9 @@ class BookOperations implements BookService {
     await FirestoreBookOperation().updateBookInfo(uid!, book);
   }
 
+  @override
+  Future<Map<String,dynamic>> getTotalBookAndPage() async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    return await FirestoreBookOperation().getTotalBookAndPageInfo(uid!);
+  }
 }

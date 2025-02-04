@@ -2,13 +2,31 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/data/models/dto/home_log_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
+import 'package:okuur/data/services/operations/book_operations.dart';
 import 'package:okuur/data/services/operations/log_operations.dart';
 
 class StatisticsController extends GetxController {
 
   HomeController homeController = Get.put(HomeController());
   LogOperations logOperations = LogOperations();
+  BookOperations bookOperations = BookOperations();
+  /*
+  Total Info
+   */
 
+  var statisticsTotalInfoLoading = Rx<bool>(false);
+  Map<String,dynamic>? totalInfo;
+  Future<void> fetchTotalStatistics(bool fetch) async {
+    if (fetch || totalInfo == null) {
+      statisticsTotalInfoLoading.value = true;
+      totalInfo = await bookOperations.getTotalBookAndPage();
+      statisticsTotalInfoLoading.value = false;
+    }
+  }
+
+  /*
+  Monthly and Weekly
+   */
   var statisticsMonthlyLoading = Rx<bool>(false);
   Map<String,dynamic>? monthlyInfo;
   List<OkuurHomeLogInfo> monthlyLogInfo = [];
@@ -47,7 +65,6 @@ class StatisticsController extends GetxController {
       statisticsMonthlyLoading.value = false;
     }
   }
-
 
   var statisticsMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
 

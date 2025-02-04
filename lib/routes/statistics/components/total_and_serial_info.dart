@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 AppColors colors = AppColors();
+StatisticsController controller = Get.find();
 
-Widget totalAndSerialInfo(BuildContext context,String totalDate,String bookCount,String pageCount,String currentlySerial,String maxSerial){
-  return SizedBox(
+Widget totalAndSerialInfo(BuildContext context,String totalDate,String pageCount,String currentlySerial,String maxSerial){
+  return Obx(() => controller.statisticsTotalInfoLoading.value
+      ? const ShimmerBox(height: 92,borderRadius: BorderRadius.all(Radius.circular(8)),)
+      : SizedBox(
     height: 92,
     child: Row(
       children: [
@@ -17,7 +23,7 @@ Widget totalAndSerialInfo(BuildContext context,String totalDate,String bookCount
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(8))
             ),
-            child: totalWidget(totalDate,bookCount,pageCount,context),
+            child: totalWidget(controller.totalInfo!["totalReadingDay"],controller.totalInfo!["book"],controller.totalInfo!["totalReading"],context),
           ),
         ),
         const SizedBox(width: 12,),
@@ -34,10 +40,10 @@ Widget totalAndSerialInfo(BuildContext context,String totalDate,String bookCount
         ),
       ],
     ),
-  );
+  ));
 }
 
-Widget totalWidget(String totalDate,String bookCount,String pageCount,BuildContext context){
+Widget totalWidget(int totalDate,int bookCount,int pageCount,BuildContext context){
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -53,14 +59,14 @@ Widget totalWidget(String totalDate,String bookCount,String pageCount,BuildConte
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             RichTextWidget(texts: [
-              bookCount,"\nKitap"],
+              bookCount.toString(),"\nKitap"],
                 colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: const ["FontBold","FontMedium"],
                 align: TextAlign.center,
                 fontSize: 14,
             ),
             RichTextWidget(texts: [
-              pageCount,"\nSayfa"],
+              pageCount.toString(),"\nSayfa"],
               colors: [Theme.of(context).colorScheme.inversePrimary],
               fontFamilies: const ["FontBold","FontMedium"],
               align: TextAlign.center,

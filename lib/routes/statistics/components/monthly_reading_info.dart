@@ -104,7 +104,8 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
   }
 
   void _showMonthPicker(BuildContext context) {
-    List<String> monthList = months.sublist(1, 12);
+    int range = DateTime.now().month+2 <=12 ? DateTime.now().month+2 : 12;
+    List<String> monthList = months.sublist(1, range);
     showModalBottomSheet(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       barrierColor: colors.blackLight.withOpacity(0.8),

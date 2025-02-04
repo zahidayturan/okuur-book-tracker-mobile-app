@@ -20,4 +20,6 @@ abstract class BookService {
   Future<void> deleteAllBookInfo();
 
   Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo,bool isAdd);
+
+  Future<Map<String,dynamic>> getTotalBookAndPage();
 }

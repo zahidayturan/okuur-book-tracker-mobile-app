@@ -33,7 +33,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   @override
   void initState() {
     super.initState();
-    controller.fetchCurrentlyReadBooks().then((value) => initAsync());
+    controller.fetchCurrentlyReadBooks(false).then((value) => initAsync());
   }
 
   Future<void> initAsync() async {
@@ -152,8 +152,8 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   ),
                 ).then((result) {
                   if (result == true) {
-                    controller.fetchCurrentlyReadBooks().then((value) => initAsync());
-                    controller.fetchLogForDate();
+                    controller.fetchCurrentlyReadBooks(true).then((value) => initAsync());
+                    controller.fetchLogForDate(true);
                   }
                 });
               },

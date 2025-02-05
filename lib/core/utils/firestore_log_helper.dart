@@ -189,4 +189,46 @@ class FirestoreLogOperation{
       return [];
     }
   }
+
+  Future<List<OkuurLogInfo>> getLogsForDaily(String uid, DateTime startDate) async {
+    try {
+      List<OkuurLogInfo> logInfo = [];
+
+      QuerySnapshot booksSnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .get();
+
+      String startMonthYear = '${startDate.month}-${startDate.year}';
+
+      DateTime startOfDay = DateTime(startDate.year, startDate.month, startDate.day);
+      DateTime endOfDay = startOfDay.add(const Duration(days: 1));
+
+      for (var bookDoc in booksSnapshot.docs) {
+        QuerySnapshot logsSnapshot = await bookDoc.reference
+            .collection('logs')
+            .doc(startMonthYear)
+            .collection('entries')
+            .where('readingDate', isGreaterThanOrEqualTo: startOfDay.toString())
+            .where('readingDate', isLessThan: endOfDay.toString())
+            .get();
+
+        if (logsSnapshot.docs.isNotEmpty) {
+          List<OkuurLogInfo> logs = logsSnapshot.docs.map((doc) =>
+              OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+          for (var log in logs) {
+              logInfo.add(log);
+          }
+        }
+      }
+
+      return logInfo.isNotEmpty ? logInfo : [];
+    } catch (e) {
+      debugPrint('Error fetching log data: $e');
+      return [];
+    }
+  }
+
 }

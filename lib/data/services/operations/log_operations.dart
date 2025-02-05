@@ -44,4 +44,11 @@ class LogOperations implements LogService {
     return result;
   }
 
+  @override
+  Future<List<OkuurLogInfo>> getDailyLogInfo(DateTime dateTime) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    var result = await FirestoreLogOperation().getLogsForDaily(uid!,dateTime);
+    return result;
+  }
+
 }

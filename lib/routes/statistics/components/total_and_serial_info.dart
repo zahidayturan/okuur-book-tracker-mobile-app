@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 AppColors colors = AppColors();
+StatisticsController controller = Get.find();
 
-Widget totalAndSerialInfo(BuildContext context,String totalDate,String bookCount,String pageCount,String currentlySerial,String maxSerial){
-  return SizedBox(
+Widget totalAndSerialInfo(BuildContext context){
+  return Obx(() => controller.statisticsTotalInfoLoading.value
+      ? const ShimmerBox(height: 92,borderRadius: BorderRadius.all(Radius.circular(8)),)
+      : SizedBox(
     height: 92,
     child: Row(
       children: [
@@ -17,7 +23,7 @@ Widget totalAndSerialInfo(BuildContext context,String totalDate,String bookCount
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(8))
             ),
-            child: totalWidget(totalDate,bookCount,pageCount,context),
+            child: totalWidget(controller.totalInfo!["totalReadingDay"],controller.totalInfo!["book"],controller.totalInfo!["totalReading"],context),
           ),
         ),
         const SizedBox(width: 12,),
@@ -29,15 +35,15 @@ Widget totalAndSerialInfo(BuildContext context,String totalDate,String bookCount
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(8))
             ),
-            child: serialWidget(context,currentlySerial,maxSerial),
+            child: serialWidget(context,controller.seriesInfo!["active"],controller.seriesInfo!["best"]),
           ),
         ),
       ],
     ),
-  );
+  ));
 }
 
-Widget totalWidget(String totalDate,String bookCount,String pageCount,BuildContext context){
+Widget totalWidget(int totalDate,int bookCount,int pageCount,BuildContext context){
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -45,7 +51,7 @@ Widget totalWidget(String totalDate,String bookCount,String pageCount,BuildConte
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Toplam",style: TextStyle(fontSize: 15,color: Theme.of(context).colorScheme.primaryContainer,fontFamily: "FontBold"),),
-          Text("$totalDate gündür",style: TextStyle(fontSize: 11,color: Theme.of(context).colorScheme.secondary),)
+          Text("${totalDate.toString()} gündür",style: TextStyle(fontSize: 11,color: Theme.of(context).colorScheme.secondary),)
         ],
       ),
       Expanded(
@@ -53,14 +59,14 @@ Widget totalWidget(String totalDate,String bookCount,String pageCount,BuildConte
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             RichTextWidget(texts: [
-              bookCount,"\nKitap"],
+              bookCount.toString(),"\nKitap"],
                 colors: [Theme.of(context).colorScheme.inversePrimary],
                 fontFamilies: const ["FontBold","FontMedium"],
                 align: TextAlign.center,
                 fontSize: 14,
             ),
             RichTextWidget(texts: [
-              pageCount,"\nSayfa"],
+              pageCount.toString(),"\nSayfa"],
               colors: [Theme.of(context).colorScheme.inversePrimary],
               fontFamilies: const ["FontBold","FontMedium"],
               align: TextAlign.center,
@@ -73,7 +79,7 @@ Widget totalWidget(String totalDate,String bookCount,String pageCount,BuildConte
   );
 }
 
-Widget serialWidget(BuildContext context,String currentlySerial,String maxSerial){
+Widget serialWidget(BuildContext context,int currentlySerial,int maxSerial){
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +96,7 @@ Widget serialWidget(BuildContext context,String currentlySerial,String maxSerial
            ),
            padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 4),
            child:  RichTextWidget(texts: [
-             currentlySerial,"\nGün"],
+             currentlySerial.toString(),"\nGün"],
              colors: [colors.grey],
              fontFamilies: const ["FontBold","FontMedium"],
              align: TextAlign.center,
@@ -100,7 +106,7 @@ Widget serialWidget(BuildContext context,String currentlySerial,String maxSerial
         ],
       ),
       RichTextWidget(texts: [
-        "En İyi\n",maxSerial,"\nGün"],
+        "En İyi\n",maxSerial.toString(),"\nGün"],
         colors: [Theme.of(context).colorScheme.primaryContainer],
         fontFamilies: const ["FontMedium","FontBold","FontMedium"],
         align: TextAlign.end,

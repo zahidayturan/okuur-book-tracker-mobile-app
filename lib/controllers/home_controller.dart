@@ -17,10 +17,12 @@ class HomeController extends GetxController {
   OkuurUserInfo? userInfo;
   var homeProfileLoading = Rx<bool>(false);
 
-  Future<void> fetchProfile() async {
-    homeProfileLoading.value = true;
-    userInfo = await UserOperations().getActiveUserInfoByUId();
-    homeProfileLoading.value = false;
+  Future<void> fetchProfile(bool fetch) async {
+    if(fetch || userInfo == null){
+      homeProfileLoading.value = true;
+      userInfo = await UserOperations().getActiveUserInfoByUId();
+      homeProfileLoading.value = false;
+    }
   }
 
   /*
@@ -40,17 +42,21 @@ class HomeController extends GetxController {
 
   DateTime initDate = DateTime.now();
 
-  Future<void> fetchLogForDate() async {
-    logsLoading.value = true;
-    logForDate = await logOperations.getAllLogForDate(initDate);
-    logsLoading.value = false;
+  Future<void> fetchLogForDate(bool fetch) async {
+    if(fetch || logForDate.isEmpty){
+      logsLoading.value = true;
+      logForDate = await logOperations.getAllLogForDate(initDate);
+      logsLoading.value = false;
+    }
   }
 
-  Future<void> fetchCurrentlyReadBooks() async {
-    booksLoading.value = true;
-    currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
-    currentlyReadBooks.sort((a, b) => a.startingDate.compareTo(b.startingDate));
-    booksLoading.value = false;
+  Future<void> fetchCurrentlyReadBooks(bool fetch) async {
+    if(fetch || currentlyReadBooks.isEmpty){
+      booksLoading.value = true;
+      currentlyReadBooks = await bookOperations.getCurrentlyReadBooksInfo();
+      currentlyReadBooks.sort((a, b) => a.startingDate.compareTo(b.startingDate));
+      booksLoading.value = false;
+    }
   }
 
   /*
@@ -65,20 +71,28 @@ class HomeController extends GetxController {
   List<Map<String, dynamic>> currentWeekInfo = [];
   var seriesCalendarLoading = Rx<bool>(false);
 
-  Future<void> fetchSeries() async {
-    seriesLoading.value = true;
-    activeSeriesInfo = await seriesOperations.getActiveSeriesInfo();
-    dailySeries = dailySeriesInfo(activeSeriesInfo!.finishingDate);
-    if(monthlySeriesInfo == null){
-      await getDaysInMonth();
+  Future<void> fetchSeries(bool fetch) async {
+    if(fetch || activeSeriesInfo == null){
+      seriesLoading.value = true;
+      activeSeriesInfo = await seriesOperations.getActiveSeriesInfo();
+
+      if(activeSeriesInfo != null && activeSeriesInfo!.active){
+        dailySeries = dailySeriesInfo(activeSeriesInfo!.finishingDate);
+      }
+
+      if(monthlySeriesInfo == null){
+        await getDaysInMonth();
+      }
+      seriesLoading.value = false;
     }
-    seriesLoading.value = false;
   }
 
-  Future<void> fetchSeriesCalendar() async {
-    seriesCalendarLoading.value = true;
-    monthlySeriesInfo = await getDaysInMonth();
-    seriesCalendarLoading.value = false;
+  Future<void> fetchSeriesCalendar(bool fetch) async {
+    if(fetch || monthlySeriesInfo == null){
+      seriesCalendarLoading.value = true;
+      monthlySeriesInfo = await getDaysInMonth();
+      seriesCalendarLoading.value = false;
+    }
   }
 
   bool dailySeriesInfo(String? finishedDate){
@@ -94,17 +108,17 @@ class HomeController extends GetxController {
 
   void incrementMonth() {
     seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month + 1);
-    fetchSeriesCalendar();
+    fetchSeriesCalendar(true);
   }
 
   void decrementMonth() {
     seriesMonth.value = DateTime(seriesMonth.value.year, seriesMonth.value.month - 1);
-    fetchSeriesCalendar();
+    fetchSeriesCalendar(true);
   }
 
   void resetMonth() {
     seriesMonth.value = DateTime(DateTime.now().year, DateTime.now().month);
-    fetchSeriesCalendar();
+    fetchSeriesCalendar(true);
   }
 
   Future<Map<int, List<Map<String, dynamic>>>> getDaysInMonth() async {
@@ -186,39 +200,54 @@ class HomeController extends GetxController {
   var readsLoading = Rx<bool>(false);
 
   Map<String, dynamic> totalReadsInfo = {};
+  int? totalMonthlyReads;
 
-
-  Future<void> fetchReadsPage() async {
-    readsLoading.value = true;
-    readsLogInfo = await logOperations.getMonthlyLogInfo(readsMonth.value);
-    calculateReadsInfo(readsLogInfo);
-    readsLoading.value = false;
+  Future<void> fetchReadsPage(bool fetch) async {
+    if(fetch || readsLogInfo.isEmpty){
+      readsLoading.value = true;
+      readsLogInfo = await logOperations.getMonthlyLogInfo(readsMonth.value);
+      calculateReadsInfo(readsLogInfo);
+      readsLoading.value = false;
+    }
   }
 
-  void calculateReadsInfo(List<OkuurHomeLogInfo> readsLogInfo) {
-    int page = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.numberOfPages);
-    int time = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.timeRead);
+  Map<String, dynamic> calculateReadsInfo(List<OkuurHomeLogInfo> readsLogInfo) {
+    if(readsLogInfo.isNotEmpty){
+      DateTime firstLogDate = OkuurDateFormatter.stringToDateTime(readsLogInfo.first.okuurLogInfo.readingDate);
 
-    totalReadsInfo["page"] = page;
-    totalReadsInfo["time"] = time;
-    totalReadsInfo["point"] = (time/(page+1)*page).toStringAsFixed(0);
+      int page = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.numberOfPages);
+      int time = readsLogInfo.fold(0, (sum, log) => sum + log.okuurLogInfo.timeRead);
+
+      if(DateTime.now().month == firstLogDate.month && DateTime.now().year == firstLogDate.year){
+        totalMonthlyReads = page;
+      }
+
+      totalReadsInfo["page"] = page;
+      totalReadsInfo["time"] = time;
+      totalReadsInfo["point"] = (time/(page+1)*page).toStringAsFixed(0);
+    }else{
+      totalReadsInfo["page"] = 0;
+      totalReadsInfo["time"] = 0;
+      totalReadsInfo["point"] = 0;
+    }
+    return totalReadsInfo;
   }
 
   var readsMonth = Rx<DateTime>(DateTime(DateTime.now().year, DateTime.now().month));
 
   void readsIncrementMonth() {
     readsMonth.value = DateTime(readsMonth.value.year, readsMonth.value.month + 1);
-    fetchReadsPage();
+    fetchReadsPage(true);
   }
 
   void readsDecrementMonth() {
     readsMonth.value = DateTime(readsMonth.value.year, readsMonth.value.month - 1);
-    fetchReadsPage();
+    fetchReadsPage(true);
   }
 
   void readsResetMonth() {
     readsMonth.value = DateTime(DateTime.now().year, DateTime.now().month);
-    fetchReadsPage();
+    fetchReadsPage(true);
   }
 
 }

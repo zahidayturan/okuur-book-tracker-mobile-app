@@ -3,17 +3,15 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/circular_bar.dart';
+import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
+import 'package:okuur/ui/const/month_name_list.dart';
 
 class MonthlyReadingInfo extends StatefulWidget {
 
-  final int finishedPage;
-  final int goalPage;
-
   const MonthlyReadingInfo({
     Key? key,
-    required this.finishedPage,
-    required this.goalPage,
   }) : super(key: key);
 
   @override
@@ -27,7 +25,22 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
   final StatisticsController controller = Get.put(StatisticsController());
 
   @override
+  void initState() {
+    super.initState();
+    controller.resetToCurrentMonth();
+    controller.fetchMonthlyStatistics(true);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return Obx(() => controller.statisticsMonthlyLoading.value
+        ? ShimmerBox(height: 200, borderRadius: BorderRadius.circular(8))
+        : body(context,controller.monthlyInfo!["page"],controller.monthlyInfo!["day"],controller.monthlyInfo!["remaining"],controller.monthlyInfo!["currentMonth"]));
+  }
+
+  Widget body(BuildContext context,int page, int day, int remaining, bool currentMonth){
+    int goal = day*50;
+    int minimumReading = remaining > 0 ? (goal-page)~/remaining : 0;
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -43,7 +56,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
               Text("Aylık Okuma",style: TextStyle(fontSize: 15,color: Theme.of(context).colorScheme.primaryContainer),),
               InkWell(
                 onTap: () {
-                  //_showMonthPicker(context);
+                  _showMonthPicker(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -52,7 +65,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Obx(() => Text(
-                    "${controller.selectedMonth.value} ${DateTime.now().year}",
+                    "${months[controller.statisticsMonth.value.month]} ${DateTime.now().year}",
                     style: TextStyle(color: colors.grey),
                   )),
                 ),
@@ -64,41 +77,42 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RichTextWidget(
-                  texts: ["Okunan\n",widget.finishedPage.toString(),"\nSayfa"],
+                  texts: ["Okunan\n",page.toString(),"\nSayfa"],
                   colors: [Theme.of(context).colorScheme.inversePrimary],
                   fontFamilies: const ["FontMedium","FontBold","FontMedium"]
               ),
               OkuurCircularProgressBar(
                 size: 120,
-                percentage: (widget.finishedPage/widget.goalPage),
+                percentage: (page/goal),
                 textColor: colors.blue,
                 inSideColor: colors.grey,
                 outSideColor: colors.blue,
               ),
               RichTextWidget(
-                  texts: ["Hedef\n",widget.goalPage.toString(),"\nSayfa"],
-                  colors: [Theme.of(context).colorScheme.secondary],
-                  fontFamilies: const ["FontMedium","FontBold","FontMedium"],
-                  align: TextAlign.end,
+                texts: ["Hedef\n",goal.toString(),"\nSayfa"],
+                colors: [Theme.of(context).colorScheme.secondary],
+                fontFamilies: const ["FontMedium","FontBold","FontMedium"],
+                align: TextAlign.end,
               ),
             ],
           ),
-          const SizedBox(height: 12,),
-          Text("Hedefin için günde en az ? sayfa okumalısın. ",style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,)
+          const SizedBox(height: 12),
+          RegularText(texts: minimumReading > 0 ? "Hedefin için günde en az $minimumReading sayfa okumalısın." : page >= goal ? "Hedefine ulaştın" : "Okuma yapmalısın",size: "s",align: TextAlign.center,)
         ],
       ),
     );
   }
 
   void _showMonthPicker(BuildContext context) {
+    int range = DateTime.now().month+2 <=12 ? DateTime.now().month+2 : 12;
+    List<String> monthList = months.sublist(1, range);
     showModalBottomSheet(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       barrierColor: colors.blackLight.withOpacity(0.8),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))),
       context: context,
       builder: (context) {
-        return Obx(() {
-          return FractionallySizedBox(
+        return FractionallySizedBox(
             heightFactor: 0.7,
             child: Column(
               children: [
@@ -123,13 +137,13 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: controller.months.length,
+                    itemCount: monthList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text("${controller.months[index]} ${DateTime.now().year}",style: TextStyle(color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,),
+                        title: Text("${monthList[index]} ${DateTime.now().year}",style: TextStyle(color: Theme.of(context).colorScheme.secondary),textAlign: TextAlign.center,),
                         visualDensity: const VisualDensity(vertical: -1),
                         onTap: () {
-                          controller.setMonth(controller.months[index]);
+                          controller.setMonth(index+1);
                           Navigator.pop(context);
                         },
                       );
@@ -139,7 +153,6 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
               ],
             ),
           );
-        });
       },
     );
   }

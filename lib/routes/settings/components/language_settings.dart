@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/okuur_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/localizations/l10n_extension.dart';
 import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/settings/components/setting_row.dart';
 import 'package:okuur/ui/components/dropdown_menu.dart';
@@ -47,8 +48,8 @@ class _LanguageSettingsState extends State<LanguageSettings> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 12,),
-        SettingRow(color: Theme.of(context).colorScheme.primaryContainer, title: "Uygulama Dili", widget: OkuurDropdownMenu(
+        const SizedBox(height: 12,),
+        SettingRow(color: Theme.of(context).colorScheme.primaryContainer, title: context.translate.app_language, widget: OkuurDropdownMenu(
           list: languageOptions.map((language) => language['name']!).toList(),
           controller: _languageController,
           dropdownColor: colors.greenDark,

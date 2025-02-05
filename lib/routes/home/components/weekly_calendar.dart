@@ -26,7 +26,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   @override
   void initState() {
     super.initState();
-    controller.fetchLogForDate();
+    controller.fetchLogForDate(false);
   }
 
   int currentPage = 0;
@@ -85,14 +85,14 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         if (selectedDate != null && selectedDate != controller.initDate) {
           setState(() {
             controller.initDate = selectedDate;
-            controller.fetchLogForDate();
+            controller.fetchLogForDate(true);
           });
         }
       },
       onLongPress: () {
         setState(() {
           controller.initDate = DateTime.now();
-          controller.fetchLogForDate();
+          controller.fetchLogForDate(true);
         });
       },
       child: Container(
@@ -149,18 +149,22 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             });
           },
           itemBuilder: (context, index) {
+            OkuurHomeLogInfo logInfo = logForDate[index];
+            String points = (logInfo.okuurLogInfo.timeRead/
+                (logInfo.okuurLogInfo.numberOfPages+1)
+                    *logInfo.okuurLogInfo.numberOfPages).toStringAsFixed(0);
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const RegularText(texts:"Okunan",otherSize: 10.0),
-                RegularText(texts:logForDate[index].bookInfo.name, size:"m", family: "FontBold",maxLines: 2),
+                RegularText(texts:logInfo.bookInfo.name, size:"m", family: "FontBold",maxLines: 2),
                 const SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    iconAndText("assets/icons/page.png", "sayfa","${logForDate[index].okuurLogInfo.numberOfPages}"),
-                    iconAndText("assets/icons/clock.png", "dakika","${logForDate[index].okuurLogInfo.timeRead}"),
-                    iconAndText("assets/icons/point.png", "puan","?"),
+                    iconAndText("assets/icons/page.png", "sayfa","${logInfo.okuurLogInfo.numberOfPages}"),
+                    iconAndText("assets/icons/clock.png", "dakika","${logInfo.okuurLogInfo.timeRead}"),
+                    iconAndText("assets/icons/point.png", "puan",points),
                   ],),
               ],
             );

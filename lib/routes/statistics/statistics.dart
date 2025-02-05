@@ -21,8 +21,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
   @override
   void initState() {
+    controller.fetchTotalStatistics(true);
     super.initState();
-    controller.resetToCurrentMonth();
   }
 
   @override
@@ -45,11 +45,15 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       subtitle: "Okumalarının analizini ve\ntakvimi görüntüle"
                   ).getTitle(context),
                   const SizedBox(height: 16),
-                  totalAndSerialInfo(context,"?","?","?","?","?"),
-                  const SizedBox(height: 12),
-                  const MonthlyReadingInfo(finishedPage: 0,goalPage: 0),
-                  const SizedBox(height: 12),
-                  const WeeklyReadingInfo(),
+                  Column(
+                    children: [
+                      totalAndSerialInfo(context),
+                      const SizedBox(height: 12),
+                      const MonthlyReadingInfo(),
+                      const SizedBox(height: 12),
+                      const WeeklyReadingInfo(),
+                    ],
+                  ),
                   const SizedBox(height: 70)
                 ],
               ),

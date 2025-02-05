@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/localizations/l10n_extension.dart';
 import 'package:okuur/routes/reads/reads.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/snackbar.dart';
@@ -84,7 +85,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RegularText(texts: "Hedefler",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                    RegularText(texts: context.translate.goals,color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
                     RegularText(
                       size: "s",
                       texts: "Günlük\n${widget.dailyGoal} sayfa",
@@ -124,7 +125,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RegularText(texts:"Başarımlar",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                    RegularText(texts:context.translate.achievements,color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
                     Center(child: Image.asset("assets/icons/achievements_example.png",color: Theme.of(context).colorScheme.secondary,height:52)),
                     const Align(alignment: Alignment.centerRight,child: RegularText(texts:"Görüntüle",size: "xs",))
                   ],
@@ -168,7 +169,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RegularText(texts:"Okumalar",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                RegularText(texts:context.translate.readings,color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
                 const RegularText(texts:"Kaydettiğin bütün okumaların",  size: "s",maxLines: 3),
                 const Align(alignment:Alignment.centerRight,child: RegularText(texts:"Listele", size: "xs"))
               ],
@@ -197,7 +198,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RegularText(texts:"Keşfet",color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
+                RegularText(texts:context.translate.explore,color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
                 const RegularText(texts:"Okuyacak\nyeni kitaplar bul",size:"s",maxLines: 3),
                 const Align(alignment: Alignment.centerRight,child: RegularText(texts:"Keşfet", size: "xs"))
               ],

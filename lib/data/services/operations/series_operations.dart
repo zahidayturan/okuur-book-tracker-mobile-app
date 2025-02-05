@@ -16,7 +16,7 @@ class SeriesOperations implements SeriesService {
 
     if(isCurrentDay){
       OkuurSeriesInfo? activeSeriesInfo = await getActiveSeriesInfo();
-      if(activeSeriesInfo != null){
+      if(activeSeriesInfo != null && activeSeriesInfo.active){
         // Aktif seri var
         DateTime seriesFinishingDate = OkuurDateFormatter.stringToDateTime(activeSeriesInfo.finishingDate);
 
@@ -80,5 +80,11 @@ class SeriesOperations implements SeriesService {
   Future<Map<String, dynamic>> getSeriesInfoForMonth(DateTime startingDate, DateTime finishedDate) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     return await FirestoreSeriesOperation().getAllSeriesInfo(uid!,startingDate,finishedDate);
+  }
+
+  @override
+  Future<Map<String,dynamic>> getBestAndActiveSeriesInfo()async{
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    return await FirestoreSeriesOperation().getBestAndActiveSeries(uid!);
   }
 }

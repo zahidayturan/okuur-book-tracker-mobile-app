@@ -14,4 +14,6 @@ abstract class SeriesService {
   Future<OkuurSeriesInfo?> getActiveSeriesInfo();
 
   Future<Map<String, dynamic>> getSeriesInfoForMonth(DateTime startingDate, DateTime finishedDate);
+
+  Future<Map<String,dynamic>> getBestAndActiveSeriesInfo();
 }

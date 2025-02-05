@@ -31,6 +31,11 @@ class _BookRecordsDetailState extends State<BookRecordsDetail> {
   }
 
   Widget bookRecords(List<OkuurLogInfo> logs) {
+    int selectedPage = logs[selectedItem].numberOfPages;
+    int selectedTime = logs[selectedItem].timeRead;
+
+    String points = (selectedTime/(selectedPage+1)*selectedPage).toStringAsFixed(0);
+
     return logs.isNotEmpty ? BaseContainer(
       radius: 12,
       child: Column(
@@ -98,7 +103,7 @@ class _BookRecordsDetailState extends State<BookRecordsDetail> {
                 ),
                 const SizedBox(height: 4),
                 RegularText(texts: OkuurDateFormatter.convertDate(logs[selectedItem].readingDate)),
-                RegularText(texts: "${logs[selectedItem].numberOfPages} sayfa / ${logs[selectedItem].timeRead} dakika / ? puan"),
+                RegularText(texts: "$selectedPage sayfa / $selectedTime dakika / $points puan"),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

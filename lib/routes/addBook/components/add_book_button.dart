@@ -44,7 +44,7 @@ class _AddBookButtonState extends State<AddBookButton> {
     try {
       await bookOperations.insertBookInfo(bookInfo,controller.selectedImage.value);
       await libraryController.fetchBooks();
-      await homeController.fetchCurrentlyReadBooks();
+      await homeController.fetchCurrentlyReadBooks(true);
     } catch (e) {
       debugPrint("Bir hata oluştu: $e");
     } finally {

@@ -4,6 +4,7 @@ import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
+import 'package:okuur/ui/components/shimmer_box.dart';
 
 class WeeklyReadingInfo extends StatefulWidget {
 
@@ -22,12 +23,26 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
   final StatisticsController controller = Get.put(StatisticsController());
 
   @override
+  void initState() {
+    controller.fetchWeeklyStatistics(true);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return Obx(() => controller.statisticsWeeklyLoading.value
+        ? const ShimmerBox(height: 208,borderRadius: BorderRadius.all(Radius.circular(8)),)
+        : weeklyInfo());
+  }
+
+  List<String> shortDayName = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cts", "Paz"];
+
+  Widget weeklyInfo() {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          borderRadius: const BorderRadius.all(Radius.circular(8))
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,50 +50,50 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RegularText(texts: "Son 7 Gün",size: "l",color: Theme.of(context).colorScheme.primaryContainer),
-              InkWell(
-                onTap: () {
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colors.greenDark,
-                    borderRadius: const BorderRadius.all(Radius.circular(50)),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  child: Obx(() => Text(
-                    controller.selectedWeeklyInfoType.value,
-                    style: TextStyle(color: colors.grey),
-                  )),
+              RegularText(
+                texts: "Son 7 Gün",
+                size: "l",
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: colors.greenDark,
+                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  "Sayfa",
+                  style: TextStyle(color: colors.grey),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12,),
+          const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              infoBar("Pt", 50, 0),
-              infoBar("Sa", 50, 0),
-              infoBar("Ça", 50, 0),
-              infoBar("Pe", 50, 0),
-              infoBar("Cu", 50, 0),
-              infoBar("Ct", 50, 0),
-              infoBar("Pa", 50, 0)
-            ],
+            children: controller.lastSevenDayLogInfo.map((item) {
+              int weekDay = item["day"].weekday;
+              return infoBar(shortDayName[weekDay-1], 50, item["totalRead"]);
+            }).toList(),
           ),
-          const SizedBox(height: 12,),
+          const SizedBox(height: 12),
           RichTextWidget(
-              texts: const ["Okunan ","?"," Sayfa"],
-              colors: [Theme.of(context).colorScheme.inversePrimary],
-              fontFamilies: const ["FontMedium","FontBold","FontMedium"],
-              align: TextAlign.center,
+            texts: ["Okunan ", controller.sevenDayTotalRead.toString(), " Sayfa"],
+            colors: [Theme.of(context).colorScheme.inversePrimary],
+            fontFamilies: const ["FontMedium", "FontBold", "FontMedium"],
+            align: TextAlign.center,
           ),
-          const SizedBox(height: 12,),
-          const RegularText(texts: "Günlük okuma hedefin ? sayfa.",size: "s",align: TextAlign.center)
+          const SizedBox(height: 12),
+          const RegularText(
+            texts: "Günlük okuma hedefin 50 sayfa.",
+            size: "s",
+            align: TextAlign.center,
+          ),
         ],
       ),
     );
   }
+
 
   Widget infoBar(String text,int goal,int current){
     return LayoutBuilder(

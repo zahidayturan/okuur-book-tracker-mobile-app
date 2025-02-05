@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/localizations/l10n_extension.dart';
 import 'package:okuur/routes/settings/components/reading_settings.dart';
 import 'package:okuur/routes/settings/components/account_settings.dart';
 import 'package:okuur/routes/settings/components/backup_settings.dart';
@@ -20,7 +20,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
 
   AppColors colors = AppColors();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +37,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 12,),
                   PageHeaderTitle(
                       backButton: true,
-                      title: "Ayarlar",
+                      title: context.translate.settings,
                       pathName: "assets/icons/settings.png",
-                      subtitle: "Uygulama içi tercihlerinizi ayarlayın"
+                      subtitle: context.translate.settings_sub
                   ).getTitle(context),
                   const SizedBox(height: 24,),
-                  OkuurSearchBar(hintText: "Ayarlar içerisinde arama yapın", onChanged: (value) {},),
+                  OkuurSearchBar(hintText: context.translate.settings_search, onChanged: (value) {},),
                   const SizedBox(height: 24,),
-                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Görünüm", widget: const ThemeSettings()).getSettingBox(context),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: context.translate.appearance, widget: const ThemeSettings()).getSettingBox(context),
                   const SizedBox(height: 12,),
-                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Dil", widget: const LanguageSettings()).getSettingBox(context),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: context.translate.language, widget: const LanguageSettings()).getSettingBox(context),
                   const SizedBox(height: 12,),
-                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: "Hesap", widget: const AccountSettings()).getSettingBox(context),
+                  SettingBox(color: Theme.of(context).colorScheme.primaryContainer, title: context.translate.account, widget: const AccountSettings()).getSettingBox(context),
                   const SizedBox(height: 12,),
                   SettingBox(color: Theme.of(context).colorScheme.primary, title: "Okuma Tercihlerin", widget: const ReadingSettings()).getSettingBox(context),
                   const SizedBox(height: 12,),

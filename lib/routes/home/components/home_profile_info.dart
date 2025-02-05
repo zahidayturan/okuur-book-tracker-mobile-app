@@ -26,17 +26,18 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
 
   @override
   void initState() {
-    homeController.fetchProfile();
+    homeController.fetchProfile(false);
     _selectRandomText();
     super.initState();
   }
 
   List<List<String>> plusTexts = [
-    ['Kitap okuma', ' maceran', ' heyecan verici'],
-    ['Yeni bir dünya', ' keşfetmek', ' harika'],
-    ['Okumak seni', ' yeni yerlerde', ' keşfe çıkarır'],
-    ['Kitaplar seni', '  başka hayatlara', ' götürür'],
-    ['Yeni bir', ' kitap', ' yeni bir dünya'],
+    ['Kitap okuma maceran heyecan verici', '', ''],
+    ['Yeni bir dünya keşfetmek harika', '', ''],
+    ['Okumak seni yenilikte keşfe çıkarır', '',''],
+    ['Kitaplar seni başka hayatlara götürür', '', ''],
+    ['Yeni bir kitap yeni bir dünya', '', ''],
+    ['Bol kitaplı günler', '', ''],
   ];
 
   List<String> selectedText = [];
@@ -66,8 +67,8 @@ class _HomeProfileInfoState extends State<HomeProfileInfo> {
               fontFamilies: const ['FontMedium', 'FontBold'],
             ),
             RichTextWidget(
-              texts: homeController.totalReadsInfo["page"] != null
-              ? ['Bu ay ', '${homeController.totalReadsInfo["page"]} sayfa',' kitap okudun']
+              texts: homeController.totalMonthlyReads != null
+              ? ['Bu ay ', '${homeController.totalMonthlyReads} sayfa',' kitap okudun']
               : selectedText,
               colors: [mainColor],
               fontSize: 13,

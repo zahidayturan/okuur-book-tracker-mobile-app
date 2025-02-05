@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/localizations/l10n_extension.dart';
 import 'package:okuur/routes/settings/account_settings.dart';
 
 class AccountSettings extends StatefulWidget {
@@ -41,7 +42,7 @@ class _AccountSettingsState extends State<AccountSettings> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-            Text("Hesap ayarlarını değiştir",style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
+            Text(context.translate.account_sub,style: TextStyle(fontSize: 13,color: Theme.of(context).colorScheme.primaryContainer),),
             Image.asset("assets/icons/arrow.png",height: 16,color: Theme.of(context).colorScheme.primaryContainer)
           ],)
         ],

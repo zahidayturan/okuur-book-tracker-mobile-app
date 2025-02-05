@@ -1,13 +1,16 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/zahidayturan/okuur-book-tracker-mobile-app/blob/main/README.md)
 [![tr](https://img.shields.io/badge/lang-tr-red.svg)](https://github.com/zahidayturan/okuur-book-tracker-mobile-app/blob/main/README.tr.md)
 
-
 <h1 align="center">OKUUR</h1>
 <p align="center"><img src="assets/banner.png"  width=90% height=90%/></p>
 
-Okuur / Book Tracker App
+**Okuur / Book Tracker App**
 
-**Book Tracker App developed with [Flutter](https://flutter.dev/)**.
+The app offers various features to help users manage their reading experience more efficiently. 
+
+With this mobile application, you can digitize your library, track your reading progress, and view your statistics. You can also connect with other readers as friends, see what they are reading, and read together. By logging each of your readings, you can maintain a reading streak. Discover other users' books and add new titles to your library.
+
+The digital library and reading tracking app is developed using [**Flutter**](https://flutter.dev/). It includes both light and dark themes, and work is underway to support multiple languages. The UI/UX design has been created using **Figma**. **Get** is used for state management within the app. **Firebase Auth** and **Google Sign In** packages are integrated for user authentication. **Firestore** ensures real-time synchronization of user data, providing a consistent experience across all devices. **Firebase Storage** is used to store books and other files securely.
 
 ### Dependencies
 
@@ -29,6 +32,113 @@ This project is built with a variety of great open source libraries and packages
 * [shimmer](https://pub.dev/packages/shimmer) - A package for adding shimmer effect to your widgets (good for loading indicators)
 * [flutter_native_splash](https://pub.dev/packages/flutter_native_splash) - Custom splash screen (useful for app branding and smooth start-up)
 
+<table>
+  <tr>
+    <td colspan="2"><h3 align="center">Home Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/HomePageLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/HomePageDark.png" width=85%></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td colspan="2"><h3 align="center">Statistics Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/StatisticsLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/StatisticsDark.png" width=85%></td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <td><h3 align="center">Library Page</h3></td>
+    <td><h3 align="center">Profile Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/MyBooksPageLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/ProfileLight.png" width=85%></td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <td><h3 align="center">Add Book Page</h3></td>
+    <td><h3 align="center">Add Reading Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/AddBookLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/AddLogLight.png" width=85%></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><h3 align="center">Book Detail Page</h3></td>
+    <td><h3 align="center">Readings Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/BookDetailLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/AllReadsDark.png" width=85%></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td colspan="2"><h3 align="center">Serie Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/SeriesLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/SeriesDark.png" width=85%></td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <td><h3 align="center">Settings Page</h3></td>
+    <td><h3 align="center">Reading Mode Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/SettingsLight.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/ReadModePageDark.png" width=85%></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td colspan="2"><h3 align="center">Welcome Page</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/WelcomePageL.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/WelcomePageD.png" width=85%></td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <td colspan="2"><h3 align="center">Create Account Pages</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/WelcomePage1L.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/WelcomePage2L.png" width=85%></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td colspan="2"><h3 align="center">App Setup Pages</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="readmeAssets/WelcomePage3L.png" width=85%></td>
+    <td align="center"><img src="readmeAssets/WelcomePage4L.png" width=85%></td>
+  </tr>
+</table>
 
 ### Installation
 ```sh

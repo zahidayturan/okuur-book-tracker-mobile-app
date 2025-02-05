@@ -31,178 +31,113 @@ Bu proje, bir dizi harika açık kaynaklı kütüphane ve paket ile oluşturulmu
 
 
 
-<style>
-  @media (min-width: 800px) {
-    .table-container {
-      display: flex;
-      justify-content: space-between;
-    }
-    .table-container table {
-      width: 47%;
-    }
-  }
+<table align="center">
+  <tr>
+    <td colspan="2" style="text-align: center;"><h3>Ana Sayfa</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/HomePageLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/HomePageDark.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <td colspan="2" style="text-align: center;"><h3>İstatistik Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/StatisticsLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/StatisticsDark.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
 
-  @media (max-width: 799px) {
-    .table-container {
-      display: block;
-    }
-    .table-container table {
-      width: 100%;
-      margin-bottom: 12px;
-    }
-  }
-</style>
-
-<div class="table-container">
-  <table>
-    <tr>
-      <td colspan="2" style="text-align: center;"><h3>Ana Sayfa</h3></td>
-    </tr>
-    <tr>
-      <td><img src="readmeAssets/HomePageLight.png"></td>
-      <td><img src="readmeAssets/HomePageDark.png"></td>
-    </tr>
-  </table>
-
-  <table>
-    <tr>
-      <td colspan="2" style="text-align: center;"><h3>İstatistik Sayfası</h3></td>
-    </tr>
-    <tr>
-      <td><img src="readmeAssets/StatisticsLight.png"></td>
-      <td><img src="readmeAssets/StatisticsDark.png"></td>
-    </tr>
-  </table>
-</div>
+<table align="center">
+  <tr>
+    <td style="text-align: center;"><h3>Kitaplık Sayfası</h3></td>
+    <td style="text-align: center;"><h3>Profil Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/MyBooksPageLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/ProfileLight.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
 
-<div class="table-container">
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Kitaplık    Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/MyBooksPageLight.png"></td>
-        <td><img src="readmeAssets/MyBooksPageDark.png"></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Profil Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/ProfileLight.png"></td>
-        <td><img src="readmeAssets/ProfileDark.png"></td>
-      </tr>
-    </table>
-</div>
+<table align="center">
+  <tr>
+    <td style="text-align: center;"><h3>Kitap Ekleme Sayfası</h3></td>
+    <td style="text-align: center;"><h3>Okuma Ekleme Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/AddBookLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/AddLogLight.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <td style="text-align: center;"><h3>Kitap Detay Sayfası</h3></td>
+    <td style="text-align: center;"><h3>Okumalar Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/BookDetailLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/AllReadsDark.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <td colspan="2" style="text-align: center;"><h3>Okuma Seri Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/SeriesLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/SeriesDark.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
 
-<div class="table-container">
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Kitap Ekleme Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/AddBookLight.png"></td>
-        <td><img src="readmeAssets/AddBookDark.png"></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Okuma Ekleme Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/AddLogLight.png"></td>
-        <td><img src="readmeAssets/AddLogDark.png"></td>
-      </tr>
-    </table>
-</div>
+<table align="center">
+  <tr>
+    <td style="text-align: center;"><h3>Ayarlar Sayfası</h3></td>
+    <td style="text-align: center;"><h3>Okuma Modu Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/SettingsLight.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/ReadModePageDark.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
-<div class="table-container">
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Kitap Detay Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/BookDetailLight.png"></td>
-        <td><img src="readmeAssets/BookDetailDark.png"></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Okuma Seri Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/SeriesLight.png"></td>
-        <td><img src="readmeAssets/SeriesDark.png"></td>
-      </tr>
-    </table>
-</div>
+<table align="center">
+  <tr>
+    <td colspan="2" style="text-align: center;"><h3>Karşılama Sayfası</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/WelcomePageL.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/WelcomePageD.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
-<div class="table-container">
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Ayarlar Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/SettingsLight.png"></td>
-        <td><img src="readmeAssets/SettingsDark.png"></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Karşılama Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/WelcomePageL.png"></td>
-        <td><img src="readmeAssets/WelcomePageD.png"></td>
-      </tr>
-    </table>
-</div>
 
-<div class="table-container">
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Hesap Oluşturma Sayfaları</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/WelcomePage1L.png"></td>
-        <td><img src="readmeAssets/WelcomePage2L.png"></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Kurulum Sayfaları</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/WelcomePage3L.png"></td>
-        <td><img src="readmeAssets/WelcomePage4L.png"></td>
-      </tr>
-    </table>
-</div>
+<table align="center">
+  <tr>
+    <td colspan="2" style="text-align: center;"><h3>Hesap Oluşturma Sayfaları</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/WelcomePage1L.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/WelcomePage2L.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
-<div class="table-container">
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Okumalar Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/AllReadsLight.png"></td>
-        <td><img src="readmeAssets/AllReadsDark.png"></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td colspan="2" style="text-align: center;"><h3>Okuma Modu Sayfası</h3></td>
-      </tr>
-      <tr>
-        <td><img src="readmeAssets/ReadModePageLight.png"></td>
-        <td><img src="readmeAssets/ReadModePageDark.png"></td>
-      </tr>
-    </table>
-</div>
+<table align="center">
+  <tr>
+    <td colspan="2" style="text-align: center;"><h3>Kurulum Sayfaları</h3></td>
+  </tr>
+  <tr>
+    <td><img src="readmeAssets/WelcomePage3L.png" style="max-width: 200px;"></td>
+    <td><img src="readmeAssets/WelcomePage4L.png" style="max-width: 200px;"></td>
+  </tr>
+</table>
 
 
 ### Kurulum

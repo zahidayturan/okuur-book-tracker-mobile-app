@@ -26,9 +26,10 @@ class _ThemeSettingsState extends State<ThemeSettings> {
     super.initState();
   }
 
+  List<String> themeOptions = [Get.context!.translate.light_theme, Get.context!.translate.dark_theme, Get.context!.translate.system_theme];
+
   @override
   Widget build(BuildContext context) {
-    List<String> themeOptions = [context.translate.light_theme, context.translate.dark_theme, context.translate.system_theme];
     return Column(
       children: [
         const SizedBox(height: 12),

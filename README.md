@@ -32,6 +32,9 @@ This project is built with a variety of great open source libraries and packages
 * [shimmer](https://pub.dev/packages/shimmer) - A package for adding shimmer effect to your widgets (good for loading indicators)
 * [flutter_native_splash](https://pub.dev/packages/flutter_native_splash) - Custom splash screen (useful for app branding and smooth start-up)
 
+
+### The application currently supports Turkish language. Work is ongoing for English language support.
+
 <table>
   <tr>
     <td colspan="2"><h3 align="center">Home Page</h3></td>

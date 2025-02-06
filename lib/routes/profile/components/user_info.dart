@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
-import 'package:okuur/routes/settings/settings.dart';
+import 'package:okuur/routes/profile/components/settings_push_button.dart';
 import 'package:okuur/ui/components/regular_text.dart';
+import 'package:okuur/ui/const/month_name_list.dart';
 
 class UserInfoWidget extends StatefulWidget {
 
@@ -38,37 +39,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                 proileTexts()
               ],
             ),
-            SizedBox(
-              height: 86,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          opaque: false,
-                          transitionDuration: const Duration(milliseconds: 200),
-                          pageBuilder: (context, animation, nextanim) => const SettingsPage(),
-                          reverseTransitionDuration: const Duration(milliseconds: 1),
-                          transitionsBuilder: (context, animation, nexttanim, child) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    highlightColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    child: iconContainer(36,36, Theme.of(context).colorScheme.onPrimaryContainer, "assets/icons/settings.png"),
-                  ),
-                ],
-              ),
-            )
+            settingsPush(context)
           ],
         ),
         const SizedBox(height: 12),
@@ -109,20 +80,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
     );
   }
 
-  Container iconContainer(double width,double height,Color color,String path){
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: const BorderRadius.all(Radius.circular(50))
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(path,color: Theme.of(context).colorScheme.secondary,),
-      ),
-    );
-  }
+
 
   Widget userStarInfo(){
     return Row(
@@ -164,21 +122,5 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
       ),
     );
   }
-
-  List<String> months = [
-    "",
-    "Ocak",
-    "Şubat",
-    "Mart",
-    "Nisan",
-    "Mayıs",
-    "Haziran",
-    "Temmuz",
-    "Ağustos",
-    "Eylül",
-    "Ekim",
-    "Kasım",
-    "Aralık"
-  ];
 
 }

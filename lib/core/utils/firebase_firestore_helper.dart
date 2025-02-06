@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:okuur/core/utils/firestore_book_helper.dart';
+import 'package:okuur/core/utils/firestore_series_helper.dart';
 import 'package:okuur/data/models/dto/user_profile_info.dart';
 import 'package:okuur/data/models/okuur_user_info.dart';
 
@@ -32,14 +34,18 @@ class FirebaseFirestoreOperation{
   }
 
   Future<OkuurUserProfileInfo?> getUserProfileInfo(String uid) async {
+
+    Map<String,dynamic>? totalInfo = await FirestoreBookOperation().getTotalBookAndPageInfo(uid);
+    Map<String,dynamic>? seriesInfo = await FirestoreSeriesOperation().getBestAndActiveSeries(uid);
+
     OkuurUserProfileInfo userProfileInfo = OkuurUserProfileInfo(
         follower: 0,
         followed: 0,
-        totalBook: 0,
-        totalPage: 0,
-        activeSeries: 0,
-        bestSeries: 0,
-        point: 0,
+        totalBook: totalInfo["book"],
+        totalPage: totalInfo["totalReading"],
+        activeSeries: seriesInfo["active"],
+        bestSeries: seriesInfo["best"],
+        point: int.parse((totalInfo["totalReading"]*1.2).toStringAsFixed(0)),
         achievement: 0);
     return userProfileInfo;
   }

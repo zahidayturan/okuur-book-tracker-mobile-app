@@ -185,27 +185,26 @@ class FirestoreSeriesOperation {
       if (querySnapshot.docs.isNotEmpty) {
         if (querySnapshot.docs.length > 1) {
           for (var doc in querySnapshot.docs) {
-            OkuurSeriesInfo okuurSeriesInfo = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>);
-            DateTime toStartingDate = OkuurDateFormatter.stringToDateTime(okuurSeriesInfo.startingDate);
-            DateTime toFinishingDate = OkuurDateFormatter.stringToDateTime(okuurSeriesInfo.finishingDate);
+            OkuurSeriesInfo docSeriesInfo = OkuurSeriesInfo.fromJson(doc.data() as Map<String, dynamic>);
+            DateTime toStartingDate = OkuurDateFormatter.stringToDateTime(docSeriesInfo.startingDate);
+            DateTime toFinishingDate = OkuurDateFormatter.stringToDateTime(docSeriesInfo.finishingDate);
 
-            bestSeries = okuurSeriesInfo.dayCount > bestSeries ? okuurSeriesInfo.dayCount : bestSeries;
+            bestSeries = docSeriesInfo.dayCount > bestSeries ? docSeriesInfo.dayCount : bestSeries;
 
-            if (closestSeries == null || toStartingDate.isBefore(OkuurDateFormatter.stringToDateTime(closestSeries.startingDate)) && okuurSeriesInfo.active == true) {
-              closestSeries = okuurSeriesInfo;
-
+            if (docSeriesInfo.active == true && (closestSeries == null || toStartingDate.isBefore(OkuurDateFormatter.stringToDateTime(closestSeries.startingDate)))) {
+              closestSeries = docSeriesInfo;
               Duration difference = currentDayOnly.difference(toFinishingDate);
               if (difference.inDays > 1) {
-                okuurSeriesInfo.active = false;
-                await updateSeriesInfo(uid, okuurSeriesInfo);
+                docSeriesInfo.active = false;
+                await updateSeriesInfo(uid, docSeriesInfo);
               }
             }
           }
 
           if (closestSeries != null) {
             result["active"] = closestSeries.dayCount;
-            result["best"] = bestSeries;
           }
+          result["best"] = bestSeries;
         } else {
           OkuurSeriesInfo firstSeriesInfo = OkuurSeriesInfo.fromJson(querySnapshot.docs.first.data() as Map<String, dynamic>);
           DateTime toFinishingDate = OkuurDateFormatter.stringToDateTime(firstSeriesInfo.finishingDate);
@@ -228,7 +227,5 @@ class FirestoreSeriesOperation {
 
     return result;
   }
-
-
 
 }

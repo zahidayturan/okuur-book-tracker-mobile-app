@@ -25,7 +25,6 @@ class StatisticsController extends GetxController {
       statisticsTotalInfoLoading.value = true;
       totalInfo = await bookOperations.getTotalBookAndPage();
       seriesInfo = await seriesOperations.getBestAndActiveSeriesInfo();
-      print(seriesInfo);
       statisticsTotalInfoLoading.value = false;
     }
   }

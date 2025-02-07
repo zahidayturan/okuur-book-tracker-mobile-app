@@ -224,7 +224,7 @@ class HomeController extends GetxController {
 
       totalReadsInfo["page"] = page;
       totalReadsInfo["time"] = time;
-      totalReadsInfo["point"] = (time/(page+1)*page).toStringAsFixed(0);
+      totalReadsInfo["point"] = ((2 * time * page) / (time + (page+1))).toStringAsFixed(0);
     }else{
       totalReadsInfo["page"] = 0;
       totalReadsInfo["time"] = 0;

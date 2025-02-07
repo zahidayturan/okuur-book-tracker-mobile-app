@@ -68,13 +68,14 @@ class FirestoreBookOperation{
           .collection('users')
           .doc(uid)
           .collection('books')
-          .where('status', isEqualTo: 1)
+          .where('status', isGreaterThan: 0)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs
-            .map((doc) => OkuurBookInfo.fromJson(doc.data() as Map<String, dynamic>))
-            .toList();
+        return querySnapshot.docs.where((doc) {
+          int status = doc['status'];
+          return status % 2 == 1;
+        }).map((doc) => OkuurBookInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
       } else {
         return [];
       }
@@ -133,29 +134,15 @@ class FirestoreBookOperation{
       info["book"] = querySnapshot.size;
 
       int totalReading = 0;
-      DateTime? firstReading;
 
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs) {
           OkuurBookInfo bookInfo = OkuurBookInfo.fromJson(doc.data() as Map<String, dynamic>);
-
-          DateTime bookStartingDate = OkuurDateFormatter.stringToDateTime(bookInfo.startingDate);
-          if (firstReading == null || bookStartingDate.isBefore(firstReading)) {
-            firstReading = bookStartingDate;
-          }
-
-          totalReading += bookInfo.currentPage;
+          totalReading += bookInfo.totalReading;
         }
       }
 
-      if (firstReading != null) {
-        int totalReadingDay = DateTime.now().difference(firstReading).inDays;
-        info["totalReadingDay"] = totalReadingDay;
-      } else {
-        info["totalReadingDay"] = 0;
-      }
       info["totalReading"] = totalReading;
-
       return info;
     } catch (e) {
       debugPrint('Error fetching book data: $e');

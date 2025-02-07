@@ -10,7 +10,7 @@ class OkuurBookInfo {
   int currentPage;
   int readingTime;
   int status;
-  String logIds;
+  int totalReading;
   double rating;
 
   OkuurBookInfo({
@@ -25,7 +25,7 @@ class OkuurBookInfo {
     required this.currentPage,
     required this.readingTime,
     required this.status,
-    required this.logIds,
+    required this.totalReading,
     required this.rating,
   });
 
@@ -42,7 +42,7 @@ class OkuurBookInfo {
       currentPage: json['currentPage'],
       readingTime: json['readingTime'],
       status: json['status'],
-      logIds: json['logIds'],
+      totalReading: json['totalReading'],
       rating: json['rating'],
     );
   }
@@ -60,7 +60,7 @@ class OkuurBookInfo {
       'currentPage': currentPage,
       'readingTime': readingTime,
       'status': status,
-      'logIds': logIds,
+      'totalReading': totalReading,
       'rating': rating,
     };
   }

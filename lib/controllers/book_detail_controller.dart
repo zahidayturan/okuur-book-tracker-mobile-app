@@ -147,4 +147,60 @@ class BookDetailController extends GetxController {
     }
   }
 
+  /*
+  UPDATE
+   */
+
+  Future<void> updateBookStatus(OkuurBookInfo bookInfo,bool firstReading) async {
+    LoadingDialog.showLoading(message: "Kitap durumu güncelleniyor");
+    try {
+      OkuurBookInfo updatedBookInfo = bookInfo;
+      if(!firstReading){ // tekrar okumaya başladı
+        updatedBookInfo.currentPage = 0;
+        updatedBookInfo.finishingDate = "finishingDate";
+      }
+      updatedBookInfo.startingDate = DateTime.now().toString();
+      updatedBookInfo.status = updatedBookInfo.status + 1;
+      await bookOperations.updateBookInfo(updatedBookInfo);
+    } catch (e) {
+      debugPrint("An error occurred: $e");
+    } finally {
+      LoadingDialog.hideLoading();
+      isLogChanged.value = true;
+      Navigator.pop(Get.context!, true);
+    }
+  }
+
+  /*
+  POINTS
+   */
+
+  var bookRating = RxDouble(0.0);
+  final TextEditingController textControllerForSlider = TextEditingController(text: "1");
+
+  void setBookRating(double rate) {
+    bookRating.value = rate;
+  }
+
+  Future<void> updateBookPoint(OkuurBookInfo bookInfo) async {
+    if(bookInfo.rating != bookRating.value){
+      LoadingDialog.showLoading(message: "Kitap puanı güncelleniyor");
+      try {
+        if(bookRating.value > 5){
+          bookRating.value = bookRating.value/20;
+        }
+        bookInfo.rating = bookRating.value;
+        await bookOperations.updateBookInfo(bookInfo);
+      } catch (e) {
+        debugPrint("An error occurred, point update: $e");
+      } finally {
+        LoadingDialog.hideLoading();
+        setBookInfo(bookInfo);
+        getBookDetail();
+        isLogChanged.value = true;
+        Navigator.pop(Get.context!, true);
+      }
+    }
+  }
+
 }

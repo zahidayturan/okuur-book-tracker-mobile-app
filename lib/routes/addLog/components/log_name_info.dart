@@ -71,15 +71,19 @@ class _LogNameInfoState extends State<LogNameInfo> {
   int? selectedBookIndex;
 
 
-  Widget bookList(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(controller.currentlyReadBooks.length, (index) {
-        return bookOption(controller.currentlyReadBooks[index],index);
-      }),
+  Widget bookList() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(controller.currentlyReadBooks.length, (index) {
+          return bookOption(controller.currentlyReadBooks[index], index);
+        }),
+      ),
     );
   }
+
 
   Widget bookOption(OkuurBookInfo data,int index){
     return GestureDetector(

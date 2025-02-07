@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okuur/controllers/home_controller.dart';
 import 'package:okuur/controllers/library_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
@@ -14,6 +15,7 @@ import '../../../ui/components/image_shower.dart';
 AppColors colors = AppColors();
 final LibraryController libraryController = Get.find();
 final BookDetailController bookDetailController = Get.find();
+final HomeController homeController = Get.find();
 
 Row bookContainerLibrary(OkuurBookInfo bookInfo, String index, BuildContext context) {
   bool isNotStarted = bookInfo.status == 0;
@@ -59,6 +61,7 @@ Widget _bookDetails(OkuurBookInfo bookInfo, String index, BuildContext context, 
           ).then((result) {
             if (result == true) {
               libraryController.fetchBooks();
+              homeController.fetchCurrentlyReadBooks(true);
             }
           });
         },
@@ -68,7 +71,6 @@ Widget _bookDetails(OkuurBookInfo bookInfo, String index, BuildContext context, 
           child: Column(
             children: [
               if (!isNotStarted) _bookHeader(bookInfo, index, isReading, context, percentage),
-              const SizedBox(height: 8),
               _bookContent(bookInfo, context, isNotStarted, isReading),
             ],
           ),
@@ -79,24 +81,27 @@ Widget _bookDetails(OkuurBookInfo bookInfo, String index, BuildContext context, 
 }
 
 Widget _bookHeader(OkuurBookInfo bookInfo, String index, bool isReading, BuildContext context, String percentage) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          RegularText(texts:index, color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary, size:"m", family: "FontBold"),
-          _statusDot(isReading, context),
-          RegularText(texts:
-            isReading
-                ? "Şu an okuyorsun"
-                : "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} - ${OkuurDateFormatter.convertDate(bookInfo.finishingDate)}",
-            color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary,
-            size: "m",
-          ),
-        ],
-      ),
-  RegularText(texts:percentage == "100.0" ? "Bitti" : "%$percentage", color: isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, size: "m"),
-    ],
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            RegularText(texts:index, color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary, size:"m", family: "FontBold"),
+            _statusDot(isReading, context),
+            RegularText(texts:
+              isReading
+                  ? "Şu an okuyorsun"
+                  : "${OkuurDateFormatter.convertDate(bookInfo.startingDate)} - ${OkuurDateFormatter.convertDate(bookInfo.finishingDate)}",
+              color: isReading ? colors.orange : Theme.of(context).colorScheme.secondary,
+              size: "m",
+            ),
+          ],
+        ),
+    RegularText(texts:percentage == "100.0" ? "Bitti" : "%$percentage", color: isReading ? colors.orange : Theme.of(context).colorScheme.tertiary, size: "m"),
+      ],
+    ),
   );
 }
 

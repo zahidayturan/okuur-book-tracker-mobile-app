@@ -150,9 +150,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           },
           itemBuilder: (context, index) {
             OkuurHomeLogInfo logInfo = logForDate[index];
-            String points = (logInfo.okuurLogInfo.timeRead/
-                (logInfo.okuurLogInfo.numberOfPages+1)
-                    *logInfo.okuurLogInfo.numberOfPages).toStringAsFixed(0);
+            String points = ((2 * logInfo.okuurLogInfo.timeRead * logInfo.okuurLogInfo.numberOfPages)
+                / (logInfo.okuurLogInfo.timeRead + (logInfo.okuurLogInfo.numberOfPages+1))).toStringAsFixed(0);
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

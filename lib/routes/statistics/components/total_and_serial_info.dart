@@ -23,7 +23,7 @@ Widget totalAndSerialInfo(BuildContext context){
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(8))
             ),
-            child: totalWidget(controller.totalInfo!["totalReadingDay"],controller.totalInfo!["book"],controller.totalInfo!["totalReading"],context),
+            child: totalWidget(controller.totalInfo!["book"],controller.totalInfo!["totalReading"],context),
           ),
         ),
         const SizedBox(width: 12,),
@@ -43,17 +43,12 @@ Widget totalAndSerialInfo(BuildContext context){
   ));
 }
 
-Widget totalWidget(int totalDate,int bookCount,int pageCount,BuildContext context){
+Widget totalWidget(int bookCount,int pageCount,BuildContext context){
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Toplam",style: TextStyle(fontSize: 15,color: Theme.of(context).colorScheme.primaryContainer,fontFamily: "FontBold"),),
-          Text("${totalDate.toString()} gündür",style: TextStyle(fontSize: 11,color: Theme.of(context).colorScheme.secondary),)
-        ],
-      ),
+      Text("Toplam Okuma",style: TextStyle(fontSize: 15,color: Theme.of(context).colorScheme.primaryContainer,fontFamily: "FontBold"),),
       Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

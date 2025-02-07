@@ -15,8 +15,6 @@ BookDetailController controller = Get.find();
 
 
 void showBookDetailEditDialog(BuildContext context,OkuurBookInfo okuurBookInfo) {
-
-
   showDialog(
     context: context,
     barrierDismissible: false,

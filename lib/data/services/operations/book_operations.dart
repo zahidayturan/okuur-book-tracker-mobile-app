@@ -65,7 +65,7 @@ class BookOperations implements BookService {
     if (book == null) {
       throw Exception('Book not found!');
     }
-    if(isAdd){
+    if(isAdd){//insert log
       var newCurrentPage = book.currentPage + logInfo.numberOfPages;
       if (newCurrentPage >= book.pageCount) {
         //book finished
@@ -75,8 +75,9 @@ class BookOperations implements BookService {
       } else {
         book.currentPage = newCurrentPage;
       }
+      book.totalReading += logInfo.numberOfPages;
       book.readingTime += logInfo.timeRead;
-    }else{
+    }else{//delete log
       var newCurrentPage = book.currentPage - logInfo.numberOfPages;
       if (newCurrentPage <= 0) {
         //book not started
@@ -85,6 +86,7 @@ class BookOperations implements BookService {
       } else {
         book.currentPage = newCurrentPage;
       }
+      book.totalReading -= logInfo.numberOfPages;
       book.readingTime -= logInfo.timeRead;
     }
 

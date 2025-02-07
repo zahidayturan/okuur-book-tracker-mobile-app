@@ -31,10 +31,10 @@ class _BookRecordsDetailState extends State<BookRecordsDetail> {
   }
 
   Widget bookRecords(List<OkuurLogInfo> logs) {
-    int selectedPage = logs[selectedItem].numberOfPages;
-    int selectedTime = logs[selectedItem].timeRead;
+    int selectedPage = logs.isNotEmpty ? logs[selectedItem].numberOfPages : 0;
+    int selectedTime = logs.isNotEmpty ? logs[selectedItem].timeRead : 0;
 
-    String points = (selectedTime/(selectedPage+1)*selectedPage).toStringAsFixed(0);
+    String points = ((2 * selectedTime * selectedPage) / (selectedTime + (selectedPage+1))).toStringAsFixed(0);
 
     return logs.isNotEmpty ? BaseContainer(
       radius: 12,

@@ -95,7 +95,7 @@ class _AddBookButtonState extends State<AddBookButton> {
       currentPage: currentPage,
       readingTime: readingTime,
       status: status,
-      logIds: "",
+      totalReading: int.tryParse(controller.bookPageController.text)!,
       rating: rating,
     );
   }

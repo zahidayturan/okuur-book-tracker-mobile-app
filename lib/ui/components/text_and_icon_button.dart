@@ -27,6 +27,10 @@ class TextIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool centerMode = false;
+    if(height != null){
+      centerMode = height! >= 44 ? true : false;
+    }
     return Container(
       height: height ?? 32,
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -36,9 +40,10 @@ class TextIconButton extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon,size: 16,color: iconColor ?? Theme.of(context).colorScheme.secondary,),
-          const SizedBox(width: 8),
-          RegularText(texts: text,color: iconColor,size: "m")
+          Icon(icon,size: centerMode ? 28 : 16,color: iconColor ?? Theme.of(context).colorScheme.secondary,),
+          centerMode ? const Spacer() : const SizedBox(width: 8),
+          RegularText(texts: text,color: iconColor,size: centerMode ? "l" : "m"),
+          if(centerMode) const Spacer()
         ],
       ),
     );

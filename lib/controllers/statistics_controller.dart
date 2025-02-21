@@ -34,7 +34,7 @@ class StatisticsController extends GetxController {
    */
   var statisticsMonthlyLoading = Rx<bool>(false);
   Map<String,dynamic>? monthlyInfo;
-  List<OkuurHomeLogInfo> monthlyLogInfo = [];
+  List<OkuurBookAndLogInfo> monthlyLogInfo = [];
 
   Future<void> fetchMonthlyStatistics(bool fetch) async {
     if (fetch || monthlyInfo == null) {

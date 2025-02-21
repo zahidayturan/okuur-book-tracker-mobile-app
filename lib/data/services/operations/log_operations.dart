@@ -25,7 +25,7 @@ class LogOperations implements LogService {
   }
 
   @override
-  Future<List<OkuurHomeLogInfo>> getAllLogForDate(DateTime dateTime) async {
+  Future<List<OkuurBookAndLogInfo>> getAllLogForDate(DateTime dateTime) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     var result = await FirestoreLogOperation().getLogInfoForDate(dateTime,uid!);
     return result;
@@ -38,7 +38,7 @@ class LogOperations implements LogService {
   }
 
   @override
-  Future<List<OkuurHomeLogInfo>> getMonthlyLogInfo(DateTime dateTime) async {
+  Future<List<OkuurBookAndLogInfo>> getMonthlyLogInfo(DateTime dateTime) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     var result = await FirestoreLogOperation().getMonthlyLogInfo(uid!,dateTime);
     return result;

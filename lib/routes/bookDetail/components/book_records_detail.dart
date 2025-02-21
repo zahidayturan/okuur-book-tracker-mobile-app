@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/book_detail_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
+import 'package:okuur/routes/bookDetail/components/book_record_edit.dart';
 import 'package:okuur/ui/components/base_container.dart';
 import 'package:okuur/ui/components/functional_alert_dialog.dart';
 import 'package:okuur/ui/components/regular_text.dart';
@@ -108,10 +110,16 @@ class _BookRecordsDetailState extends State<BookRecordsDetail> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    opButton(
-                      "Düzenle",
-                      Icons.edit_rounded,
-                      Theme.of(context).colorScheme.secondary,
+                    InkWell(
+                      onTap: () async {
+                        controller.editRecordInit(logs[selectedItem]);
+                        showBookRecordEditDialog(context,logs[selectedItem],controller.okuurBookInfo!);
+                      },
+                      child: opButton(
+                        "Düzenle",
+                        Icons.edit_rounded,
+                        Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                     const SizedBox(
                       width: 8,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:okuur/data/models/dto/book_detail_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
@@ -13,7 +12,6 @@ class BookDetailController extends GetxController {
   LogOperations logOperations = LogOperations();
 
   OkuurBookInfo? okuurBookInfo;
-  OkuurBookDetailInfo? okuurBookDetailInfo;
   List<OkuurLogInfo> logs= [];
 
   var isLogChanged = Rx<bool>(false);
@@ -69,7 +67,7 @@ class BookDetailController extends GetxController {
     }
   }
   /*
-  EDIT
+  BOOK EDIT
    */
 
   void editInit(OkuurBookInfo okuurBookInfo) {
@@ -170,6 +168,17 @@ class BookDetailController extends GetxController {
       Navigator.pop(Get.context!, true);
     }
   }
+
+  /*
+  RECORD EDIT
+   */
+
+  var isAllChangedRecordEdit = Rx<bool>(false);
+
+  void editRecordInit(OkuurLogInfo okuurLogInfo) {
+    isAllChangedRecordEdit.value = false;
+  }
+
 
   /*
   POINTS

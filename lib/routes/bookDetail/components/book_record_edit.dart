@@ -38,7 +38,9 @@ void showBookRecordEditDialog(BuildContext context,OkuurLogInfo okuurLogInfo, Ok
                     const RegularText(texts: "Okuma Kaydını Düzenle",size: "xl",)
                   ],
                 ),
-                const SizedBox(height: 12,),
+                const SizedBox(height: 12),
+
+                const SizedBox(height: 12),
                 addButton(context, okuurLogInfo)
               ],
             ),

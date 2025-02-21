@@ -13,22 +13,26 @@ class AddLogController extends GetxController {
     bookPageCount.value = totalPage.toDouble();
     bookCurrentlyPage.value = currentlyPage.toDouble();
     sliderBookPageCount.value = (currentlyPage+1).toDouble();
+    logNewCurrentPageController.text = (currentlyPage+1).toString();
     checkAllValidate();
   }
   void clearLogBook() {logBookId.value = null;}
 
 
   var logNewCurrentPage = Rx<int?>(null);
+  final TextEditingController logNewCurrentPageController = TextEditingController();
   void setLogNewCurrentPage(int page) {
     logNewCurrentPage.value = page;
     bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
+    logNewCurrentPageController.text = logNewCurrentPage.value.toString();
+    sliderBookPageCount.value = page.toDouble();
     setLogReadingTime((bookReadingPageCount.value*1.5).toInt());
     setLogReadingDate(DateTime.now());
     setLogFinishingHour("${DateTime.now().hour}:${DateTime.now().minute}");
     checkAllValidate();
   }
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
-  final TextEditingController logNewCurrentPageController = TextEditingController();
+
   var bookPageCount = Rx<double>(3);
   var bookCurrentlyPage = Rx<double>(1);
   var sliderBookPageCount = Rx<double>(2);

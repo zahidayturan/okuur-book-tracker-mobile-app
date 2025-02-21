@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/regular_text.dart';
+import 'package:okuur/ui/components/text_form_field.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogPageInfo extends StatefulWidget {
@@ -86,12 +88,51 @@ class _LogPageInfoState extends State<LogPageInfo> {
                   ),
                 ),
               ),
-              RichTextWidget(
-                texts: ["Yeni\nSayfanız\n",(controller.sliderBookPageCount.value.toInt().toString())],
-                colors: [Theme.of(context).colorScheme.inversePrimary],
-                fontFamilies: const ["FontMedium","FontBold"],
-                align: TextAlign.center,
-                fontSize: 14,
+              Column(
+                children: [
+                  RegularText(texts: "Yeni\nSayfanız",color: Theme.of(context).colorScheme.inversePrimary,align: TextAlign.center,maxLines: 2),
+                  SizedBox(
+                    height: 20,
+                    width: 50,
+                    child: TextFormField(
+                      onTap: () {
+                        setState(() {
+
+                        });
+                      },
+                      maxLength: 4,
+                      controller: controller.logNewCurrentPageController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters:  <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ] ,
+                      decoration: InputDecoration(
+                          hintText: (controller.bookCurrentlyPage.value+1).toStringAsFixed(0),
+                          counterText: "",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                          contentPadding: const EdgeInsets.only(bottom: 12),
+                          border: InputBorder.none,
+                      ),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontFamily: "FontBold"
+                      ),
+                      onFieldSubmitted: (value) {
+                        if (value.isNotEmpty && (int.parse(value) > controller.bookCurrentlyPage.value) && (int.parse(value) <= controller.bookPageCount.value)) {
+                          controller.setLogNewCurrentPage(int.parse(value));
+                        } else {
+                          controller.setLogNewCurrentPage((controller.bookCurrentlyPage.value+1).toInt());
+                        }
+                        setState(() {});
+                      },
+                    ),
+                  )
+                ],
               )
             ],
           )

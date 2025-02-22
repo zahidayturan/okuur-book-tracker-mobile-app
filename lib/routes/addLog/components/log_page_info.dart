@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/ui/components/regular_text.dart';
-import 'package:okuur/ui/components/text_form_field.dart';
 import '../../../ui/components/rich_text.dart';
 
 class LogPageInfo extends StatefulWidget {
@@ -59,7 +58,8 @@ class _LogPageInfoState extends State<LogPageInfo> {
               SizedBox(height: 8,),
             ],
           ),
-          italicText("Kralın Dönüşü kitabı ${controller.bookPageCount.value.toInt()} sayfa. Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız."),
+          RegularText(texts: "Kralın Dönüşü kitabı ${controller.bookPageCount.value.toInt()} sayfa. Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız.",
+              size: "s",style: FontStyle.italic,maxLines: 3),
           const SizedBox(height: 12,),
           Row(
             children: [
@@ -95,26 +95,23 @@ class _LogPageInfoState extends State<LogPageInfo> {
                     height: 20,
                     width: 50,
                     child: TextFormField(
+                      controller: controller.logNewCurrentPageController,
                       onTap: () {
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
                       maxLength: 4,
-                      controller: controller.logNewCurrentPageController,
                       keyboardType: TextInputType.number,
-                      inputFormatters:  <TextInputFormatter>[
+                      inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.digitsOnly
-                      ] ,
+                      ],
                       decoration: InputDecoration(
-                          hintText: (controller.bookCurrentlyPage.value+1).toStringAsFixed(0),
-                          counterText: "",
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          hintStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                          ),
-                          contentPadding: const EdgeInsets.only(bottom: 12),
-                          border: InputBorder.none,
+                        hintText: (controller.bookCurrentlyPage.value + 1).toStringAsFixed(0),
+                        counterText: "",
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                        contentPadding: const EdgeInsets.only(bottom: 12),
+                        border: const UnderlineInputBorder(),
                       ),
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -123,13 +120,14 @@ class _LogPageInfoState extends State<LogPageInfo> {
                         fontFamily: "FontBold"
                       ),
                       onFieldSubmitted: (value) {
-                        if (value.isNotEmpty && (int.parse(value) > controller.bookCurrentlyPage.value) && (int.parse(value) <= controller.bookPageCount.value)) {
-                          controller.setLogNewCurrentPage(int.parse(value));
-                        } else {
-                          controller.setLogNewCurrentPage((controller.bookCurrentlyPage.value+1).toInt());
-                        }
-                        setState(() {});
+                        _handleInputValidation(value);
                       },
+                      onTapOutside: (event) {
+                        if(FocusScope.of(context).hasFocus){
+                          _handleInputValidation(controller.logNewCurrentPageController.text);
+                          FocusScope.of(context).unfocus();
+                        }
+                      }
                     ),
                   )
                 ],
@@ -141,13 +139,13 @@ class _LogPageInfoState extends State<LogPageInfo> {
     );
   }
 
-
-  Widget italicText(String text) {
-    return RegularText(
-      texts: text,
-      size: "s",
-      style: FontStyle.italic,
-      maxLines: 3,
-    );
+  void _handleInputValidation(String value) {
+    if (value.isNotEmpty &&
+        (int.parse(value) > controller.bookCurrentlyPage.value) &&
+        (int.parse(value) <= controller.bookPageCount.value)) {
+      controller.setLogNewCurrentPage(int.parse(value));
+    } else {
+      controller.setLogNewCurrentPage((controller.bookCurrentlyPage.value + 1).toInt());
+    }
   }
 }

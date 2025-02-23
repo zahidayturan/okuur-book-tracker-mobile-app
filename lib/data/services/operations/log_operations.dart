@@ -38,6 +38,12 @@ class LogOperations implements LogService {
   }
 
   @override
+  Future<bool> updateLogInfo(OkuurLogInfo logInfo) async {
+    String? uid = OkuurLocalStorage().getActiveUserUid();
+    return await FirestoreLogOperation().updateLogInfo(uid!,logInfo);
+  }
+
+  @override
   Future<List<OkuurBookAndLogInfo>> getMonthlyLogInfo(DateTime dateTime) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     var result = await FirestoreLogOperation().getMonthlyLogInfo(uid!,dateTime);

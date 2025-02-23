@@ -59,7 +59,7 @@ class BookOperations implements BookService {
   }
 
   @override
-  Future<void> updateBookInfoAfterLog(OkuurLogInfo logInfo,bool isAdd) async {
+  Future<OkuurBookInfo> updateBookInfoAfterLog(OkuurLogInfo logInfo,bool isAdd) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     OkuurBookInfo? book = await getBookInfoWithId(logInfo.bookId);
     if (book == null) {
@@ -89,8 +89,8 @@ class BookOperations implements BookService {
       book.totalReading -= logInfo.numberOfPages;
       book.readingTime -= logInfo.timeRead;
     }
-
     await FirestoreBookOperation().updateBookInfo(uid!, book);
+    return book;
   }
 
   @override

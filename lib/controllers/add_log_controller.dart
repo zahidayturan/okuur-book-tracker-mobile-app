@@ -6,10 +6,12 @@ import 'package:okuur/data/services/operations/book_operations.dart';
 class AddLogController extends GetxController {
 
   var logBookId = Rx<String?>(null);
-  void setLogBook(String id,int totalPage,int currentlyPage) {
+  String selectedBookName = "";
+  void setLogBook(String id,int totalPage,int currentlyPage, String bookName) {
     logBookId.value = id;
     bookPageCount.value = 3;
     bookCurrentlyPage.value = 1;
+    selectedBookName = bookName;
     bookPageCount.value = totalPage.toDouble();
     bookCurrentlyPage.value = currentlyPage.toDouble();
     sliderBookPageCount.value = (currentlyPage+1).toDouble();

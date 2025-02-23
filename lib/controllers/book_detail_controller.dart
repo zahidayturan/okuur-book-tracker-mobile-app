@@ -175,10 +175,51 @@ class BookDetailController extends GetxController {
 
   var isAllChangedRecordEdit = Rx<bool>(false);
 
-  void editRecordInit(OkuurLogInfo okuurLogInfo) {
+  void editRecordInit(OkuurLogInfo okuurLogInfo,OkuurBookInfo bookInfo) {
+    logNewCurrentPageController.text = okuurLogInfo.numberOfPages.toString();
+    bookOldLogPageCount.value = okuurLogInfo.numberOfPages;
     isAllChangedRecordEdit.value = false;
   }
 
+  var bookOldLogPageCount = Rx<int>(1);
+  final TextEditingController logNewCurrentPageController = TextEditingController();
+
+  void setLogNewLogPage(int page) {
+    if(page != bookOldLogPageCount.value){
+      isAllChangedRecordEdit.value = true;
+    }else{
+      isAllChangedRecordEdit.value = false;
+    }
+    logNewCurrentPageController.text = page.toString();
+  }
+
+  Future<void> updateLogInfo(OkuurLogInfo logInfo) async {
+    LoadingDialog.showLoading(message: "Okuma kaydı güncelleniyor");
+
+    try {
+      int newLogPageCount = int.parse(logNewCurrentPageController.text);
+      double timePageRate = logInfo.timeRead / logInfo.numberOfPages;
+      int pageCountDifference = newLogPageCount - bookOldLogPageCount.value;
+
+      logInfo.numberOfPages = newLogPageCount;
+      logInfo.timeRead = (newLogPageCount * timePageRate).toInt();
+
+      bool status = await logOperations.updateLogInfo(logInfo);
+      if (!status) {
+        throw Exception("Okuma kaydı güncellenirken bir hata oluştu.");
+      }
+
+      okuurBookInfo = await bookOperations.updateBookInfoAfterLog(logInfo, pageCountDifference > 0);
+    } catch (e) {
+      debugPrint("updateLogInfo hata: $e");
+    } finally {
+      LoadingDialog.hideLoading();
+      setBookInfo(okuurBookInfo);
+      getBookDetail();
+      isLogChanged.value = true;
+      Navigator.pop(Get.context!);
+    }
+  }
 
   /*
   POINTS

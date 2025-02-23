@@ -146,6 +146,30 @@ class FirestoreLogOperation{
     }
   }
 
+  Future<bool> updateLogInfo(String uid, OkuurLogInfo logInfo) async {
+    DateTime logDate = OkuurDateFormatter.stringToDateTime(logInfo.readingDate);
+    String monthYear = '${logDate.month}-${logDate.year}';
+
+    Map<String, dynamic> logData = logInfo.toJson();
+    try {
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(logInfo.bookId)
+          .collection('logs')
+          .doc(monthYear)
+          .collection('entries')
+          .doc(logInfo.id)
+          .update(logData);
+      debugPrint('Book log updated successfully.');
+      return true;
+    } catch (e) {
+      debugPrint('Error updating book log: $e');
+      return false;
+    }
+  }
+
   Future<List<OkuurBookAndLogInfo>> getMonthlyLogInfo(String uid,DateTime dateTime) async {
     try {
       List<OkuurBookAndLogInfo> homeLogInfo = [];

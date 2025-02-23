@@ -37,17 +37,23 @@ class _BookDetailPageState extends State<BookDetailPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: null,
-        body: Padding(
-          padding: const EdgeInsets.only(right: 12, left: 12),
-          child: SingleChildScrollView(
-            child: Center(
-              child: Obx(() => controller.detailLoading.value
-                  ? bookDetailLoadingBox(context)
-                  : bookDetail(),
+      child: WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, controller.isLogChanged.value);
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: null,
+          body: Padding(
+            padding: const EdgeInsets.only(right: 12, left: 12),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Obx(() => controller.detailLoading.value
+                    ? bookDetailLoadingBox(context)
+                    : bookDetail(),
+                ),
               ),
             ),
           ),

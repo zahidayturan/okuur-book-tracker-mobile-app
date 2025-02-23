@@ -59,13 +59,13 @@ class BookOperations implements BookService {
   }
 
   @override
-  Future<OkuurBookInfo> updateBookInfoAfterLog(OkuurLogInfo logInfo,bool isAdd) async {
+  Future<OkuurBookInfo> updateBookInfoAfterLog(OkuurLogInfo logInfo,int type,OkuurLogInfo? updatedLog) async {
     String? uid = OkuurLocalStorage().getActiveUserUid();
     OkuurBookInfo? book = await getBookInfoWithId(logInfo.bookId);
     if (book == null) {
       throw Exception('Book not found!');
     }
-    if(isAdd){//insert log
+    if(type == 0){//insert log
       var newCurrentPage = book.currentPage + logInfo.numberOfPages;
       if (newCurrentPage >= book.pageCount) {
         //book finished
@@ -77,7 +77,7 @@ class BookOperations implements BookService {
       }
       book.totalReading += logInfo.numberOfPages;
       book.readingTime += logInfo.timeRead;
-    }else{//delete log
+    }else if(type == 1){//delete log
       var newCurrentPage = book.currentPage - logInfo.numberOfPages;
       if (newCurrentPage <= 0) {
         //book not started
@@ -88,6 +88,22 @@ class BookOperations implements BookService {
       }
       book.totalReading -= logInfo.numberOfPages;
       book.readingTime -= logInfo.timeRead;
+    }else if(type == 2){//update log
+      if(updatedLog != null){
+        int pageCountDifference = updatedLog.numberOfPages - logInfo.numberOfPages;
+        int timeReadDifference = updatedLog.timeRead - logInfo.timeRead;
+
+        if ((book.currentPage + pageCountDifference) >= book.pageCount) {
+          //book finished
+          book.currentPage = book.pageCount;
+          book.status += 1;
+          book.finishingDate = DateTime.now().toString();
+        } else {
+          book.currentPage += pageCountDifference;
+        }
+        book.totalReading += pageCountDifference;
+        book.readingTime += timeReadDifference;
+      }
     }
     await FirestoreBookOperation().updateBookInfo(uid!, book);
     return book;

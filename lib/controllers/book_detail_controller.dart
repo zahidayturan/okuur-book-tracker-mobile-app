@@ -45,7 +45,7 @@ class BookDetailController extends GetxController {
     LoadingDialog.showLoading(message: "Kayıt siliniyor");
     try {
       await logOperations.deleteLogInfo(okuurLogInfo);
-      await bookOperations.updateBookInfoAfterLog(okuurLogInfo,false);
+      await bookOperations.updateBookInfoAfterLog(okuurLogInfo,1,null);
       setBookInfo(await bookOperations.getBookInfoWithId(okuurLogInfo.bookId));
       getBookDetail();
     } catch (e) {
@@ -195,21 +195,21 @@ class BookDetailController extends GetxController {
 
   Future<void> updateLogInfo(OkuurLogInfo logInfo) async {
     LoadingDialog.showLoading(message: "Okuma kaydı güncelleniyor");
-
     try {
       int newLogPageCount = int.parse(logNewCurrentPageController.text);
       double timePageRate = logInfo.timeRead / logInfo.numberOfPages;
-      int pageCountDifference = newLogPageCount - bookOldLogPageCount.value;
 
-      logInfo.numberOfPages = newLogPageCount;
-      logInfo.timeRead = (newLogPageCount * timePageRate).toInt();
+      OkuurLogInfo updatedLogInfo = logInfo.copyWith(
+        numberOfPages: newLogPageCount,
+        timeRead: (newLogPageCount * timePageRate).toInt(),
+      );
 
-      bool status = await logOperations.updateLogInfo(logInfo);
+      bool status = await logOperations.updateLogInfo(updatedLogInfo);
       if (!status) {
         throw Exception("Okuma kaydı güncellenirken bir hata oluştu.");
       }
 
-      okuurBookInfo = await bookOperations.updateBookInfoAfterLog(logInfo, pageCountDifference > 0);
+      okuurBookInfo = await bookOperations.updateBookInfoAfterLog(logInfo, 2, updatedLogInfo);
     } catch (e) {
       debugPrint("updateLogInfo hata: $e");
     } finally {

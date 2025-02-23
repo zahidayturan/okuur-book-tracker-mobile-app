@@ -32,9 +32,7 @@ class _LogPageInfoState extends State<LogPageInfo> {
   }
 
   void _updatePageCount(double value) {
-    setState(() {
       controller.sliderBookPageCount.value = value;
-    });
   }
 
   Widget formContent() {
@@ -58,7 +56,7 @@ class _LogPageInfoState extends State<LogPageInfo> {
               SizedBox(height: 8,),
             ],
           ),
-          RegularText(texts: "Kralın Dönüşü kitabı ${controller.bookPageCount.value.toInt()} sayfa. Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız.",
+          RegularText(texts: "${controller.selectedBookName}, ${controller.bookPageCount.value.toInt()} sayfa. Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız.",
               size: "s",style: FontStyle.italic,maxLines: 3),
           const SizedBox(height: 12,),
           Row(
@@ -96,9 +94,6 @@ class _LogPageInfoState extends State<LogPageInfo> {
                     width: 50,
                     child: TextFormField(
                       controller: controller.logNewCurrentPageController,
-                      onTap: () {
-                        setState(() {});
-                      },
                       maxLength: 4,
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[

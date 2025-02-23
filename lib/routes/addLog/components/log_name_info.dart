@@ -94,7 +94,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
           }
           selectedBookIndex = index;
         });
-        controller.setLogBook(data.id!,data.pageCount,data.currentPage);
+        controller.setLogBook(data.id!,data.pageCount,data.currentPage,data.name);
       },
       child: Container(
         width: 90,

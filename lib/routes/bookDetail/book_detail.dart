@@ -82,8 +82,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
         totalRead(controller.okuurBookInfo!),
         const SizedBox(height: 18,),
         bookState(controller.okuurBookInfo!),
-        bookGoal(),
-        const SizedBox(height: 18,),
+        //bookGoal(),
+        //const SizedBox(height: 18,),
         const BookRecordsDetail(),
         const SizedBox(height: 18,),
         bookPoints(context, controller.okuurBookInfo!)

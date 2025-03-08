@@ -99,7 +99,7 @@ class _PageCountSelectorState extends State<PageCountSelector> {
               FilteringTextInputFormatter.digitsOnly
             ],
             decoration: const InputDecoration(
-              border: InputBorder.none,
+              border: UnderlineInputBorder(),
             ),
             onChanged: _onTextChanged,
           ),

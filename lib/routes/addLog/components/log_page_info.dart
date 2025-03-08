@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/add_log_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
@@ -17,6 +18,15 @@ class _LogPageInfoState extends State<LogPageInfo> {
 
   final AddLogController controller = Get.find();
 
+  final FocusNode logPageFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    logPageFocusNode.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return  Obx(() => Visibility(
@@ -31,9 +41,7 @@ class _LogPageInfoState extends State<LogPageInfo> {
   }
 
   void _updatePageCount(double value) {
-    setState(() {
       controller.sliderBookPageCount.value = value;
-    });
   }
 
   Widget formContent() {
@@ -52,30 +60,32 @@ class _LogPageInfoState extends State<LogPageInfo> {
             colors: [Theme.of(context).colorScheme.secondary],
             fontFamilies: const ["FontBold","FontMedium"],
           ),
-          const Row(
-            children: [
-              SizedBox(height: 8,),
-            ],
+          const SizedBox(height: 8),
+          RegularText(
+              texts: "${controller.selectedBookName}, ${controller.bookPageCount.value.toInt()} sayfa. "
+                  "Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız.",
+              size: "s",
+              style: FontStyle.italic,
+              maxLines: 3
           ),
-          italicText("Kralın Dönüşü kitabı ${controller.bookPageCount.value.toInt()} sayfa. Siz ${controller.bookCurrentlyPage.value.toInt()}. sayfada kalmıştınız."),
-          const SizedBox(height: 12,),
+          const SizedBox(height: 12),
           Row(
             children: [
               RichTextWidget(
-                  texts: ["Eski\nSayfanız\n","${controller.bookCurrentlyPage.value.toInt()}"],
-                  colors: [Theme.of(context).colorScheme.secondary],
-                  fontFamilies: const ["FontMedium","FontBold"],
-                  align: TextAlign.center,
+                texts: ["Eski\nSayfanız\n", "${controller.bookCurrentlyPage.value.toInt()}"],
+                colors: [Theme.of(context).colorScheme.secondary],
+                fontFamilies: const ["FontMedium", "FontBold"],
+                align: TextAlign.center,
                 fontSize: 14,
               ),
               Expanded(
                 child: SizedBox(
                   height: 36,
                   child: Slider(
-                    value:  controller.sliderBookPageCount.value,
-                    min: controller.bookCurrentlyPage.value+1,
+                    value: controller.sliderBookPageCount.value,
+                    min: controller.bookCurrentlyPage.value + 1,
                     max: controller.bookPageCount.value,
-                    divisions: (controller.bookPageCount.value - (controller.bookCurrentlyPage.value+1)).toInt(),
+                    divisions: (controller.bookPageCount.value - (controller.bookCurrentlyPage.value + 1)).toInt(),
                     label: controller.sliderBookPageCount.value.toInt().toString(),
                     onChanged: _updatePageCount,
                     activeColor: colors.blue,
@@ -86,12 +96,52 @@ class _LogPageInfoState extends State<LogPageInfo> {
                   ),
                 ),
               ),
-              RichTextWidget(
-                texts: ["Yeni\nSayfanız\n",(controller.sliderBookPageCount.value.toInt().toString())],
-                colors: [Theme.of(context).colorScheme.inversePrimary],
-                fontFamilies: const ["FontMedium","FontBold"],
-                align: TextAlign.center,
-                fontSize: 14,
+              Column(
+                children: [
+                  RegularText(
+                      texts: "Yeni\nSayfanız",
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      align: TextAlign.center,
+                      maxLines: 2
+                  ),
+                  SizedBox(
+                    height: 20,
+                    width: 50,
+                    child: TextFormField(
+                        focusNode: logPageFocusNode,
+                        controller: controller.logNewCurrentPageController,
+                        maxLength: 4,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: InputDecoration(
+                          hintText: (controller.bookCurrentlyPage.value + 1).toStringAsFixed(0),
+                          counterText: "",
+                          hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                          contentPadding: const EdgeInsets.only(bottom: 12),
+                          border: const UnderlineInputBorder(),
+                        ),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            fontFamily: "FontBold"
+                        ),
+                        onFieldSubmitted: (value) {
+                          _handleInputValidation(value);
+                        },
+                        onTapOutside: (event) {
+                          if (logPageFocusNode.hasFocus) {
+                            _handleInputValidation(controller.logNewCurrentPageController.text);
+                            logPageFocusNode.unfocus();
+                          }
+                        }
+                    ),
+                  )
+                ],
               )
             ],
           )
@@ -100,13 +150,13 @@ class _LogPageInfoState extends State<LogPageInfo> {
     );
   }
 
-
-  Widget italicText(String text) {
-    return RegularText(
-      texts: text,
-      size: "s",
-      style: FontStyle.italic,
-      maxLines: 3,
-    );
+  void _handleInputValidation(String value) {
+    if (value.isNotEmpty &&
+        (int.parse(value) > controller.bookCurrentlyPage.value) &&
+        (int.parse(value) <= controller.bookPageCount.value)) {
+      controller.setLogNewCurrentPage(int.parse(value));
+    } else {
+      controller.setLogNewCurrentPage((controller.bookCurrentlyPage.value + 1).toInt());
+    }
   }
 }

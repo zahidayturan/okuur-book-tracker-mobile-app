@@ -7,7 +7,7 @@ import 'package:okuur/ui/const/day_name_list.dart';
 
 HomeController controller = Get.find();
 
-Widget readsMonthlyInfo(List<OkuurHomeLogInfo> logInfo,BuildContext context) {
+Widget readsMonthlyInfo(List<OkuurBookAndLogInfo> logInfo,BuildContext context) {
   return logInfo.isNotEmpty ? ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,

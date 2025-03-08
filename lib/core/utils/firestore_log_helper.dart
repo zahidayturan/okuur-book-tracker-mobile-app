@@ -82,9 +82,9 @@ class FirestoreLogOperation{
     }
   }
 
-  Future<List<OkuurHomeLogInfo>> getLogInfoForDate(DateTime dateTime, String uid) async {
+  Future<List<OkuurBookAndLogInfo>> getLogInfoForDate(DateTime dateTime, String uid) async {
     try {
-      List<OkuurHomeLogInfo> homeLogInfo = [];
+      List<OkuurBookAndLogInfo> homeLogInfo = [];
 
       QuerySnapshot booksSnapshot = await _firestore
           .collection('users')
@@ -113,7 +113,7 @@ class FirestoreLogOperation{
               OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
 
           for (var log in logs) {
-            homeLogInfo.add(OkuurHomeLogInfo(bookInfo: bookInfo, okuurLogInfo: log));
+            homeLogInfo.add(OkuurBookAndLogInfo(bookInfo: bookInfo, okuurLogInfo: log));
           }
         }
       }
@@ -146,9 +146,33 @@ class FirestoreLogOperation{
     }
   }
 
-  Future<List<OkuurHomeLogInfo>> getMonthlyLogInfo(String uid,DateTime dateTime) async {
+  Future<bool> updateLogInfo(String uid, OkuurLogInfo logInfo) async {
+    DateTime logDate = OkuurDateFormatter.stringToDateTime(logInfo.readingDate);
+    String monthYear = '${logDate.month}-${logDate.year}';
+
+    Map<String, dynamic> logData = logInfo.toJson();
     try {
-      List<OkuurHomeLogInfo> homeLogInfo = [];
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(logInfo.bookId)
+          .collection('logs')
+          .doc(monthYear)
+          .collection('entries')
+          .doc(logInfo.id)
+          .update(logData);
+      debugPrint('Book log updated successfully.');
+      return true;
+    } catch (e) {
+      debugPrint('Error updating book log: $e');
+      return false;
+    }
+  }
+
+  Future<List<OkuurBookAndLogInfo>> getMonthlyLogInfo(String uid,DateTime dateTime) async {
+    try {
+      List<OkuurBookAndLogInfo> homeLogInfo = [];
 
       QuerySnapshot booksSnapshot = await _firestore
           .collection('users')
@@ -172,7 +196,7 @@ class FirestoreLogOperation{
               OkuurLogInfo.fromJson(doc.data() as Map<String, dynamic>)).toList();
 
           for (var log in logs) {
-            homeLogInfo.add(OkuurHomeLogInfo(bookInfo: bookInfo, okuurLogInfo: log));
+            homeLogInfo.add(OkuurBookAndLogInfo(bookInfo: bookInfo, okuurLogInfo: log));
           }
         }
       }

@@ -31,7 +31,7 @@ class HomeController extends GetxController {
 
 
   List<OkuurBookInfo> currentlyReadBooks = [];
-  List<OkuurHomeLogInfo> logForDate = [];
+  List<OkuurBookAndLogInfo> logForDate = [];
 
   BookOperations bookOperations = BookOperations();
   LogOperations logOperations = LogOperations();
@@ -196,7 +196,7 @@ class HomeController extends GetxController {
   READS PAGE
    */
 
-  List<OkuurHomeLogInfo> readsLogInfo = [];
+  List<OkuurBookAndLogInfo> readsLogInfo = [];
   var readsLoading = Rx<bool>(false);
 
   Map<String, dynamic> totalReadsInfo = {};
@@ -211,7 +211,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Map<String, dynamic> calculateReadsInfo(List<OkuurHomeLogInfo> readsLogInfo) {
+  Map<String, dynamic> calculateReadsInfo(List<OkuurBookAndLogInfo> readsLogInfo) {
     if(readsLogInfo.isNotEmpty){
       DateTime firstLogDate = OkuurDateFormatter.stringToDateTime(readsLogInfo.first.okuurLogInfo.readingDate);
 

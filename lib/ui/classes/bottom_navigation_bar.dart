@@ -34,7 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 170,
+      height: 172,
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
@@ -56,13 +56,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
           ),
           Positioned(
-              right: 16,
-              bottom: 124,
-              child: toButton(context,context.translate.add_reading,4,colors.blueMid,const AddLogPage())),
-          Positioned(
-              right: 16,
+              right: 20,
               bottom: 74,
-              child: toButton(context,context.translate.add_book,4,colors.green,const AddBookPage())),
+              child: AnimatedScale(
+                duration: const Duration(milliseconds: 600),
+                scale: toButtonVisible ? 1 : 0,
+                alignment: Alignment.bottomRight,
+                curve: Curves.easeInOut,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    toButton(context,context.translate.add_reading,4,colors.blueMid,const AddLogPage(),Icons.add_circle_outline_rounded),
+                    const SizedBox(height: 8),
+                    toButton(context,context.translate.add_book,4,colors.green,const AddBookPage(),Icons.my_library_books_outlined)
+                  ],
+                ),
+              )),
           Positioned(
               right: 16,
               bottom: 12,
@@ -111,68 +120,86 @@ class _BottomNavBarState extends State<BottomNavBar> {
     ));
   }
 
-  GestureDetector addButton(BuildContext context,String text,int mode){
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          toButtonVisible = !toButtonVisible;
-        });
-      },
-      child: Container(
-        width: 56,
-        height: 56,
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3),
-        ),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+  Container addButton(BuildContext context,String text,int mode){
+    return Container(
+      width: 56,
+      height: 56,
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3),
+      ),
+      child: Material(
+        child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: toButtonVisible ? colors.greenDark : colors.orange,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Icon(toButtonVisible ? Icons.close_rounded : Icons.add_rounded,color: colors.grey,size: 28),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                toButtonVisible = !toButtonVisible;
+              });
+            },
+            borderRadius: BorderRadius.circular(50),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Icon(toButtonVisible ? Icons.close_rounded : Icons.add_rounded,color: colors.grey,size: 28),
+            ),
           ),
         ),
       ),
     );
   }
 
-  GestureDetector toButton(BuildContext context,String text,int mode,Color color,Widget pageName){
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          toButtonVisible = !toButtonVisible;
-        });
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 100),
-            pageBuilder: (context, animation, nextAnimation) {
-              return pageName;
-            },
-            reverseTransitionDuration: const Duration(milliseconds: 1),
-            transitionsBuilder: (context, animation, nextAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          ),
-        );
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        height: toButtonVisible ? 40 : 0,
-        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 12),
+  Widget toButton(BuildContext context,String text,int mode,Color color,Widget pageName,IconData icon){
+    return Material(
+      child: Ink(
+        height: 42,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(8),
           color: color,
+          gradient: LinearGradient(
+              stops:  const [0.28, 0.28],
+              transform: const GradientRotation(60),
+              colors: [colors.greenDark, color]
+          ),
         ),
-        child: Center(child: RegularText(texts: text,size: "m",color: colors.grey,)),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          onTap: () {
+            setState(() {
+              toButtonVisible = !toButtonVisible;
+            });
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 100),
+                pageBuilder: (context, animation, nextAnimation) {
+                  return pageName;
+                },
+                reverseTransitionDuration: const Duration(milliseconds: 1),
+                transitionsBuilder: (context, animation, nextAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+          child: Container(
+            constraints: const BoxConstraints(minWidth: 150),
+            padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RegularText(texts: text,color: colors.grey),
+                Icon(icon,size: 22,color: colors.grey)
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

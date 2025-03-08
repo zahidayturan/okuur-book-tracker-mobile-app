@@ -8,11 +8,13 @@ abstract class LogService {
 
   Future<List<OkuurLogInfo>?> getLogInfo(String bookId);
 
-  Future<List<OkuurHomeLogInfo>> getAllLogForDate(DateTime dateTime);
+  Future<List<OkuurBookAndLogInfo>> getAllLogForDate(DateTime dateTime);
 
   Future<void> deleteLogInfo(OkuurLogInfo logInfo);
 
-  Future<List<OkuurHomeLogInfo>> getMonthlyLogInfo(DateTime dateTime);
+  Future<bool> updateLogInfo(OkuurLogInfo logInfo);
+
+  Future<List<OkuurBookAndLogInfo>> getMonthlyLogInfo(DateTime dateTime);
 
   Future<List<OkuurLogInfo>> getDailyLogInfo(DateTime dateTime);
 }

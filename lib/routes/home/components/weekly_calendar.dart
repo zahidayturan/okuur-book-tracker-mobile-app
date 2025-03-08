@@ -130,7 +130,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
     ["Bu ","haftanın en iyi okumasını"," yaptın."]
   ];
 
-  SizedBox dayInfo(List<OkuurHomeLogInfo> logForDate){
+  SizedBox dayInfo(List<OkuurBookAndLogInfo> logForDate){
     return SizedBox(
       height: 90,
       child: logForDate.isEmpty
@@ -149,7 +149,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             });
           },
           itemBuilder: (context, index) {
-            OkuurHomeLogInfo logInfo = logForDate[index];
+            OkuurBookAndLogInfo logInfo = logForDate[index];
             String points = ((2 * logInfo.okuurLogInfo.timeRead * logInfo.okuurLogInfo.numberOfPages)
                 / (logInfo.okuurLogInfo.timeRead + (logInfo.okuurLogInfo.numberOfPages+1))).toStringAsFixed(0);
 

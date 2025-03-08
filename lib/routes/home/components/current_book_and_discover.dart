@@ -33,51 +33,13 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   @override
   void initState() {
     super.initState();
-    controller.fetchCurrentlyReadBooks(false).then((value) => initAsync());
-  }
-
-  Future<void> initAsync() async {
-    if(controller.currentlyReadBooks.isNotEmpty){
-      int tempData0 = controller.currentlyReadBooks[0].currentPage;
-
-      setState(() {
-        controller.currentlyReadBooks[0].currentPage = 0;
-      });
-
-      await Future.delayed(const Duration(milliseconds: 100));
-      setState(() {
-        controller.currentlyReadBooks[0].currentPage = tempData0;
-      });
-    }
+    controller.fetchCurrentlyReadBooks(false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => controller.booksLoading.value
-    ? Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RichTextWidget(texts: const ["Okuyorsun",""],
-                colors: [Theme.of(context).colorScheme.secondary],
-                fontFamilies: const ["FontBold","FontMedium"],
-                fontSize: 14),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              color: Theme.of(context).colorScheme.onPrimaryContainer
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: loadingBox()
-          ),
-        ),
-      ],
-    ): Column(
+    ? loadingBox() : Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,7 +67,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
     );
   }
 
-  int tempData0 = 0;
   Widget bookInfo(List<OkuurBookInfo> list){
     return SizedBox(
       height: 110,
@@ -116,15 +77,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
             currentPage = value;
           });
 
-          tempData0 = list[value].currentPage;
-          setState(() {
-            list[value].currentPage = 0;
-          });
-
-          await Future.delayed(const Duration(milliseconds: 1000));
-          setState(() {
-            list[value].currentPage = tempData0;
-          });
         },
         itemBuilder: (context, index) {
           return Material(
@@ -132,9 +84,6 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
             borderRadius: BorderRadius.circular(8),
             child: InkWell(
               onTap: () {
-                if(tempData0 != 0){
-                  list[index].currentPage = tempData0;
-                }
                 bookDetailController.setBookInfo(list[index]);
                 Navigator.push(
                   context,
@@ -152,8 +101,9 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                   ),
                 ).then((result) {
                   if (result == true) {
-                    controller.fetchCurrentlyReadBooks(true).then((value) => initAsync());
+                    controller.fetchCurrentlyReadBooks(true);
                     controller.fetchLogForDate(true);
+                    bookDetailController.isLogChanged.value = false;
                   }
                 });
               },
@@ -190,23 +140,16 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                                     children: [
                                       RegularText(texts:list[index].name, family: "FontBold",maxLines: 2),
                                       RegularText(texts:list[index].author, size: "s"),
+                                      RegularText(texts:"${list[index].pageCount} sayfa", size: "xs", maxLines: 2),
                                       const Spacer(),
-                                      RegularText(texts:"${list[index].currentPage}.sayfadasın / ${list[index].pageCount} sayfa", size: "xs", maxLines: 2),
-                                      const RegularText(texts:"Hedefin ? günde bitirmek. ?/?", size: "xs", maxLines: 2),
+                                      RegularText(texts:"${list[index].currentPage}.sayfadasın", size: "xs", maxLines: 2),
+                                      //const RegularText(texts:"Hedefin ? günde bitirmek. ?/?", size: "xs", maxLines: 2),
                                       const Spacer(),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          RegularText(texts:"Başl. ${OkuurDateFormatter.convertDate(list[index].startingDate)}", size: "xs", align:TextAlign.end),
-                                          moreButton(Theme.of(context).colorScheme.inversePrimary)
-                                        ],
-                                      )
+                                      RegularText(texts:"Başl. ${OkuurDateFormatter.convertDate(list[index].startingDate)}", size: "xs", align:TextAlign.end)
                                     ],
                                   ),
                                 ),
                               ),
-
                             ],
                           )
                         ],
@@ -215,31 +158,36 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
                     const SizedBox(width: 8),
                     LayoutBuilder(
                       builder: (context, constraints) {
-                        //double outerContainerHeight = constraints.maxHeight;
-                        int rate = OkuurCalc.calcPercentage(list[index].pageCount,list[index].currentPage).toInt();
-                        double innerContainerHeight = 96 * (rate/100);
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: Container(
-                            width: 10,
-                            height: 102,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: const BorderRadius.all(Radius.circular(20)),
-                            ),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 1000),
-                                curve: Curves.easeInOut,
+                        return TweenAnimationBuilder<double>(
+                          tween: Tween<double>(begin: 0, end: list[index].currentPage.toDouble()),
+                          duration: const Duration(milliseconds: 750),
+                          curve: Curves.easeInOut,
+                          builder: (context, animatedPage, child) {
+                            int rate = OkuurCalc.calcPercentage(list[index].pageCount, animatedPage.toInt()).toInt();
+                            double innerContainerHeight = 96 * (rate / 100);
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
                                 width: 12,
-                                height: innerContainerHeight,
+                                height: 102,
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.inversePrimary,
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 1000),
+                                    curve: Curves.easeInOut,
+                                    height: innerContainerHeight,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.inversePrimary,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -259,13 +207,29 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
   }
 
   Widget loadingBox() {
-    return const ShimmerBox(height: 110,borderRadius: BorderRadius.all(Radius.circular(8)));
-  }
-
-  SizedBox moreButton(Color color) {
-    return SizedBox(
-      height: 10,
-      child: Image.asset("assets/icons/arrow.png", color: color),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RichTextWidget(texts: const ["Okuyorsun",""],
+                colors: [Theme.of(context).colorScheme.secondary],
+                fontFamilies: const ["FontBold","FontMedium"],
+                fontSize: 14),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              color: Theme.of(context).colorScheme.onPrimaryContainer
+          ),
+          child: const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: ShimmerBox(height: 110,borderRadius: BorderRadius.all(Radius.circular(8)))
+          ),
+        ),
+      ],
     );
   }
 }

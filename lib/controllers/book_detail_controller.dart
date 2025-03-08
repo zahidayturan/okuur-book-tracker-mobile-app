@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:okuur/data/models/dto/book_detail_info.dart';
 import 'package:okuur/data/models/okuur_book_info.dart';
 import 'package:okuur/data/models/okuur_log_info.dart';
 import 'package:okuur/data/services/operations/book_operations.dart';
@@ -13,7 +12,6 @@ class BookDetailController extends GetxController {
   LogOperations logOperations = LogOperations();
 
   OkuurBookInfo? okuurBookInfo;
-  OkuurBookDetailInfo? okuurBookDetailInfo;
   List<OkuurLogInfo> logs= [];
 
   var isLogChanged = Rx<bool>(false);
@@ -47,7 +45,7 @@ class BookDetailController extends GetxController {
     LoadingDialog.showLoading(message: "Kayıt siliniyor");
     try {
       await logOperations.deleteLogInfo(okuurLogInfo);
-      await bookOperations.updateBookInfoAfterLog(okuurLogInfo,false);
+      await bookOperations.updateBookInfoAfterLog(okuurLogInfo,1,null);
       setBookInfo(await bookOperations.getBookInfoWithId(okuurLogInfo.bookId));
       getBookDetail();
     } catch (e) {
@@ -69,7 +67,7 @@ class BookDetailController extends GetxController {
     }
   }
   /*
-  EDIT
+  BOOK EDIT
    */
 
   void editInit(OkuurBookInfo okuurBookInfo) {
@@ -168,6 +166,58 @@ class BookDetailController extends GetxController {
       LoadingDialog.hideLoading();
       isLogChanged.value = true;
       Navigator.pop(Get.context!, true);
+    }
+  }
+
+  /*
+  RECORD EDIT
+   */
+
+  var isAllChangedRecordEdit = Rx<bool>(false);
+
+  void editRecordInit(OkuurLogInfo okuurLogInfo,OkuurBookInfo bookInfo) {
+    logNewCurrentPageController.text = okuurLogInfo.numberOfPages.toString();
+    bookOldLogPageCount.value = okuurLogInfo.numberOfPages;
+    isAllChangedRecordEdit.value = false;
+  }
+
+  var bookOldLogPageCount = Rx<int>(1);
+  final TextEditingController logNewCurrentPageController = TextEditingController();
+
+  void setLogNewLogPage(int page) {
+    if(page != bookOldLogPageCount.value){
+      isAllChangedRecordEdit.value = true;
+    }else{
+      isAllChangedRecordEdit.value = false;
+    }
+    logNewCurrentPageController.text = page.toString();
+  }
+
+  Future<void> updateLogInfo(OkuurLogInfo logInfo) async {
+    LoadingDialog.showLoading(message: "Okuma kaydı güncelleniyor");
+    try {
+      int newLogPageCount = int.parse(logNewCurrentPageController.text);
+      double timePageRate = logInfo.timeRead / logInfo.numberOfPages;
+
+      OkuurLogInfo updatedLogInfo = logInfo.copyWith(
+        numberOfPages: newLogPageCount,
+        timeRead: (newLogPageCount * timePageRate).toInt(),
+      );
+
+      bool status = await logOperations.updateLogInfo(updatedLogInfo);
+      if (!status) {
+        throw Exception("Okuma kaydı güncellenirken bir hata oluştu.");
+      }
+
+      okuurBookInfo = await bookOperations.updateBookInfoAfterLog(logInfo, 2, updatedLogInfo);
+    } catch (e) {
+      debugPrint("updateLogInfo hata: $e");
+    } finally {
+      LoadingDialog.hideLoading();
+      setBookInfo(okuurBookInfo);
+      getBookDetail();
+      isLogChanged.value = true;
+      Navigator.pop(Get.context!);
     }
   }
 

@@ -35,7 +35,7 @@ class _AddLogButtonState extends State<AddLogButton> {
     LoadingDialog.showLoading(message: "Kayıt ekleniyor");
     try {
       await LogOperations().insertLogInfo(logInfo);
-      await bookOperations.updateBookInfoAfterLog(logInfo,true);
+      await bookOperations.updateBookInfoAfterLog(logInfo,0,null);
       await homeController.fetchCurrentlyReadBooks(true);
       await homeController.fetchLogForDate(true);
       await homeController.fetchSeries(true);

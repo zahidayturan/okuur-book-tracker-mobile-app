@@ -47,7 +47,6 @@ class _AddLogPageState extends State<AddLogPage> {
                   addLogAppBar(context),
                   const SizedBox(height: 16,),
                   const LogNameInfo(),
-                  //const SizedBox(height: 12,),
                   const LogPageInfo(),
                   const LogReadingTimeInfo(),
                   const LogReadingDateInfo(),

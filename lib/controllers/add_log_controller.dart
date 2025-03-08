@@ -28,9 +28,11 @@ class AddLogController extends GetxController {
     bookReadingPageCount.value = page - bookCurrentlyPage.value.toInt();
     logNewCurrentPageController.text = logNewCurrentPage.value.toString();
     sliderBookPageCount.value = page.toDouble();
+
+    logReadingTimeSelectedButton = 0;
     setLogReadingTime((bookReadingPageCount.value*1.5).toInt());
-    setLogReadingDate(DateTime.now());
-    setLogFinishingHour("${DateTime.now().hour}:${DateTime.now().minute}");
+    logReadingTimeController.clear();
+
     checkAllValidate();
   }
   void clearLogNewCurrentPage() {logNewCurrentPage.value = null;}
@@ -40,19 +42,21 @@ class AddLogController extends GetxController {
   var sliderBookPageCount = Rx<double>(2);
 
   var logReadingTime = Rx<int?>(null);
+  int logReadingTimeSelectedButton = 0;
   void setLogReadingTime(int minute) {logReadingTime.value = minute;}
   void clearLogReadingTime() {logReadingTime.value = null;}
   final TextEditingController logReadingTimeController = TextEditingController();
   var bookReadingPageCount = Rx<int>(1);
 
-  var logReadingDate = Rx<String?>(null);
+  var logReadingDate = Rx<String?>(DateTime.now().toString());
+  int logReadingDateSelectedButton = 0;
   void setLogReadingDate(DateTime date) {logReadingDate.value = date.toString();}
-  void clearLogReadingDate() {logReadingDate.value = null;}
+  void clearLogReadingDate() {logReadingDate.value = DateTime.now().toString();}
   final TextEditingController logReadingDateController = TextEditingController();
 
-  var logFinishingHour = Rx<String?>(null);
+  var logFinishingHour = Rx<String?>("${DateTime.now().hour}:${DateTime.now().minute}");
   void setLogFinishingHour(String hour) {logFinishingHour.value = hour;}
-  void clearLogFinishingHour() {logFinishingHour.value = null;}
+  void clearLogFinishingHour() {logFinishingHour.value = "${DateTime.now().hour}:${DateTime.now().minute}";}
   final TextEditingController logFinishingHourController = TextEditingController();
 
 

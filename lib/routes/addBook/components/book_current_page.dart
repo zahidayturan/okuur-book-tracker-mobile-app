@@ -26,9 +26,9 @@ Obx addBookCurrentPage(BuildContext context){
           Row(
             children: [
               RichTextWidget(
-                  texts: ["Kaldığınız ","Sayfa"],
+                  texts: const ["Kaldığınız ","Sayfa"],
                   colors: [Theme.of(context).colorScheme.secondary],
-                  fontFamilies: ["FontMedium","FontBold"],),
+                  fontFamilies: const ["FontMedium","FontBold"],),
             ],
           ),
           const SizedBox(height: 4,),

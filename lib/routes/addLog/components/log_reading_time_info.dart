@@ -53,7 +53,7 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
               SizedBox(height: 8,),
             ],
           ),
-          italicText("Önceki kayıtlarınıza göre bir sayfayı ortalama 1.5 dakikada okumuşsunuz. (${controller.bookReadingPageCount.value} sayfa için ${(controller.bookReadingPageCount.value*1.5).toInt()} dakika)"),
+          italicText("Önceki kayıtlara göre bir sayfa ortalama 1.5 dakikada okunmuş. (${controller.bookReadingPageCount.value} sayfa için ${(controller.bookReadingPageCount.value*1.5).toInt()} dakika)"),
           const SizedBox(height: 12,),
           Row(
             children: [
@@ -76,13 +76,13 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
     );
   }
 
-  int selectedButtonIndex = 0;
+
 
   Widget alreadyButton(int index,int minute){
     return GestureDetector(
         onTap: () {
           setState(() {
-            selectedButtonIndex = index;
+            controller.logReadingTimeSelectedButton = index;
             controller.logReadingTimeController.clear();
             controller.setLogReadingTime(minute);
           });
@@ -91,11 +91,11 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           decoration: BoxDecoration(
-            color: selectedButtonIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
+            color: controller.logReadingTimeSelectedButton == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(100))
           ),
           padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 14),
-          child: Text("$minute Dakika",style: TextStyle(color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
+          child: Text("$minute Dakika",style: TextStyle(color: controller.logReadingTimeSelectedButton == index ? colors.grey : Theme.of(context).colorScheme.secondary),),
         )
     );
   }
@@ -108,13 +108,13 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
-            color: selectedButtonIndex == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
+            color: controller.logReadingTimeSelectedButton == index ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(100))
         ),
       child: TextFormField(
           onTap: () {
             setState(() {
-              selectedButtonIndex = index;
+              controller.logReadingTimeSelectedButton = index;
               //controller.clearLogReadingTime();
             });
           },
@@ -129,7 +129,7 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
             counterText: "",
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintStyle: TextStyle(
-                color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
+                color: controller.logReadingTimeSelectedButton == index ? colors.grey : Theme.of(context).colorScheme.secondary,
             ),
             contentPadding: const EdgeInsets.only(bottom: 12),
             border: InputBorder.none,
@@ -138,14 +138,14 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14,
-            color: selectedButtonIndex == index ? colors.grey : Theme.of(context).colorScheme.secondary,
+            color: controller.logReadingTimeSelectedButton == index ? colors.grey : Theme.of(context).colorScheme.secondary,
           ),
           onChanged: (value) {
             if(value.isNotEmpty && int.parse(value) > 0){
-              selectedButtonIndex = 1;
-                controller.setLogReadingTime(int.parse(value));
+              controller.logReadingTimeSelectedButton = 1;
+              controller.setLogReadingTime(int.parse(value));
             }else{
-              selectedButtonIndex = 0;
+              controller.logReadingTimeSelectedButton = 0;
               controller.setLogReadingTime((controller.bookReadingPageCount.value*1.5).toInt()); //bug
               controller.logReadingTimeController.clear();
             }
@@ -153,10 +153,10 @@ class _LogReadingTimeInfoState extends State<LogReadingTimeInfo> {
           },
         onFieldSubmitted: (value) {
           if(value.isNotEmpty && int.parse(value) > 0){
-            selectedButtonIndex = 1;
+            controller.logReadingTimeSelectedButton = 1;
             controller.setLogReadingTime(int.parse(value));
           }else{
-            selectedButtonIndex = 0;
+            controller.logReadingTimeSelectedButton = 0;
             controller.setLogReadingTime((controller.bookReadingPageCount.value*1.5).toInt()); //bug
             controller.logReadingTimeController.clear();
           }

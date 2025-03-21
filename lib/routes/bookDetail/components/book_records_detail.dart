@@ -36,133 +36,136 @@ class _BookRecordsDetailState extends State<BookRecordsDetail> {
 
 
   Widget bookRecords(List<OkuurLogInfo> logs) {
-    int selectedPage = logs.isNotEmpty ? logs[selectedItem].numberOfPages : 0;
-    int selectedTime = logs.isNotEmpty ? logs[selectedItem].timeRead : 0;
+    if(logs.isNotEmpty){
+      int selectedPage = logs.isNotEmpty ? logs[selectedItem].numberOfPages : 0;
+      int selectedTime = logs.isNotEmpty ? logs[selectedItem].timeRead : 0;
 
-    String points = ((2 * selectedTime * selectedPage) / (selectedTime + (selectedPage+1))).toStringAsFixed(0);
+      String points = ((2 * selectedTime * selectedPage) / (selectedTime + (selectedPage+1))).toStringAsFixed(0);
 
-    DateTime bookStartingDate = OkuurDateFormatter.stringToDateTime(controller.okuurBookInfo!.startingDate);
-    bool isReading = controller.okuurBookInfo!.status % 2 == 1;
-    DateTime selectedLogDate = OkuurDateFormatter.stringToDateTime(logs[selectedItem].readingDate);
-    logDeletionAvailability =  isReading && bookStartingDate.isBefore(selectedLogDate);
-    return logs.isNotEmpty ? BaseContainer(
-      radius: 12,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const RegularText(texts: "Okumaların", style: FontStyle.italic),
-              RegularText(texts: "${logs.length} kayıt", size: "m"),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 60,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: logs.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 10),
-              itemBuilder: (context, index) {
-
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      selectedItem = index;
-                      DateTime selectedLogDate = OkuurDateFormatter.stringToDateTime(logs[selectedItem].readingDate);
-                      logDeletionAvailability =  isReading && bookStartingDate.isBefore(selectedLogDate);
-                    });
-                  },
-                  child: AnimatedContainer(
-                    curve: Curves.easeInOut,
-                    duration: const Duration(milliseconds: 400),
-                    height: 60,
-                    constraints: const BoxConstraints(minWidth: 40),
-                    padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
-                    decoration: BoxDecoration(
-                      color: selectedItem == index
-                          ? Theme.of(context).scaffoldBackgroundColor
-                          : Theme.of(context).colorScheme.onPrimaryContainer,
-                      borderRadius: BorderRadius.circular(selectedItem == index ? 16 : 8),
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                    ),
-                    child: Center(
-                      child: RegularText(
-                        texts: getParsedDate(logs[index].readingDate),
-                        align: TextAlign.center,
-                        size: "m",
-                        maxLines: 2,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 8),
-          BaseContainer(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      DateTime bookStartingDate = OkuurDateFormatter.stringToDateTime(controller.okuurBookInfo!.startingDate);
+      bool isReading = controller.okuurBookInfo!.status % 2 == 1;
+      DateTime selectedLogDate = OkuurDateFormatter.stringToDateTime(logs[selectedItem].readingDate);
+      logDeletionAvailability =  isReading && bookStartingDate.isBefore(selectedLogDate);
+      return BaseContainer(
+        radius: 12,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const RegularText(texts: "Seçili Okuma Detayı",style: FontStyle.italic,size: "m",),
-                    Icon(Icons.info_outline_rounded,size: 16,color: Theme.of(context).colorScheme.secondary)
-                  ],
-                ),
-                const SizedBox(height: 4),
-                RegularText(texts: OkuurDateFormatter.convertDate(logs[selectedItem].readingDate)),
-                RegularText(texts: "$selectedPage sayfa / $selectedTime dakika / $points puan"),
-                Visibility(
-                  visible: logDeletionAvailability,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            controller.editRecordInit(logs[selectedItem],controller.okuurBookInfo!);
-                            showBookRecordEditDialog(context,logs[selectedItem],controller.okuurBookInfo!);
-                          },
-                          child: opButton(
-                            "Düzenle",
-                            Icons.edit_rounded,
-                            Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            bool shouldExit = await _showCustomDialog("Okuma kaydı silinecektir.\nOnaylıyor musunuz?");
-                            if (shouldExit) {
-                              controller.deleteLogInfo(logs[selectedItem]);
-                              setState(() {
-                                controller.isLogChanged.value = true;
-                              });
-                            }
-                          },
-                          child: opButton(
-                              "Okuma Kaydını Sil",
-                              Icons.delete_outline_rounded,
-                              colors.red),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                const RegularText(texts: "Okumaların", style: FontStyle.italic),
+                RegularText(texts: "${logs.length} kayıt", size: "m"),
               ],
             ),
-          ),
-        ],
-      ),
-    ) : const SizedBox();
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 60,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: logs.length,
+                separatorBuilder: (context, index) => const SizedBox(width: 10),
+                itemBuilder: (context, index) {
+
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectedItem = index;
+                        DateTime selectedLogDate = OkuurDateFormatter.stringToDateTime(logs[selectedItem].readingDate);
+                        logDeletionAvailability =  isReading && bookStartingDate.isBefore(selectedLogDate);
+                      });
+                    },
+                    child: AnimatedContainer(
+                      curve: Curves.easeInOut,
+                      duration: const Duration(milliseconds: 400),
+                      height: 60,
+                      constraints: const BoxConstraints(minWidth: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                      decoration: BoxDecoration(
+                        color: selectedItem == index
+                            ? Theme.of(context).scaffoldBackgroundColor
+                            : Theme.of(context).colorScheme.onPrimaryContainer,
+                        borderRadius: BorderRadius.circular(selectedItem == index ? 16 : 8),
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                      ),
+                      child: Center(
+                        child: RegularText(
+                          texts: getParsedDate(logs[index].readingDate),
+                          align: TextAlign.center,
+                          size: "m",
+                          maxLines: 2,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
+            BaseContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const RegularText(texts: "Seçili Okuma Detayı",style: FontStyle.italic,size: "m",),
+                      Icon(Icons.info_outline_rounded,size: 16,color: Theme.of(context).colorScheme.secondary)
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  RegularText(texts: OkuurDateFormatter.convertDate(logs[selectedItem].readingDate)),
+                  RegularText(texts: "$selectedPage sayfa / $selectedTime dakika / $points puan"),
+                  Visibility(
+                    visible: logDeletionAvailability,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              controller.editRecordInit(logs[selectedItem],controller.okuurBookInfo!);
+                              showBookRecordEditDialog(context,logs[selectedItem],controller.okuurBookInfo!);
+                            },
+                            child: opButton(
+                              "Düzenle",
+                              Icons.edit_rounded,
+                              Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              bool shouldExit = await _showCustomDialog("Okuma kaydı silinecektir.\nOnaylıyor musunuz?");
+                              if (shouldExit) {
+                                controller.deleteLogInfo(logs[selectedItem]);
+                                setState(() {
+                                  controller.isLogChanged.value = true;
+                                });
+                              }
+                            },
+                            child: opButton(
+                                "Okuma Kaydını Sil",
+                                Icons.delete_outline_rounded,
+                                colors.red),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return const SizedBox();
   }
 
   Widget opButton(String text,IconData icon,Color iconColor){

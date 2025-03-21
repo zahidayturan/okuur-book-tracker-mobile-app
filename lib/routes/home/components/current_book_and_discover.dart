@@ -200,7 +200,7 @@ class _CurrentBookAndDiscoverState extends State<CurrentBookAndDiscover> {
       const Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
-          child: RegularText(texts: "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",size:"m",align:TextAlign.center,maxLines: 4),
+          child: RegularText(texts: "Bir kitabı okumuyorsun. Yeni kitap ekle veya eklediklerinden birini okumaya başla",size:"m",align:TextAlign.center,maxLines: 4),
         ),
       ),
     );

@@ -160,7 +160,7 @@ class _LogNameInfoState extends State<LogNameInfo> {
 
   Widget notFoundBook() {
     return messageContainer(
-      "Bir kitabı okumuyorsunuz. Yeni kitap ekleyin veya eklediklerinizden birini okumaya başlayın",
+      "Bir kitabı okumuyorsun. Yeni kitap ekle veya eklediklerinden birini okumaya başla",
     );
   }
 

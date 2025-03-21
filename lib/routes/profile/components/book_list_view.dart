@@ -44,7 +44,7 @@ class _BookListWidgetState extends State<BookListWidget> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        RegularText(texts: "Şu An Okunanlar", color: colors.greenDark, family: "FontBold"),
+        RegularText(texts: "Şu An Okunanlar", color: Theme.of(context).colorScheme.tertiary, family: "FontBold"),
         const SizedBox(height: 12,),
         ...currentBooks.map((item) => bookContainer(
           currentBookText(
@@ -57,6 +57,7 @@ class _BookListWidgetState extends State<BookListWidget> {
             item.imageLink
           ),
         )).toList(),
+        RegularText(texts: currentBooks.isEmpty ? "Okumakta olduğun bir kitap yok" : "",maxLines: 5,size: "m",),
         const SizedBox(height: 8),
       ],
     );
@@ -85,7 +86,7 @@ class _BookListWidgetState extends State<BookListWidget> {
 
     if (formattedDate != null) {
       int differenceDay = DateTime.now().difference(formattedDate).inDays;
-      finishingDate = differenceDay != 0 ? "$differenceDay gündür okuyor" : "Bugün başladı";
+      finishingDate = differenceDay != 0 ? "$differenceDay gündür okuyorsun" : "Bugün başladın";
     } else {
       finishingDate = "Başlangıç tarihi geçersiz";
     }
@@ -93,7 +94,7 @@ class _BookListWidgetState extends State<BookListWidget> {
     return Row(
       children: [
         Container(
-            width: 58,
+            width: 67,
             height: 98,
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -102,16 +103,16 @@ class _BookListWidgetState extends State<BookListWidget> {
             ),
             child: imageShower(image)
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 8),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RegularText(texts:name, color: colors.black, size: "l",  maxLines: 2,weight: FontWeight.bold,),
-            RegularText(texts:author, color: colors.black, size: "m",),
+            RegularText(texts:name, size: "l",  maxLines: 2,weight: FontWeight.bold,),
+            RegularText(texts:author,size: "m",),
             const Spacer(),
-            RegularText(texts:"$type - $page sayfa", color: colors.black, size: "m"),
+            RegularText(texts:"$type - $page sayfa", size: "m"),
             const Spacer(),
-            formattedDate != null ? RegularText(texts:"${formattedDate.day}.${formattedDate.month}.${formattedDate.year} / $finishingDate", color: colors.black, size: "m") : const RegularText(texts:"")
+            formattedDate != null ? RegularText(texts:"${formattedDate.day}.${formattedDate.month}.${formattedDate.year} / $finishingDate",size: "m") : const RegularText(texts:"")
           ],
         )
       ],

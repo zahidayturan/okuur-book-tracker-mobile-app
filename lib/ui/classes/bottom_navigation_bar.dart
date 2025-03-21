@@ -125,11 +125,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       width: 56,
       height: 56,
       padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor?.withOpacity(0.3) ?? colors.grey.withOpacity(0.3),
-      ),
       child: Material(
+        borderRadius: BorderRadius.circular(50),
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),

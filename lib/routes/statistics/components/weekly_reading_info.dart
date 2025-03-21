@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
 import 'package:okuur/ui/components/shimmer_box.dart';
@@ -21,6 +22,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
   AppColors colors = AppColors();
 
   final StatisticsController controller = Get.put(StatisticsController());
+  final OkuurLocalStorage storage = OkuurLocalStorage();
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
   List<String> shortDayName = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cts", "Paz"];
 
   Widget weeklyInfo() {
+    int dailyGoal = storage.getDailyGoal();
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -73,7 +76,7 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: controller.lastSevenDayLogInfo.map((item) {
               int weekDay = item["day"].weekday;
-              return infoBar(shortDayName[weekDay-1], 50, item["totalRead"]);
+              return infoBar(shortDayName[weekDay-1], dailyGoal, item["totalRead"]);
             }).toList(),
           ),
           const SizedBox(height: 12),
@@ -84,8 +87,8 @@ class _WeeklyReadingInfoState extends State<WeeklyReadingInfo> {
             align: TextAlign.center,
           ),
           const SizedBox(height: 12),
-          const RegularText(
-            texts: "Günlük okuma hedefin 50 sayfa.",
+          RegularText(
+            texts: "Günlük okuma hedefin $dailyGoal sayfa.",
             size: "s",
             align: TextAlign.center,
           ),

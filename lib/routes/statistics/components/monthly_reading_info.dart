@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okuur/controllers/statistics_controller.dart';
 import 'package:okuur/core/constants/colors.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/ui/components/circular_bar.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/rich_text.dart';
@@ -23,6 +24,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
   AppColors colors = AppColors();
 
   final StatisticsController controller = Get.put(StatisticsController());
+  final OkuurLocalStorage storage = OkuurLocalStorage();
 
   @override
   void initState() {
@@ -39,7 +41,7 @@ class _MonthlyReadingInfoState extends State<MonthlyReadingInfo> {
   }
 
   Widget body(BuildContext context,int page, int day, int remaining, bool currentMonth){
-    int goal = day*50;
+    int goal = day*storage.getDailyGoal();
     int minimumReading = remaining > 0 ? (goal-page)~/remaining : 0;
     return Container(
       padding: const EdgeInsets.all(8),

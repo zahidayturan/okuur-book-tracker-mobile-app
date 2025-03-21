@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:okuur/core/constants/colors.dart';
 import 'package:okuur/core/localizations/l10n_extension.dart';
+import 'package:okuur/core/utils/get_storage_helper.dart';
 import 'package:okuur/routes/reads/reads.dart';
 import 'package:okuur/ui/components/regular_text.dart';
 import 'package:okuur/ui/components/snackbar.dart';
 
 class MiniPagesInfo extends StatefulWidget {
 
-  final int dailyGoal;
-  final int goalCount;
-
   const MiniPagesInfo({
     Key? key,
-    required this.dailyGoal,
-    required this.goalCount
   }) : super(key: key);
 
   @override
@@ -23,7 +19,7 @@ class MiniPagesInfo extends StatefulWidget {
 class _MiniPagesInfoState extends State<MiniPagesInfo> {
 
   AppColors colors = AppColors();
-
+  final OkuurLocalStorage storage = OkuurLocalStorage();
   double size = 110;
 
   @override
@@ -67,6 +63,7 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
   }
 
   Widget goals(){
+
     return getBox(
         InkWell(
           onTap: () {
@@ -88,13 +85,13 @@ class _MiniPagesInfoState extends State<MiniPagesInfo> {
                     RegularText(texts: context.translate.goals,color:Theme.of(context).colorScheme.onSurface,family: "FontBold"),
                     RegularText(
                       size: "s",
-                      texts: "Günlük\n${widget.dailyGoal} sayfa",
+                      texts: "Günlük\n${storage.getDailyGoal()} sayfa",
                       maxLines: 3,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        RegularText(texts:"${widget.goalCount} tane", size: "xs"),
+                        RegularText(texts:"${1} tane", size: "xs"),
                         const RegularText(texts: "Göz at", size: "xs"),
                       ],)
                   ],
